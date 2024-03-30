@@ -2,7 +2,6 @@
 import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-//mport exampleRouter from "./routes/example.ts";
 import {
   populateNodeDB,
   readCSVFile,
