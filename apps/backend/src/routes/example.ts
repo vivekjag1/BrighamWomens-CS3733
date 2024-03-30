@@ -1,46 +1,72 @@
-import express, { Router } from "express";
-// import { Prisma } from "database";
-// import PrismaClient from "../bin/database-connection.ts";
+//import createError, { HttpError } from "http-errors";
+import express, { Express } from "express";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+//mport exampleRouter from "./routes/example.ts";
+import {
+  populateNodeDB,
+  readCSVFile,
+  populateEdgeDB,
+} from "../fileInput/file.ts";
+// import { test } from "vitest";
 
-const router: Router = express.Router();
+// readCSVFile("../backend/data/L1Nodes.csv")
+//   .then(populateNodeDB).then()
+//   .catch(console.error);
+
+// console.log(myFunc());
+
+async function main() {
+  await readCSVFile("../backend/data/L1Nodes.csv")
+    .then(populateNodeDB)
+    .catch(console.error);
+  await readCSVFile("../backend/data/L1Edges.csv")
+    .then(populateEdgeDB)
+    .catch(console.error);
+}
+
+main();
+
+const app: Express = express(); // Setup the backend
 //
-// router.post("/", async function (req: Request, res: Response) {
-//   const highScoreAttempt: Prisma.HighScoreCreateInput = req.body;
-//   // Attempt to save the high score
-//   try {
-//     // Attempt to create in the database
-//     await PrismaClient.highScore.create({ data: highScoreAttempt });
-//     console.info("Successfully saved high score attempt"); // Log that it was successful
-//   } catch (error) {
-//     // Log any failures
-//     console.error(
-//       `Unable to save high score attempt ${highScoreAttempt}: ${error}`,
-//     );
-//     res.sendStatus(400); // Send error
-//     return; // Don't try to send duplicate statuses
-//   }
+// Setup generic middlewear
+app.use(
+  logger("dev", {
+    stream: {
+      // This is a "hack" that gets the output to appear in the remote debugger :)
+      write: (msg) => console.info(msg),
+    },
+  }),
+); // This records all HTTP requests
+app.use(express.json()); // This processes requests as JSON
+app.use(express.urlencoded({ extended: false })); // URL parser
+app.use(cookieParser()); // Cookie parser
 //
-//   res.sendStatus(200); // Otherwise say it's fine
+// // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
+// // won't be reached by the default proxy and prod setup
+// app.use("/api/high-score", exampleRouter);
+// app.use("/healthcheck", (req, res) => {
+//   res.status(200).send();
 // });
 //
-// // Whenever a get request is made, return the high score
-// router.get("/", async function (req: Request, res: Response) {
-//   // Fetch the high score from Prisma
-//   const highScore = await PrismaClient.highScore.findFirst({
-//     orderBy: {
-//       score: "desc",
-//     },
-//   });
+// /**
+//  * Catch all 404 errors, and forward them to the error handler
+//  */
+// app.use(function (req: Request, res: Response, next: NextFunction): void {
+//   // Have the next (generic error handler) process a 404 error
+//   next(createError(404));
+// });
 //
-//   // If the high score doesn't exist
-//   if (highScore === null) {
-//     // Log that (it's a problem)
-//     console.error("No high score found in database!");
-//     res.sendStatus(204); // and send 204, no data
-//   } else {
-//     // Otherwise, send the score
-//     res.send(highScore);
-//   }
+// /**
+//  * Generic error handler
+//  */
+// app.use((err: HttpError, req: Request, res: Response): void => {
+//   res.statusMessage = err.message; // Provide the error message
+//
+//   res.locals.error = req.app.get("env") === "development" ? err : {};
+//
+//   // Reply with the error
+//   res.status(err.status || 500);
 // });
 
-export default router;
+export default app; // Export the backend, so that www.ts can start it
