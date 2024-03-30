@@ -38,6 +38,7 @@ function NodeTable() {
           </table>
         </div>
       </div>
+      <button type="submit">Submit</button>
     </div>
   );
 }
