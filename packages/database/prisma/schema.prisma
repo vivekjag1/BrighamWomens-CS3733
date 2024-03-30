@@ -10,7 +10,7 @@ datasource db {
 }
 
 model Node {
-  nodeID        String @id @default(cuid())
+  nodeID        String @id
   xcoord        String
   ycoord        String
   floor         String
