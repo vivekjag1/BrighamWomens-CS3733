@@ -1,7 +1,13 @@
+import BlueCircleButton from "../components/BlueCircleButton.tsx";
 function Services() {
   return (
     <div>
-      <h1>This is the services component. test </h1>
+      <div className="text-center text-blue-900 text-[40px] font-bold font-['Roboto'] leading-[42px] tracking-tight">
+        Services
+      </div>
+      <div>
+        <BlueCircleButton />
+      </div>
     </div>
   );
 }
