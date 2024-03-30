@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider   = "prisma-client-js"
   output     = "../.prisma/client"
@@ -12,9 +9,49 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-// example table used in the express router example
-model HighScore {
-  id    Int      @id @default(autoincrement())
-  time  DateTime
-  score Int
+model Node {
+  nodeID        String @id @default(cuid())
+  xcoord        String
+  ycoord        String
+  floor         String
+  building      String
+  nodeType      String
+  longName      String
+  shortName     String
+  // create a relation for both edges coming into the node and edges leaving the node
+  edgesLeaving  Edge[] @relation("EdgesLeaving")
+  edgesIncoming Edge[] @relation("EdgesIncoming")
+}
+
+model Edge {
+  edgeID      Int    @id @default(autoincrement())
+  // add start/end edges to the tables created for start and end edges above
+  startNode   Node   @relation("EdgesLeaving", fields: [startNodeID], references: [nodeID])
+  startNodeID String
+  endNode     Node   @relation("EdgesIncoming", fields: [endNodeID], references: [nodeID])
+  endNodeID   String
+}
+
+model ServiceRequest {
+  serviceID            Int               @id
+  type                 ServiceType // establish as the parent entity
+  roomNum              Int
+  deliveryInstructions String?
+  requestingUsernmae   String
+  timeStamp            DateTime          @default(now())
+  location             String
+  medicineDelivery     MedicineDelivery? // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request
+}
+
+enum ServiceType {
+  MedicineDelivery
+}
+
+model MedicineDelivery {
+  medicineRequestID Int            @id
+  medicineName      String
+  dosage            String
+  patientName       String
+  userInstructions  String?
+  serviceRequest    ServiceRequest @relation(fields: [medicineRequestID], references: [serviceID])
 }
