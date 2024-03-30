@@ -24,7 +24,7 @@ model Node {
 }
 
 model Edge {
-  edgeID      Int    @id @default(autoincrement())
+  edgeID      Int    @id
   // add start/end edges to the tables created for start and end edges above
   startNode   Node   @relation("EdgesLeaving", fields: [startNodeID], references: [nodeID])
   startNodeID String
@@ -55,3 +55,5 @@ model MedicineDelivery {
   userInstructions  String?
   serviceRequest    ServiceRequest @relation(fields: [medicineRequestID], references: [serviceID])
 }
+
+//
