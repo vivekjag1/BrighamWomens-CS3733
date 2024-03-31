@@ -9,7 +9,11 @@ function Login() {
     <div>
       <div className="w-screen h-screen flex flex-row">
         <form className="w-[50vw] flex flex-col justify-center items-start px-[10vw] gap-[4vh]">
-          <img src={bwhLogoSemiNaked} alt="Brigham and Women's Hospital Logo" />
+          <img
+            className="w-[500px] h-[60px]"
+            src={bwhLogoSemiNaked}
+            alt="Brigham and Women's Hospital Logo"
+          />
           <h2 className="font-semibold text-2xl">Sign in</h2>
           <TextField
             type="text"
@@ -25,7 +29,18 @@ function Login() {
             size="medium"
             sx={{ width: "350px" }}
           />
-          <IconButton>
+          <IconButton
+            size="small"
+            sx={{
+              width: "65px",
+              height: "65px",
+              backgroundColor: "rgb(0, 156, 166)",
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "hsl(184, 90%, 33%)",
+              },
+            }}
+          >
             <ArrowForwardIcon />
           </IconButton>
         </form>
