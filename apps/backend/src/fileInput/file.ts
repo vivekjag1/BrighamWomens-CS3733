@@ -55,6 +55,3 @@ export async function populateEdgeDB(edgeData: string[][]) {
   await prisma.edge.createMany({ data: edgeArray, skipDuplicates: false });
   return edgeArray;
 }
-
-console.log("g");
-//

@@ -1,34 +1,11 @@
-//import createError, { HttpError } from "http-errors";
-import express, { Express } from "express";
+import createError, { HttpError } from "http-errors";
+import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import {
-  populateNodeDB,
-  readCSVFile,
-  populateEdgeDB,
-} from "./fileInput/file.ts";
-// import { test } from "vitest";
-
-// readCSVFile("../backend/data/L1Nodes.csv")
-//   .then(populateNodeDB).then()
-//   .catch(console.error);
-
-// console.log(myFunc());
-
-async function main() {
-  await readCSVFile("../backend/data/L1Nodes.csv")
-    .then(populateNodeDB)
-    .catch(console.error);
-  // console.log("nodes populated");
-  await readCSVFile("../backend/data/L1Edges.csv")
-    .then(populateEdgeDB)
-    .catch(console.error);
-}
-
-main();
+import importMap from "./routes/mapdata/importMap.ts";
 
 const app: Express = express(); // Setup the backend
-//
+
 // Setup generic middlewear
 app.use(
   logger("dev", {
@@ -41,33 +18,33 @@ app.use(
 app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
-//
-// // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
-// // won't be reached by the default proxy and prod setup
-// app.use("/api/high-score", exampleRouter);
-// app.use("/healthcheck", (req, res) => {
-//   res.status(200).send();
-// });
-//
-// /**
-//  * Catch all 404 errors, and forward them to the error handler
-//  */
-// app.use(function (req: Request, res: Response, next: NextFunction): void {
-//   // Have the next (generic error handler) process a 404 error
-//   next(createError(404));
-// });
-//
-// /**
-//  * Generic error handler
-//  */
-// app.use((err: HttpError, req: Request, res: Response): void => {
-//   res.statusMessage = err.message; // Provide the error message
-//
-//   res.locals.error = req.app.get("env") === "development" ? err : {};
-//
-//   // Reply with the error
-//   res.status(err.status || 500);
-// });
+
+// Setup routers. ALL ROUTERS MUST use /api as a start point, or they
+// won't be reached by the default proxy and prod setup
+app.use("/healthcheck", (req, res) => {
+  res.status(200).send();
+});
+
+app.use("/api/map", importMap);
+
+/**
+ * Catch all 404 errors, and forward them to the error handler
+ */
+app.use(function (req: Request, res: Response, next: NextFunction): void {
+  // Have the next (generic error handler) process a 404 error
+  next(createError(404));
+});
+
+/**
+ * Generic error handler
+ */
+app.use((err: HttpError, req: Request, res: Response): void => {
+  res.statusMessage = err.message; // Provide the error message
+
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // Reply with the error
+  res.status(err.status || 500);
+});
 
 export default app; // Export the backend, so that www.ts can start it
-//
