@@ -1,7 +1,17 @@
+import { TextField, IconButton } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 function MedicineRequest() {
   return (
     <div>
-      <h1>This is the medicine request component.</h1>
+      <form>
+        <h2>Medicine Request</h2>
+        <TextField variant="outlined" />
+        <TextField variant="outlined" />
+        <TextField variant="outlined" />
+        <IconButton type="submit">
+          <ArrowForwardIcon />
+        </IconButton>
+      </form>
     </div>
   );
 }
