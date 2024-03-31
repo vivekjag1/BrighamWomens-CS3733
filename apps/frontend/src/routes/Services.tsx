@@ -11,15 +11,14 @@ function Services() {
       </div>
       <Link to="/MedicineRequest">
         {/* box with service*/}
-        <div className="w-screen h-screen flex justify-center align-content-center relative">
-          <div className=" w-72 h-72 flex flex-col justify-center align-content-center 24rem border-2 shadow-md relative">
+        <div className="w-screen h-screen relative left-50 bottom-50">
+          <div className=" w-72 h-72 flex flex-col justify-center align-content-center 24rem border-2 shadow-md relative hover:bg-zinc-100">
             {/* container for button*/}
-            <div className="w-36 h-36 flex justify-center align-content-center">
-              {" "}
+            <div className="w-36 h-36 absolute bottom-50 left-12">
               {/*icon*/}
               <img src={MedicineIcon} alt={"Image of pill and bottle"} />
             </div>
-            <div className="text-center text-black text-2xl font-normal font-['Roboto']">
+            <div className="text-center text-black text-2xl font-normal font-['Roboto'] absolute bottom-10 left-10">
               Medicine Request
             </div>
           </div>
