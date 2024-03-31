@@ -10,6 +10,7 @@ import Services from "./routes/Services.tsx";
 import MedicineConfirmation from "./routes/MedicineConfirmation.tsx";
 import ServiceTable from "./routes/ServiceTable.tsx";
 import NodeTable from "./routes/NodeTable.tsx";
+import EdgeTable from "./routes/EdgeTable.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +45,10 @@ function App() {
         {
           path: "/home/data",
           element: <NodeTable />,
+        },
+        {
+          path: "/home/edgedata",
+          element: <EdgeTable />,
         },
       ],
     },
