@@ -2,11 +2,22 @@
 
 ### File Processing
 
-- accept csv files from frontend and populate DB
-- serve up node/edges DB to frontend tables
-- export csv files to frontend for download
+Routes:
+
+- importMap
+  - accept map csv files (node + edge csv) and populate DB\_
+- exportMap
+
+  - query DB and export csv files (node + edge csv) to frontend for download
+
+- readMap
+  - serve up node and edges from DB to frontend tables
 
 ### Service Requests
 
-- accept service request form data from front end and populate DB
-- serve up service requests from DB to frontend
+Routes:
+
+- addServiceRequest
+  - accept service request form data and populate DB
+- getServiceRequests
+  - serve up service requests from DB to frontend
