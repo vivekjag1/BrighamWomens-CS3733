@@ -26,7 +26,7 @@ export class Graph {
     return neighborIDs;
   }
 
-  public path(startNodeID: string, endNodeID: string) {
+  public getPathAsCoords(startNodeID: string, endNodeID: string): number[][] {
     //nodes to search
     const searchQueue: string[] = [startNodeID];
     //nodes already searched
@@ -34,6 +34,7 @@ export class Graph {
     //organized as (node, parent node)
     const parentNodes: Map<string, string> = new Map();
     let searching: boolean = true;
+    const pathAsCoords: number[][] = [];
 
     while (searchQueue.length > 0 && searching) {
       let nextNode = searchQueue.shift();
@@ -48,10 +49,15 @@ export class Graph {
         }
         //add starting node to path
         path.unshift(startNodeID);
-        //console.log("Path (" + startNodeID + " -> " + endNodeID + "):");
-        //for(let i = 0; i < path.length; i++){
-        //    console.log(path[i]);
-        //}
+        console.log("Path (" + startNodeID + " -> " + endNodeID + "):");
+        for (let i = 0; i < path.length; i++) {
+          console.log(path[i]);
+          const currentPathNode: GraphNode = this.getNodeWithNodeID(path[i]);
+          pathAsCoords.push([
+            parseInt(currentPathNode.xcoord),
+            parseInt(currentPathNode.ycoord),
+          ]);
+        }
         //exit loop
         searching = false;
       } else {
@@ -71,6 +77,9 @@ export class Graph {
 
     if (searching) {
       console.log("No path found");
+      pathAsCoords.push([-1, -1]);
     }
+
+    return pathAsCoords;
   }
 }
