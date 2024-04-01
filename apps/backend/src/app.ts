@@ -2,7 +2,7 @@ import createError, { HttpError } from "http-errors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import importMap from "./routes/mapdata/importMap.ts";
+import importMap from "./routes/map/importMap.ts";
 
 const app: Express = express(); // Setup the backend
 

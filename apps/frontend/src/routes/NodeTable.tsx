@@ -1,16 +1,32 @@
 import { Button } from "@mui/material";
 import { ChangeEvent } from "react";
+import axios from "axios";
 
 function NodeTable() {
-  function csvHandler(e: ChangeEvent<HTMLInputElement>) {
+  async function csvHandler(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files!.length != 0) {
       const formData = new FormData();
-      formData.append("inputFile", e.target.files![0]);
-      alert("CSV file received");
+      const file = e.target.files![0];
+      const fileName = file.name;
+
+      formData.append("file", file, fileName);
+
+      try {
+        await axios.post(`/api/map`, formData, {
+          headers: {
+            "Content-Type": `multipart/form-data`,
+          },
+        });
+
+        alert("File uploaded!");
+      } catch {
+        alert("File failed to upload!");
+      }
     } else {
       alert("No file was submitted");
     }
   }
+
   return (
     <div>
       <div>
