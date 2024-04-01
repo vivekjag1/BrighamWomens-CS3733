@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import bwhLogoSemiNaked from "../../assets/bwh-logo-semi-naked.svg";
 import bwhExteriorDefault from "../../assets/bwh-exterior-default.png";
-
 import { TextField, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import paths from "../paths/paths.tsx";
 
 function Login() {
   return (
@@ -29,20 +30,22 @@ function Login() {
             size="medium"
             sx={{ width: "350px" }}
           />
-          <IconButton
-            size="small"
-            sx={{
-              width: "65px",
-              height: "65px",
-              backgroundColor: "rgb(0, 156, 166)",
-              borderRadius: "10px",
-              "&:hover": {
-                backgroundColor: "hsl(184, 90%, 33%)",
-              },
-            }}
-          >
-            <ArrowForwardIcon />
-          </IconButton>
+          <Link to={paths.HOME}>
+            <IconButton
+              size="small"
+              sx={{
+                width: "65px",
+                height: "65px",
+                backgroundColor: "rgb(0, 156, 166)",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "hsl(184, 90%, 33%)",
+                },
+              }}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          </Link>
         </form>
         <div>
           <img

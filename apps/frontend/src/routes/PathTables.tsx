@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeEvent } from "react";
 
-function NodeTable() {
+function PathTables() {
   function csvHandler(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files!.length != 0) {
       const formData = new FormData();
@@ -14,7 +14,12 @@ function NodeTable() {
   return (
     <div>
       <div>
-        <h1 className="text-3xl text-center">Upload File with Node Data</h1>
+        <h1 className="pt-9 text-3xl text-center">
+          Upload File with Node Data
+        </h1>
+        <div className="flex justify-end pr-3">
+          <Button variant="contained">Export Map Data</Button>
+        </div>
         <hr className="m-8" />
         <div className="w-screen h-screen flex flex-col items-center gap-[2vh]">
           <div>
@@ -43,12 +48,11 @@ function NodeTable() {
                   />
                 </div>
               </div>
-              <Button variant="contained">Export Map Data</Button>
+              <div className="flex justify-between">
+                <Button variant="contained"> Submit</Button>
+              </div>
             </div>
-            <div>
-              <Button variant="contained"> Submit</Button>
-            </div>
-            <h2 className="text-3xl font-bold mt-[2vh]">Node Table</h2>
+            <h2 className="text-3xl font-bold mt-[2vh] pt-9">Node Table</h2>
             <table className="text-sm text-center text-gray-500 mt-3">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
                 <tr>
@@ -92,8 +96,10 @@ function NodeTable() {
               </tbody>
             </table>
           </div>
-          <div className="w-screen h-screen relative left-36">
-            <h2 className="text-3xl font-bold mt-[2vh] left-10">Edge Table</h2>
+          <div className="w-screen h-screen relative left-64">
+            <h2 className="text-3xl font-bold mt-[2vh] left-10 pt-9">
+              Edge Table
+            </h2>
             <table className="text-sm text-center text-gray-500 mt-3">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
                 <tr>
@@ -114,4 +120,4 @@ function NodeTable() {
   );
 }
 
-export default NodeTable;
+export default PathTables;
