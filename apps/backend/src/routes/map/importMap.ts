@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import multer from "multer";
+import { mapAttributes } from "common/src/api.ts";
 const router: Router = express.Router();
 
 const storage = multer.diskStorage({
@@ -14,14 +15,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Receive CSV map files
-router.post("/", upload.single("file"), function (req, res) {
-  res.status(200).json({
-    message: "hello world",
-  });
+// Handles incoming map data files
+router.post(
+  "/",
+  upload.array(mapAttributes.fileUploadKey),
+  function (req, res) {
+    res.status(200).json({
+      message: "hello world",
+    });
 
-  console.log("received");
-  console.log(req.file);
-});
+    console.log("received");
+    console.log(req.file);
+  },
+);
 
 export default router;

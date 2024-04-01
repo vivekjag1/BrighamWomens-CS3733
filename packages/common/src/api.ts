@@ -4,6 +4,5 @@ export class APIEndpoints {
 }
 
 export class mapAttributes {
-  static readonly edgeFileName: string = "edgeFile";
-  static readonly nodeFileName: string = "nodeFile";
+  static readonly fileUploadKey: string = "files";
 }

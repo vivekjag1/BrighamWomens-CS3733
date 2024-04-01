@@ -1,30 +1,44 @@
 import { Button } from "@mui/material";
-import { ChangeEvent } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { APIEndpoints, mapAttributes } from "common/src/api";
 
-function NodeTable() {
-  async function csvHandler(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files!.length != 0) {
+const NodeTable = () => {
+  const [edgeFile, setEdgeFile] = useState<File | null>(null);
+  const [nodeFile, setNodeFile] = useState<File | null>(null);
+
+  const edgeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setEdgeFile(event.target.files[0]);
+    }
+  };
+
+  const nodeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setNodeFile(event.target.files[0]);
+    }
+  };
+
+  async function downloadFiles() {
+    console.log("download files");
+  }
+
+  async function uploadFiles() {
+    if (edgeFile != null && nodeFile != null) {
       const formData = new FormData();
-      const file = e.target.files![0];
-      const fileName = file.name;
+      formData.append(mapAttributes.fileUploadKey, nodeFile, nodeFile.name);
+      formData.append(mapAttributes.fileUploadKey, edgeFile, edgeFile.name);
 
-      formData.append(mapAttributes.edgeFileName, file, fileName);
-
-      try {
-        await axios.post(APIEndpoints.mapUpload, formData, {
+      await axios
+        .post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
-        });
-
-        alert("File uploaded!");
-      } catch {
-        alert("File failed to upload!");
-      }
+        })
+        .then(() => alert("Map data uploaded!"))
+        .catch(() => alert("Failed to upload!"));
     } else {
-      alert("No file was submitted");
+      alert("One or more files are missing!");
     }
   }
 
@@ -44,8 +58,8 @@ function NodeTable() {
                   id="csvFile"
                   type="file"
                   accept=".csv"
-                  name="Import CSV"
-                  onChange={csvHandler}
+                  name="Import Node File"
+                  onChange={nodeFileChange}
                 />
               </div>
               <div className="flex justify-between">
@@ -55,15 +69,19 @@ function NodeTable() {
                     id="csvFile"
                     type="file"
                     accept=".csv"
-                    name="Import CSV"
-                    onChange={csvHandler}
+                    name="Import Edge File"
+                    onChange={edgeFileChange}
                   />
                 </div>
               </div>
-              <Button variant="contained">Export Map Data</Button>
             </div>
             <div>
-              <Button variant="contained"> Submit</Button>
+              <Button variant="contained" onClick={uploadFiles}>
+                Upload Map Data
+              </Button>
+              <Button variant="contained" onClick={downloadFiles}>
+                Download Map Data
+              </Button>
             </div>
             <h2 className="text-3xl font-bold mt-[2vh]">Node Table</h2>
             <table className="text-sm text-center text-gray-500 mt-3">
@@ -126,9 +144,8 @@ function NodeTable() {
           </div>
         </div>
       </div>
-      <button type="submit">Submit</button>
     </div>
   );
-}
+};
 
 export default NodeTable;
