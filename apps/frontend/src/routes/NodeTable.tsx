@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeEvent } from "react";
 import axios from "axios";
+import { APIEndpoints, mapAttributes } from "common/src/api";
 
 function NodeTable() {
   async function csvHandler(e: ChangeEvent<HTMLInputElement>) {
@@ -9,10 +10,10 @@ function NodeTable() {
       const file = e.target.files![0];
       const fileName = file.name;
 
-      formData.append("file", file, fileName);
+      formData.append(mapAttributes.edgeFileName, file, fileName);
 
       try {
-        await axios.post(`/api/map`, formData, {
+        await axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
