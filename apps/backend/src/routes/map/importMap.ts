@@ -4,16 +4,16 @@ import { mapAttributes } from "common/src/api.ts";
 
 const router: Router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "uploads/");
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.originalname);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, callback) {
+//     callback(null, "uploads/");
+//   },
+//   filename: function (req, file, callback) {
+//     callback(null, file.originalname);
+//   },
+// });
 
-const upload = multer({ storage: storage });
+const upload = multer();
 
 // Explicitly define types for files
 interface UploadedFiles {
