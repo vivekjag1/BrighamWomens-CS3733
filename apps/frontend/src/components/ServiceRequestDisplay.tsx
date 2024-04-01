@@ -1,5 +1,5 @@
 export function ServiceRequestDisplay(props: {
-  feedback: {
+  request: {
     serviceID: string;
     type: string;
     roomNum: string;
@@ -11,28 +11,13 @@ export function ServiceRequestDisplay(props: {
 }) {
   return (
     <tr className="bg-white border-b">
-      <td className="px-6 py-4">{props.feedback.serviceID}</td>
-      <td className="px-6 py-4">{props.feedback.type}</td>
-      <td className="px-6 py-4">{props.feedback.roomNum}</td>
-      <td className="px-6 py-4">{props.feedback.deliveryInstructions}</td>
-      <td className="px-6 py-4">{props.feedback.requestingUsernmae}</td>
-      <td className="px-6 py-4">{props.feedback.timeStamp}</td>
-      <td className="px-6 py-4">{props.feedback.location}</td>
+      <td className="px-6 py-4">{props.request.serviceID}</td>
+      <td className="px-6 py-4">{props.request.type}</td>
+      <td className="px-6 py-4">{props.request.roomNum}</td>
+      <td className="px-6 py-4">{props.request.deliveryInstructions}</td>
+      <td className="px-6 py-4">{props.request.requestingUsernmae}</td>
+      <td className="px-6 py-4">{props.request.timeStamp}</td>
+      <td className="px-6 py-4">{props.request.location}</td>
     </tr>
-
-    // <div
-    //     className={
-    //         "justify-items-center w-full text-2xl border-2 border-gray-400 rounded-2xl p-10 flex flex-col gap-5 rounded-2"
-    //     }
-    // >
-    //     <div className={"flex flex-col justify-items-center gap-2 px-10"}>
-    //         <h1>Name:</h1>
-    //         <p className={"pl-16"}>{props.feedback.serviceID}</p>
-    //     </div>
-    //     <div className={"flex flex-col justify-items-center gap-2 px-10"}>
-    //         <h1>Feedback:</h1>
-    //         <p className={"pl-16"}>{props.feedback.type}</p>
-    //     </div>
-    // </div>
   );
 }
