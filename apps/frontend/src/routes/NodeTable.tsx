@@ -34,11 +34,12 @@ function NodeTable() {
         <h1 className="text-3xl text-center">Upload File with Node Data</h1>
         <hr className="m-8" />
         <div className="w-screen h-screen flex flex-col items-center gap-[2vh]">
-          <h2 className="text-3xl font-bold mt-[2vh]">Node Table</h2>
           <div>
+            {" "}
+            {/*import/export buttons*/}
             <div className="flex justify-between">
               <div className="flex">
-                <p className="mr-2 mt-1">Import CSV:</p>
+                <p className="mr-2 mt-1">Import Node CSV:</p>
                 <input
                   id="csvFile"
                   type="file"
@@ -47,8 +48,24 @@ function NodeTable() {
                   onChange={csvHandler}
                 />
               </div>
-              <Button variant="contained">Export CSV</Button>
+              <div className="flex justify-between">
+                <div className="flex">
+                  <p className="mr-2 mt-1">Import Edge CSV:</p>
+                  <input
+                    id="csvFile"
+                    type="file"
+                    accept=".csv"
+                    name="Import CSV"
+                    onChange={csvHandler}
+                  />
+                </div>
+              </div>
+              <Button variant="contained">Export Map Data</Button>
             </div>
+            <div>
+              <Button variant="contained"> Submit</Button>
+            </div>
+            <h2 className="text-3xl font-bold mt-[2vh]">Node Table</h2>
             <table className="text-sm text-center text-gray-500 mt-3">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
                 <tr>
@@ -90,6 +107,21 @@ function NodeTable() {
                   <td>Hall</td>
                 </tr>
               </tbody>
+            </table>
+          </div>
+          <div className="w-screen h-screen relative left-36">
+            <h2 className="text-3xl font-bold mt-[2vh] left-10">Edge Table</h2>
+            <table className="text-sm text-center text-gray-500 mt-3">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    startNodeID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    endNodeID
+                  </th>
+                </tr>
+              </thead>
             </table>
           </div>
         </div>
