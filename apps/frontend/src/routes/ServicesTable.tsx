@@ -1,4 +1,4 @@
-function ServiceTable() {
+function ServicesTable() {
   return (
     <div>
       <div className="m-8">
@@ -51,4 +51,4 @@ function ServiceTable() {
   );
 }
 
-export default ServiceTable;
+export default ServicesTable;

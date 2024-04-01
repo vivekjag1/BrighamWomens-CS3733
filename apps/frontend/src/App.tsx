@@ -1,50 +1,21 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import MedicineRequest from "./routes/MedicineRequest.tsx";
 import Login from "./routes/Login.tsx";
 import Layout from "./routes/Layout.tsx";
-import Home from "./routes/Home.tsx";
-import Services from "./routes/Services.tsx";
-import MedicineConfirmation from "./routes/MedicineConfirmation.tsx";
-import ServiceTable from "./routes/ServiceTable.tsx";
-import NodeTable from "./routes/NodeTable.tsx";
+import paths from "./paths/paths.tsx";
+import routes from "./paths/mappings.tsx";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: paths.LOGIN,
       element: <Login />,
     },
     {
-      path: "/home",
+      path: paths.HOME,
       element: <Layout />,
-      children: [
-        {
-          path: "/home",
-          element: <Home />,
-        },
-        {
-          path: "/home/services",
-          element: <Services />,
-        },
-        {
-          path: "/home/services/medicine",
-          element: <MedicineRequest />,
-        },
-        {
-          path: "/home/services/medicine/confirmation",
-          element: <MedicineConfirmation />,
-        },
-        {
-          path: "/home/services/data",
-          element: <ServiceTable />,
-        },
-        {
-          path: "/home/data",
-          element: <NodeTable />,
-        },
-      ],
+      children: routes,
     },
   ]);
 

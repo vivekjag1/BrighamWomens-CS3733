@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeEvent } from "react";
 
-function NodeTable() {
+function PathTables() {
   function csvHandler(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files!.length != 0) {
       const formData = new FormData();
@@ -114,4 +114,4 @@ function NodeTable() {
   );
 }
 
-export default NodeTable;
+export default PathTables;
