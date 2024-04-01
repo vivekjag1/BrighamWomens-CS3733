@@ -7,6 +7,9 @@ const NodeTable = () => {
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
 
+  // const [edges, setEdges] = useState<string[][]>([]);
+  // const [nodes, setNodes] = useState<string[][]>([]);
+
   const edgeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setEdgeFile(event.target.files[0]);
@@ -26,8 +29,8 @@ const NodeTable = () => {
   async function uploadFiles() {
     if (edgeFile != null && nodeFile != null) {
       const formData = new FormData();
-      formData.append(mapAttributes.fileUploadKey, nodeFile, nodeFile.name);
-      formData.append(mapAttributes.fileUploadKey, edgeFile, edgeFile.name);
+      formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+      formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
 
       await axios
         .post(APIEndpoints.mapUpload, formData, {
@@ -35,8 +38,14 @@ const NodeTable = () => {
             "Content-Type": `multipart/form-data`,
           },
         })
-        .then(() => alert("Map data uploaded!"))
-        .catch(() => alert("Failed to upload!"));
+        .then(() => {
+          console.log("success!");
+          alert("Map data uploaded!");
+        })
+        .catch((error) => {
+          console.error("Upload failed:", error);
+          alert("Failed to upload map data!");
+        });
     } else {
       alert("One or more files are missing!");
     }
