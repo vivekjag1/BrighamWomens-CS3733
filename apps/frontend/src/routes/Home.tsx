@@ -7,7 +7,6 @@ import { useState } from "react";
 function Home() {
   const [panelToggled, setPanelToggled] = useState(false);
   function clickHandler() {
-    alert("Button Clicked");
     setPanelToggled(!panelToggled);
   }
 
