@@ -3,6 +3,7 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import importMap from "./routes/mapdata/importMap.ts";
+import handleServiceRequest from "./routes/handleServiceRequest.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -26,7 +27,7 @@ app.use("/healthcheck", (req, res) => {
 });
 
 app.use("/api/map", importMap);
-
+app.use("/api/service", handleServiceRequest);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
