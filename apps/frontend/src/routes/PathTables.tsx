@@ -12,7 +12,7 @@ function PathTables() {
     }
   }
   return (
-    <div>
+    <div className="w-full grid justify-items-center">
       <div>
         <h1 className="pt-9 text-3xl text-center">
           Upload File with Node Data
