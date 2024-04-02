@@ -4,12 +4,12 @@ import axios from "axios";
 import { ServiceRequestDisplay } from "./ServiceRequestDisplay.tsx";
 
 export function ServiceRequestGetter() {
-  const [feedBackData, setFeedBackData] = useState<ServiceRequest[]>();
+  const [requestData, setRequestData] = useState<ServiceRequest[]>();
 
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get("/api/service");
-      setFeedBackData(res.data);
+      setRequestData(res.data);
       console.log(res.data);
       console.log("successfully got data from get request");
     }
@@ -18,10 +18,10 @@ export function ServiceRequestGetter() {
 
   return (
     <tbody>
-      {feedBackData != undefined ? (
-        feedBackData.map((feedback) => {
+      {requestData != undefined ? (
+        requestData.map((request) => {
           return (
-            <ServiceRequestDisplay feedback={feedback}></ServiceRequestDisplay>
+            <ServiceRequestDisplay request={request}></ServiceRequestDisplay>
           );
         })
       ) : (
