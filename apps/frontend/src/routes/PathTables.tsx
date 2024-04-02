@@ -89,7 +89,7 @@ const NodeTable = () => {
     <div className="w-full grid justify-items-center">
       <div>
         <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
-        <hr className="m-8" />
+        <hr className="m-5" />
         <div className="h-screen flex flex-col items-center gap-[2vh]">
           <div>
             {" "}

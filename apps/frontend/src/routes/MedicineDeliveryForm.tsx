@@ -49,12 +49,15 @@ export function MedicineDeliveryForm() {
 
       if (response.status === 200) {
         console.log("Submission successful", response.data);
+        alert("Medicine Request sent!");
         clear(); // Optionally clear the form on successful submission
       } else {
         console.error("Submission failed with status:", response.status);
+        alert("Medicine Request failed!");
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
+      alert("Medicine Request failed!");
     }
   }
 
