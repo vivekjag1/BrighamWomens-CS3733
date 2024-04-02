@@ -33,9 +33,15 @@ router.post(
       const edgeFile: Express.Multer.File[] =
         files[mapAttributes.edgeMulterKey];
       if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 2)) {
-        await checkDBStatus()
-          .then(() => populateDatabases(nodeFile[0], edgeFile[0]))
-          .then(() => res.status(200));
+        await checkDBStatus();
+        console.log("checkDBStatus done");
+        await populateDatabases(nodeFile[0], edgeFile[0]);
+        console.log("Database populated");
+        res.sendStatus(200);
+        //
+        // .then(() => populateDatabases(nodeFile[0], edgeFile[0]).then()
+        //     .catch(console.error))
+        // .then(() => res.status(200));
       } else {
         console.log("did not work");
         res.status(400);
@@ -45,7 +51,7 @@ router.post(
     }
   },
 );
-export function validateInput(
+function validateInput(
   aFile: Express.Multer.File,
   numExpected: number,
 ): boolean {
@@ -58,20 +64,28 @@ async function populateDatabases(
   nodeFile: Express.Multer.File,
   edgeFile: Express.Multer.File,
 ) {
-  await populateNodeDB(readCSVFile(nodeFile.buffer.toString())).then(() =>
-    populateEdgeDB(readCSVFile(edgeFile.buffer.toString())),
-  );
+  await populateNodeDB(readCSVFile(nodeFile.buffer.toString()));
+  console.log("nodes populated");
+  await populateEdgeDB(readCSVFile(edgeFile.buffer.toString()));
+  console.log("edges populated");
 }
 
 export async function checkDBStatus() {
-  const nodes = await prisma.node.findMany();
-  const edges = await prisma.edge.findMany();
-  if (edges.length !== 0) {
-    await prisma.edge.deleteMany();
-  }
-  if (nodes.length !== 0) {
-    await prisma.node.deleteMany();
-  }
+  await prisma.edge.deleteMany();
+  console.log("deleted edges");
+  await prisma.node.deleteMany();
+  console.log("deleted nodes");
+  // const nodes = await prisma.node.findMany();
+  //   console.log("nodes recieved");
+  //
+  //   const edges = await prisma.edge.findMany();
+  //   console.log("edges recieved");
+  // if (edges.length !== 0) {
+  //   await prisma.edge.deleteMany();
+  // }
+  // if (nodes.length !== 0) {
+  //   await prisma.node.deleteMany();
+  // }
 }
 
 export default router;

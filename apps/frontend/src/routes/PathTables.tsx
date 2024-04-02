@@ -64,11 +64,12 @@ const NodeTable = () => {
         const formData = new FormData();
         formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
         formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-        axios.post(APIEndpoints.mapUpload, formData, {
+        await axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
         });
+        console.log("success");
         alert("Map data uploaded!");
         location.reload();
       }
@@ -136,7 +137,12 @@ const NodeTable = () => {
           </div>
           <div className="flex flex-col items-center space-y-2">
             <div>
-              <Button variant="contained" onClick={uploadFiles}>
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  await uploadFiles();
+                }}
+              >
                 Upload Map Data
               </Button>
             </div>

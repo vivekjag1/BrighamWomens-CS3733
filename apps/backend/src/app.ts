@@ -60,5 +60,6 @@ app.use((err: HttpError, req: Request, res: Response): void => {
   // Reply with the error
   res.status(err.status || 500);
 });
+app.disable("etag");
 
 export default app; // Export the backend, so that www.ts can start it
