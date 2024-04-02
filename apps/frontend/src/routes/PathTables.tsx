@@ -50,6 +50,7 @@ const NodeTable = () => {
           },
         });
         alert("Map data uploaded!");
+        location.reload();
       }
     } catch (error) {
       console.error("Upload failed:", error);
