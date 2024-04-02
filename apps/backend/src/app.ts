@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import importMap from "./routes/map/importMap.ts";
 import exportMap from "./routes/map/exportMap.ts";
-//import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
+import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
@@ -37,7 +37,7 @@ app.use(APIEndpoints.mapUpload, importMap);
 app.use(APIEndpoints.mapExport, exportMap);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
-//app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);
+app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
