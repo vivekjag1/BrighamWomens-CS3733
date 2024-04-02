@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { APIEndpoints, mapAttributes } from "common/src/api";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
@@ -7,6 +7,26 @@ import { NodeGetter } from "../components/NodeGetter.tsx";
 const NodeTable = () => {
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
+
+  const [activeTab, setActiveTab] = useState<string>("node");
+  const nodeTableButtonRef = useRef<HTMLButtonElement>(null);
+  const handleTabChange = (tabName: string) => {
+    setActiveTab(tabName);
+  };
+
+  useEffect(() => {
+    if (nodeTableButtonRef.current) {
+      nodeTableButtonRef.current.focus();
+    }
+  }, []);
+
+  const getButtonClasses = (tabName: string): string => {
+    return `inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 ${
+      activeTab === tabName
+        ? "text-blue-500 border-blue-500" // Active tab styles
+        : "border-gray-300 focus:text-blue-500 focus:border-blue-500" // Inactive tab styles
+    } focus:outline-none`;
+  };
 
   const edgeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -86,54 +106,77 @@ const NodeTable = () => {
   // }
 
   return (
-    <div className="w-full grid justify-items-center">
-      <div>
-        <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
-        <hr className="m-5" />
-        <div className="h-screen flex flex-col items-center gap-[2vh]">
-          <div>
-            {" "}
-            {/*import/export buttons*/}
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center mb-2">
-                <div className="flex flex-row mb-2 ml-20">
-                  <p className="mr-2">Import Node CSV:</p>
-                  <input
-                    id="csvFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Node File"
-                    onChange={nodeFileChange}
-                  />
-                </div>
-                <div className="flex flex-row mb-2 ml-20">
-                  <p className="mr-2">Import Edge CSV:</p>
-                  <input
-                    id="csvFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Edge File"
-                    onChange={edgeFileChange}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col items-center space-y-2">
-                {/* Wrap the Button in a div if Button does not accept className */}
-                <div>
-                  <Button variant="contained" onClick={uploadFiles}>
-                    Upload Map Data
-                  </Button>
-                </div>
-                <div>
-                  <Button variant="contained" onClick={downloadFiles}>
-                    Download Map Data
-                  </Button>
-                </div>
-              </div>
+    <div className="w-full flex flex-col items-center">
+      <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
+      <hr className="m-5" />
+
+      <div className="flex flex-col items-center gap-[2vh]">
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center mb-2">
+            <div className="flex flex-row mb-2 ml-20">
+              <p className="mr-2">Import Node CSV:</p>
+              <input
+                id="csvFile"
+                type="file"
+                accept=".csv"
+                name="Import Node File"
+                onChange={nodeFileChange}
+              />
             </div>
-            <h2 className="text-3xl font-bold mt-[2vh] pt-9">Node Table</h2>
-            <table className="text-sm text-center text-gray-500 mt-3">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
+            <div className="flex flex-row mb-2 ml-20">
+              <p className="mr-2">Import Edge CSV:</p>
+              <input
+                id="csvFile"
+                type="file"
+                accept=".csv"
+                name="Import Edge File"
+                onChange={edgeFileChange}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
+            <div>
+              <Button variant="contained" onClick={uploadFiles}>
+                Upload Map Data
+              </Button>
+            </div>
+            <div>
+              <Button variant="contained" onClick={downloadFiles}>
+                Download Map Data
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <ul
+          className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+          id="default-tab"
+        >
+          <li className="mr-2" role="presentation">
+            <button
+              className={getButtonClasses("node")}
+              onClick={() => handleTabChange("node")}
+              type="button"
+            >
+              Node Table
+            </button>
+          </li>
+          <li role="presentation">
+            <button
+              className={getButtonClasses("edge")}
+              onClick={() => handleTabChange("edge")}
+              type="button"
+            >
+              Edge Table
+            </button>
+          </li>
+        </ul>
+
+        {activeTab === "node" && (
+          <div>
+            <h2 className="text-3xl font-bold">Node Table</h2>
+            <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     nodeID
@@ -164,12 +207,13 @@ const NodeTable = () => {
               {<NodeGetter />}
             </table>
           </div>
-          <div className="h-screen relative">
-            <h2 className="text-3xl font-bold mt-[2vh] left-10 pt-9">
-              Edge Table
-            </h2>
-            <table className="text-sm text-gray-500 mt-3">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
+        )}
+
+        {activeTab === "edge" && (
+          <div>
+            <h2 className="text-3xl font-bold">Edge Table</h2>
+            <table className="text-sm text-gray-500 mt-3 shadow-md">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     edgeID
@@ -185,7 +229,7 @@ const NodeTable = () => {
               {<EdgeGetter />}
             </table>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

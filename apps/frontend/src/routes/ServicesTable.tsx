@@ -10,7 +10,7 @@ function ServiceTable() {
           Service Requests
         </h1>
         <hr className="m-2" />
-        <table className="w-full text-sm text-center rtl:text-right text-gray-500 m-2">
+        <table className="w-full text-sm text-center rtl:text-right text-gray-500 m-2 shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
