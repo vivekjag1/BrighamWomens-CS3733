@@ -2,8 +2,8 @@ import createError, { HttpError } from "http-errors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import importMap from "./routes/map/importMap.ts";
-import exportMap from "./routes/map/exportMap.ts";
+import mapUpload from "./routes/map/mapUpload.ts";
+import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
@@ -33,8 +33,8 @@ app.use("/healthcheck", (req, res) => {
   res.status(200).send();
 });
 
-app.use(APIEndpoints.mapUpload, importMap);
-app.use(APIEndpoints.mapExport, exportMap);
+app.use(APIEndpoints.mapUpload, mapUpload);
+app.use(APIEndpoints.mapDownload, mapDownload);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);

@@ -21,7 +21,7 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    const retFromAPI = await axios.post("/api/map/exportMap"); //get info from route
+    const retFromAPI = await axios.post(APIEndpoints.mapDownload); //get info from route
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",
     }); //create blob
@@ -57,6 +57,8 @@ const NodeTable = () => {
     }
   }
 
+  // File Validation
+
   //   if (edgeFile != null && nodeFile != null) {
   //
   //       const formData = new FormData();
@@ -85,9 +87,7 @@ const NodeTable = () => {
   return (
     <div className="w-full grid justify-items-center">
       <div>
-        <h1 className="pt-9 text-3xl text-center font-bold">
-          Upload File with Node Data
-        </h1>
+        <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
         <hr className="m-8" />
         <div className="h-screen flex flex-col items-center gap-[2vh]">
           <div>
