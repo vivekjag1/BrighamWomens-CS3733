@@ -2,6 +2,7 @@ import client from "../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { ServiceRequest } from "database";
+//import { APIEndpoints } from "common/src/api.ts";
 
 const router: Router = express.Router();
 
@@ -28,11 +29,11 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
         userInstructions: request.userInstructions,
         serviceRequest: {
           create: {
-            serviceID: 3,
+            serviceID: Math.floor(Math.random() * (200 - 0 + 1)) + 0,
             type: "MedicineDelivery",
             roomNum: +request.request.roomNum,
             deliveryInstructions: request.request.deliveryInstructions,
-            requestingUsernmae: request.request.requestingUsername,
+            requestingUsername: request.request.requestingUsername,
             location: request.request.location,
           },
         },

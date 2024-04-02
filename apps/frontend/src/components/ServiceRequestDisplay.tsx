@@ -4,7 +4,7 @@ export function ServiceRequestDisplay(props: {
     type: string;
     roomNum: string;
     deliveryInstructions: string;
-    requestingUsernmae: string;
+    requestingUsername: string;
     timeStamp: string;
     location: string;
   };
@@ -15,7 +15,7 @@ export function ServiceRequestDisplay(props: {
       <td className="px-6 py-4">{props.request.type}</td>
       <td className="px-6 py-4">{props.request.roomNum}</td>
       <td className="px-6 py-4">{props.request.deliveryInstructions}</td>
-      <td className="px-6 py-4">{props.request.requestingUsernmae}</td>
+      <td className="px-6 py-4">{props.request.requestingUsername}</td>
       <td className="px-6 py-4">{props.request.timeStamp}</td>
       <td className="px-6 py-4">{props.request.location}</td>
     </tr>

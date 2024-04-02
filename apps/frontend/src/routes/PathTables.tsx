@@ -41,7 +41,6 @@ const NodeTable = () => {
       const formData = new FormData();
       formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
       formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-
       await axios
         .post(APIEndpoints.mapUpload, formData, {
           headers: {
