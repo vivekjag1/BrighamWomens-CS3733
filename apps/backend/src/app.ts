@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import importMap from "./routes/map/importMap.ts";
 import exportMap from "./routes/map/exportMap.ts";
+import handleServiceRequests from "./routes/handleServiceRequest.ts";
 
 import { APIEndpoints } from "common/src/api.ts";
 
@@ -30,6 +31,8 @@ app.use("/healthcheck", (req, res) => {
 
 app.use(APIEndpoints.mapUpload, importMap);
 app.use(APIEndpoints.mapExport, exportMap);
+app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
+app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
