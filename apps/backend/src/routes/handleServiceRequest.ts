@@ -29,7 +29,6 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
         userInstructions: request.userInstructions,
         serviceRequest: {
           create: {
-            serviceID: Math.floor(Math.random() * (200 - 0 + 1)) + 0,
             type: "MedicineDelivery",
             roomNum: +request.request.roomNum,
             deliveryInstructions: request.request.deliveryInstructions,
