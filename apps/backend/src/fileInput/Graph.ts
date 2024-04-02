@@ -1,13 +1,47 @@
 import { GraphNode } from "./GraphNode.ts";
 import { GraphEdge } from "./GraphEdge.ts";
+import type { Node, Edge } from "database";
 
 export class Graph {
   private nodeArray: GraphNode[];
   private edgeArray: GraphEdge[];
 
-  constructor(nodeArray: GraphNode[], edgeArray: GraphEdge[]) {
-    this.nodeArray = nodeArray;
-    this.edgeArray = edgeArray;
+  constructor(nodeInput: Node[], edgeInput: Edge[]) {
+    this.nodeArray = this.createNodes(nodeInput);
+    this.edgeArray = this.createEdges(edgeInput);
+  }
+
+  public createNodes(input: Node[]): GraphNode[] {
+    const output: GraphNode[] = [];
+
+    for (const value of input) {
+      output.push(
+        new GraphNode(
+          value.nodeID,
+          value.xcoord,
+          value.ycoord,
+          value.floor,
+          value.building,
+          value.nodeType,
+          value.longName,
+          value.shortName,
+        ),
+      );
+    }
+
+    return output;
+  }
+
+  public createEdges(input: Edge[]): GraphEdge[] {
+    const output: GraphEdge[] = [];
+
+    for (const value of input) {
+      output.push(
+        new GraphEdge(value.edgeID, value.startNodeID, value.endNodeID),
+      );
+    }
+
+    return output;
   }
 
   public getNodeWithNodeID(nodeID: string): GraphNode {
