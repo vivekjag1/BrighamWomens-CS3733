@@ -3,6 +3,7 @@ export class APIEndpoints {
   static readonly mapDownload: string = "/api/map/download";
   static readonly mapGetNodes: string = "/api/map/getNodes";
   static readonly mapGetEdges: string = "/api/map/getEdges";
+  static readonly mapExport: string = "/api/map/exportMap";
 }
 
 export class mapAttributes {

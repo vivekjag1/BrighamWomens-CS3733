@@ -1,6 +1,7 @@
 import { GraphNode } from "./GraphNode.ts";
 import { GraphEdge } from "./GraphEdge.ts";
 import { PrismaClient } from "database";
+import fs from "fs";
 const prisma = new PrismaClient();
 
 /**
@@ -60,20 +61,37 @@ export async function populateEdgeDB(edgeData: string[][]) {
   await prisma.edge.createMany({ data: edgeArray, skipDuplicates: false });
   return edgeArray;
 }
-// export async function populateEdgeDB(data: string[][]) {
-//   const edgeArray: GraphEdge[] = [];
-//   let i = 1;
-//   for (const edge of data) {
-//     edgeArray.push(new GraphEdge(i++, edge[0], edge[1]));
-//   }
-//   for (const row of data) {
-//     console.log(row);
-//     await prisma.edge.create({
-//       data: {
-//         edgeID: i++,
-//         startNodeID: row[0],
-//         endNodeID: row[1],
-//       },
-//     });
-//   }
-// }
+export async function writeFile(filePath: string, data: string) {
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+export async function getNodesFromDB() {
+  const nodesFromDb = await prisma.node.findMany();
+  let nodesString = "";
+
+  nodesFromDb.forEach(
+    (node) => (nodesString += Object.values(node).join(",") + "\r\n"),
+  ); // crlf
+
+  // console.log("Nodes:");
+  // console.log(nodesFromDb);
+
+  return nodesString;
+}
+export async function getEdgesFromDB() {
+  const edgesFromDb = await prisma.edge.findMany();
+  let edgesString = "";
+
+  edgesFromDb.forEach(
+    (edge) => (edgesString += edge.startNodeID + "," + edge.endNodeID + "\r\n"),
+  );
+
+  return edgesString;
+}

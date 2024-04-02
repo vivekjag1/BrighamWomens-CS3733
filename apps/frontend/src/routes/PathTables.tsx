@@ -2,13 +2,9 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { APIEndpoints, mapAttributes } from "common/src/api";
-
 const NodeTable = () => {
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
-
-  // const [edges, setEdges] = useState<string[][]>([]);
-  // const [nodes, setNodes] = useState<string[][]>([]);
 
   const edgeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -23,7 +19,21 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    console.log("download files");
+    const retFromAPI = await axios.post("/api/map/exportMap"); //get info from route
+    const nodeBlob = new Blob([retFromAPI.data[1]], {
+      type: "text/csv;charset =utf-8",
+    }); //create blob
+    const nodeLink = document.createElement("a"); //create elements as anchor
+    const edgeLink = document.createElement("a");
+    const edgeBlob = new Blob([retFromAPI.data[0]], {
+      type: "text/csv;charset =utf-8",
+    }); //create blob
+    nodeLink.href = URL.createObjectURL(nodeBlob); //create links
+    edgeLink.href = URL.createObjectURL(edgeBlob);
+    nodeLink.download = "Nodes"; //name files
+    edgeLink.download = "Edges";
+    nodeLink.click(); //open them
+    edgeLink.click();
   }
 
   async function uploadFiles() {
@@ -52,7 +62,7 @@ const NodeTable = () => {
   }
 
   return (
-    <div>
+    <div className="w-full grid justify-items-center">
       <div>
         <h1 className="pt-9 text-3xl text-center">
           Upload File with Node Data
@@ -163,5 +173,72 @@ const NodeTable = () => {
     </div>
   );
 };
+
+// async function getNodesFromDB(data:JSON) {
+//     const nodesFromDb =
+//     let nodesString = "";
+//     nodesFromDb.forEach(node =>
+//         nodesString += Object.values(node).join(',') + '\r\n') // crlf
+//
+//     console.log("Nodes:");
+//     console.log(nodesFromDb);
+//
+//     return nodesString;
+// }
+// async function getEdgesFromDB() {
+//     let edgesFromDb = await prisma.edge.findMany();
+//     let edgesString= "";
+//
+//     edgesFromDb.forEach(edge =>
+//         edgesString += edge.startNodeID + ',' + edge.endNodeID + '\r\n') // crlf
+//
+//     console.log("Edges:");
+//     console.log(edgesFromDb)
+//
+//     return edgesString;
+// }
+// export async function writeFile(filePath: string, data: string){
+//     return new Promise<void>((resolve, reject) => {
+//         fs.writeFile(filePath, data, (err) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve();
+//             }
+//         });
+//     })
+//
+// }
+
+// function makeCSV(data:string[]){
+//     const edgesArray = data[0].trim().split('\r\n');
+//     const nodesArray = data[1].trim().split('\r\n');
+//
+// }
+//
+// const handleExportCSV = () => {
+//     const csvContent = generateCSV();
+//     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+//     const link = document.createElement('a');
+//     link.href = URL.createObjectURL(blob);
+//     link.download = 'data.csv';
+//     link.click();
+// };
+
+// function makeCSV(data:string[]){
+//     const edgesCSVString = data[0];
+//     const nodesCSVString = data[1];
+//     const edgesBlob = new Blob([edgesCSVString], {type:'text/csv'});
+//     const url = URL.createObjectURL(edgesBlob);
+//     const edgesElt = document.createElement('edgesElt');
+//     edgesElt.href = url;
+//     edgesElt.download = 'test.csv';
+//     document.body.appendChild(edgesElt);
+//     edgesElt.click;
+//
+//
+//
+//
+// }
 
 export default NodeTable;
