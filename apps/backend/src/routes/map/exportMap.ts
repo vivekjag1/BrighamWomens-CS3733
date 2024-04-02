@@ -5,7 +5,6 @@ import { getEdgesFromDB, getNodesFromDB } from "../../fileInput/file.ts";
 
 // Handles incoming map data files
 router.post("/", async (req, res) => {
-  console.log("entering");
   const nodeString = await getNodesFromDB(); //get nodes string from db
   const edgeString = await getEdgesFromDB(); //get edges string from db
   const sendToFrontEnd: string[] = [edgeString, nodeString]; //send as 2d string array

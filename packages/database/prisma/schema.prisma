@@ -37,7 +37,7 @@ model ServiceRequest {
   type                 ServiceType // establish as the parent entity
   roomNum              Int
   deliveryInstructions String?
-  requestingUsernmae   String
+  requestingUsername   String
   timeStamp            DateTime          @default(now())
   location             String
   medicineDelivery     MedicineDelivery? // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request

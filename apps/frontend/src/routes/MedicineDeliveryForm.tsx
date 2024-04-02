@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 //import MedicineRequest from "./MedicineRequest.tsx";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
+import { APIEndpoints } from "common/src/api.ts";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
 
 export function MedicineDeliveryForm() {
@@ -37,9 +38,13 @@ export function MedicineDeliveryForm() {
       // const response = await axios.post('/api/service', formData, {
       //     headers: { 'Content-Type': 'multipart/form-data' },
       // });
-      const response = await axios.post("/api/service", medicineDelivery, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(
+        APIEndpoints.servicePostRequests,
+        medicineDelivery,
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
 
       if (response.status === 200) {
         console.log("Submission successful", response.data);

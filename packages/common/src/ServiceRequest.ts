@@ -3,7 +3,7 @@ export type ServiceRequest = {
   type: string;
   roomNum: string;
   deliveryInstructions: string;
-  requestingUsernmae: string;
+  requestingUsername: string;
   timeStamp: string;
   location: string;
 };
