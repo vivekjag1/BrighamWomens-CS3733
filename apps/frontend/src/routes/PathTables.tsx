@@ -39,28 +39,48 @@ const NodeTable = () => {
   }
 
   async function uploadFiles() {
-    if (edgeFile != null && nodeFile != null) {
-      const formData = new FormData();
-      formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-      formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-      await axios
-        .post(APIEndpoints.mapUpload, formData, {
+    try {
+      if (edgeFile != null && nodeFile != null) {
+        const formData = new FormData();
+        formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+        formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
+        axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
-        })
-        .then(() => {
-          console.log("success!");
-          alert("Map data uploaded!");
-        })
-        .catch((error) => {
-          console.error("Upload failed:", error);
-          alert("Failed to upload map data!");
         });
-    } else {
-      alert("One or more files are missing!");
+        alert("Map data uploaded!");
+      }
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Failed to upload map data!");
     }
   }
+
+  //   if (edgeFile != null && nodeFile != null) {
+  //
+  //       const formData = new FormData();
+  //     formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+  //     formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
+  //
+  //       await  axios
+  //       .post(APIEndpoints.mapUpload, formData, {
+  //         headers: {
+  //           "Content-Type": `multipart/form-data`,
+  //         },
+  //       })
+  //       .then(() => {
+  //         console.log("success!");
+  //         alert("Map data uploaded!");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Upload failed:", error);
+  //         alert("Failed to upload map data!");
+  //       });
+  //   } else {
+  //     alert("One or more files are missing!");
+  //   }
+  // }
 
   return (
     <div className="w-full grid justify-items-center">
