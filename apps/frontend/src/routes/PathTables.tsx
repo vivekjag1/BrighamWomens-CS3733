@@ -107,42 +107,40 @@ const NodeTable = () => {
   // }
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
-      <hr className="m-5" />
-
-      <div className="flex flex-col items-center gap-[2vh]">
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center mb-2">
-            <div className="flex flex-row mb-2 ml-20">
+    <div className="w-full items-center">
+      <h1 className="pt-5 text-3xl text-center font-bold">Upload Map Data</h1>
+      <hr className="w-9/12 mx-auto m-4"></hr>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2 pl-20">
+            {/* Import Node CSV */}
+            <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Node CSV:</p>
               <input
-                id="csvFile"
+                id="importNodeFile"
                 type="file"
                 accept=".csv"
                 name="Import Node File"
-                onChange={nodeFileChange}
+                onChange={nodeFileChange} // Ensure this function is defined in your component
               />
             </div>
-            <div className="flex flex-row mb-2 ml-20">
+            {/* Import Edge CSV */}
+            <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Edge CSV:</p>
               <input
-                id="csvFile"
+                id="importEdgeFile"
                 type="file"
                 accept=".csv"
                 name="Import Edge File"
-                onChange={edgeFileChange}
+                onChange={edgeFileChange} // Ensure this function is defined in your component
               />
             </div>
           </div>
-          <div className="flex flex-col items-center space-y-2">
+
+          {/* Row for Upload and Download Buttons */}
+          <div className="flex flex-row items-center gap-2 mb-5 mt-2">
             <div>
-              <Button
-                variant="contained"
-                onClick={async () => {
-                  await uploadFiles();
-                }}
-              >
+              <Button variant="contained" onClick={uploadFiles}>
                 Upload Map Data
               </Button>
             </div>
@@ -154,8 +152,9 @@ const NodeTable = () => {
           </div>
         </div>
 
+        <hr className="m-1" />
         <ul
-          className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+          className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center mb-5"
           id="default-tab"
         >
           <li className="mr-2" role="presentation">
@@ -180,7 +179,7 @@ const NodeTable = () => {
 
         {activeTab === "node" && (
           <div>
-            <h2 className="text-3xl font-bold">Node Table</h2>
+            {/*<h2 className="text-3xl font-bold">Node Table</h2>*/}
             <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
@@ -217,8 +216,8 @@ const NodeTable = () => {
 
         {activeTab === "edge" && (
           <div>
-            <h2 className="text-3xl font-bold">Edge Table</h2>
-            <table className="text-sm text-gray-500 mt-3 shadow-md">
+            {/*<h2 className="text-3xl font-bold">Edge Table</h2>*/}
+            <table className="text-sm text-gray-500 mt-3 shadow-md text-center">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">

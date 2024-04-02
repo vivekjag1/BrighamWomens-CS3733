@@ -50,14 +50,14 @@ export function MedicineDeliveryForm() {
       if (response.status === 200) {
         console.log("Submission successful", response.data);
         alert("Medicine Request sent!");
-        clear(); // Optionally clear the form on successful submission
+        clear();
       } else {
         console.error("Submission failed with status:", response.status);
         alert("Medicine Request failed!");
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
-      alert("Medicine Request failed!");
+      alert("Medicine Request failed! Room Number must be a number.");
     }
   }
 
@@ -197,11 +197,11 @@ export function MedicineDeliveryForm() {
           {/*<button onClick={submit} className="btn btn-primary">*/}
           {/*  Submit*/}
           {/*</button>*/}
-          <Button variant="contained" onClick={submit}>
-            Submit
-          </Button>
           <Button variant="contained" onClick={clear}>
             Clear
+          </Button>
+          <Button variant="contained" onClick={submit}>
+            Submit
           </Button>
           {/*<button onClick={clear} className="btn btn-secondary">*/}
           {/*  Clear*/}
