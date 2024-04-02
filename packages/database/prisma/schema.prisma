@@ -33,7 +33,7 @@ model Edge {
 }
 
 model ServiceRequest {
-  serviceID            Int               @id
+  serviceID            Int               @id @default(autoincrement())
   type                 ServiceType // establish as the parent entity
   roomNum              Int
   deliveryInstructions String?

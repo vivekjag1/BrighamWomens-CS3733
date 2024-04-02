@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { APIEndpoints, mapAttributes } from "common/src/api";
+import { EdgeGetter } from "../components/EdgeGetter.tsx";
+import { NodeGetter } from "../components/NodeGetter.tsx";
 const NodeTable = () => {
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
@@ -136,18 +138,7 @@ const NodeTable = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className="h-11">
-                  <td>ACONF00102</td>
-                  <td>1580</td>
-                  <td>2538</td>
-                  <td>2</td>
-                  <td>BTM</td>
-                  <td>HALL</td>
-                  <td>Hall</td>
-                  <td>Hall</td>
-                </tr>
-              </tbody>
+              {<NodeGetter />}
             </table>
           </div>
           <div className="w-screen h-screen relative left-64">
@@ -158,6 +149,9 @@ const NodeTable = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
                 <tr>
                   <th scope="col" className="px-6 py-3">
+                    edgeID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     startNodeID
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -165,6 +159,7 @@ const NodeTable = () => {
                   </th>
                 </tr>
               </thead>
+              {<EdgeGetter />}
             </table>
           </div>
         </div>

@@ -6,6 +6,7 @@ export class APIEndpoints {
   static readonly mapExport: string = "/api/map/exportMap";
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
+  static readonly pathfindingAPI: string = "/api/pathfinding/pathfindingAPI";
 }
 
 export class mapAttributes {

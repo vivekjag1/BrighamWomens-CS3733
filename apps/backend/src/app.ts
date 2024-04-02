@@ -4,9 +4,13 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import importMap from "./routes/map/importMap.ts";
 import exportMap from "./routes/map/exportMap.ts";
+// import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
+
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
+import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/api.ts";
+import handleNodes from "./routes/handleNodes.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -33,6 +37,10 @@ app.use(APIEndpoints.mapUpload, importMap);
 app.use(APIEndpoints.mapExport, exportMap);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
+// app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);
+
+app.use(APIEndpoints.mapGetEdges, handleEdges);
+app.use(APIEndpoints.mapGetNodes, handleNodes);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
