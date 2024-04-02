@@ -13,6 +13,7 @@ const MedicineRequest: React.FC = () => {
   return (
     <div
       style={{
+        fontFamily: "Arial, sans-serif",
         border: "2px solid rgba(0, 0, 0, 0.25)",
         borderRadius: "15px",
         boxShadow: "0 4px 10px 10px rgba(0, 0, 0, 0.25)",
@@ -33,7 +34,7 @@ const MedicineRequest: React.FC = () => {
         <label
           style={{
             color: "#013B96",
-            fontFamily: "Inter",
+
             fontWeight: 400,
             fontSize: "40px",
             lineHeight: "48px",
