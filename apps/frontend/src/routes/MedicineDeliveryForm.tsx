@@ -3,6 +3,7 @@ import axios from "axios";
 //import MedicineRequest from "./MedicineRequest.tsx";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/api.ts";
+import { Button } from "@mui/material";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
 
 export function MedicineDeliveryForm() {
@@ -89,7 +90,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Medicine Name"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <input
           type="text"
@@ -99,7 +100,7 @@ export function MedicineDeliveryForm() {
             setMedicineDelivery({ ...medicineDelivery, dosage: e.target.value })
           }
           placeholder="Dosage"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <input
           type="text"
@@ -112,7 +113,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Patient Name"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <textarea
           name="userInstructions"
@@ -124,7 +125,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="User Instructions"
-          className="textarea textarea-bordered w-full"
+          className="textarea textarea-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         ></textarea>
         <input
           type="text"
@@ -140,7 +141,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Room Number"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <textarea
           name="deliveryInstructions"
@@ -155,7 +156,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Delivery Instructions"
-          className="textarea textarea-bordered w-full"
+          className="textarea textarea-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         ></textarea>
         <input
           type="text"
@@ -171,7 +172,7 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Requesting Username"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <input
           type="text"
@@ -187,15 +188,21 @@ export function MedicineDeliveryForm() {
             })
           }
           placeholder="Location"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
         <div className="flex justify-between">
-          <button onClick={submit} className="btn btn-primary">
+          {/*<button onClick={submit} className="btn btn-primary">*/}
+          {/*  Submit*/}
+          {/*</button>*/}
+          <Button variant="contained" onClick={submit}>
             Submit
-          </button>
-          <button onClick={clear} className="btn btn-secondary">
+          </Button>
+          <Button variant="contained" onClick={clear}>
             Clear
-          </button>
+          </Button>
+          {/*<button onClick={clear} className="btn btn-secondary">*/}
+          {/*  Clear*/}
+          {/*</button>*/}
         </div>
       </div>
     </div>
