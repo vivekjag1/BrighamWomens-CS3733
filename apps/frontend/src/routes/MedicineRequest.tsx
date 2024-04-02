@@ -12,28 +12,30 @@ import dayjs from "dayjs";
 const MedicineRequest: React.FC = () => {
   return (
     <div
-      style={{
-        border: "2px solid rgba(0, 0, 0, 0.25)",
-        borderRadius: "15px",
-        boxShadow: "0 4px 10px 10px rgba(0, 0, 0, 0.25)",
-        width: "1000px",
-        height: "800px",
-        position: "absolute",
-        top: "60%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "left",
-        padding: "50px",
-      }}
+      style={{ padding: "50px", fontFamily: "Arial, sans-serif" }}
+      // style={{
+      //   fontFamily: "Arial, sans-serif",
+      //   border: "2px solid rgba(0, 0, 0, 0.25)",
+      //   borderRadius: "15px",
+      //   boxShadow: "0 4px 10px 10px rgba(0, 0, 0, 0.25)",
+      //   width: "1000px",
+      //   height: "800px",
+      //   position: "absolute",
+      //   top: "60%",
+      //   left: "50%",
+      //   transform: "translate(-50%, -50%)",
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   justifyContent: "center",
+      //   alignItems: "left",
+      //   padding: "50px",
+      // }}
     >
       <div>
         <label
           style={{
             color: "#013B96",
-            fontFamily: "Inter",
+
             fontWeight: 400,
             fontSize: "40px",
             lineHeight: "48px",
@@ -42,8 +44,10 @@ const MedicineRequest: React.FC = () => {
           Medicine Request
         </label>
       </div>
+      <br />
+
       <div className="mb-4">
-        <label> Name of the Patient</label>
+        <label style={{ fontSize: "22px" }}> Name of the Patient</label>
       </div>
       {/*<TextField*/}
       {/*  id="medication"*/}
@@ -70,7 +74,7 @@ const MedicineRequest: React.FC = () => {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4" style={{ fontSize: "22px" }}>
         <br />
         <label> Date of Birth</label>
         {/*<TextField*/}
@@ -95,7 +99,7 @@ const MedicineRequest: React.FC = () => {
       </LocalizationProvider>
 
       {/* Instruction */}
-      <div className="mb-4">
+      <div className="mb-4" style={{ fontSize: "22px" }}>
         <br />
         <label> Medicine Information </label>
         {/*<TextField*/}
@@ -125,7 +129,7 @@ const MedicineRequest: React.FC = () => {
           />
         </div>
 
-        <div className={"mb-4"}>
+        <div className={"mb-4"} style={{ fontSize: "22px" }}>
           <br />
           <label> Special Instruction </label>
         </div>
