@@ -72,6 +72,8 @@ const NodeTable = () => {
         console.log("success");
         alert("Map data uploaded!");
         location.reload();
+      } else {
+        alert("One or more map files missing!");
       }
     } catch (error) {
       console.error("Upload failed:", error);
