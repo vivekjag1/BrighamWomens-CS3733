@@ -7,9 +7,7 @@ Routes:
 - importMap
   - accept map csv files (node + edge csv) and populate DB\_
 - exportMap
-
   - query DB and export csv files (node + edge csv) to frontend for download
-
 - readMap
   - serve up node and edges from DB to frontend tables
 
