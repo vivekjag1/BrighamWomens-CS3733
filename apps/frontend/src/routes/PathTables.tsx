@@ -65,31 +65,28 @@ const NodeTable = () => {
   return (
     <div className="w-full grid justify-items-center">
       <div>
-        <h1 className="pt-9 text-3xl text-center">
+        <h1 className="pt-9 text-3xl text-center font-bold">
           Upload File with Node Data
         </h1>
-        <div className="flex justify-end pr-3">
-          <Button variant="contained">Export Map Data</Button>
-        </div>
         <hr className="m-8" />
-        <div className="w-screen h-screen flex flex-col items-center gap-[2vh]">
+        <div className="h-screen flex flex-col items-center gap-[2vh]">
           <div>
             {" "}
             {/*import/export buttons*/}
-            <div className="flex justify-between">
-              <div className="flex">
-                <p className="mr-2 mt-1">Import Node CSV:</p>
-                <input
-                  id="csvFile"
-                  type="file"
-                  accept=".csv"
-                  name="Import Node File"
-                  onChange={nodeFileChange}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div className="flex">
-                  <p className="mr-2 mt-1">Import Edge CSV:</p>
+            <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center mb-2">
+                <div className="flex flex-row mb-2 ml-20">
+                  <p className="mr-2">Import Node CSV:</p>
+                  <input
+                    id="csvFile"
+                    type="file"
+                    accept=".csv"
+                    name="Import Node File"
+                    onChange={nodeFileChange}
+                  />
+                </div>
+                <div className="flex flex-row mb-2 ml-20">
+                  <p className="mr-2">Import Edge CSV:</p>
                   <input
                     id="csvFile"
                     type="file"
@@ -99,14 +96,19 @@ const NodeTable = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div>
-              <Button variant="contained" onClick={uploadFiles}>
-                Upload Map Data
-              </Button>
-              <Button variant="contained" onClick={downloadFiles}>
-                Download Map Data
-              </Button>
+              <div className="flex flex-col items-center space-y-2">
+                {/* Wrap the Button in a div if Button does not accept className */}
+                <div>
+                  <Button variant="contained" onClick={uploadFiles}>
+                    Upload Map Data
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="contained" onClick={downloadFiles}>
+                    Download Map Data
+                  </Button>
+                </div>
+              </div>
             </div>
             <h2 className="text-3xl font-bold mt-[2vh] pt-9">Node Table</h2>
             <table className="text-sm text-center text-gray-500 mt-3">
@@ -141,11 +143,11 @@ const NodeTable = () => {
               {<NodeGetter />}
             </table>
           </div>
-          <div className="w-screen h-screen relative left-64">
+          <div className="h-screen relative">
             <h2 className="text-3xl font-bold mt-[2vh] left-10 pt-9">
               Edge Table
             </h2>
-            <table className="text-sm text-center text-gray-500 mt-3">
+            <table className="text-sm text-gray-500 mt-3">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 drop-shadow-lg">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -167,72 +169,5 @@ const NodeTable = () => {
     </div>
   );
 };
-
-// async function getNodesFromDB(data:JSON) {
-//     const nodesFromDb =
-//     let nodesString = "";
-//     nodesFromDb.forEach(node =>
-//         nodesString += Object.values(node).join(',') + '\r\n') // crlf
-//
-//     console.log("Nodes:");
-//     console.log(nodesFromDb);
-//
-//     return nodesString;
-// }
-// async function getEdgesFromDB() {
-//     let edgesFromDb = await prisma.edge.findMany();
-//     let edgesString= "";
-//
-//     edgesFromDb.forEach(edge =>
-//         edgesString += edge.startNodeID + ',' + edge.endNodeID + '\r\n') // crlf
-//
-//     console.log("Edges:");
-//     console.log(edgesFromDb)
-//
-//     return edgesString;
-// }
-// export async function writeFile(filePath: string, data: string){
-//     return new Promise<void>((resolve, reject) => {
-//         fs.writeFile(filePath, data, (err) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve();
-//             }
-//         });
-//     })
-//
-// }
-
-// function makeCSV(data:string[]){
-//     const edgesArray = data[0].trim().split('\r\n');
-//     const nodesArray = data[1].trim().split('\r\n');
-//
-// }
-//
-// const handleExportCSV = () => {
-//     const csvContent = generateCSV();
-//     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
-//     const link = document.createElement('a');
-//     link.href = URL.createObjectURL(blob);
-//     link.download = 'data.csv';
-//     link.click();
-// };
-
-// function makeCSV(data:string[]){
-//     const edgesCSVString = data[0];
-//     const nodesCSVString = data[1];
-//     const edgesBlob = new Blob([edgesCSVString], {type:'text/csv'});
-//     const url = URL.createObjectURL(edgesBlob);
-//     const edgesElt = document.createElement('edgesElt');
-//     edgesElt.href = url;
-//     edgesElt.download = 'test.csv';
-//     document.body.appendChild(edgesElt);
-//     edgesElt.click;
-//
-//
-//
-//
-// }
 
 export default NodeTable;
