@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
 
 export function MedicineDeliveryForm() {
@@ -99,10 +99,17 @@ export function MedicineDeliveryForm() {
       <h2 className="text-xl font-semibold mb-4">
         Medicine Service Request Form
       </h2>
-      <div className="grid grid-cols-1 gap-6">
-        <input
+      <div className="grid grid-cols-1 gap-4">
+        <TextField
           type="text"
+          label="Medicine Name"
           name="medicineName"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.medicineName}
           onChange={(e) =>
             setMedicineDelivery({
@@ -110,22 +117,35 @@ export function MedicineDeliveryForm() {
               medicineName: e.target.value,
             })
           }
-          placeholder="Medicine Name"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <input
+        <TextField
           type="text"
+          label="Dosage"
           name="dosage"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.dosage}
           onChange={(e) =>
-            setMedicineDelivery({ ...medicineDelivery, dosage: e.target.value })
+            setMedicineDelivery({
+              ...medicineDelivery,
+              dosage: e.target.value,
+            })
           }
-          placeholder="Dosage"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <input
+        <TextField
           type="text"
+          label="Patient Name"
           name="patientName"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.patientName}
           onChange={(e) =>
             setMedicineDelivery({
@@ -133,11 +153,18 @@ export function MedicineDeliveryForm() {
               patientName: e.target.value,
             })
           }
-          placeholder="Patient Name"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <textarea
+        <TextField
+          label="User Instructions (Optional)"
           name="userInstructions"
+          variant="outlined"
+          size="small"
+          fullWidth
+          multiline
+          rows={4}
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.userInstructions}
           onChange={(e) =>
             setMedicineDelivery({
@@ -145,12 +172,17 @@ export function MedicineDeliveryForm() {
               userInstructions: e.target.value,
             })
           }
-          placeholder="User Instructions (Optional)"
-          className="textarea textarea-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-        ></textarea>
-        <input
+        />
+        <TextField
           type="text"
+          label="Room Number"
           name="roomNum"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.request.roomNum}
           onChange={(e) =>
             setMedicineDelivery({
@@ -161,11 +193,18 @@ export function MedicineDeliveryForm() {
               },
             })
           }
-          placeholder="Room Number"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <textarea
+        <TextField
+          label="Delivery Instructions (Optional)"
           name="deliveryInstructions"
+          variant="outlined"
+          size="small"
+          fullWidth
+          multiline
+          rows={4}
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.request.deliveryInstructions}
           onChange={(e) =>
             setMedicineDelivery({
@@ -176,12 +215,17 @@ export function MedicineDeliveryForm() {
               },
             })
           }
-          placeholder="Delivery Instructions (Optional)"
-          className="textarea textarea-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-        ></textarea>
-        <input
+        />
+        <TextField
           type="text"
+          label="Requesting Username"
           name="requestingUsername"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.request.requestingUsername}
           onChange={(e) =>
             setMedicineDelivery({
@@ -192,12 +236,17 @@ export function MedicineDeliveryForm() {
               },
             })
           }
-          placeholder="Requesting Username"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <input
+        <TextField
           type="text"
+          label="Location"
           name="location"
+          variant="outlined"
+          size="small"
+          fullWidth
+          className="bg-gray-50"
+          InputProps={{ style: { fontSize: ".9rem" } }}
+          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.request.location}
           onChange={(e) =>
             setMedicineDelivery({
@@ -208,8 +257,6 @@ export function MedicineDeliveryForm() {
               },
             })
           }
-          placeholder="Location"
-          className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
         <div className="flex justify-end gap-8">
           <Button
