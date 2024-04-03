@@ -33,6 +33,9 @@ function LocationSelector() {
         >
           <label>
             {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="green" />
+            </svg>
             Choose a starting location:
             <br />
             <select name={startLocationName}>
@@ -94,7 +97,9 @@ function LocationSelector() {
             </select>
           </label>
           <label>
-            {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="red" />
+            </svg>
             Choose a destination: <br />
             <select name={endLocationName}>
               <option value="Anesthesia Conf Floor L1">
