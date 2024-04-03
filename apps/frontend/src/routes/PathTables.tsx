@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { APIEndpoints, mapAttributes } from "common/src/api";
+import { APIEndpoints, FileAttributes } from "common/src/api";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 const NodeTable = () => {
@@ -59,30 +59,26 @@ const NodeTable = () => {
   }
 
   async function uploadFiles() {
-    // try {
-    if (edgeFile != null && nodeFile != null) {
-      const formData = new FormData();
-      formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-      formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-      const res = await axios.post(APIEndpoints.mapUpload, formData, {
-        headers: {
-          "Content-Type": `multipart/form-data`,
-        },
-      });
-
-      if (res.status == 202) {
-        console.log("400");
-        alert("File(s) failed validation!");
-      } else {
-        alert("Map data uploaded!");
+    try {
+      if (edgeFile != null && nodeFile != null) {
+        const formData = new FormData();
+        formData.append(FileAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+        formData.append(FileAttributes.edgeMulterKey, edgeFile, edgeFile.name);
+        await axios.post(APIEndpoints.mapUpload, formData, {
+          headers: {
+            "Content-Type": `multipart/form-data`,
+          },
+        });
         console.log("success");
+        alert("Map data uploaded!");
         location.reload();
+      } else {
+        alert("One or more map files missing!");
       }
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Failed to upload map data!");
     }
-    // } catch (error) {
-    //     console.error("Upload failed:", error);
-    //     alert("Failed to upload map data!");
-    // }
   }
 
   // File Validation
@@ -119,7 +115,6 @@ const NodeTable = () => {
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center justify-center gap-2 pl-20">
-            {/* Import Node CSV */}
             <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Node CSV:</p>
               <input
@@ -127,10 +122,10 @@ const NodeTable = () => {
                 type="file"
                 accept=".csv"
                 name="Import Node File"
-                onChange={nodeFileChange} // Ensure this function is defined in your component
+                onChange={nodeFileChange}
               />
             </div>
-            {/* Import Edge CSV */}
+
             <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Edge CSV:</p>
               <input
@@ -138,12 +133,11 @@ const NodeTable = () => {
                 type="file"
                 accept=".csv"
                 name="Import Edge File"
-                onChange={edgeFileChange} // Ensure this function is defined in your component
+                onChange={edgeFileChange}
               />
             </div>
           </div>
 
-          {/* Row for Upload and Download Buttons */}
           <div className="flex flex-row items-center gap-2 mb-5 mt-2">
             <div>
               <Button variant="contained" onClick={uploadFiles}>

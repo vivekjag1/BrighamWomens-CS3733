@@ -1,10 +1,27 @@
 import { Button } from "@mui/material";
-import { FormEvent } from "react";
+// import axios from "axios";
+// import { APIEndpoints } from "common/src/api.ts";
 
 function LocationSelector() {
-  function formHandler(e: FormEvent) {
-    e.preventDefault();
-    alert("Path will be generated...");
+  const startLocationName: string = "Starting Location";
+  const endLocationName: string = "Ending Location";
+  function formHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // prevent page refresh
+
+    // Access the form data
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    // Convert FormData object to an object
+    const selectedRooms: { [key: string]: string } = {};
+    for (const [key, value] of formData.entries()) {
+      selectedRooms[key] = value.toString();
+    }
+
+    // await axios.get(APIEndpoints.navigationRequest, selectedRooms, {
+    //   headers: {
+    //     "Content-Type": `multipart/form-data`,
+    //   },
+    // });
   }
 
   return (
@@ -16,9 +33,12 @@ function LocationSelector() {
         >
           <label>
             {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="green" />
+            </svg>
             Choose a starting location:
             <br />
-            <select name="Starting Location">
+            <select name={startLocationName}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>
@@ -77,9 +97,11 @@ function LocationSelector() {
             </select>
           </label>
           <label>
-            {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="red" />
+            </svg>
             Choose a destination: <br />
-            <select name="Ending Location">
+            <select name={endLocationName}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>
