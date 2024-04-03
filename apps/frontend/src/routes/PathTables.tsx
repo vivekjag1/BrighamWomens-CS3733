@@ -113,7 +113,6 @@ const NodeTable = () => {
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center justify-center gap-2 pl-20">
-            {/* Import Node CSV */}
             <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Node CSV:</p>
               <input
@@ -121,10 +120,10 @@ const NodeTable = () => {
                 type="file"
                 accept=".csv"
                 name="Import Node File"
-                onChange={nodeFileChange} // Ensure this function is defined in your component
+                onChange={nodeFileChange}
               />
             </div>
-            {/* Import Edge CSV */}
+
             <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Edge CSV:</p>
               <input
@@ -132,12 +131,11 @@ const NodeTable = () => {
                 type="file"
                 accept=".csv"
                 name="Import Edge File"
-                onChange={edgeFileChange} // Ensure this function is defined in your component
+                onChange={edgeFileChange}
               />
             </div>
           </div>
 
-          {/* Row for Upload and Download Buttons */}
           <div className="flex flex-row items-center gap-2 mb-5 mt-2">
             <div>
               <Button variant="contained" onClick={uploadFiles}>
