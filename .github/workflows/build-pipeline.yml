@@ -1,9 +1,9 @@
 # this is an optional github action that can be used to publish builds on release
 name: Publish docker image
 on:
-  release:
-    #if you want to use this add the published tag
-    types: []
+  push:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
