@@ -59,24 +59,30 @@ const NodeTable = () => {
   }
 
   async function uploadFiles() {
-    try {
-      if (edgeFile != null && nodeFile != null) {
-        const formData = new FormData();
-        formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-        formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-        await axios.post(APIEndpoints.mapUpload, formData, {
-          headers: {
-            "Content-Type": `multipart/form-data`,
-          },
-        });
-        console.log("success");
+    // try {
+    if (edgeFile != null && nodeFile != null) {
+      const formData = new FormData();
+      formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+      formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
+      const res = await axios.post(APIEndpoints.mapUpload, formData, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+        },
+      });
+
+      if (res.status == 202) {
+        console.log("400");
+        alert("File(s) failed validation!");
+      } else {
         alert("Map data uploaded!");
+        console.log("success");
         location.reload();
       }
-    } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Failed to upload map data!");
     }
+    // } catch (error) {
+    //     console.error("Upload failed:", error);
+    //     alert("Failed to upload map data!");
+    // }
   }
 
   // File Validation
