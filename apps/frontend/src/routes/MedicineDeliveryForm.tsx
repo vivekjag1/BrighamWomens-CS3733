@@ -211,11 +211,23 @@ export function MedicineDeliveryForm() {
           placeholder="Location"
           className="input input-bordered w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
-        <div className="flex justify-between">
-          <Button variant="contained" onClick={clear}>
+        <div className="flex justify-end gap-8">
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#EA422D",
+              color: "white",
+              width: "8rem",
+            }}
+            onClick={clear}
+          >
             Clear
           </Button>
-          <Button variant="contained" onClick={submit}>
+          <Button
+            variant="contained"
+            style={{ width: "8rem" }}
+            onClick={submit}
+          >
             Submit
           </Button>
         </div>

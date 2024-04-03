@@ -36,13 +36,9 @@ router.post(
         await populateDatabases(nodeFile[0], edgeFile[0]);
         console.log("Database populated");
         res.sendStatus(200);
-        //
-        // .then(() => populateDatabases(nodeFile[0], edgeFile[0]).then()
-        //     .catch(console.error))
-        // .then(() => res.status(200));
       } else {
         console.log("did not work");
-        res.status(400);
+        res.sendStatus(202);
       }
     } else {
       res.status(404).send("Files missing from upload");
