@@ -1,22 +1,28 @@
 import lowerLevel1Map from "../../assets/00_thelowerlevel1.png";
+import { useEffect, useState } from "react";
 
-function Map(props: { nodes: { xCoordinate: number; yCoordinate: number }[] }) {
-  const startNode: { xCoordinate: number; yCoordinate: number } = {
-    xCoordinate: props.nodes[0].xCoordinate,
-    yCoordinate: props.nodes[0].yCoordinate,
-  };
+function Map(props: { coords: number[][] }) {
+  const [startNode, setStartNode] = useState<number[]>(props.coords[0]);
+  const [endNode, setEndNode] = useState<number[]>(
+    props.coords[props.coords.length - 1],
+  );
+  const [listOfPoints, setListOfPoints] = useState<string>("0, 0");
 
-  const length = props.nodes.length;
-  const endNode: { xCoordinate: number; yCoordinate: number } = {
-    xCoordinate: props.nodes[length - 1].xCoordinate,
-    yCoordinate: props.nodes[length - 1].yCoordinate,
-  };
+  // Called on page re-render
+  useEffect(() => {
+    const length = props.coords.length;
+    setStartNode([props.coords[0][0], props.coords[0][1]]);
+    setEndNode([props.coords[length - 1][0], props.coords[length - 1][1]]);
 
-  let listOfPoints = "";
-  for (const node of props.nodes) {
-    listOfPoints =
-      listOfPoints + node.xCoordinate + "," + node.yCoordinate + " ";
-  }
+    let pointsList = "";
+    for (let i = 0; i < length; i++) {
+      pointsList += props.coords[i][0] + "," + props.coords[i][1] + " ";
+    }
+
+    setListOfPoints(pointsList);
+
+    console.log(props.coords);
+  }, [props, startNode, endNode, listOfPoints]);
 
   return (
     <div>
@@ -29,18 +35,8 @@ function Map(props: { nodes: { xCoordinate: number; yCoordinate: number }[] }) {
             fill="none"
             points={listOfPoints}
           />
-          <circle
-            r="10"
-            cx={startNode.xCoordinate}
-            cy={startNode.yCoordinate}
-            fill="green"
-          />
-          <circle
-            r="10"
-            cx={endNode.xCoordinate}
-            cy={endNode.yCoordinate}
-            fill="red"
-          />
+          <circle r="10" cx={startNode[0]} cy={startNode[1]} fill="green" />
+          <circle r="10" cx={endNode[0]} cy={endNode[1]} fill="red" />
         </svg>
       </div>
     </div>

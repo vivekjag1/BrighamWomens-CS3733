@@ -1,43 +1,16 @@
 import { Button } from "@mui/material";
-import axios from "axios";
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import { NavigateAttributes } from "common/src/APICommon.ts";
+import { FormEventHandler } from "react";
 
-function LocationSelector() {
-  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault(); // prevent page refresh
-
-    // Access the form data
-    const formData = new FormData(event.target as HTMLFormElement);
-
-    const queryParams: Record<string, string> = {
-      [NavigateAttributes.startLocationKey]: formData
-        .get(NavigateAttributes.startLocationKey)!
-        .toString(),
-      [NavigateAttributes.endLocationKey]: formData
-        .get(NavigateAttributes.endLocationKey)!
-        .toString(),
-    };
-
-    const params: URLSearchParams = new URLSearchParams(queryParams);
-
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    console.log(url.toString());
-    url.search = params.toString();
-
-    await axios
-      .get(url.toString())
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(console.error);
-  }
-
+function LocationSelector(props: {
+  onSubmit: FormEventHandler<HTMLFormElement> | undefined;
+}) {
   return (
     <div>
       <div className="bg-[#f6f8fa]">
         <form
           className="w-min flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
-          onSubmit={formHandler}
+          onSubmit={props.onSubmit}
         >
           <label>
             {" "}
@@ -88,9 +61,6 @@ function LocationSelector() {
               </option>
               <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
               <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Interpreter Services Floor L2">
-                Interpreter Services Floor L2
-              </option>
               <option value="Elevator Q MapNode 7 Floor L1">
                 Elevator Q MapNode 7 Floor L1
               </option>
@@ -151,9 +121,6 @@ function LocationSelector() {
               </option>
               <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
               <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Interpreter Services Floor L2">
-                Interpreter Services Floor L2
-              </option>
               <option value="Elevator Q MapNode 7 Floor L1">
                 Elevator Q MapNode 7 Floor L1
               </option>
