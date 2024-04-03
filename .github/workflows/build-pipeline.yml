@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-github
           target: prod-frontend
           push: true
           tags: gorbunovd/softeng-team-o:frontend
@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-github
           target: prod-backend
           push: true
           tags: gorbunovd/softeng-team-o:backend
