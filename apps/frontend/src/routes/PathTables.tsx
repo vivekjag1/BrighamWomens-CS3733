@@ -64,14 +64,19 @@ const NodeTable = () => {
         const formData = new FormData();
         formData.append(FileAttributes.nodeMulterKey, nodeFile, nodeFile.name);
         formData.append(FileAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-        await axios.post(APIEndpoints.mapUpload, formData, {
+        const res = await axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
         });
-        console.log("success");
-        alert("Map data uploaded!");
-        location.reload();
+        if (res.status == 202) {
+          console.log("bad file");
+          alert("File(s) failed validation!");
+        } else {
+          console.log("success");
+          alert("Map data uploaded!");
+          location.reload();
+        }
       } else {
         alert("One or more map files missing!");
       }
