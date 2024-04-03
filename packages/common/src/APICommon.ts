@@ -9,6 +9,11 @@ export class APIEndpoints {
 }
 
 export class FileAttributes {
-  static readonly nodeMulterKey: string = "nodes";
-  static readonly edgeMulterKey: string = "edges";
+  static readonly nodeKey: string = "nodes";
+  static readonly edgeKey: string = "edges";
+}
+
+export class NavigateAttributes {
+  static readonly startLocationKey: string = "start";
+  static readonly endLocationKey: string = "end";
 }

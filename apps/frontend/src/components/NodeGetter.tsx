@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import { Node } from "database";
 import { NodeDisplay } from "./NodeDisplay.tsx";
 

@@ -9,7 +9,7 @@ import pathfindingAPI from "./routes/navigation/navigate.ts";
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
 
 const app: Express = express(); // Setup the backend
