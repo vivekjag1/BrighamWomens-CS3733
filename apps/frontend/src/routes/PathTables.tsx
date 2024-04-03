@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { APIEndpoints, mapAttributes } from "common/src/api";
+import { APIEndpoints, FileAttributes } from "common/src/api";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 const NodeTable = () => {
@@ -62,8 +62,8 @@ const NodeTable = () => {
     try {
       if (edgeFile != null && nodeFile != null) {
         const formData = new FormData();
-        formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-        formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
+        formData.append(FileAttributes.nodeMulterKey, nodeFile, nodeFile.name);
+        formData.append(FileAttributes.edgeMulterKey, edgeFile, edgeFile.name);
         await axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,

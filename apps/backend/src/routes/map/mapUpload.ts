@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
 import multer from "multer";
-import { mapAttributes } from "common/src/api.ts";
+import { FileAttributes } from "common/src/api.ts";
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
 import {
@@ -22,16 +22,16 @@ interface UploadedFiles {
 router.post(
   "/",
   upload.fields([
-    { name: mapAttributes.nodeMulterKey, maxCount: 1 },
-    { name: mapAttributes.edgeMulterKey, maxCount: 1 },
+    { name: FileAttributes.nodeMulterKey, maxCount: 1 },
+    { name: FileAttributes.edgeMulterKey, maxCount: 1 },
   ]),
   async (req: Request, res: Response) => {
     const files = req.files as UploadedFiles | undefined;
     if (files) {
       const nodeFile: Express.Multer.File[] =
-        files[mapAttributes.nodeMulterKey];
+        files[FileAttributes.nodeMulterKey];
       const edgeFile: Express.Multer.File[] =
-        files[mapAttributes.edgeMulterKey];
+        files[FileAttributes.edgeMulterKey];
       if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 2)) {
         await checkDBStatus();
         console.log("checkDBStatus done");
