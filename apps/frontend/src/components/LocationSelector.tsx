@@ -1,24 +1,25 @@
 import { Button } from "@mui/material";
-import { FormEvent } from "react";
+import { NavigateAttributes } from "common/src/APICommon.ts";
+import { FormEventHandler } from "react";
 
-function LocationSelector() {
-  function formHandler(e: FormEvent) {
-    e.preventDefault();
-    alert("Path will be generated...");
-  }
-
+function LocationSelector(props: {
+  onSubmit: FormEventHandler<HTMLFormElement> | undefined;
+}) {
   return (
     <div>
       <div className="bg-[#f6f8fa]">
         <form
           className="w-min flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
-          onSubmit={formHandler}
+          onSubmit={props.onSubmit}
         >
           <label>
             {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="green" />
+            </svg>
             Choose a starting location:
             <br />
-            <select name="Starting Location">
+            <select name={NavigateAttributes.startLocationKey}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>
@@ -60,9 +61,6 @@ function LocationSelector() {
               </option>
               <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
               <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Interpreter Services Floor L2">
-                Interpreter Services Floor L2
-              </option>
               <option value="Elevator Q MapNode 7 Floor L1">
                 Elevator Q MapNode 7 Floor L1
               </option>
@@ -77,9 +75,11 @@ function LocationSelector() {
             </select>
           </label>
           <label>
-            {" "}
+            <svg width="10" height="10">
+              <circle r="5" cx="5" cy="5" fill="red" />
+            </svg>
             Choose a destination: <br />
-            <select name="Ending Location">
+            <select name={NavigateAttributes.endLocationKey}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>
@@ -121,9 +121,6 @@ function LocationSelector() {
               </option>
               <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
               <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Interpreter Services Floor L2">
-                Interpreter Services Floor L2
-              </option>
               <option value="Elevator Q MapNode 7 Floor L1">
                 Elevator Q MapNode 7 Floor L1
               </option>

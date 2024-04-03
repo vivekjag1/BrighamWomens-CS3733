@@ -1,7 +1,7 @@
 import client from "../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
 import { Edge } from "database";
-//import { APIEndpoints } from "common/src/api.ts";
+//import { APIEndpoints } from "common/src/APICommon.ts";
 
 const router: Router = express.Router();
 

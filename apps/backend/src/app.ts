@@ -2,14 +2,14 @@ import createError, { HttpError } from "http-errors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import importMap from "./routes/map/importMap.ts";
-import exportMap from "./routes/map/exportMap.ts";
-// import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
+import mapUpload from "./routes/map/mapUpload.ts";
+import mapDownload from "./routes/map/mapDownload.ts";
+import pathfindingAPI from "./routes/navigation/navigate.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
 
 const app: Express = express(); // Setup the backend
@@ -33,11 +33,11 @@ app.use("/healthcheck", (req, res) => {
   res.status(200).send();
 });
 
-app.use(APIEndpoints.mapUpload, importMap);
-app.use(APIEndpoints.mapExport, exportMap);
+app.use(APIEndpoints.mapUpload, mapUpload);
+app.use(APIEndpoints.mapDownload, mapDownload);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
-// app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);
+app.use(APIEndpoints.navigationRequest, pathfindingAPI);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
@@ -60,5 +60,6 @@ app.use((err: HttpError, req: Request, res: Response): void => {
   // Reply with the error
   res.status(err.status || 500);
 });
+app.disable("etag");
 
 export default app; // Export the backend, so that www.ts can start it

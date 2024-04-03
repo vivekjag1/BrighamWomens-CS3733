@@ -6,7 +6,11 @@ function ServiceTable() {
   return (
     <div className="w-full grid justify-items-center">
       <div className={"flex flex-col gap-5"}>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 m-2">
+        <h1 className="pt-9 text-3xl text-center font-bold">
+          Service Requests
+        </h1>
+        <hr className="m-2" />
+        <table className="w-full text-sm text-center rtl:text-right text-gray-500 m-2 shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
