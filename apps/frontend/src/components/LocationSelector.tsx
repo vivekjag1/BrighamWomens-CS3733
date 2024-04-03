@@ -1,27 +1,35 @@
 import { Button } from "@mui/material";
-// import axios from "axios";
-// import { APIEndpoints } from "common/src/api.ts";
+import axios from "axios";
+import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 
 function LocationSelector() {
-  const startLocationName: string = "Starting Location";
-  const endLocationName: string = "Ending Location";
-  function formHandler(event: React.FormEvent<HTMLFormElement>) {
+  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
 
-    // Convert FormData object to an object
-    const selectedRooms: { [key: string]: string } = {};
-    for (const [key, value] of formData.entries()) {
-      selectedRooms[key] = value.toString();
-    }
+    const queryParams: Record<string, string> = {
+      [NavigateAttributes.startLocationKey]: formData
+        .get(NavigateAttributes.startLocationKey)!
+        .toString(),
+      [NavigateAttributes.endLocationKey]: formData
+        .get(NavigateAttributes.endLocationKey)!
+        .toString(),
+    };
 
-    // await axios.get(APIEndpoints.navigationRequest, selectedRooms, {
-    //   headers: {
-    //     "Content-Type": `multipart/form-data`,
-    //   },
-    // });
+    const params: URLSearchParams = new URLSearchParams(queryParams);
+
+    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
+    console.log(url.toString());
+    url.search = params.toString();
+
+    await axios
+      .get(url.toString())
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(console.error);
   }
 
   return (
@@ -38,7 +46,7 @@ function LocationSelector() {
             </svg>
             Choose a starting location:
             <br />
-            <select name={startLocationName}>
+            <select name={NavigateAttributes.startLocationKey}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>
@@ -101,7 +109,7 @@ function LocationSelector() {
               <circle r="5" cx="5" cy="5" fill="red" />
             </svg>
             Choose a destination: <br />
-            <select name={endLocationName}>
+            <select name={NavigateAttributes.endLocationKey}>
               <option value="Anesthesia Conf Floor L1">
                 Anesthesia Conf Floor L1
               </option>

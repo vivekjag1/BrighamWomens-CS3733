@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { EdgeDisplay } from "./EdgeDisplay.tsx";
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import { Edge } from "../../../../packages/common/src/Edge.ts";
 
 export function EdgeGetter() {

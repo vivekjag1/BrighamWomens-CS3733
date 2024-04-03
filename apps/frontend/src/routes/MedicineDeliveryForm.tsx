@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import { Button } from "@mui/material";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
 

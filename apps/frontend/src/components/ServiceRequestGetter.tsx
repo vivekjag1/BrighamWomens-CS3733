@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ServiceRequest } from "../../../../packages/common/src/ServiceRequest.ts";
 import axios from "axios";
 import { ServiceRequestDisplay } from "./ServiceRequestDisplay.tsx";
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 
 export function ServiceRequestGetter() {
   const [requestData, setRequestData] = useState<ServiceRequest[]>();
