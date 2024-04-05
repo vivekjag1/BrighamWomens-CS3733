@@ -5,10 +5,15 @@ export class APIEndpoints {
   static readonly mapGetEdges: string = "/api/map/getEdges";
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
-  static readonly pathfindingAPI: string = "/api/pathfinding/pathfindingAPI";
+  static readonly navigationRequest: string = "/api/navigation/get";
 }
 
-export class mapAttributes {
-  static readonly nodeMulterKey: string = "nodes";
-  static readonly edgeMulterKey: string = "edges";
+export class FileAttributes {
+  static readonly nodeKey: string = "nodes";
+  static readonly edgeKey: string = "edges";
+}
+
+export class NavigateAttributes {
+  static readonly startLocationKey: string = "start";
+  static readonly endLocationKey: string = "end";
 }

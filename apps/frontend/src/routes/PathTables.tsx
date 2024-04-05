@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { APIEndpoints, mapAttributes } from "common/src/api";
+import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 const NodeTable = () => {
@@ -62,15 +62,23 @@ const NodeTable = () => {
     try {
       if (edgeFile != null && nodeFile != null) {
         const formData = new FormData();
-        formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-        formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-        axios.post(APIEndpoints.mapUpload, formData, {
+        formData.append(FileAttributes.nodeKey, nodeFile, nodeFile.name);
+        formData.append(FileAttributes.edgeKey, edgeFile, edgeFile.name);
+        const res = await axios.post(APIEndpoints.mapUpload, formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
           },
         });
-        alert("Map data uploaded!");
-        location.reload();
+        if (res.status == 202) {
+          console.log("bad file");
+          alert("File(s) failed validation!");
+        } else {
+          console.log("success");
+          alert("Map data uploaded!");
+          location.reload();
+        }
+      } else {
+        alert("One or more map files missing!");
       }
     } catch (error) {
       console.error("Upload failed:", error);
@@ -106,27 +114,27 @@ const NodeTable = () => {
   // }
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h1 className="pt-9 text-3xl text-center font-bold">Upload Map Data</h1>
-      <hr className="m-5" />
-
-      <div className="flex flex-col items-center gap-[2vh]">
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center mb-2">
-            <div className="flex flex-row mb-2 ml-20">
+    <div className="w-full items-center">
+      <h1 className="pt-5 text-3xl text-center font-bold">Upload Map Data</h1>
+      <hr className="w-9/12 mx-auto m-4"></hr>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2 pl-20">
+            <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Node CSV:</p>
               <input
-                id="csvFile"
+                id="importNodeFile"
                 type="file"
                 accept=".csv"
                 name="Import Node File"
                 onChange={nodeFileChange}
               />
             </div>
-            <div className="flex flex-row mb-2 ml-20">
+
+            <div className="flex flex-row items-center pl-4">
               <p className="mr-2">Import Edge CSV:</p>
               <input
-                id="csvFile"
+                id="importEdgeFile"
                 type="file"
                 accept=".csv"
                 name="Import Edge File"
@@ -134,7 +142,8 @@ const NodeTable = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col items-center space-y-2">
+
+          <div className="flex flex-row items-center gap-2 mb-5 mt-2">
             <div>
               <Button variant="contained" onClick={uploadFiles}>
                 Upload Map Data
@@ -148,8 +157,9 @@ const NodeTable = () => {
           </div>
         </div>
 
+        <hr className="m-1" />
         <ul
-          className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+          className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center mb-5"
           id="default-tab"
         >
           <li className="mr-2" role="presentation">
@@ -174,7 +184,7 @@ const NodeTable = () => {
 
         {activeTab === "node" && (
           <div>
-            <h2 className="text-3xl font-bold">Node Table</h2>
+            {/*<h2 className="text-3xl font-bold">Node Table</h2>*/}
             <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
@@ -211,8 +221,8 @@ const NodeTable = () => {
 
         {activeTab === "edge" && (
           <div>
-            <h2 className="text-3xl font-bold">Edge Table</h2>
-            <table className="text-sm text-gray-500 mt-3 shadow-md">
+            {/*<h2 className="text-3xl font-bold">Edge Table</h2>*/}
+            <table className="text-sm text-gray-500 mt-3 shadow-md text-center">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">

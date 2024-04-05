@@ -4,12 +4,12 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mapUpload from "./routes/map/mapUpload.ts";
 import mapDownload from "./routes/map/mapDownload.ts";
-import pathfindingAPI from "./routes/pathfinding/pathfindingAPI.ts";
+import pathfindingAPI from "./routes/navigation/navigate.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
-import { APIEndpoints } from "common/src/api.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
 
 const app: Express = express(); // Setup the backend
@@ -37,7 +37,7 @@ app.use(APIEndpoints.mapUpload, mapUpload);
 app.use(APIEndpoints.mapDownload, mapDownload);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
-app.use(APIEndpoints.pathfindingAPI, pathfindingAPI);
+app.use(APIEndpoints.navigationRequest, pathfindingAPI);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
@@ -60,5 +60,6 @@ app.use((err: HttpError, req: Request, res: Response): void => {
   // Reply with the error
   res.status(err.status || 500);
 });
+app.disable("etag");
 
 export default app; // Export the backend, so that www.ts can start it

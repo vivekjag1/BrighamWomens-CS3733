@@ -1,14 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `HighScore` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "ServiceType" AS ENUM ('MedicineDelivery');
-
--- DropTable
-DROP TABLE "HighScore";
 
 -- CreateTable
 CREATE TABLE "Node" (
@@ -26,7 +17,7 @@ CREATE TABLE "Node" (
 
 -- CreateTable
 CREATE TABLE "Edge" (
-    "edgeID" SERIAL NOT NULL,
+    "edgeID" INTEGER NOT NULL,
     "startNodeID" TEXT NOT NULL,
     "endNodeID" TEXT NOT NULL,
 
@@ -35,11 +26,11 @@ CREATE TABLE "Edge" (
 
 -- CreateTable
 CREATE TABLE "ServiceRequest" (
-    "serviceID" INTEGER NOT NULL,
+    "serviceID" SERIAL NOT NULL,
     "type" "ServiceType" NOT NULL,
     "roomNum" INTEGER NOT NULL,
     "deliveryInstructions" TEXT,
-    "requestingUsernmae" TEXT NOT NULL,
+    "requestingUsername" TEXT NOT NULL,
     "timeStamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "location" TEXT NOT NULL,
 
