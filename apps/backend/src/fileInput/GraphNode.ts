@@ -1,4 +1,10 @@
 export class GraphNode {
+  get _ycoord(): number {
+    return parseInt(this.ycoord);
+  }
+  get _xcoord(): number {
+    return parseInt(this.xcoord);
+  }
   readonly nodeID: string;
   readonly xcoord: string;
   readonly ycoord: string;

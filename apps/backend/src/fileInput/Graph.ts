@@ -1,6 +1,8 @@
 import { GraphNode } from "./GraphNode.ts";
 import { GraphEdge } from "./GraphEdge.ts";
 import type { Node, Edge } from "database";
+//import {Simulate} from "react-dom/test-utils";
+//import close = Simulate.close;
 
 export class Graph {
   private nodeArray: GraphNode[];
@@ -60,7 +62,24 @@ export class Graph {
     return neighborIDs;
   }
 
-  public getPathAsCoords(startNodeID: string, endNodeID: string): number[][] {
+  public getPath(
+    startNodeID: string,
+    endNodeID: string,
+    pathfindingType: string,
+  ): number[][] {
+    switch (pathfindingType) {
+      case "BFS":
+        return this.getPathAsCoordsBFS(startNodeID, endNodeID);
+
+      case "A*":
+        return this.getPathAsCoordsAStar(startNodeID, endNodeID);
+
+      default:
+        return [[-1, -1]];
+    }
+  }
+
+  public getPathAsCoordsBFS(startNodeID: string, endNodeID: string) {
     //nodes to search
     const searchQueue: string[] = [startNodeID];
     //nodes already searched
@@ -87,10 +106,7 @@ export class Graph {
         for (let i = 0; i < path.length; i++) {
           console.log(path[i]);
           const currentPathNode: GraphNode = this.getNodeWithNodeID(path[i]);
-          pathAsCoords.push([
-            parseInt(currentPathNode.xcoord),
-            parseInt(currentPathNode.ycoord),
-          ]);
+          pathAsCoords.push([currentPathNode._xcoord, currentPathNode._ycoord]);
         }
         //exit loop
         searching = false;
@@ -115,5 +131,127 @@ export class Graph {
     }
 
     return pathAsCoords;
+  }
+
+  public getPathAsCoordsAStar(startNodeID: string, endNodeID: string) {
+    const pathAsCoords: number[][] = [];
+    //<nodeID, [f, g, parentID]>
+    const openList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
+    let searching: boolean = true;
+
+    while (searching && openList.length > 0) {
+      //Pop next node with the smallest F value
+      let currentNode = this.getSmallestF(openList);
+
+      //get children of currentNode
+      const currentNodeNeighbors: string[] = this.getNeighborsIDs(
+        currentNode.nodeID,
+      );
+
+      //check each child
+      for (let i = 0; i < currentNodeNeighbors.length; i++) {
+        const nextToCheck = currentNodeNeighbors[i];
+        if (nextToCheck == endNodeID) {
+          searching = false;
+          this.getNodeWithNodeID(nextToCheck)._xcoord;
+          pathAsCoords.unshift([
+            this.getNodeWithNodeID(nextToCheck)._xcoord,
+            this.getNodeWithNodeID(nextToCheck)._ycoord,
+          ]);
+          let steppingPath = true;
+          while (steppingPath) {
+            pathAsCoords.unshift([
+              this.getNodeWithNodeID(currentNode.nodeID)._xcoord,
+              this.getNodeWithNodeID(currentNode.nodeID)._ycoord,
+            ]);
+            if (currentNode.parentNode == null) {
+              steppingPath = false;
+            } else {
+              currentNode = currentNode.parentNode;
+            }
+          }
+
+          console.log("Path (" + startNodeID + " -> " + endNodeID + "):");
+        } else {
+          const g: number =
+            currentNode.g +
+            this.squaredDistanceBetweenNodes(nextToCheck, currentNode.nodeID);
+          const h: number = this.squaredDistanceBetweenNodes(
+            nextToCheck,
+            endNodeID,
+          );
+          const f = g + h;
+
+          //check if path should be skipped
+          let skipThisPath: boolean = false;
+          //if same node is in open list with a smaller f, skip
+          for (let i = 0; i < openList.length; i++) {
+            if (openList[i].nodeID == nextToCheck && openList[i].f < f) {
+              skipThisPath = true;
+              i = openList.length;
+            }
+          }
+
+          if (!skipThisPath) {
+            openList.push(new AStarNode(nextToCheck, currentNode, g, h));
+          }
+        }
+      }
+
+      openList[openList.indexOf(currentNode)].open = false;
+    }
+
+    if (searching) {
+      console.log("No path found");
+      pathAsCoords.push([-1, -1]);
+    }
+    return pathAsCoords;
+  }
+
+  public squaredDistanceBetweenNodes(a: string, b: string): number {
+    const nodeA: GraphNode = this.getNodeWithNodeID(a);
+    const nodeB: GraphNode = this.getNodeWithNodeID(b);
+    return (
+      Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
+      Math.pow(nodeB._ycoord - nodeA._ycoord, 2)
+    );
+  }
+
+  public getSmallestF(input: AStarNode[]) {
+    let smallestNode = input[0];
+    let smallestF = smallestNode.f;
+
+    for (let i = 1; i < input.length; i++) {
+      const next = input[i];
+      if (next.f < smallestF) {
+        smallestF = next.f;
+        smallestNode = next;
+      }
+    }
+
+    return smallestNode;
+  }
+}
+
+class AStarNode {
+  public g: number;
+  public h: number;
+  public f: number;
+  public nodeID: string;
+  public parentNode: AStarNode | null = null;
+  public open: boolean;
+
+  constructor(
+    nodeID: string,
+    parentNode: AStarNode | null,
+    g: number,
+    h: number,
+  ) {
+    this.nodeID = nodeID;
+    this.parentNode = parentNode;
+    this.g = g;
+    this.h = h;
+    this.f = g + h;
+    this.open = true;
   }
 }

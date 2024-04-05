@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
     await prisma.edge.findMany(),
   );
 
-  const coords = graph.getPathAsCoords(startNode!.nodeID, endNode!.nodeID);
+  const coords = graph.getPath(startNode!.nodeID, endNode!.nodeID, "A*");
   res.status(200).json(coords);
 });
 
