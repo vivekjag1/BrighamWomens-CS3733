@@ -5,6 +5,7 @@ const paths = {
   MEDICINE_REQUEST: "/home/services/medicine",
   SERVICES_DATA: "/home/services/data",
   MAP_DATA: "/home/data",
+  FORM_STARTER: "/home/services/form",
 };
 
 export default paths;

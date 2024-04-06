@@ -239,7 +239,7 @@ export function MedicineDeliveryForm() {
         />
         <TextField
           type="text"
-          label="Location"
+          label="Requesting Location"
           name="location"
           variant="outlined"
           size="small"
