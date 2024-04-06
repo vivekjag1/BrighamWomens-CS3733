@@ -12,7 +12,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import UseNumberInput from "../components/NumberInput.tsx";
+// import UseNumberInput from "../components/NumberInput.tsx";
 
 export function SecurityRequest() {
   // const [formData, setFormData] =
@@ -83,7 +83,8 @@ export function SecurityRequest() {
                   <MenuItem value={30}>Patrol</MenuItem>
                 </Select>
               </div>
-              <UseNumberInput></UseNumberInput>
+              <TextField label="Number of Personnel" type="number" fullWidth />
+
               <div>
                 <InputLabel id="demo-simple-select-label">Status</InputLabel>
                 <Select
