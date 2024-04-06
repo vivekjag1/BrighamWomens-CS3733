@@ -69,6 +69,7 @@ export class Graph {
   ): number[][] {
     switch (pathfindingType) {
       case "BFS":
+        console.log(this.getPathAsCoordsBFS(startNodeID, endNodeID));
         return this.getPathAsCoordsBFS(startNodeID, endNodeID);
 
       case "A*":
@@ -106,7 +107,11 @@ export class Graph {
         for (let i = 0; i < path.length; i++) {
           console.log(path[i]);
           const currentPathNode: GraphNode = this.getNodeWithNodeID(path[i]);
-          pathAsCoords.push([currentPathNode._xcoord, currentPathNode._ycoord]);
+          pathAsCoords.push([
+            currentPathNode._xcoord,
+            currentPathNode._ycoord,
+            this.getFloorNum(currentPathNode.floor),
+          ]);
         }
         //exit loop
         searching = false;
@@ -134,6 +139,7 @@ export class Graph {
   }
 
   public getPathAsCoordsAStar(startNodeID: string, endNodeID: string) {
+    console.log("A* called");
     const pathAsCoords: number[][] = [];
     //<nodeID, [f, g, parentID]>
     const openList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
@@ -142,6 +148,7 @@ export class Graph {
     while (searching && openList.length > 0) {
       //Pop next node with the smallest F value
       let currentNode = this.getSmallestF(openList);
+      console.log(currentNode);
 
       //get children of currentNode
       const currentNodeNeighbors: string[] = this.getNeighborsIDs(
@@ -153,16 +160,20 @@ export class Graph {
         const nextToCheck = currentNodeNeighbors[i];
         if (nextToCheck == endNodeID) {
           searching = false;
-          this.getNodeWithNodeID(nextToCheck)._xcoord;
           pathAsCoords.unshift([
             this.getNodeWithNodeID(nextToCheck)._xcoord,
             this.getNodeWithNodeID(nextToCheck)._ycoord,
+            this.getFloorNum(this.getNodeWithNodeID(nextToCheck).floor),
           ]);
           let steppingPath = true;
           while (steppingPath) {
+            const nextNodeInPath: GraphNode = this.getNodeWithNodeID(
+              currentNode.nodeID,
+            );
             pathAsCoords.unshift([
-              this.getNodeWithNodeID(currentNode.nodeID)._xcoord,
-              this.getNodeWithNodeID(currentNode.nodeID)._ycoord,
+              nextNodeInPath._xcoord,
+              nextNodeInPath._ycoord,
+              this.getFloorNum(nextNodeInPath.floor),
             ]);
             if (currentNode.parentNode == null) {
               steppingPath = false;
@@ -211,25 +222,52 @@ export class Graph {
   public squaredDistanceBetweenNodes(a: string, b: string): number {
     const nodeA: GraphNode = this.getNodeWithNodeID(a);
     const nodeB: GraphNode = this.getNodeWithNodeID(b);
+    if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
+      return 10;
+    }
     return (
       Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
       Math.pow(nodeB._ycoord - nodeA._ycoord, 2)
     );
   }
 
-  public getSmallestF(input: AStarNode[]) {
-    let smallestNode = input[0];
-    let smallestF = smallestNode.f;
+  public getFloorNum(fl: string): number {
+    switch (fl) {
+      case "F3":
+        return 3;
+      case "F2":
+        return 2;
+      case "F1":
+        return 1;
+      case "L1":
+        return -1;
+      case "L2":
+        return -2;
+    }
+    return 0;
+  }
 
-    for (let i = 1; i < input.length; i++) {
-      const next = input[i];
-      if (next.f < smallestF) {
-        smallestF = next.f;
-        smallestNode = next;
+  public getSmallestF(input: AStarNode[]): AStarNode {
+    let smallestNode: AStarNode | null = null;
+    let smallestF: number = Math.max();
+
+    for (let i = 0; i < input.length; i++) {
+      console.log(input[i]);
+      if (input[i].open) {
+        if (smallestNode == null) {
+          smallestNode = input[i];
+          smallestF = smallestNode.f;
+        }
+        const next = input[i];
+        if (next.f < smallestF) {
+          smallestF = next.f;
+          smallestNode = next;
+        }
       }
     }
 
-    return smallestNode;
+    console.log("smallest F = " + smallestF + " in " + smallestNode);
+    return smallestNode!;
   }
 }
 
