@@ -49,7 +49,6 @@ export class Graph {
 
     return output;
   }
-
   //Finds the GraphNode object with the corresponding nodeID value
   public getNodeWithNodeID(nodeID: string): GraphNode {
     return this.nodeArray.filter((value) => value.nodeID == nodeID)[0];
