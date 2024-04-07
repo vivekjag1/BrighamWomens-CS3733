@@ -21,8 +21,8 @@ function Map(props: { coords: number[][] }) {
 
     setListOfPoints(pointsList);
 
-    console.log(props.coords);
-  }, [props, startNode, endNode, listOfPoints]);
+    //console.log(props.coords);
+  }, [props, listOfPoints]);
 
   return (
     <div>
