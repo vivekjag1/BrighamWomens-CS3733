@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header.tsx";
+import NewHeader from "../components/NewHeader.tsx";
+
 function Layout() {
   return (
     <div>
-      <Header />
+      <NewHeader />
       <main>
         <Outlet />
       </main>
