@@ -1,7 +1,7 @@
 import lowerLevel1Map from "../../assets/00_thelowerlevel1.png";
 import { useEffect, useState } from "react";
 
-function MapEdit(props: { coords: number[][] }) {
+function MapEditingComponent(props: { coords: number[][] }) {
   const [startNode, setStartNode] = useState<number[]>(props.coords[0]);
   const [endNode, setEndNode] = useState<number[]>(
     props.coords[props.coords.length - 1],
@@ -21,7 +21,7 @@ function MapEdit(props: { coords: number[][] }) {
 
     setListOfPoints(pointsList);
 
-    console.log(props.coords);
+    // console.log(props.coords);
   }, [props, startNode, endNode, listOfPoints]);
 
   return (
@@ -43,4 +43,4 @@ function MapEdit(props: { coords: number[][] }) {
   );
 }
 
-export default MapEdit;
+export default MapEditingComponent;

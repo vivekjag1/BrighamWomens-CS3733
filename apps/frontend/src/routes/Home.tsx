@@ -34,13 +34,13 @@ function Home() {
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    console.log(url.toString());
+    // console.log(url.toString());
     url.search = params.toString();
 
     await axios
       .get(url.toString())
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         setCoords(response.data);
       })
       .catch(console.error);
