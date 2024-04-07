@@ -13,7 +13,6 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-// import {TextField, Button} from '@mui/material';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -21,7 +20,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 export function MedicalDeviceDeliveryForm() {
   return (
     <div>
-      <div className="w-screen h-screen flex justify-center pt-12 bg-gray-200">
+      <div className="w-screen h-screen flex justify-center pt-8 bg-gray-200">
         <Card sx={{ borderRadius: "10px", width: "38vw", height: "85vh" }}>
           <CardContent sx={{ padding: "60px" }}>
             <div className="flex flex-col gap-6">
