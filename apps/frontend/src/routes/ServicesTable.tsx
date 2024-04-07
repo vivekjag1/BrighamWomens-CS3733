@@ -20,19 +20,26 @@ function ServiceTable() {
                 Type
               </th>
               <th scope="col" className="px-6 py-3">
-                Room Number
+                Status
               </th>
               <th scope="col" className="px-6 py-3">
-                Delivery Instructions
+                Priority
               </th>
               <th scope="col" className="px-6 py-3">
                 Requesting Username
               </th>
               <th scope="col" className="px-6 py-3">
-                Timestamp
+                Location
               </th>
               <th scope="col" className="px-6 py-3">
-                Location
+                Description
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Assigned To
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+                Entered Time
               </th>
             </tr>
           </thead>

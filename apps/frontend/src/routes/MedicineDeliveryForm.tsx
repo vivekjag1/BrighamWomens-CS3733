@@ -10,7 +10,6 @@ const initialState: MedicineDeliveryObject = {
   dosage: "",
   patientName: "",
   serviceRequest: {
-    serviceID: "",
     requestingUsername: "",
     location: "",
     priority: "Low",
