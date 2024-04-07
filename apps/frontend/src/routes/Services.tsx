@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
-import medicineIcon from "../../assets/pill-icon.svg";
+import medicineIcon from "../../assets/pill.svg";
+import securityIcon from "../../assets/security-icon.svg";
+import roomIcon from "../../assets/room-reserve.svg";
+import cleaningIcon from "../../assets/cleaning.svg";
+import medicaltoolIcon from "../../assets/medicinetool.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
 import paths from "../paths/paths.tsx";
 
@@ -21,7 +25,7 @@ function Services() {
           </Link>
           <Link to={paths.MEDICAL_DEVICE_DELIVERY}>
             <ServiceCard
-              imgPath={medicineIcon}
+              imgPath={medicaltoolIcon}
               alt="capsule and pill icon"
               label="Medical Device Delivery"
             />
@@ -30,21 +34,21 @@ function Services() {
         <div className="flex justify-center gap-8">
           <Link to={paths.SANITATION_FORM}>
             <ServiceCard
-              imgPath={medicineIcon}
+              imgPath={cleaningIcon}
               alt="capsule and pill icon"
               label="Sanitation Request"
             />
           </Link>
           <Link to={paths.ROOM_RESERVATION}>
             <ServiceCard
-              imgPath={medicineIcon}
+              imgPath={roomIcon}
               alt="capsule and pill icon"
               label="Reserve a Room"
             />
           </Link>
           <Link to={paths.SECURITY_REQUEST}>
             <ServiceCard
-              imgPath={medicineIcon}
+              imgPath={securityIcon}
               alt="capsule and pill icon"
               label="Security Request"
             />
