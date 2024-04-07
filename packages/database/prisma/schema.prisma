@@ -24,7 +24,7 @@ model Node {
 }
 
 model Edge {
-  edgeID      Int    @id
+  edgeID      String @id
   // add start/end edges to the tables created for start and end edges above
   startNode   Node   @relation("EdgesLeaving", fields: [startNodeID], references: [nodeID])
   startNodeID String
@@ -33,18 +33,32 @@ model Edge {
 }
 
 model ServiceRequest {
-  serviceID            Int               @id @default(autoincrement())
-  type                 ServiceType // establish as the parent entity
-  roomNum              Int
-  deliveryInstructions String?
-  requestingUsername   String
-  timeStamp            DateTime          @default(now())
-  location             String
-  medicineDelivery     MedicineDelivery? // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request
+  serviceID          Int                @id @default(autoincrement())
+  type               ServiceType // establish as the parent entity
+  location           String
+  description        String?
+  requestingUsername String
+  enteredTime        DateTime           @default(now())
+  updatedTime        DateTime           @default(now())
+  requestedTime      DateTime
+  priority           String
+  status             String
+  assignedTo         String
+  medicineDelivery   MedicineDelivery?
+  SecurityService    SecurityService?
+  SanitationService  SanitationService?
+  RoomScheduling     RoomScheduling?
+  DeviceDelivery     DeviceDelivery?
+
+  // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request
 }
 
 enum ServiceType {
   MedicineDelivery
+  SecurityService
+  SanitationService
+  RoomScheduling
+  DeviceDelivery
 }
 
 model MedicineDelivery {
@@ -52,8 +66,33 @@ model MedicineDelivery {
   medicineName      String
   dosage            String
   patientName       String
-  userInstructions  String?
   serviceRequest    ServiceRequest @relation(fields: [medicineRequestID], references: [serviceID])
 }
 
-//
+model SecurityService {
+  securityID     Int            @id
+  securityType   String
+  numberPeople   Int
+  serviceRequest ServiceRequest @relation(fields: [securityID], references: [serviceID])
+}
+
+model SanitationService {
+  sanitationID      Int            @id
+  sanitationType    String
+  requiredEquipment String
+  serviceRequest    ServiceRequest @relation(fields: [sanitationID], references: [serviceID])
+}
+
+model RoomScheduling {
+  reservationID     Int            @id
+  reservationReason String
+  endTime           DateTime
+  serviceRequest    ServiceRequest @relation(fields: [reservationID], references: [serviceID])
+}
+
+model DeviceDelivery {
+  deliveryID     Int            @id
+  deviceType     String
+  quantity       Int
+  serviceRequest ServiceRequest @relation(fields: [deliveryID], references: [serviceID])
+}

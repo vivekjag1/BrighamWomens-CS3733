@@ -5,29 +5,30 @@ import { APIEndpoints } from "common/src/APICommon.ts";
 import { Button, TextField } from "@mui/material";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
 
+const initialState: MedicineDeliveryObject = {
+  medicineName: "",
+  dosage: "",
+  patientName: "",
+  serviceRequest: {
+    serviceID: "",
+    requestingUsername: "",
+    location: "",
+    priority: "Low",
+    status: "Unassigned",
+    description: "",
+  },
+};
 export function MedicineDeliveryForm() {
   const [medicineDelivery, setMedicineDelivery] =
-    useState<MedicineDeliveryObject>({
-      medicineName: "",
-      dosage: "",
-      patientName: "",
-      userInstructions: "",
-      request: {
-        roomNum: "",
-        deliveryInstructions: "",
-        requestingUsername: "",
-        location: "",
-      },
-    });
+    useState<MedicineDeliveryObject>(initialState);
 
   const validateForm = () => {
     const isValid =
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
       medicineDelivery.patientName &&
-      medicineDelivery.request.roomNum &&
-      medicineDelivery.request.requestingUsername &&
-      medicineDelivery.request.location;
+      medicineDelivery.serviceRequest.requestingUsername &&
+      medicineDelivery.serviceRequest.location;
     return isValid;
   };
 
@@ -46,33 +47,29 @@ export function MedicineDeliveryForm() {
     // formData.append('medicineDelivery.request.location', medicineDelivery.request.location);
 
     if (validateForm()) {
-      if (!isNaN(Number(medicineDelivery.request.roomNum))) {
-        try {
-          // const response = await axios.post('/api/service', formData, {
-          //     headers: { 'Content-Type': 'multipart/form-data' },
-          // });
-          const response = await axios.post(
-            APIEndpoints.servicePostRequests,
-            medicineDelivery,
-            {
-              headers: { "Content-Type": "application/json" },
-            },
-          );
+      try {
+        // const response = await axios.post('/api/service', formData, {
+        //     headers: { 'Content-Type': 'multipart/form-data' },
+        // });
+        const response = await axios.post(
+          APIEndpoints.servicePostRequests,
+          medicineDelivery,
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
 
-          if (response.status === 200) {
-            console.log("Submission successful", response.data);
-            alert("Medicine Request sent!");
-            clear();
-          } else {
-            console.error("Submission failed with status:", response.status);
-            alert("Medicine Request failed!");
-          }
-        } catch (error) {
-          console.error("Error submitting the form:", error);
-          alert("Medicine Request failed! Room Number must be a number.");
+        if (response.status === 200) {
+          console.log("Submission successful", response.data);
+          alert("Medicine Request sent!");
+          clear();
+        } else {
+          console.error("Submission failed with status:", response.status);
+          alert("Medicine Request failed!");
         }
-      } else {
-        alert("Room Number is invalid!");
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+        alert("Medicine Request failed! Room Number must be a number.");
       }
     } else {
       alert("You must fill out all the required information!");
@@ -80,18 +77,7 @@ export function MedicineDeliveryForm() {
   }
 
   function clear() {
-    setMedicineDelivery({
-      medicineName: "",
-      dosage: "",
-      patientName: "",
-      userInstructions: "",
-      request: {
-        roomNum: "",
-        deliveryInstructions: "",
-        requestingUsername: "",
-        location: "",
-      },
-    });
+    setMedicineDelivery(initialState);
   }
 
   return (
@@ -101,15 +87,11 @@ export function MedicineDeliveryForm() {
       </h2>
       <div className="grid grid-cols-1 gap-4">
         <TextField
-          type="text"
           label="Medicine Name"
           name="medicineName"
           variant="outlined"
           size="small"
           fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.medicineName}
           onChange={(e) =>
             setMedicineDelivery({
@@ -117,17 +99,15 @@ export function MedicineDeliveryForm() {
               medicineName: e.target.value,
             })
           }
+          required
         />
+
         <TextField
-          type="text"
           label="Dosage"
           name="dosage"
           variant="outlined"
           size="small"
           fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.dosage}
           onChange={(e) =>
             setMedicineDelivery({
@@ -135,17 +115,16 @@ export function MedicineDeliveryForm() {
               dosage: e.target.value,
             })
           }
+          required
         />
+
+        {/* Patient Name */}
         <TextField
-          type="text"
           label="Patient Name"
           name="patientName"
           variant="outlined"
           size="small"
           fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
           value={medicineDelivery.patientName}
           onChange={(e) =>
             setMedicineDelivery({
@@ -153,127 +132,84 @@ export function MedicineDeliveryForm() {
               patientName: e.target.value,
             })
           }
+          required
         />
+
         <TextField
-          label="User Instructions (Optional)"
-          name="userInstructions"
+          label="Description (Optional)"
+          name="description"
           variant="outlined"
           size="small"
           fullWidth
           multiline
           rows={4}
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.userInstructions}
+          value={medicineDelivery.serviceRequest.description}
           onChange={(e) =>
             setMedicineDelivery({
               ...medicineDelivery,
-              userInstructions: e.target.value,
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Room Number"
-          name="roomNum"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.roomNum}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                roomNum: e.target.value,
+              serviceRequest: {
+                ...medicineDelivery.serviceRequest,
+                description: e.target.value,
               },
             })
           }
         />
+
+        {/* Requesting Username */}
         <TextField
-          label="Delivery Instructions (Optional)"
-          name="deliveryInstructions"
-          variant="outlined"
-          size="small"
-          fullWidth
-          multiline
-          rows={4}
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.deliveryInstructions}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                deliveryInstructions: e.target.value,
-              },
-            })
-          }
-        />
-        <TextField
-          type="text"
           label="Requesting Username"
           name="requestingUsername"
           variant="outlined"
           size="small"
           fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.requestingUsername}
+          value={medicineDelivery.serviceRequest.requestingUsername}
           onChange={(e) =>
             setMedicineDelivery({
               ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
+              serviceRequest: {
+                ...medicineDelivery.serviceRequest,
                 requestingUsername: e.target.value,
               },
             })
           }
+          required
         />
+
         <TextField
-          type="text"
-          label="Requesting Location"
+          label="Location"
           name="location"
           variant="outlined"
           size="small"
           fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.location}
+          value={medicineDelivery.serviceRequest.location}
           onChange={(e) =>
             setMedicineDelivery({
               ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
+              serviceRequest: {
+                ...medicineDelivery.serviceRequest,
                 location: e.target.value,
               },
             })
           }
+          required
         />
+
         <div className="flex justify-end gap-8">
           <Button
             variant="contained"
+            onClick={clear}
             style={{
               backgroundColor: "#EA422D",
               color: "white",
               width: "8rem",
             }}
-            onClick={clear}
           >
             Clear
           </Button>
           <Button
             variant="contained"
-            style={{ width: "8rem" }}
             onClick={submit}
+            style={{ width: "8rem" }}
           >
             Submit
           </Button>
