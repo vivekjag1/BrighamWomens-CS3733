@@ -1,7 +1,12 @@
 import { Button } from "@mui/material";
 import { NavigateAttributes } from "common/src/APICommon.ts";
 import { FormEventHandler } from "react";
-
+// import axios from "axios";
+// async function getNodesFromDb(){
+//     const nodesData = await axios.get(APIEndpoints.mapGetNodes);
+//     return nodesData.data;
+//
+// }
 function LocationSelector(props: {
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 }) {

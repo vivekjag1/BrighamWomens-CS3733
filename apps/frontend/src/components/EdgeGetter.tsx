@@ -1,31 +1,33 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { EdgeDisplay } from "./EdgeDisplay.tsx";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { Edge } from "../../../../packages/common/src/Edge.ts";
+import { Edge } from "database";
 
 export function EdgeGetter() {
-  const [requestData, setRequestData] = useState<Edge[]>();
+  const [edges, setEdges] = useState<Edge[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(APIEndpoints.mapGetEdges);
-      setRequestData(res.data);
-      console.log(res.data);
-      console.log("successfully got data from get request");
+      try {
+        const res = await axios.get(APIEndpoints.mapGetEdges);
+        setEdges(res.data);
+        console.log("Successfully got edge data from get request:", res.data);
+      } catch (error) {
+        console.error("Error fetching edge data:", error);
+      }
     }
-    fetchData().then();
+    fetchData();
   }, []);
 
   return (
     <tbody>
-      {requestData != undefined ? (
-        requestData.map((edge) => {
-          return <EdgeDisplay edgeRequest={edge}></EdgeDisplay>;
-        })
-      ) : (
-        <></>
-      )}
+      {edges.map((edge) => (
+        <tr className="bg-white border-b" key={edge.edgeID}>
+          <td className="px-6 py-4">{edge.edgeID}</td>
+          <td className="px-6 py-4">{edge.startNodeID}</td>
+          <td className="px-6 py-4">{edge.endNodeID}</td>
+        </tr>
+      ))}
     </tbody>
   );
 }

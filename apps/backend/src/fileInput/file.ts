@@ -52,9 +52,9 @@ export async function populateNodeDB(nodeData: string[][]) {
 
 export async function populateEdgeDB(edgeData: string[][]) {
   const edgeArray: GraphEdge[] = [];
-  let i = 1;
+  // let i = 1;
   for (const edge of edgeData) {
-    edgeArray.push(new GraphEdge(i++, edge[0], edge[1]));
+    edgeArray.push(new GraphEdge(edge[0], edge[1], edge[2]));
   }
 
   // console.log(edgeArray);
