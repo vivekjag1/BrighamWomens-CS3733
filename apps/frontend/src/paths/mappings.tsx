@@ -21,10 +21,10 @@ const routes = [
   },
   { path: paths.SANITATION_FORM, element: <SanitationForm /> },
   { path: paths.ROOM_RESERVATION, element: <RoomReservation /> },
+  { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
   { path: paths.EDITED_MAP, element: <EditMap /> },
-  { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
 ];
 
 export default routes;
