@@ -25,15 +25,14 @@ export function ServiceRequestGetter() {
         <tr className="bg-white border-b" key={request.serviceID}>
           <td className="px-6 py-4">{request.serviceID}</td>
           <td className="px-6 py-4">{request.type}</td>
-          <td className="px-6 py-4">{request.roomNum}</td>
+          <td className="px-6 py-4">{request.location}</td>
           <td className="px-6 py-4">
-            {request.deliveryInstructions &&
-            request.deliveryInstructions.trim() !== ""
-              ? request.deliveryInstructions
+            {request.description && request.description.trim() !== ""
+              ? request.description
               : "N/A"}
           </td>
           <td className="px-6 py-4">{request.requestingUsername}</td>
-          <td className="px-6 py-4">{request.timeStamp.toString()}</td>
+          <td className="px-6 py-4">{request.enteredTime.toString()}</td>
           <td className="px-6 py-4">{request.location}</td>
         </tr>
       ))}
