@@ -5,6 +5,7 @@ export class APIEndpoints {
   static readonly mapGetEdges: string = "/api/map/getEdges";
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
+  static readonly servicePutRequests: string = "/api/service/putRequests";
   static readonly navigationRequest: string = "/api/navigation/get";
 }
 

@@ -2,30 +2,37 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { Node } from "database";
-import { NodeDisplay } from "./NodeDisplay.tsx";
 
 export function NodeGetter() {
-  const [requestData, setRequestData] = useState<Node[]>();
+  const [nodes, setNodes] = useState<Node[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(APIEndpoints.mapGetNodes);
-      setRequestData(res.data);
-      console.log(res.data);
-      console.log("successfully got data from get request");
+      try {
+        const res = await axios.get(APIEndpoints.mapGetNodes);
+        setNodes(res.data);
+        console.log("Successfully got node data from get request:", res.data);
+      } catch (error) {
+        console.error("Error fetching node data:", error);
+      }
     }
-    fetchData().then();
+    fetchData();
   }, []);
 
   return (
     <tbody>
-      {requestData != undefined ? (
-        requestData.map((node) => {
-          return <NodeDisplay nodeRequest={node}></NodeDisplay>;
-        })
-      ) : (
-        <></>
-      )}
+      {nodes.map((node) => (
+        <tr className="bg-white border-b" key={node.nodeID}>
+          <td className="px-6 py-4">{node.nodeID}</td>
+          <td className="px-6 py-4">{node.xcoord}</td>
+          <td className="px-6 py-4">{node.ycoord}</td>
+          <td className="px-6 py-4">{node.floor}</td>
+          <td className="px-6 py-4">{node.building}</td>
+          <td className="px-6 py-4">{node.nodeType}</td>
+          <td className="px-6 py-4">{node.longName}</td>
+          <td className="px-6 py-4">{node.shortName}</td>
+        </tr>
+      ))}
     </tbody>
   );
 }
