@@ -90,7 +90,7 @@ function NewHome() {
           </div>
         )}
 
-        <div className="z-0 h-screen w-90vw overflow-scroll">
+        <div className="z-0 h-screen w-95vw overflow-scroll">
           <div className={divClassName}>
             <img
               className="w-4000px h-auto"
