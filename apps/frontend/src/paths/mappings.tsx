@@ -1,5 +1,5 @@
 import paths from "./paths.tsx";
-import Home from "../routes/Home.tsx";
+import NewHome from "../routes/NewHome.tsx";
 import Services from "../routes/Services.tsx";
 import FormStarter from "../routes/FormStarter.tsx";
 //import MedicineRequest from "../routes/MedicineRequest-styled.tsx";
@@ -8,7 +8,7 @@ import PathTables from "../routes/PathTables.tsx";
 import MedicineDeliveryForm from "../routes/MedicineDeliveryForm.tsx";
 
 const routes = [
-  { path: paths.HOME, element: <Home /> },
+  { path: paths.HOME, element: <NewHome /> },
   { path: paths.SERVICES, element: <Services /> },
   { path: paths.MEDICINE_REQUEST, element: <MedicineDeliveryForm /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
