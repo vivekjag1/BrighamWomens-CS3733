@@ -6,7 +6,7 @@ import TocIcon from "@mui/icons-material/Toc";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 
-function HeaderAgain() {
+function NewHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleBar = () => {
@@ -75,4 +75,4 @@ function HeaderAgain() {
   );
 }
 
-export default HeaderAgain;
+export default NewHeader;
