@@ -8,6 +8,10 @@ function MapEditingComponent(props: { coords: number[][] }) {
   );
   const [listOfPoints, setListOfPoints] = useState<string>("0, 0");
 
+  // Hooks for map editing
+  // const [nodeCoords, setNodeCoords] = useState<number[][]>();
+  // const [edgeCoords, setEdgesCoords] = useState<number[][][]>();
+
   // Called on page re-render
   useEffect(() => {
     const length = props.coords.length;

@@ -1,14 +1,14 @@
 import { Button } from "@mui/material";
 import { FormEventHandler } from "react";
 
-function LocationSelector(props: {
+function MapEditButton(props: {
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 }) {
   return (
     <div>
       <div className="bg-[#f6f8fa]">
         <form
-          className="w-min flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
+          className="flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
           onSubmit={props.onSubmit}
         >
           <Button
@@ -26,4 +26,4 @@ function LocationSelector(props: {
   );
 }
 
-export default LocationSelector;
+export default MapEditButton;
