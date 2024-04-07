@@ -8,7 +8,7 @@ function Services() {
     <div>
       <div className="flex flex-col items-center gap-8">
         <div className="flex flex-col items-center gap-6 mt-8">
-          <h2 className="w-95vw text-3xl font-bold text-center">Services</h2>
+          <h2 className="w-94vw text-3xl font-bold text-center">Services</h2>
           <hr className="w-9/12" />
         </div>
         <Link to={paths.MEDICINE_REQUEST}>

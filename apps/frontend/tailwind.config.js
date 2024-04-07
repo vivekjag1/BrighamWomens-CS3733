@@ -10,11 +10,14 @@ export default {
       },
       width: {
         "5vw": "5vw",
+        "6vw": "6vw",
         "10vw": "10vw",
+        "12vw": "12vw",
+        "15vw": "15vw",
         "20vw": "20vw",
         "30vw": "30vw",
         "90vw": "90vw",
-        "95vw": "95vw",
+        "94vw": "94vw",
         "40px": "40px",
         "50px": "50px",
         "60px": "60px",
@@ -29,6 +32,7 @@ export default {
       height: {
         "10vh": "10vh",
         "20vh": "20vh",
+        "80vh": "80vh",
         "40px": "40px",
         "50px": "50px",
         "60px": "60px",

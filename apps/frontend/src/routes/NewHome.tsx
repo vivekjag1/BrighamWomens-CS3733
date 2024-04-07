@@ -48,7 +48,7 @@ function NewHome() {
         </ButtonGroup>
       </div>
 
-      <div className="relative w-95vw">
+      <div className="relative w-94vw">
         {!searchShowing && (
           <div
             className={

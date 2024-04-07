@@ -4,7 +4,7 @@ import { ServiceRequestGetter } from "../components/ServiceRequestGetter.tsx";
 
 function ServiceTable() {
   return (
-    <div className="w-full grid justify-items-center">
+    <div className="w-94 grid justify-items-center">
       <div className={"flex flex-col gap-5"}>
         <h1 className="pt-9 text-3xl text-center font-bold">
           Service Requests
