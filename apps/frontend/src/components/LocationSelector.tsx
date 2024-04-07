@@ -32,10 +32,14 @@ function LocationSelector(props: {
   };
 
   useEffect(() => {
+    //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
       let graphNodes = Graph.createNodes(rawNodes.data);
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
+      graphNodes = graphNodes.sort((a, b) =>
+        a.longName.localeCompare(b.longName),
+      );
       setNodes(
         graphNodes.filter(
           (node) =>
