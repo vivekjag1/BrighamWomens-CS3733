@@ -9,13 +9,13 @@ export class Graph {
   private edgeArray: GraphEdge[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
-    this.nodeArray = this.createNodes(nodeInput);
+    this.nodeArray = Graph.createNodes(nodeInput);
     this.edgeArray = this.createEdges(edgeInput);
   }
 
   //Converts the Node objects given from the prisma database
   // into GraphNode objects
-  public createNodes(input: Node[]): GraphNode[] {
+  public static createNodes(input: Node[]): GraphNode[] {
     const output: GraphNode[] = [];
 
     for (const value of input) {
