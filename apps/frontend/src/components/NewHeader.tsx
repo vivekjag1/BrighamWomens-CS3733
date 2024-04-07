@@ -8,6 +8,18 @@ import { Link } from "react-router-dom";
 import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
 
+const insertLineBreaks = (text: string) => {
+  const words = text.split(" ");
+  const newText: Array<string | JSX.Element> = [];
+  for (let i = 0; i < words.length; i += 2) {
+    newText.push(words.slice(i, i + 2).join(" "));
+    if (i + 2 < words.length) {
+      newText.push((<br key={i.toString()} />) as JSX.Element);
+    }
+  }
+  return newText;
+};
+
 function NewHeader() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -25,9 +37,6 @@ function NewHeader() {
     <>
       <div className="h-screen w-5vw"></div>
       <div className="absolute z-10">
-        {/*<div className={isCollapsed ? "shadow-lg h-20vh w-5vw bg-secondary flex flex-col items-center space-y-8" : "shadow-lg h-20vh w-12vw bg-secondary flex flex-col items-center space-y-8"}>*/}
-        {/*    /!*"pl-1 bg-secondary h-screen flex flex-col justify-content-start"*!/*/}
-        {/*</div>*/}
         <div
           className={
             isCollapsed
@@ -46,7 +55,7 @@ function NewHeader() {
                   : "p-5 font-bold text-white text-md flex items-center"
               }
             >
-              Brigham and Women's Hospital
+              {insertLineBreaks("Brigham and Women's Hospital")}
             </h2>
           </div>
 
