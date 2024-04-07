@@ -13,6 +13,8 @@ export class Graph {
     this.edgeArray = this.createEdges(edgeInput);
   }
 
+  //Converts the Node objects given from the prisma database
+  // into GraphNode objects
   public createNodes(input: Node[]): GraphNode[] {
     const output: GraphNode[] = [];
 
@@ -34,6 +36,8 @@ export class Graph {
     return output;
   }
 
+  //Converts the Edge objects given from the prisma database
+  // into GraphEdge objects
   public createEdges(input: Edge[]): GraphEdge[] {
     const output: GraphEdge[] = [];
 
@@ -46,10 +50,12 @@ export class Graph {
     return output;
   }
 
+  //Finds the GraphNode object with the corresponding nodeID value
   public getNodeWithNodeID(nodeID: string): GraphNode {
     return this.nodeArray.filter((value) => value.nodeID == nodeID)[0];
   }
 
+  //Finds all neighbors of the given node
   public getNeighborsIDs(nodeID: string): string[] {
     const neighborIDs: string[] = [];
     for (const edge of this.edgeArray) {
@@ -62,39 +68,41 @@ export class Graph {
     return neighborIDs;
   }
 
+  //Returns the shortest path between startNode and endNode using the pathfinding algorithm given
+  //Returns a blank array if there is no path or if the pathfinding algorithm given doesn't exist
   public getPath(
     startNodeID: string,
     endNodeID: string,
     pathfindingType: string,
-  ): number[][] {
+  ): string[] {
     switch (pathfindingType) {
       case "BFS":
-        console.log(this.getPathAsCoordsBFS(startNodeID, endNodeID));
-        return this.getPathAsCoordsBFS(startNodeID, endNodeID);
+        return this.getPathBFS(startNodeID, endNodeID);
 
       case "A*":
-        return this.getPathAsCoordsAStar(startNodeID, endNodeID);
+        return this.getPathAStar(startNodeID, endNodeID);
 
       default:
-        return [[-1, -1]];
+        return [];
     }
   }
 
-  public getPathAsCoordsBFS(startNodeID: string, endNodeID: string) {
-    //nodes to search
+  //Returns the shortest path between startNode and endNode using a Breadth First Search
+  public getPathBFS(startNodeID: string, endNodeID: string): string[] {
+    //the queue of nodes that still need to be searched
     const searchQueue: string[] = [startNodeID];
     //nodes already searched
     const visitedNodes: string[] = [];
     //organized as (node, parent node)
     const parentNodes: Map<string, string> = new Map();
     let searching: boolean = true;
-    const pathAsCoords: number[][] = [];
+    const path: string[] = [];
 
+    //As long as there are nodes left to search and we haven't found the end node continue searching
     while (searchQueue.length > 0 && searching) {
       let nextNode = searchQueue.shift();
       //check if is final state
       if (nextNode == endNodeID) {
-        const path: string[] = [];
         //follow nodes from end to start using parents
         while (nextNode != startNodeID) {
           //add to front
@@ -103,17 +111,7 @@ export class Graph {
         }
         //add starting node to path
         path.unshift(startNodeID);
-        console.log("Path (" + startNodeID + " -> " + endNodeID + "):");
-        for (let i = 0; i < path.length; i++) {
-          console.log(path[i]);
-          const currentPathNode: GraphNode = this.getNodeWithNodeID(path[i]);
-          pathAsCoords.push([
-            currentPathNode._xcoord,
-            currentPathNode._ycoord,
-            this.getFloorNum(currentPathNode.floor),
-          ]);
-        }
-        //exit loop
+        console.log("BFS Path (" + startNodeID + " -> " + endNodeID + "):");
         searching = false;
       } else {
         //add this node to visited
@@ -122,6 +120,8 @@ export class Graph {
         // @ts-except-error
         const nodesToAdd: string[] = this.getNeighborsIDs(<string>nextNode);
         for (let i = 0; i < nodesToAdd.length; i++) {
+          //if we haven't already visited the neighbor node, enqueue it into the search queue
+          //and store the parent path in parentNodes
           if (!visitedNodes.includes(nodesToAdd[i])) {
             searchQueue.push(nodesToAdd[i]);
             parentNodes.set(nodesToAdd[i], <string>nextNode);
@@ -130,25 +130,24 @@ export class Graph {
       }
     }
 
+    //If no path found
     if (searching) {
-      console.log("No path found");
-      pathAsCoords.push([-1, -1]);
+      console.log("No BFS path found");
     }
 
-    return pathAsCoords;
+    return path;
   }
 
-  public getPathAsCoordsAStar(startNodeID: string, endNodeID: string) {
-    console.log("A* called");
-    const pathAsCoords: number[][] = [];
-    //<nodeID, [f, g, parentID]>
-    const openList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
+  //Returns the shortest path between startNode and endNode using the A* algorithm
+  public getPathAStar(startNodeID: string, endNodeID: string): string[] {
+    const path: string[] = [];
+    const searchList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
+    let numOfOpenNodes: number = 1;
     let searching: boolean = true;
 
-    while (searching && openList.length > 0) {
+    while (searching && numOfOpenNodes > 0) {
       //Pop next node with the smallest F value
-      let currentNode = this.getSmallestF(openList);
-      console.log(currentNode);
+      let currentNode = this.getSmallestF(searchList);
 
       //get children of currentNode
       const currentNodeNeighbors: string[] = this.getNeighborsIDs(
@@ -158,23 +157,17 @@ export class Graph {
       //check each child
       for (let i = 0; i < currentNodeNeighbors.length; i++) {
         const nextToCheck = currentNodeNeighbors[i];
+        //If this child is the end node
         if (nextToCheck == endNodeID) {
+          //exit loop
           searching = false;
-          pathAsCoords.unshift([
-            this.getNodeWithNodeID(nextToCheck)._xcoord,
-            this.getNodeWithNodeID(nextToCheck)._ycoord,
-            this.getFloorNum(this.getNodeWithNodeID(nextToCheck).floor),
-          ]);
+          //add this child to path
+          path.unshift(nextToCheck);
+          //Create loop to move back to start of path
           let steppingPath = true;
           while (steppingPath) {
-            const nextNodeInPath: GraphNode = this.getNodeWithNodeID(
-              currentNode.nodeID,
-            );
-            pathAsCoords.unshift([
-              nextNodeInPath._xcoord,
-              nextNodeInPath._ycoord,
-              this.getFloorNum(nextNodeInPath.floor),
-            ]);
+            path.unshift(currentNode.nodeID);
+            //if parentNode == null then we have returned to the start node so break out of the loop
             if (currentNode.parentNode == null) {
               steppingPath = false;
             } else {
@@ -182,8 +175,9 @@ export class Graph {
             }
           }
 
-          console.log("Path (" + startNodeID + " -> " + endNodeID + "):");
+          console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
         } else {
+          //get G, H, and F values of the child node
           const g: number =
             currentNode.g +
             this.squaredDistanceBetweenNodes(nextToCheck, currentNode.nodeID);
@@ -196,27 +190,28 @@ export class Graph {
           //check if path should be skipped
           let skipThisPath: boolean = false;
           //if same node is in open list with a smaller f, skip
-          for (let i = 0; i < openList.length; i++) {
-            if (openList[i].nodeID == nextToCheck && openList[i].f < f) {
+          for (let i = 0; i < searchList.length; i++) {
+            if (searchList[i].nodeID == nextToCheck && searchList[i].f < f) {
               skipThisPath = true;
-              i = openList.length;
+              i = searchList.length;
             }
           }
 
           if (!skipThisPath) {
-            openList.push(new AStarNode(nextToCheck, currentNode, g, h));
+            searchList.push(new AStarNode(nextToCheck, currentNode, g, h));
+            numOfOpenNodes += 1;
           }
         }
       }
 
-      openList[openList.indexOf(currentNode)].open = false;
+      searchList[searchList.indexOf(currentNode)].open = false;
+      numOfOpenNodes -= 1;
     }
 
     if (searching) {
-      console.log("No path found");
-      pathAsCoords.push([-1, -1]);
+      console.log("No A* path found");
     }
-    return pathAsCoords;
+    return path;
   }
 
   public squaredDistanceBetweenNodes(a: string, b: string): number {
@@ -231,28 +226,11 @@ export class Graph {
     );
   }
 
-  public getFloorNum(fl: string): number {
-    switch (fl) {
-      case "F3":
-        return 3;
-      case "F2":
-        return 2;
-      case "F1":
-        return 1;
-      case "L1":
-        return -1;
-      case "L2":
-        return -2;
-    }
-    return 0;
-  }
-
   public getSmallestF(input: AStarNode[]): AStarNode {
     let smallestNode: AStarNode | null = null;
     let smallestF: number = Math.max();
 
     for (let i = 0; i < input.length; i++) {
-      console.log(input[i]);
       if (input[i].open) {
         if (smallestNode == null) {
           smallestNode = input[i];
@@ -266,7 +244,6 @@ export class Graph {
       }
     }
 
-    console.log("smallest F = " + smallestF + " in " + smallestNode);
     return smallestNode!;
   }
 }
