@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import medicineIcon from "../../assets/pill.svg";
+import medicineIcon from "../../assets/medicine-icon.svg";
 import securityIcon from "../../assets/security-icon.svg";
-import roomIcon from "../../assets/room-reserve.svg";
-import cleaningIcon from "../../assets/cleaning.svg";
-import medicaltoolIcon from "../../assets/medicinetool.svg";
+import roomIcon from "../../assets/room-icon.svg";
+import sanitationIcon from "../../assets/sanitation-icon.svg";
+import deviceIcon from "../../assets/device-icon.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
 import paths from "../paths/paths.tsx";
 
@@ -19,14 +19,14 @@ function Services() {
           <Link to={paths.MEDICINE_REQUEST}>
             <ServiceCard
               imgPath={medicineIcon}
-              alt="capsule and pill icon"
+              alt="pill icon"
               label="Medicine Delivery"
             />
           </Link>
           <Link to={paths.MEDICAL_DEVICE_DELIVERY}>
             <ServiceCard
-              imgPath={medicaltoolIcon}
-              alt="capsule and pill icon"
+              imgPath={deviceIcon}
+              alt="device icon"
               label="Medical Device Delivery"
             />
           </Link>
@@ -34,22 +34,22 @@ function Services() {
         <div className="flex justify-center gap-8">
           <Link to={paths.SANITATION_FORM}>
             <ServiceCard
-              imgPath={cleaningIcon}
-              alt="capsule and pill icon"
+              imgPath={sanitationIcon}
+              alt="sanitation icon"
               label="Sanitation Request"
             />
           </Link>
           <Link to={paths.ROOM_RESERVATION}>
             <ServiceCard
               imgPath={roomIcon}
-              alt="capsule and pill icon"
+              alt="room icon"
               label="Reserve a Room"
             />
           </Link>
           <Link to={paths.SECURITY_REQUEST}>
             <ServiceCard
               imgPath={securityIcon}
-              alt="capsule and pill icon"
+              alt="security icon"
               label="Security Request"
             />
           </Link>
