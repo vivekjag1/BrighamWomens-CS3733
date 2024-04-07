@@ -1,6 +1,6 @@
 import Map from "../components/Map.tsx";
 import LocationSelector from "../components/LocationSelector.tsx";
-import { IconButton } from "@mui/material";
+import { Button, ButtonGroup, IconButton } from "@mui/material";
 import EditLocationIcon from "@mui/icons-material/EditLocation";
 import { useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -46,10 +46,14 @@ function Home() {
       .catch(console.error);
   }
 
+  const [floor, setFloor] = useState<number>(-1);
+  function handleMapSwitch(x: number) {
+    setFloor(x);
+  }
   return (
     <div>
       <div className="relative">
-        <Map coords={coords} />
+        <Map floor={floor} coords={coords} />
         <div className="absolute top-4 left-4">
           <IconButton
             onClick={clickHandler}
@@ -74,6 +78,15 @@ function Home() {
             />
           </IconButton>
           {panelToggled && <LocationSelector onSubmit={formHandler} />}
+        </div>
+        <div className="absolute left-[95%] top-[74%]">
+          <ButtonGroup orientation="vertical" variant="contained">
+            <Button onClick={() => handleMapSwitch(3)}>3</Button>
+            <Button onClick={() => handleMapSwitch(2)}>2</Button>
+            <Button onClick={() => handleMapSwitch(1)}>1</Button>
+            <Button onClick={() => handleMapSwitch(-1)}>L1</Button>
+            <Button onClick={() => handleMapSwitch(-2)}>L2</Button>
+          </ButtonGroup>
         </div>
       </div>
     </div>
