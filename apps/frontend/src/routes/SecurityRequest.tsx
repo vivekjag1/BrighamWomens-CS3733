@@ -1,7 +1,6 @@
 // import React, { useState } from 'react';
 import { Card, CardContent, Select, MenuItem, InputLabel } from "@mui/material";
 import { TextField, Button } from "@mui/material";
-// import {SecurityRequestFields} from "common/src/SecurityRequestFields.ts";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -12,20 +11,28 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-// import UseNumberInput from "../components/NumberInput.tsx";
 
 export function SecurityRequest() {
-  // const [formData, setFormData] =
-  //   useState<SecurityRequestFields>(
-  //     //initialState?
-  //   );
-
-  //
-  // const [error, setError] = useState(false);
-  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   setError(value === "");
+  // const emptyForm = {
+  //   request: {
+  //     serviceID: "",
+  //     type: "",
+  //     roomNum: "",
+  //     deliveryInstructions: "",
+  //     requestingUsername: "",
+  //     timeStamp: "",
+  //     location: ""
+  //   },
+  //   securityType: "",
+  //   numGuards:0
   // };
+  //
+  // const [formData, setFormData] =
+  //   useState<SecurityRequestFields>(emptyForm);
+  //
+  // function clear() {
+  //   setFormData(emptyForm);
+  // }
 
   return (
     <div className="h-screen bg-gray-200 flex justify-center items-center">
