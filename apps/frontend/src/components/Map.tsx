@@ -44,29 +44,27 @@ function Map(props: { floor: number; coords: number[][] }) {
 
   return (
     <div>
-      <div className="w-full h-[92vh] overflow-scroll  ">
-        <svg width="5000px" height="3400px">
-          <image href={map} className="map" />
-          <polyline
-            stroke="blue"
-            strokeWidth="5"
-            fill="none"
-            points={listOfPoints}
-          />
-          <circle
-            r="10"
-            cx={startNode.xCoordinate}
-            cy={startNode.yCoordinate}
-            fill="green"
-          />
-          <circle
-            r="10"
-            cx={endNode.xCoordinate}
-            cy={endNode.yCoordinate}
-            fill="red"
-          />
-        </svg>
-      </div>
+      <svg viewBox="0 0 5000 3400" width="1250px" height="850px">
+        <image href={map} className="map" />
+        <polyline
+          stroke="blue"
+          strokeWidth="5"
+          fill="none"
+          points={listOfPoints}
+        />
+        <circle
+          r="10"
+          cx={startNode.xCoordinate}
+          cy={startNode.yCoordinate}
+          fill="green"
+        />
+        <circle
+          r="10"
+          cx={endNode.xCoordinate}
+          cy={endNode.yCoordinate}
+          fill="red"
+        />
+      </svg>
     </div>
   );
 }
