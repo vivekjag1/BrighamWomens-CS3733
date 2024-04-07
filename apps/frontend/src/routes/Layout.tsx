@@ -3,7 +3,7 @@ import NewHeader from "../components/NewHeader.tsx";
 
 function Layout() {
   return (
-    <div>
+    <div className="flex flex-row">
       <NewHeader />
       <main>
         <Outlet />
