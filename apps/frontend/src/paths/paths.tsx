@@ -6,7 +6,7 @@ const paths = {
   MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",
   SERVICES_DATA: "/home/services/data",
   MAP_DATA: "/home/data",
-  FORM_STARTER: "/home/services/form",
+  SANITATION_FORM: "/home/services/sanitation-form",
 };
 
 export default paths;
