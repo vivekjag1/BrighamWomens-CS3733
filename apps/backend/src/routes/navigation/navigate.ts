@@ -31,8 +31,24 @@ router.get("/", async (req, res) => {
     await prisma.edge.findMany(),
   );
 
-  const coords = graph.getPath(startNode!.nodeID, endNode!.nodeID, "A*");
-  res.status(200).json(coords);
+  const path = graph.getPath(startNode!.nodeID, endNode!.nodeID, "A*");
+
+  const pathAsCoords: number[][] = [];
+  for (let i = 0; i < path.length; i++) {
+    const node = await prisma.node.findFirst({
+      where: {
+        nodeID: path[i],
+      },
+    });
+    pathAsCoords.push([
+      +node!.xcoord,
+      +node!.ycoord,
+      Graph.getNumFromFloor(node!.floor),
+    ]);
+  }
+  console.log("testing" + pathAsCoords);
+
+  res.status(200).json(pathAsCoords);
 });
 
 export default router;

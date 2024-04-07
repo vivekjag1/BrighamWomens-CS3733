@@ -246,6 +246,22 @@ export class Graph {
 
     return smallestNode!;
   }
+
+  static getNumFromFloor(floor: string): number {
+    switch (floor) {
+      case "F3":
+        return 3;
+      case "F2":
+        return 2;
+      case "F1":
+        return 1;
+      case "L1":
+        return -1;
+      case "L2":
+        return -2;
+    }
+    return 0;
+  }
 }
 
 class AStarNode {
