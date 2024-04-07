@@ -114,7 +114,7 @@ const NodeTable = () => {
   // }
 
   return (
-    <div className="w-90vw">
+    <div className="w-95vw">
       <div className="w-full items-center">
         <h1 className="pt-5 text-3xl text-center font-bold">Upload Map Data</h1>
         <hr className="w-9/12 mx-auto m-4"></hr>

@@ -16,40 +16,49 @@ function NewHeader() {
   return (
     <>
       <div className="h-screen z-10">
-        <div className="shadow-lg h-full w-10vw bg-primary flex flex-col items-center space-y-8">
-          <div className="shadow-lg rounded-full bg-white mt-10 w-100px h-100px flex justify-center items-center">
-            <img className="h-80px" src={logo} alt="Logo" />
+        <div className="shadow-lg h-full w-5vw bg-primary flex flex-col items-center space-y-8">
+          <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
+            <img className="h-40px" src={logo} alt="Logo" />
           </div>
           <Link to="/home">
             <div
               className={
-                "rounded-lg bg-offwhite w-100px h-100px flex justify-center items-center shadow-lg"
+                "rounded-lg bg-offwhite w-60px h-60px flex justify-center items-center shadow-lg"
               }
             >
-              <IconButton aria-label="map">
-                <MapIcon />
+              <IconButton aria-label="services">
+                <div className="flex flex-col items-center">
+                  <MapIcon sx={{ fontSize: "20px" }} />
+                  <h2 className="text-sm">Map</h2>
+                </div>
               </IconButton>
             </div>
           </Link>
           <Link to="/home/services">
             <div
               className={
-                "rounded-lg bg-offwhite w-100px h-100px flex justify-center items-center shadow-lg"
+                "rounded-lg bg-offwhite w-60px h-60px flex justify-center items-center shadow-lg"
               }
             >
               <IconButton onClick={toggleBar} aria-label="services">
-                <VolunteerActivismIcon />
+                <div className="flex flex-col items-center">
+                  <VolunteerActivismIcon sx={{ fontSize: "20px" }} />
+                  <h2 className="text-sm">Services</h2>
+                </div>
               </IconButton>
             </div>
           </Link>
           <Link to="/home/data">
             <div
               className={
-                "rounded-lg bg-offwhite w-100px h-100px flex justify-center items-center shadow-lg"
+                "rounded-lg bg-offwhite w-60px h-60px flex justify-center items-center shadow-lg"
               }
             >
-              <IconButton aria-label="table">
-                <TocIcon />
+              <IconButton onClick={toggleBar} aria-label="services">
+                <div className="flex flex-col items-center">
+                  <TocIcon sx={{ fontSize: "20px" }} />
+                  <h2 className="text-sm">Map Data</h2>
+                </div>
               </IconButton>
             </div>
           </Link>
