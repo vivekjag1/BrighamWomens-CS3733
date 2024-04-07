@@ -32,13 +32,18 @@ export function SecurityRequest() {
       <Card sx={{ borderRadius: "10px" }}>
         <CardContent>
           <h1 className="text-center font-bold">Security Request</h1>
-          <div className="w-96 h-auto flex justify-center items-center">
+          <div className="w-120 h-auto flex justify-center items-center">
             <form noValidate autoComplete="off" className="space-y-4">
               <TextField
                 label="Location"
                 variant="outlined"
                 fullWidth
-                className="mb-4"
+                size="small"
+                className="bg-gray-50"
+                InputProps={{ style: { fontSize: ".9rem" } }}
+                InputLabelProps={{
+                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                }}
                 // onChange={(e) => setFormData({
                 //   ...formData,
                 //   request: Object.assign(formData.request, {roomNum:"2"}),
@@ -48,7 +53,12 @@ export function SecurityRequest() {
                 label="Requester"
                 variant="outlined"
                 fullWidth
-                className="mb-4"
+                size="small"
+                className="bg-gray-50"
+                InputProps={{ style: { fontSize: ".9rem" } }}
+                InputLabelProps={{
+                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                }}
               />
               <TextField
                 label="Description"
@@ -56,13 +66,21 @@ export function SecurityRequest() {
                 fullWidth
                 multiline
                 rows={3}
-                className="mb-6"
                 helperText="Optional"
+                size="small"
+                className="bg-gray-50"
+                InputProps={{ style: { fontSize: ".9rem" } }}
+                InputLabelProps={{
+                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                }}
               />
               <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DateTimePicker"]}>
-                    <DateTimePicker label="Basic date time picker" />
+                    <DateTimePicker
+                      label="Basic date time picker"
+                      className="bg-gray-50"
+                    />
                   </DemoContainer>
                 </LocalizationProvider>
               </div>
@@ -73,27 +91,36 @@ export function SecurityRequest() {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // value={age}
                   label="Age"
                   fullWidth
-                  // onChange={handleChange}
+                  size="small"
+                  className="bg-gray-50"
                 >
                   <MenuItem value={10}>Monitor</MenuItem>
                   <MenuItem value={20}>Escort</MenuItem>
                   <MenuItem value={30}>Patrol</MenuItem>
                 </Select>
               </div>
-              <TextField label="Number of Personnel" type="number" fullWidth />
-
+              <TextField
+                label="Number of Personnel"
+                type="number"
+                fullWidth
+                size="small"
+                className="bg-gray-50"
+                InputProps={{ style: { fontSize: ".9rem" } }}
+                InputLabelProps={{
+                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                }}
+              />
               <div>
                 <InputLabel id="demo-simple-select-label">Status</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // value={age}
                   label="Status"
                   fullWidth
-                  // onChange={handleChange}
+                  size="small"
+                  className="bg-gray-50"
                 >
                   <MenuItem value={10}>New </MenuItem>
                   <MenuItem value={20}>In Progress</MenuItem>
