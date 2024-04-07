@@ -68,7 +68,7 @@ export function MedicineDeliveryForm() {
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Medicine Request failed! Room Number must be a number.");
+        alert("Medicine Request failed!");
       }
     } else {
       alert("You must fill out all the required information!");
