@@ -22,15 +22,10 @@ function Login() {
   };
 
   return (
-    <div className="h-screen w-screen bg-cover bg-[url('../../assets/bwh-exterior-default.png')] flex absolute">
-      {/*<img*/}
-      {/*    className="w-full h-full absolute object-fill"*/}
-      {/*    src={bwhExteriorDefault}*/}
-      {/*    alt="Brigham and Women's Hospital Exterior"*/}
-      {/*/>*/}
-      <div className="h-min w-min justify-center items-center bg-white rounded-2xl absolute">
+    <div className="h-screen w-screen bg-cover bg-[url('../../assets/bwh-exterior-default.png')]  relative">
+      <div className="h-screen w-screen relative flex flex-col justify-center items-center">
         <form
-          className=" flex flex-col justify-center items-center px-[10vw] gap-[4vh]"
+          className="flex flex-col items-center justify-center align-middle gap-2 bg-white/90 rounded-2xl absolute"
           onSubmit={handleLogin}
         >
           <img
@@ -58,21 +53,23 @@ function Login() {
             sx={{ width: "350px" }}
           />
           {error && <div style={{ color: "red" }}>{error}</div>}
-          <IconButton
-            type="submit"
-            size="small"
-            sx={{
-              width: "65px",
-              height: "65px",
-              backgroundColor: "rgb(0, 156, 166)",
-              borderRadius: "10px",
-              "&:hover": {
-                backgroundColor: "hsl(184, 90%, 33%)",
-              },
-            }}
-          >
-            <ArrowForwardIcon />
-          </IconButton>
+          <div className="p-2">
+            <IconButton
+              type="submit"
+              size="small"
+              sx={{
+                width: "65px",
+                height: "65px",
+                backgroundColor: "rgb(0, 156, 166)",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "hsl(184, 90%, 33%)",
+                },
+              }}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          </div>
         </form>
       </div>
     </div>
