@@ -5,7 +5,7 @@ import paths from "../paths/paths.tsx";
 function SideNavBar() {
   return (
     /* Width attribute below is used to adjust the width of the navigation bar*/
-    <div className="w-[5%]">
+    <div className="w-[6%]">
       <div className="h-screen text-center text-white bg-secondary">
         Insert Logo
         <div>
