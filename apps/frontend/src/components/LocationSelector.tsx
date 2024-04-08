@@ -69,6 +69,7 @@ function LocationSelector(props: {
           onSubmit={props.onSubmit}
         >
           <div>
+            <p>Select the floor(s) you would like to navigate!</p>
             <FormGroup>
               <div className="flex flex-row justify-between">
                 <FormControlLabel
