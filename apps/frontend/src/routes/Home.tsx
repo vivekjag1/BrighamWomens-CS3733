@@ -53,7 +53,9 @@ function Home() {
   return (
     <div>
       <div className="relative">
-        <Map floor={floor} coords={coords} />
+        <div className="flex justify-center">
+          <Map floor={floor} coords={coords} />
+        </div>
         <div className="absolute top-4 left-4">
           <IconButton
             onClick={clickHandler}
