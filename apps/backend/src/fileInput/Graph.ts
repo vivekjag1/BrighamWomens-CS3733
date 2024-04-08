@@ -9,13 +9,13 @@ export class Graph {
   private edgeArray: GraphEdge[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
-    this.nodeArray = this.createNodes(nodeInput);
+    this.nodeArray = Graph.createNodes(nodeInput);
     this.edgeArray = this.createEdges(edgeInput);
   }
 
   //Converts the Node objects given from the prisma database
   // into GraphNode objects
-  public createNodes(input: Node[]): GraphNode[] {
+  public static createNodes(input: Node[]): GraphNode[] {
     const output: GraphNode[] = [];
 
     for (const value of input) {
@@ -248,18 +248,13 @@ export class Graph {
 
   static getNumFromFloor(floor: string): number {
     switch (floor) {
-      case "F3":
-        return 3;
-      case "F2":
-        return 2;
-      case "F1":
-        return 1;
       case "L1":
         return -1;
       case "L2":
         return -2;
+      default:
+        return parseInt(floor);
     }
-    return 0;
   }
 }
 

@@ -26,9 +26,9 @@ export function RoomReservation() {
   dummyArray.push("Hello");
   dummyArray.push("World");
   return (
-    <div className="h-screen bg-gray-200 flex justify-center items-center">
+    <div className="min-h-screen max-h-fit bg-gray-200 flex justify-center items-start pt-[2rem]">
       <Card
-        className="drop-shadow-2xl"
+        className="drop-shadow-2xl mb-6"
         sx={{ borderRadius: "10px", width: "30rem" }}
       >
         <CardContent>

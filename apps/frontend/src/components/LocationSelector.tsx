@@ -1,144 +1,129 @@
-import { Button } from "@mui/material";
-import { NavigateAttributes } from "common/src/APICommon.ts";
-import { FormEventHandler } from "react";
-// import axios from "axios";
-// async function getNodesFromDb(){
-//     const nodesData = await axios.get(APIEndpoints.mapGetNodes);
-//     return nodesData.data;
-//
-// }
+import {
+  Autocomplete,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+} from "@mui/material";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import { FormEventHandler, useEffect, useState } from "react";
+import axios from "axios";
+import { Graph } from "../../../backend/src/fileInput/Graph.ts";
+import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+
 function LocationSelector(props: {
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 }) {
+  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [checkedBoxes, setCheckedBoxes] = useState({
+    L1: false,
+    L2: false,
+    floor1: false,
+    floor2: false,
+    floor3: false,
+  });
+
+  const handleCheckboxInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckedBoxes({
+      ...checkedBoxes,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  useEffect(() => {
+    //get the nodes from the db
+    async function getNodesFromDb() {
+      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
+      let graphNodes = Graph.createNodes(rawNodes.data);
+      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
+      graphNodes = graphNodes.sort((a, b) =>
+        a.longName.localeCompare(b.longName),
+      );
+      setNodes(
+        graphNodes.filter(
+          (node) =>
+            (node.floor === "L1" && checkedBoxes.L1) ||
+            (node.floor === "L2" && checkedBoxes.L2) ||
+            (node.floor === "1" && checkedBoxes.floor1) ||
+            (node.floor === "2" && checkedBoxes.floor2) ||
+            (node.floor === "3" && checkedBoxes.floor3),
+        ),
+      );
+      return graphNodes;
+    }
+    getNodesFromDb().then();
+  }, [
+    checkedBoxes.L1,
+    checkedBoxes.L2,
+    checkedBoxes.floor1,
+    checkedBoxes.floor2,
+    checkedBoxes.floor3,
+  ]);
+
   return (
     <div>
       <div className="bg-[#f6f8fa]">
         <form
-          className="w-min flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
+          className="w-fit flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
           onSubmit={props.onSubmit}
         >
-          <label>
-            {" "}
-            <svg width="10" height="10">
-              <circle r="5" cx="5" cy="5" fill="green" />
-            </svg>
-            Choose a starting location:
-            <br />
-            <select name={NavigateAttributes.startLocationKey}>
-              <option value="Anesthesia Conf Floor L1">
-                Anesthesia Conf Floor L1
-              </option>
-              <option value="Medical Records Conference Room Floor L1">
-                Medical Records Conference Room Floor L1
-              </option>
-              <option value="Abrams Conference Room">
-                Abrams Conference Room
-              </option>
-              <option value="Day Surgery Family Waiting Floor L1">
-                Day Surgery Family Waiting Floor L1
-              </option>
-              <option value="Day Surgery Family Waiting Exit Floor L1">
-                Day Surgery Family Waiting Exit Floor L1
-              </option>
-              <option value="Medical Records Film Library Floor L1">
-                Medical Records Film Library Floor L1
-              </option>
-              <option value="Outpatient Fluoroscopy Floor L1">
-                Outpatient Fluoroscopy Floor L1
-              </option>
-              <option value="Pre-Op PACU Floor L1">Pre-Op PACU Floor L1</option>
-              <option value="Nuclear Medicine Floor L1">
-                Nuclear Medicine Floor L1
-              </option>
-              <option value="Ultrasound Floor L1">Ultrasound Floor L1</option>
-              <option value="CSIR MRI Floor L1">CSIR MRI Floor L1</option>
-              <option value="Restroom L Elevator Floor L1">
-                Restroom L Elevator Floor L1
-              </option>
-              <option value="Restroom M Elevator Floor L1">
-                Restroom M Elevator Floor L1
-              </option>
-              <option value="Restroom K Elevator Floor L1">
-                Restroom K Elevator Floor L1
-              </option>
-              <option value="Restroom H Elevator Floor L1">
-                Restroom H Elevator Floor L1
-              </option>
-              <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
-              <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Elevator Q MapNode 7 Floor L1">
-                Elevator Q MapNode 7 Floor L1
-              </option>
-              <option value="Fenwood Road Exit MapNode 1 Floor L1">
-                Fenwood Road Exit MapNode 1 Floor L1
-              </option>
-              <option value="Elevator H Floor L1">Elevator H Floor L1</option>
-              <option value="Elevator J Floor L1">Elevator J Floor L1</option>
-              <option value="Elevator K Floor L1">Elevator K Floor L1</option>
-              <option value="Elevator L Floor L1">Elevator L Floor L1</option>
-              <option value="Elevator M Floor L1">Elevator M Floor L1</option>
-            </select>
-          </label>
-          <label>
-            <svg width="10" height="10">
-              <circle r="5" cx="5" cy="5" fill="red" />
-            </svg>
-            Choose a destination: <br />
-            <select name={NavigateAttributes.endLocationKey}>
-              <option value="Anesthesia Conf Floor L1">
-                Anesthesia Conf Floor L1
-              </option>
-              <option value="Medical Records Conference Room Floor L1">
-                Medical Records Conference Room Floor L1
-              </option>
-              <option value="Abrams Conference Room">
-                Abrams Conference Room
-              </option>
-              <option value="Day Surgery Family Waiting Floor L1">
-                Day Surgery Family Waiting Floor L1
-              </option>
-              <option value="Day Surgery Family Waiting Exit Floor L1">
-                Day Surgery Family Waiting Exit Floor L1
-              </option>
-              <option value="Medical Records Film Library Floor L1">
-                Medical Records Film Library Floor L1
-              </option>
-              <option value="Outpatient Fluoroscopy Floor L1">
-                Outpatient Fluoroscopy Floor L1
-              </option>
-              <option value="Pre-Op PACU Floor L1">Pre-Op PACU Floor L1</option>
-              <option value="Nuclear Medicine Floor L1">
-                Nuclear Medicine Floor L1
-              </option>
-              <option value="Ultrasound Floor L1">Ultrasound Floor L1</option>
-              <option value="CSIR MRI Floor L1">CSIR MRI Floor L1</option>
-              <option value="Restroom L Elevator Floor L1">
-                Restroom L Elevator Floor L1
-              </option>
-              <option value="Restroom M Elevator Floor L1">
-                Restroom M Elevator Floor L1
-              </option>
-              <option value="Restroom K Elevator Floor L1">
-                Restroom K Elevator Floor L1
-              </option>
-              <option value="Restroom H Elevator Floor L1">
-                Restroom H Elevator Floor L1
-              </option>
-              <option value="Vending Machine 1 L1">Vending Machine 1 L1</option>
-              <option value="Volunteers Floor L1">Volunteers Floor L1</option>
-              <option value="Elevator Q MapNode 7 Floor L1">
-                Elevator Q MapNode 7 Floor L1
-              </option>
-              <option value="Fenwood Road Exit MapNode 1 Floor L1">
-                Fenwood Road Exit MapNode 1 Floor L1
-              </option>
-              <option value="Elevator H Floor L1">Elevator H Floor L1</option>
-              <option value="Elevator J Floor L1">Elevator J Floor L1</option>
-              <option value="Elevator K Floor L1">Elevator K Floor L1</option>
-              <option value="Elevator L Floor L1">Elevator L Floor L1</option>
-              <option value="Elevator M Floor L1">Elevator M Floor L1</option>
-            </select>
-          </label>
+          <div>
+            <p>Select the floor(s) you would like to navigate!</p>
+            <FormGroup>
+              <div className="flex flex-row justify-between">
+                <FormControlLabel
+                  control={
+                    <Checkbox name="L1" onChange={handleCheckboxInput} />
+                  }
+                  label="L1"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox name="L2" onChange={handleCheckboxInput} />
+                  }
+                  label="L2"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox name="floor1" onChange={handleCheckboxInput} />
+                  }
+                  label="Floor 1"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox name="floor2" onChange={handleCheckboxInput} />
+                  }
+                  label="Floor 2"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox name="floor3" onChange={handleCheckboxInput} />
+                  }
+                  label="Floor 3"
+                />
+              </div>
+            </FormGroup>
+          </div>
+
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={nodes.map((node) => ({ label: node.longName }))}
+            sx={{ width: "30rem" }}
+            renderInput={(params) => (
+              <TextField {...params} label="Location *" />
+            )}
+          />
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={nodes.map((node) => ({ label: node.longName }))}
+            sx={{ width: "30rem" }}
+            renderInput={(params) => (
+              <TextField {...params} label="Location *" />
+            )}
+          />
           <Button
             type="submit"
             variant="contained"

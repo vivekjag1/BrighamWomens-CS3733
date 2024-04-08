@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-import { Card, CardContent, Select, MenuItem, InputLabel } from "@mui/material";
+import { Card, CardContent, Select, MenuItem } from "@mui/material";
 import { TextField, Button } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,39 +13,20 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
 export function SecurityRequest() {
-  // const emptyForm = {
-  //   request: {
-  //     serviceID: "",
-  //     type: "",
-  //     roomNum: "",
-  //     deliveryInstructions: "",
-  //     requestingUsername: "",
-  //     timeStamp: "",
-  //     location: ""
-  //   },
-  //   securityType: "",
-  //   numGuards:0
-  // };
-  //
-  // const [formData, setFormData] =
-  //   useState<SecurityRequestFields>(emptyForm);
-  //
-  // function clear() {
-  //   setFormData(emptyForm);
-  // }
-
   return (
-    <div className="h-screen bg-gray-200 flex justify-center items-center">
-      <Card sx={{ borderRadius: "10px" }}>
+    <div className="min-h-screen max-h-fit bg-gray-200 flex justify-center pt-[2rem]">
+      <Card className="drop-shadow-2xl mb-6" sx={{ borderRadius: "10px" }}>
         <CardContent>
-          <h1 className="text-center font-bold">Security Request</h1>
-          <div className="w-120 h-auto flex justify-center items-center">
-            <form noValidate autoComplete="off" className="space-y-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
+            Security Request
+          </h1>
+          <div className="h-auto flex justify-center items-center w-[30rem]">
+            <form noValidate autoComplete="off" className="flex flex-col gap-6">
               <TextField
                 label="Location"
                 variant="outlined"
                 fullWidth
-                size="small"
+                sx={{ width: "25rem" }}
                 className="bg-gray-50"
                 InputProps={{ style: { fontSize: ".9rem" } }}
                 InputLabelProps={{
@@ -60,20 +41,19 @@ export function SecurityRequest() {
                 label="Requester"
                 variant="outlined"
                 fullWidth
-                size="small"
                 className="bg-gray-50"
                 InputProps={{ style: { fontSize: ".9rem" } }}
                 InputLabelProps={{
                   style: { color: "#a4aab5", fontSize: ".9rem" },
                 }}
+                size="small"
               />
               <TextField
-                label="Description"
+                label="Description (optional)"
                 variant="outlined"
                 fullWidth
                 multiline
                 rows={3}
-                helperText="Optional"
                 size="small"
                 className="bg-gray-50"
                 InputProps={{ style: { fontSize: ".9rem" } }}
@@ -85,28 +65,28 @@ export function SecurityRequest() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DateTimePicker"]}>
                     <DateTimePicker
-                      label="Basic date time picker"
+                      label="Service time"
                       className="bg-gray-50"
                     />
                   </DemoContainer>
                 </LocalizationProvider>
               </div>
               <div>
-                <InputLabel id="demo-simple-select-label">
-                  Security Type
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Age"
-                  fullWidth
-                  size="small"
-                  className="bg-gray-50"
-                >
-                  <MenuItem value={10}>Monitor</MenuItem>
-                  <MenuItem value={20}>Escort</MenuItem>
-                  <MenuItem value={30}>Patrol</MenuItem>
-                </Select>
+                <FormControl sx={{ width: "25rem" }} size="small">
+                  <FormLabel sx={{ fontSize: ".9rem" }}>
+                    Security Type *
+                  </FormLabel>
+                  <Select
+                    name="security-type"
+                    className="bg-gray-50"
+                    sx={{ fontSize: ".9rem" }}
+                    displayEmpty
+                  >
+                    <MenuItem value="Monitor">Monitor</MenuItem>
+                    <MenuItem value="Monitor">Escort</MenuItem>
+                    <MenuItem value="Monitor">Patrol</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <TextField
                 label="Number of Personnel"
@@ -119,21 +99,21 @@ export function SecurityRequest() {
                   style: { color: "#a4aab5", fontSize: ".9rem" },
                 }}
               />
-              <div>
-                <InputLabel id="demo-simple-select-label">Status</InputLabel>
+              <FormControl sx={{ width: "25rem" }} size="small">
+                <FormLabel sx={{ fontSize: ".9rem" }}>Status</FormLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Status"
-                  fullWidth
-                  size="small"
+                  name="status"
                   className="bg-gray-50"
+                  sx={{ fontSize: ".9rem" }}
+                  displayEmpty
                 >
-                  <MenuItem value={10}>New </MenuItem>
-                  <MenuItem value={20}>In Progress</MenuItem>
-                  <MenuItem value={30}>Complete</MenuItem>
+                  <MenuItem value="Unassigned">Unassigned</MenuItem>
+                  <MenuItem value="Assigned">Assigned</MenuItem>
+                  <MenuItem value="InProgress">InProgress</MenuItem>
+                  <MenuItem value="Closed">Closed</MenuItem>
                 </Select>
-              </div>
+              </FormControl>
+
               <FormControl>
                 <FormLabel id="priority-radio button group">Priority</FormLabel>
                 <RadioGroup
@@ -164,7 +144,7 @@ export function SecurityRequest() {
                 </RadioGroup>
               </FormControl>
 
-              <div className="flex justify-end gap-8">
+              <div className="flex justify-center gap-8">
                 <Button
                   variant="contained"
                   style={{
