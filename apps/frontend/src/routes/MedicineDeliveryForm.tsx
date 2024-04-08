@@ -151,7 +151,6 @@ export function MedicineDeliveryForm() {
                 }
                 required
               />
-
               <TextField
                 label="Medicine Name"
                 variant="outlined"
@@ -172,7 +171,6 @@ export function MedicineDeliveryForm() {
                 }
                 required
               />
-
               <TextField
                 label="Dosage"
                 variant="outlined"
@@ -241,7 +239,7 @@ export function MedicineDeliveryForm() {
               />
 
               <FormControl sx={{ width: "25rem" }} size="small">
-                <FormLabel sx={{ fontSize: ".9rem" }}>Status *</FormLabel>
+                <FormLabel sx={{ fontSize: ".9rem" }}>Status</FormLabel>
                 <Select
                   name="status"
                   className="bg-gray-50"
@@ -307,7 +305,6 @@ export function MedicineDeliveryForm() {
                   />
                 </RadioGroup>
               </FormControl>
-
               <div className="flex justify-end gap-8">
                 <Button
                   variant="contained"

@@ -25,10 +25,10 @@ export function SanitationForm() {
   const tagOptions = ["Mop", "Broom", "Toxic", "Biohazard"];
 
   return (
-    <div className="h-screen bg-gray-200 flex justify-center items-center">
-      <Card className="drop-shadow-2xl" sx={{ borderRadius: "10px" }}>
+    <div className="min-h-screen max-h-fit bg-gray-200 flex justify-center items-start pt-[2rem]">
+      <Card className="drop-shadow-2xl mb-6" sx={{ borderRadius: "10px" }}>
         <CardContent>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-3 pb-6">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
             Sanitation Services
           </h1>
           <div className="h-auto flex justify-center items-center w-[30rem]">
