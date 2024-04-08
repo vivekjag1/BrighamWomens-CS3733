@@ -3,6 +3,8 @@ import lowerLevel1 from "../../assets/maps/00_thelowerlevel1.png";
 import firstFloor from "../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import "../styles/Map.css";
 function Map(props: { floor: number; coords: number[][] }) {
   // Determines instructions for drawing path on map
   const length = props.coords.length;
@@ -44,28 +46,37 @@ function Map(props: { floor: number; coords: number[][] }) {
 
   return (
     <div>
-      <div className="w-full h-[92vh] overflow-scroll  ">
-        <svg width="5000px" height="3400px">
-          <image href={map} className="map" />
-          <polyline
-            stroke="blue"
-            strokeWidth="5"
-            fill="none"
-            points={listOfPoints}
-          />
-          <circle
-            r="10"
-            cx={startNode.xCoordinate}
-            cy={startNode.yCoordinate}
-            fill="green"
-          />
-          <circle
-            r="10"
-            cx={endNode.xCoordinate}
-            cy={endNode.yCoordinate}
-            fill="red"
-          />
-        </svg>
+      <div>
+        <TransformWrapper>
+          <TransformComponent>
+            <svg
+              viewBox="0 0 5000 3400"
+              width="auto"
+              height="92vh"
+              className="map"
+            >
+              <image href={map} className="map" />
+              <polyline
+                stroke="blue"
+                strokeWidth="5"
+                fill="none"
+                points={listOfPoints}
+              />
+              <circle
+                r="10"
+                cx={startNode.xCoordinate}
+                cy={startNode.yCoordinate}
+                fill="green"
+              />
+              <circle
+                r="10"
+                cx={endNode.xCoordinate}
+                cy={endNode.yCoordinate}
+                fill="red"
+              />
+            </svg>
+          </TransformComponent>
+        </TransformWrapper>
       </div>
     </div>
   );
