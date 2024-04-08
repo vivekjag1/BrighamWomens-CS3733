@@ -34,8 +34,7 @@ function SideNavBarV1() {
   // };
 
   return (
-    <>
-      <div className="h-screen w-5vw"></div>
+    <div>
       <div className="absolute z-10">
         <div
           className={
@@ -275,7 +274,7 @@ function SideNavBarV1() {
       {/*        </button>*/}
       {/*    </div>*/}
       {/*</div>*/}
-    </>
+    </div>
   );
 }
 

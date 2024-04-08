@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import SideNavBar from "../components/SideNavBar.tsx";
+import SideNavBar from "./SideNavBar.tsx";
 
 function Layout() {
   return (

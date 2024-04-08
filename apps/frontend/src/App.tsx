@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./routes/Login.tsx";
-import Layout from "./routes/Layout.tsx";
+import Layout from "./components/Layout.tsx";
 import paths from "./paths/paths.tsx";
 import routes from "./paths/mappings.tsx";
 
