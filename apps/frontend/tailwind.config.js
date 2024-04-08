@@ -20,6 +20,7 @@ export default {
         "80vw": "80vw",
         "90vw": "90vw",
         "94vw": "94vw",
+        "95vw": "95vw",
         "40px": "40px",
         "50px": "50px",
         "60px": "60px",

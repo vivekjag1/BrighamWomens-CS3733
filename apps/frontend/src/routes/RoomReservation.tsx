@@ -26,7 +26,7 @@ export function RoomReservation() {
   dummyArray.push("Hello");
   dummyArray.push("World");
   return (
-    <div className="w-94vw h-screen overflow-y-scroll">
+    <div className="w-95vw h-screen overflow-y-scroll">
       <div className="w-full min-h-screen max-h-fit bg-gray-200 flex justify-center items-start pt-[2rem]">
         <Card
           className="drop-shadow-2xl mb-6"

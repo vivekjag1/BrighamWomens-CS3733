@@ -9,7 +9,7 @@ import paths from "../paths/paths.tsx";
 
 function Services() {
   return (
-    <div className="w-94vw">
+    <div className="w-95vw">
       <div className="flex flex-col items-center gap-8 ">
         <div className="flex flex-col items-center gap-6 mt-8">
           <h2 className="w-full text-4xl font-bold text-center">Services</h2>
