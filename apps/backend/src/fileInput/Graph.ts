@@ -147,6 +147,10 @@ export class Graph {
     let numOfOpenNodes: number = 1;
     let searching: boolean = true;
 
+    if (startNodeID == endNodeID) {
+      return ["startNodeID", "startNodeID"];
+    }
+
     while (searching && numOfOpenNodes > 0) {
       //Pop next node with the smallest F value
       let currentNode = this.getSmallestF(searchList);
