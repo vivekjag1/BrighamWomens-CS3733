@@ -20,7 +20,7 @@ const insertLineBreaks = (text: string) => {
   return newText;
 };
 
-function NewHeader() {
+function SideNavBarV1() {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleCollapse = () => {
@@ -279,4 +279,4 @@ function NewHeader() {
   );
 }
 
-export default NewHeader;
+export default SideNavBarV1;

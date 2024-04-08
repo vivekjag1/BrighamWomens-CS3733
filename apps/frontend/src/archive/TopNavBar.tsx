@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import bwhLogoSemiNakedWhite from "../../assets/bwh-logo-semi-naked-white.svg";
 import Paths from "../paths/paths.tsx";
-function Header() {
+function TopNavBar() {
   return (
     <div>
       <div className="bg-[#013B96] h-[8vh] flex justify-between shadow-xl">
@@ -51,4 +51,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default TopNavBar;
