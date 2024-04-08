@@ -20,7 +20,7 @@ const insertLineBreaks = (text: string) => {
   return newText;
 };
 
-function NewHeader() {
+function SideNavBarV1() {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleCollapse = () => {
@@ -34,8 +34,7 @@ function NewHeader() {
   // };
 
   return (
-    <>
-      <div className="h-screen w-5vw"></div>
+    <div>
       <div className="absolute z-10">
         <div
           className={
@@ -275,8 +274,8 @@ function NewHeader() {
       {/*        </button>*/}
       {/*    </div>*/}
       {/*</div>*/}
-    </>
+    </div>
   );
 }
 
-export default NewHeader;
+export default SideNavBarV1;
