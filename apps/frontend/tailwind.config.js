@@ -16,6 +16,8 @@ export default {
         "15vw": "15vw",
         "20vw": "20vw",
         "30vw": "30vw",
+        "70vw": "70vw",
+        "80vw": "80vw",
         "90vw": "90vw",
         "94vw": "94vw",
         "40px": "40px",
