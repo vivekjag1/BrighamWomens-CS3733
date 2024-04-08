@@ -46,13 +46,13 @@ function Map(props: { floor: number; coords: number[][] }) {
 
   return (
     <div>
-      <div className="map-container">
+      <div>
         <TransformWrapper>
           <TransformComponent>
             <svg
               viewBox="0 0 5000 3400"
-              width="1250px"
-              height="850px"
+              width="auto"
+              height="92vh"
               className="map"
             >
               <image href={map} className="map" />

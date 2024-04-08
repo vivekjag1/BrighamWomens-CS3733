@@ -53,7 +53,7 @@ function Home() {
   return (
     <div>
       <div className="relative">
-        <div className="flex justify-center">
+        <div className="flex justify-end">
           <Map floor={floor} coords={coords} />
         </div>
         <div className="absolute top-4 left-4">
