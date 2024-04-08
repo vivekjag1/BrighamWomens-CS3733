@@ -52,7 +52,7 @@ function Map(props: { floor: number; coords: number[][] }) {
             <svg
               viewBox="0 0 5000 3400"
               width="auto"
-              height="92vh"
+              height="100vh"
               className="map"
             >
               <image href={map} className="map" />
