@@ -39,17 +39,19 @@ function SideNavBarV1() {
       <div className="w-5vw"></div>
       <div className="absolute z-10">
         <div
-          className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-[80px] transition-width" : "w-[250px] transition-width"}`}
+          className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[80px]" : "w-[250px]"}`}
         >
-          <div className="flex flex-row ">
-            <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
-              <img className="h-40px" src={logo} alt="Logo" />
-            </div>
+          <div className="flex flex-row justify-content-start">
+            <Link to="/home">
+              <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
+                <img className="h-40px" src={logo} alt="Logo" />
+              </div>
+            </Link>
             <h2
               className={
                 isCollapsed
                   ? "hidden"
-                  : "p-5 font-bold text-white text-md flex items-center max-w-30"
+                  : "p-5 font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"
               }
             >
               {insertLineBreaks("Brigham and Women's Hospital")}
@@ -59,7 +61,7 @@ function SideNavBarV1() {
           <div className="m-4">
             <Link to="/home">
               <div
-                className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                className="flex flex-row whitespace-pre-wrap" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
               >
                 <MapIcon
                   sx={{
@@ -71,7 +73,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap"
                   }
                 >
                   Map
@@ -97,7 +101,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap"
                   }
                 >
                   Services
@@ -123,7 +129,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap overflow-hidden"
                   }
                 >
                   Map Data
@@ -149,7 +157,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
                   }
                 >
                   Service Data
