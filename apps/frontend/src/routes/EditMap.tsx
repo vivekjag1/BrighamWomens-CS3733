@@ -103,11 +103,36 @@ function EditMap() {
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => renderFloor("3")}>3</Button>
-            <Button onClick={() => renderFloor("2")}>2</Button>
-            <Button onClick={() => renderFloor("1")}>1</Button>
-            <Button onClick={() => renderFloor("L1")}>L1</Button>
-            <Button onClick={() => renderFloor("L2")}>L2</Button>
+            <Button
+              onClick={() => renderFloor("3")}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              3
+            </Button>
+            <Button
+              onClick={() => renderFloor("2")}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              2
+            </Button>
+            <Button
+              onClick={() => renderFloor("1")}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              1
+            </Button>
+            <Button
+              onClick={() => renderFloor("L1")}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              L1
+            </Button>
+            <Button
+              onClick={() => renderFloor("L2")}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              L2
+            </Button>
           </ButtonGroup>
         </div>
       </div>
