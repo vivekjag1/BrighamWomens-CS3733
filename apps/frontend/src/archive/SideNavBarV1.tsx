@@ -11,6 +11,7 @@ import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
+//import * as auth0 from '@auth0/auth0-react';
 
 const insertLineBreaks = (text: string) => {
   const words = text.split(" ");
@@ -27,6 +28,12 @@ const insertLineBreaks = (text: string) => {
 function SideNavBarV1() {
   const { isAuthenticated } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const { logout } = useAuth0();
+
+  const handleLogout = () => {
+    // logout({returnTo: window.location.origin} );
+    logout().then().catch(console.error);
+  };
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -180,8 +187,8 @@ function SideNavBarV1() {
               </Link>
             </div>
             {/*Logout button */}
-            <div className="m-[1.5rem]">
-              <Link to="/edit">
+            <div className="m-[1.5rem]" onClick={handleLogout}>
+              <Link to="/">
                 {" "}
                 {/* enter link to button here to log out*/}
                 <div
