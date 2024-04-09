@@ -7,44 +7,6 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 
 function Map(props: { floor: number; coords: number[][] }) {
-  // Determines instructions for drawing path on map
-  const length = props.coords.length;
-  const startNode = {
-    xCoordinate: props.coords[0][0],
-    yCoordinate: props.coords[0][1],
-  };
-
-  const endNode = {
-    xCoordinate: props.coords[length - 1][0],
-    yCoordinate: props.coords[length - 1][1],
-  };
-
-  const splitPath: number[][][] = [];
-  let startFloor: number = 0;
-  let endFloor: number = 0;
-  for (let i = 0; i < length - 1; i++) {
-    if (props.coords[i][2] != props.coords[i + 1][2]) {
-      endFloor = i + 1;
-      splitPath.push(props.coords.slice(startFloor, endFloor));
-      startFloor = i + 1;
-    }
-  }
-  splitPath.push(props.coords.slice(startFloor));
-
-  const filteredSplitPath = splitPath.filter(
-    (value) => value[0][2] == props.floor,
-  );
-
-  const listOfPolylineStrings: string[] = [];
-  for (let i = 0; i < filteredSplitPath.length; i++) {
-    let polylineString = "";
-    for (let j = 0; j < filteredSplitPath[i].length; j++) {
-      polylineString +=
-        filteredSplitPath[i][j][0] + "," + filteredSplitPath[i][j][1] + " ";
-    }
-    listOfPolylineStrings.push(polylineString);
-  }
-
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
@@ -65,6 +27,47 @@ function Map(props: { floor: number; coords: number[][] }) {
       break;
   }
 
+  // Determines instructions for drawing starting and ending points on path
+  const startNode = {
+    xCoordinate: props.coords[0][0],
+    yCoordinate: props.coords[0][1],
+    floor: props.coords[0][2],
+  };
+
+  const length = props.coords.length;
+  const endNode = {
+    xCoordinate: props.coords[length - 1][0],
+    yCoordinate: props.coords[length - 1][1],
+    floor: props.coords[length - 1][2],
+  };
+
+  // Determines instructions for drawing path from a start node to end node
+  const splitPaths: number[][][] = [];
+  let startFloor: number = 0;
+  let endFloor: number = 0;
+  for (let i = 0; i < length - 1; i++) {
+    if (props.coords[i][2] != props.coords[i + 1][2]) {
+      endFloor = i + 1;
+      splitPaths.push(props.coords.slice(startFloor, endFloor));
+      startFloor = i + 1;
+    }
+  }
+  splitPaths.push(props.coords.slice(startFloor));
+
+  const filteredSplitPaths = splitPaths.filter(
+    (splitPath) => splitPath[0][2] == props.floor,
+  );
+
+  const listOfPolylineStrings: string[] = [];
+  for (let i = 0; i < filteredSplitPaths.length; i++) {
+    let polylineString = "";
+    for (let j = 0; j < filteredSplitPaths[i].length; j++) {
+      polylineString +=
+        filteredSplitPaths[i][j][0] + "," + filteredSplitPaths[i][j][1] + " ";
+    }
+    listOfPolylineStrings.push(polylineString);
+  }
+
   return (
     <div>
       <div>
@@ -77,29 +80,33 @@ function Map(props: { floor: number; coords: number[][] }) {
               className="rounded-xl"
             >
               <image href={map} />
-              {filteredSplitPath.map((path) => (
+              {filteredSplitPaths.map((path) => (
                 <polyline
                   key={path[0].toString()}
                   stroke="blue"
                   strokeWidth="5"
                   fill="none"
                   points={
-                    listOfPolylineStrings[filteredSplitPath.indexOf(path)]
+                    listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                   }
                 />
               ))}
-              <circle
-                r="10"
-                cx={startNode.xCoordinate}
-                cy={startNode.yCoordinate}
-                fill="green"
-              />
-              <circle
-                r="10"
-                cx={endNode.xCoordinate}
-                cy={endNode.yCoordinate}
-                fill="red"
-              />
+              {props.floor === startNode.floor && (
+                <circle
+                  r="10"
+                  cx={startNode.xCoordinate}
+                  cy={startNode.yCoordinate}
+                  fill="green"
+                />
+              )}
+              {props.floor === endNode.floor && (
+                <circle
+                  r="10"
+                  cx={endNode.xCoordinate}
+                  cy={endNode.yCoordinate}
+                  fill="red"
+                />
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>

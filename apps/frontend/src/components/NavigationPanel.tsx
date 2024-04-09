@@ -1,13 +1,14 @@
 import { Button } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { FormEventHandler, useEffect, useState } from "react";
 import axios from "axios";
 import { Graph } from "../../../backend/src/fileInput/Graph.ts";
 import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { FormEventHandler, useEffect, useState } from "react";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
 }) {
+  // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   useEffect(() => {
     //get the nodes from the db

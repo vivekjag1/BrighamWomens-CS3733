@@ -5,9 +5,14 @@ import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 
-/*const coords = [[0,0], [0,0]];*/
-
 function Home() {
+  // Sets the floor number depending on which button user clicks
+  const [floor, setFloor] = useState<number>(-1);
+  function handleMapSwitch(x: number) {
+    setFloor(x);
+  }
+
+  // Retrieves path from current location to destination in the form of a list of a nodes
   const [coords, setCoords] = useState<number[][]>([
     [0, 0],
     [0, 0],
@@ -31,21 +36,15 @@ function Home() {
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
     url.search = params.toString();
-    console.log(url.toString());
 
     await axios
       .get(url.toString())
       .then(function (response) {
-        console.log(response.data);
         setCoords(response.data);
       })
       .catch(console.error);
   }
 
-  const [floor, setFloor] = useState<number>(-1);
-  function handleMapSwitch(x: number) {
-    setFloor(x);
-  }
   return (
     <div>
       <div className="relative flex gap-4 bg-[#F1F1E6]">
