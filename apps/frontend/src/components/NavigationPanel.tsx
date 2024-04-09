@@ -33,7 +33,7 @@ function NavigationPanel() {
           </p>
           <div>
             <p className="text-l font-normal">Current Location</p>
-            <select name="currentLocation">
+            <select name="currentLocation" className="w-[15vw]">
               {nodes.map((node) => (
                 <option value={node.nodeID}>{node.longName}</option>
               ))}
@@ -41,7 +41,7 @@ function NavigationPanel() {
           </div>
           <div>
             <p>Destination</p>
-            <select name="destination">
+            <select name="destination" className="w-[15vw]">
               {nodes.map((node) => (
                 <option value={node.nodeID}>{node.longName}</option>
               ))}
