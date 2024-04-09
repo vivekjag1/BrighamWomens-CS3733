@@ -6,7 +6,7 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 
-function Map(props: { floor: number; coords: number[][] }) {
+function Map(props: { floor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
@@ -29,16 +29,16 @@ function Map(props: { floor: number; coords: number[][] }) {
 
   // Determines instructions for drawing starting and ending points on path
   const startNode = {
-    xCoordinate: props.coords[0][0],
-    yCoordinate: props.coords[0][1],
-    floor: props.coords[0][2],
+    xCoordinate: props.nodes[0][0],
+    yCoordinate: props.nodes[0][1],
+    floor: props.nodes[0][2],
   };
 
-  const length = props.coords.length;
+  const length = props.nodes.length;
   const endNode = {
-    xCoordinate: props.coords[length - 1][0],
-    yCoordinate: props.coords[length - 1][1],
-    floor: props.coords[length - 1][2],
+    xCoordinate: props.nodes[length - 1][0],
+    yCoordinate: props.nodes[length - 1][1],
+    floor: props.nodes[length - 1][2],
   };
 
   // Determines instructions for drawing path from a start node to end node
@@ -46,13 +46,13 @@ function Map(props: { floor: number; coords: number[][] }) {
   let startFloor: number = 0;
   let endFloor: number = 0;
   for (let i = 0; i < length - 1; i++) {
-    if (props.coords[i][2] != props.coords[i + 1][2]) {
+    if (props.nodes[i][2] != props.nodes[i + 1][2]) {
       endFloor = i + 1;
-      splitPaths.push(props.coords.slice(startFloor, endFloor));
+      splitPaths.push(props.nodes.slice(startFloor, endFloor));
       startFloor = i + 1;
     }
   }
-  splitPaths.push(props.coords.slice(startFloor));
+  splitPaths.push(props.nodes.slice(startFloor));
 
   const filteredSplitPaths = splitPaths.filter(
     (splitPath) => splitPath[0][2] == props.floor,

@@ -13,12 +13,12 @@ function Home() {
   }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
-  const [coords, setCoords] = useState<number[][]>([
+  const [nodes, setNodes] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
 
-  async function formHandler(event: FormEvent<HTMLFormElement>) {
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
@@ -40,7 +40,7 @@ function Home() {
     await axios
       .get(url.toString())
       .then(function (response) {
-        setCoords(response.data);
+        setNodes(response.data);
       })
       .catch(console.error);
   }
@@ -49,10 +49,10 @@ function Home() {
     <div>
       <div className="relative flex justify-evenly bg-[#F1F1E6]">
         <div className="h-screen flex flex-col justify-center">
-          <NavigationPanel onSubmit={formHandler} />
+          <NavigationPanel onSubmit={handleForm} />
         </div>
         <div className="h-screen flex flex-col justify-center">
-          <Map floor={floor} coords={coords} />
+          <Map floor={floor} nodes={nodes} />
         </div>
         <div className="absolute left-[95%] top-[72%]">
           <MapToggle onClick={handleMapSwitch} />
