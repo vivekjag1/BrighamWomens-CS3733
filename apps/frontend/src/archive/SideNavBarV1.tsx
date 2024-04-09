@@ -41,7 +41,7 @@ function SideNavBarV1() {
             className={`shadow-lg h-screen bg-secondary flex flex-col justify-content-start items-center space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[5vw]" : "w-[250px]"}`}
           >
             <div className="flex flex-row justify-content-start">
-              <Link to="/">
+              <Link to="/home">
                 <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
                   <img className="h-40px" src={logo} alt="Logo" />
                 </div>
@@ -58,7 +58,7 @@ function SideNavBarV1() {
             </div>
 
             <div className="m-4">
-              <Link to="/">
+              <Link to="/home">
                 <div className="flex flex-row whitespace-pre-wrap">
                   <MapIcon
                     sx={{
