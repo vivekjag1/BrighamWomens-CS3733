@@ -1,9 +1,9 @@
 import Map from "../components/Map.tsx";
-import { Button, ButtonGroup } from "@mui/material";
 import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
+import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
   // Sets the floor number depending on which button user clicks
@@ -13,12 +13,12 @@ function Home() {
   }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
-  const [coords, setCoords] = useState<number[][]>([
+  const [nodes, setNodes] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
 
-  async function formHandler(event: FormEvent<HTMLFormElement>) {
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
@@ -40,7 +40,7 @@ function Home() {
     await axios
       .get(url.toString())
       .then(function (response) {
-        setCoords(response.data);
+        setNodes(response.data);
       })
       .catch(console.error);
   }
@@ -49,44 +49,13 @@ function Home() {
     <div>
       <div className="relative flex justify-evenly bg-[#F1F1E6]">
         <div className="h-screen flex flex-col justify-center">
-          <NavigationPanel onSubmit={formHandler} />
+          <NavigationPanel onSubmit={handleForm} />
         </div>
         <div className="h-screen flex flex-col justify-center">
-          <Map floor={floor} coords={coords} />
+          <Map floor={floor} nodes={nodes} />
         </div>
-        <div className="absolute left-[95%] top-[78%]">
-          <ButtonGroup orientation="vertical" variant="contained">
-            <Button
-              onClick={() => handleMapSwitch(3)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              3
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(2)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              2
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(1)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              1
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(-1)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              L1
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(-2)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              L2
-            </Button>
-          </ButtonGroup>
+        <div className="absolute left-[95%] top-[72%]">
+          <MapToggle onClick={handleMapSwitch} />
         </div>
       </div>
     </div>
