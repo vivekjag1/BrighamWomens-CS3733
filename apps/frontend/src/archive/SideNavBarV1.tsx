@@ -37,12 +37,11 @@ function SideNavBarV1() {
   } else {
     return (
       <div>
-        {/*<div className="w-5vw"></div>*/}
         <div className=" z-10">
           <div
-            className={`shadow-lg h-screen bg-secondary flex flex-col justify-content-start items-center space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[5vw]" : "w-[250px]"}`}
+            className={` shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[75px]" : "w-[250px]"}`}
           >
-            <div className="flex flex-row">
+            <div className=" pl-[7px] flex flex-row">
               <Link to="/home">
                 <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
                   <img className="h-40px" src={logo} alt="Logo" />
@@ -52,14 +51,14 @@ function SideNavBarV1() {
                 className={
                   isCollapsed
                     ? "hidden"
-                    : "p-5 font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"
+                    : "pl-[20px] font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"
                 }
               >
                 {insertLineBreaks("Brigham and Women's Hospital")}
               </h2>
             </div>
 
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/home">
                 <div className="flex flex-row whitespace-pre-wrap">
                   <MapIcon
@@ -82,10 +81,10 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/services">
                 <div
-                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                 >
                   <VolunteerActivismIcon
                     sx={{
@@ -107,9 +106,9 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/data">
-                <div className="flex flex-row justify-content-start">
+                <div className="flex flex-row">
                   <AddLocationAltIcon
                     sx={{
                       marginRight: "5px",
@@ -130,10 +129,10 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/services/data">
                 <div
-                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                 >
                   <TocIcon
                     sx={{
@@ -155,10 +154,10 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/edit">
                 <div
-                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                 >
                   <EditLocationAltIcon
                     sx={{
@@ -181,12 +180,12 @@ function SideNavBarV1() {
               </Link>
             </div>
             {/*Logout button */}
-            <div className="m-4">
+            <div className="m-[20px]">
               <Link to="/edit">
                 {" "}
                 {/* enter link to button here to log out*/}
                 <div
-                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                 >
                   <LogoutIcon
                     sx={{
@@ -208,10 +207,10 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-4">
+            <div className="m-[20px]">
               <div
                 style={{ cursor: "pointer" }}
-                className="flex flex-row justify-content-start"
+                className="flex flex-row"
                 onClick={toggleCollapse}
               >
                 <div className={isCollapsed ? "" : "hidden"}>
