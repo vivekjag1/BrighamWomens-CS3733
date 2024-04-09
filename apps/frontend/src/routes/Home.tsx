@@ -51,10 +51,10 @@ function Home() {
         <div className="h-screen flex flex-col justify-center">
           <NavigationPanel onSubmit={handleForm} />
         </div>
-        <div className="h-screen flex flex-col justify-center">
+        <div className="h-screen w-screen flex flex-col justify-center">
           <Map floor={floor} nodes={nodes} />
         </div>
-        <div className="absolute left-[95%] top-[72%]">
+        <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle onClick={handleMapSwitch} />
         </div>
       </div>
