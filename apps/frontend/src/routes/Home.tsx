@@ -26,6 +26,7 @@ function Home() {
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
+    console.log(formData);
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -34,11 +35,13 @@ function Home() {
         .get(NavigateAttributes.endLocationKey)!
         .toString(),
     };
+    console.log(queryParams);
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
     url.search = params.toString();
+    console.log(url.toString());
 
     await axios
       .get(url.toString())
