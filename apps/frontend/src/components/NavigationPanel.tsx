@@ -1,6 +1,27 @@
 import { Button } from "@mui/material";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Graph } from "../../../backend/src/fileInput/Graph.ts";
+import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
 
 function NavigationPanel() {
+  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  useEffect(() => {
+    //get the nodes from the db
+    async function getNodesFromDb() {
+      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
+      let graphNodes = Graph.createNodes(rawNodes.data);
+      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
+      graphNodes = graphNodes.sort((a, b) =>
+        a.longName.localeCompare(b.longName),
+      );
+      setNodes(graphNodes);
+      return graphNodes;
+    }
+    getNodesFromDb().then();
+  }, []);
+
   return (
     <div>
       <div className="w-[17.5vw] h-[98vh] p-5 bg-[#D9D9D9] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
@@ -13,15 +34,17 @@ function NavigationPanel() {
           <div>
             <p className="text-l font-normal">Current Location</p>
             <select name="currentLocation">
-              <option>Day Surgery Family Waiting Floor L1</option>
-              <option>Day Surgery Family Waiting Exit Floor L1</option>
+              {nodes.map((node) => (
+                <option value={node.nodeID}>{node.longName}</option>
+              ))}
             </select>
           </div>
           <div>
             <p>Destination</p>
             <select name="destination">
-              <option>Day Surgery Family Waiting Floor L1</option>
-              <option>Day Surgery Family Waiting Exit Floor L1</option>
+              {nodes.map((node) => (
+                <option value={node.nodeID}>{node.longName}</option>
+              ))}
             </select>
           </div>
           <div>
