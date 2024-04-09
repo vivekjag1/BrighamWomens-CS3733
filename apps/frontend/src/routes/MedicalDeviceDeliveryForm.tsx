@@ -16,25 +16,52 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-
 export function MedicalDeviceDeliveryForm() {
   return (
-    <div>
-      <div className="w-screen h-screen flex justify-center pt-8 bg-gray-200">
-        <Card sx={{ borderRadius: "10px", width: "38vw", height: "85vh" }}>
-          <CardContent sx={{ padding: "60px" }}>
-            <div className="flex flex-col gap-6">
-              <h1 className="text-center font-bold">Medical Device Request</h1>
-              <form className="flex flex-col gap-6">
-                <TextField variant="outlined" label="Employee Name" />
-                <TextField variant="outlined" label="Location" />
+    <div className="w-95vw h-screen overflow-y-scroll">
+      <div className="w-full min-h-screen max-h-fit bg-gray-200 flex justify-center items-start pt-[2rem]">
+        <Card className="drop-shadow-2xl mb-6" sx={{ borderRadius: "10px" }}>
+          <CardContent>
+            <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
+              {" "}
+              Medical Device Request
+            </h1>
+            <div className="h-auto flex justify-center items-center w-[30rem] ">
+              <form
+                noValidate
+                autoComplete="off"
+                className="flex flex-col gap-6"
+              >
+                <TextField
+                  variant="outlined"
+                  label="Employee Name"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                />
+                <TextField
+                  variant="outlined"
+                  label="Location"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  size="small"
+                />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker label="Service Due Date" />
                 </LocalizationProvider>
                 <TextField
-                  variant="outlined"
                   label="Description (optional)"
-                  multiline
+                  variant="outlined"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  size="small"
                 />
                 <FormControl>
                   <InputLabel>Device Type</InputLabel>
@@ -54,18 +81,27 @@ export function MedicalDeviceDeliveryForm() {
                   </Select>
                 </FormControl>
                 <TextField label="Quantity" type="number" />
-                <FormControl>
-                  <InputLabel>Status</InputLabel>
-                  <Select label="Status">
+                <FormControl sx={{ width: "25rem" }} size="small">
+                  <FormLabel sx={{ fontSize: ".9rem" }}>Status</FormLabel>
+                  <Select
+                    name="status"
+                    className="bg-gray-50"
+                    sx={{ fontSize: ".9rem" }}
+                    displayEmpty
+                  >
                     <MenuItem value="Unassigned">Unassigned</MenuItem>
-                    <MenuItem value="Assignged">Assigned</MenuItem>
-                    <MenuItem value="In Progress">In Progress</MenuItem>
+                    <MenuItem value="Assigned">Assigned</MenuItem>
+                    <MenuItem value="InProgress">InProgress</MenuItem>
                     <MenuItem value="Closed">Closed</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl>
-                  <FormLabel>Priority</FormLabel>
-                  <RadioGroup row>
+                <FormControl
+                  component="fieldset"
+                  margin="normal"
+                  sx={{ width: "25rem" }}
+                >
+                  <FormLabel sx={{ fontSize: ".9rem" }}>Priority *</FormLabel>
+                  <RadioGroup row name="priority" sx={{ marginLeft: ".52rem" }}>
                     <FormControlLabel
                       value="Low"
                       control={<Radio />}
@@ -82,22 +118,26 @@ export function MedicalDeviceDeliveryForm() {
                       label="High"
                     />
                     <FormControlLabel
-                      value="Emegerency"
+                      value="Emergency"
                       control={<Radio />}
                       label="Emergency"
                     />
                   </RadioGroup>
                 </FormControl>
-                <div className="flex justify-center gap-8 mb-[36px]">
+                <div className="flex justify-center gap-8">
                   <Button
                     variant="contained"
-                    sx={{ backgroundColor: "#F60000" }}
+                    style={{
+                      backgroundColor: "#EA422D",
+                      color: "white",
+                      width: "8rem",
+                    }}
                   >
                     Clear
                   </Button>
                   <Button
                     variant="contained"
-                    sx={{ backgroundColor: "#003A96" }}
+                    style={{ backgroundColor: "#013B96", width: "8rem" }}
                   >
                     Submit
                   </Button>

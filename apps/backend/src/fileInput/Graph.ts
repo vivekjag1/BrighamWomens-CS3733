@@ -4,18 +4,24 @@ import type { Node, Edge } from "database";
 //import {Simulate} from "react-dom/test-utils";
 //import close = Simulate.close;
 
+export enum PathAlgorithm {
+  AStar,
+  BFS,
+  DFS,
+}
+
 export class Graph {
   private nodeArray: GraphNode[];
   private edgeArray: GraphEdge[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
-    this.nodeArray = this.createNodes(nodeInput);
+    this.nodeArray = Graph.createNodes(nodeInput);
     this.edgeArray = this.createEdges(edgeInput);
   }
 
   //Converts the Node objects given from the prisma database
   // into GraphNode objects
-  public createNodes(input: Node[]): GraphNode[] {
+  public static createNodes(input: Node[]): GraphNode[] {
     const output: GraphNode[] = [];
 
     for (const value of input) {
@@ -72,17 +78,14 @@ export class Graph {
   public getPath(
     startNodeID: string,
     endNodeID: string,
-    pathfindingType: string,
+    pathAlgorithm: PathAlgorithm,
   ): string[] {
-    switch (pathfindingType) {
-      case "BFS":
+    switch (pathAlgorithm) {
+      case PathAlgorithm.BFS:
         return this.getPathBFS(startNodeID, endNodeID);
 
-      case "A*":
-        return this.getPathAStar(startNodeID, endNodeID);
-
       default:
-        return [];
+        return this.getPathAStar(startNodeID, endNodeID);
     }
   }
 
@@ -143,6 +146,10 @@ export class Graph {
     const searchList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
     let numOfOpenNodes: number = 1;
     let searching: boolean = true;
+
+    if (startNodeID == endNodeID) {
+      return ["startNodeID", "startNodeID"];
+    }
 
     while (searching && numOfOpenNodes > 0) {
       //Pop next node with the smallest F value
