@@ -1,5 +1,5 @@
 import MapEditButton from "../components/MapEditButton.tsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
@@ -15,13 +15,21 @@ export type EdgeCoordinates = {
 
 function EditMap() {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
+  const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
   const [floor, setFloor] = useState<string>("1");
 
+  // this is a hacky way to pass states between renderFloor and useEffect
+  // to make sure the map image, nodes and edges render at the exact same time
+  // once we get nodes, this calls useEffect to generate edges
+  // then both edges nodes and floor are pushed at once to the hooks above these.
+  const [localNodes, setLocalNodes] = useState<Node[]>([]);
+  const [localEdges, setLocalEdges] = useState<Edge[]>([]);
+  const [localFloor, setLocalFloor] = useState<string>("1");
+
   async function renderFloor(floor: string) {
-    setNodes([]); // clear
-    setEdgeCoords([]); // clear
-    setFloor(floor);
+    setLocalNodes([]); // clear
+    setLocalEdges([]); // clear
+    setLocalFloor(floor);
 
     const queryParams: Record<string, string> = {
       [NavigateAttributes.floorKey]: floor,
@@ -38,37 +46,42 @@ function EditMap() {
     await axios
       .get(nodeURL.toString())
       .then((response) => {
-        setNodes(response.data);
+        // this won't update the image,
+        setLocalNodes(response.data);
 
         return axios.get(edgeURL.toString());
       })
       .then((response) => {
-        const edges: Edge[] = response.data;
-
-        // get nodeIDs on this floor
-        const nodeIDs = nodes.map((node) => node.nodeID);
-        console.log(nodeIDs);
-
-        const edgeCoordsOnFloor: EdgeCoordinates[] = [];
-        for (const edge of edges) {
-          const start = nodeIDs.indexOf(edge.startNodeID);
-          const end = nodeIDs.indexOf(edge.endNodeID);
-
-          // if start and end nodes exist on this floor, add the edge
-          if (start != -1 && end != -1) {
-            edgeCoordsOnFloor.push({
-              startX: parseInt(nodes[start].xcoord),
-              startY: parseInt(nodes[start].ycoord),
-              endX: parseInt(nodes[end].xcoord),
-              endY: parseInt(nodes[end].ycoord),
-            });
-          }
-        }
-
-        setEdgeCoords(edgeCoordsOnFloor);
+        setLocalEdges(response.data);
       })
       .catch(console.error);
   }
+
+  useEffect(() => {
+    // get nodeIDs on this floor
+    const nodeIDs = localNodes.map((node) => node.nodeID);
+
+    const edgeCoordsOnFloor: EdgeCoordinates[] = [];
+    for (const edge of localEdges) {
+      const start = nodeIDs.indexOf(edge.startNodeID);
+      const end = nodeIDs.indexOf(edge.endNodeID);
+
+      // if start and end nodes exist on this floor, add the edge
+      if (start != -1 && end != -1) {
+        edgeCoordsOnFloor.push({
+          startX: parseInt(localNodes[start].xcoord),
+          startY: parseInt(localNodes[start].ycoord),
+          endX: parseInt(localNodes[end].xcoord),
+          endY: parseInt(localNodes[end].ycoord),
+        });
+      }
+    }
+
+    // this will update the image!
+    setEdges(edgeCoordsOnFloor);
+    setNodes(localNodes);
+    setFloor(localFloor);
+  }, [localNodes, nodes, localEdges, floor, localFloor]);
 
   return (
     <div>
@@ -77,7 +90,7 @@ function EditMap() {
           <MapEditButton />
         </div>
         <div className="h-screen flex flex-col justify-center ">
-          <MapEditor floor={floor} nodes={nodes} edges={edgeCoords} />
+          <MapEditor floor={floor} nodes={nodes} edges={edges} />
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">

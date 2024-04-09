@@ -47,17 +47,16 @@ function MapEditor(props: {
               <image href={map} />
               {props.edges.map((edge) => (
                 <line
-                  id="animated-line"
                   x1={edge.startX}
                   x2={edge.endX}
                   y1={edge.startY}
                   y2={edge.endY}
                   stroke="red"
-                  strokeWidth="5"
+                  strokeWidth="6"
                 />
               ))}
               {props.nodes.map((node) => (
-                <circle r="12" cx={node.xcoord} cy={node.ycoord} fill="blue" />
+                <circle r="10" cx={node.xcoord} cy={node.ycoord} fill="blue" />
               ))}
             </svg>
           </TransformComponent>
