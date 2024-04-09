@@ -58,7 +58,11 @@ function NavigationPanel(props: {
             </select>
           </div>
           <div>
-            <Button type="submit" variant="contained">
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
               Submit
             </Button>
           </div>

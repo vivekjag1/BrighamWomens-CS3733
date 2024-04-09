@@ -56,11 +56,36 @@ function Home() {
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => handleMapSwitch(3)}>3</Button>
-            <Button onClick={() => handleMapSwitch(2)}>2</Button>
-            <Button onClick={() => handleMapSwitch(1)}>1</Button>
-            <Button onClick={() => handleMapSwitch(-1)}>L1</Button>
-            <Button onClick={() => handleMapSwitch(-2)}>L2</Button>
+            <Button
+              onClick={() => handleMapSwitch(3)}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              3
+            </Button>
+            <Button
+              onClick={() => handleMapSwitch(2)}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              2
+            </Button>
+            <Button
+              onClick={() => handleMapSwitch(1)}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              1
+            </Button>
+            <Button
+              onClick={() => handleMapSwitch(-1)}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              L1
+            </Button>
+            <Button
+              onClick={() => handleMapSwitch(-2)}
+              sx={{ backgroundColor: "rgb(1,70,177)" }}
+            >
+              L2
+            </Button>
           </ButtonGroup>
         </div>
       </div>
