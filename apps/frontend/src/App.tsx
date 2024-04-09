@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
-//import Home from "./routes/Home.tsx";
-//import Login from "./routes/Login.tsx";
-import { Auth0Provider } from "@auth0/auth0-react";
-//import Login from "./routes/Login.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PathTables from "./routes/PathTables.tsx";
 import Services from "./routes/Services.tsx";
 import MedicineDeliveryForm from "./routes/MedicineDeliveryForm.tsx";
@@ -20,15 +11,15 @@ import ServicesTable from "./routes/ServicesTable.tsx";
 import EditMap from "./routes/EditMap.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
 import Home from "./routes/Home.tsx";
-import SideNavBarV1 from "./archive/SideNavBarV1.tsx";
 import Login from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
+import Layout from "./components/Layout.tsx";
 function App() {
   // const navigate = useNavigate();
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Root />,
+      element: <Layout />,
       children: [
         {
           path: paths.LOGIN,
@@ -77,38 +68,9 @@ function App() {
         },
       ],
     },
-    // {
-    //     path: '/',
-    //     element: <Home/>,
-    //     children:[]
-    // },
   ]);
 
   return <RouterProvider router={router} />;
-}
-
-function Root() {
-  const navigate = useNavigate();
-  return (
-    <Auth0Provider
-      useRefreshTokens
-      cacheLocation="localstorage"
-      domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
-      clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        //scope: "openid profile email offline_access",
-      }}
-      onRedirectCallback={(appState) => {
-        navigate(appState?.returnTo || window.location.pathname);
-      }}
-    >
-      <div>
-        <SideNavBarV1 />
-        <Outlet />
-      </div>
-    </Auth0Provider>
-  );
 }
 
 export default App;
