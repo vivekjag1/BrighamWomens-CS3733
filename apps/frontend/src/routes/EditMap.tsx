@@ -9,11 +9,11 @@ import { Button, ButtonGroup } from "@mui/material";
 function EditMap() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-  const [floor, setFloor] = useState<number>(1);
+  const [floor, setFloor] = useState<string>("1");
 
-  async function renderFloor(floor: number) {
+  async function renderFloor(floor: string) {
     const queryParams: Record<string, string> = {
-      [NavigateAttributes.floorKey]: floor.toString(),
+      [NavigateAttributes.floorKey]: floor,
     };
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
@@ -54,11 +54,11 @@ function EditMap() {
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => setFloor(3)}>3</Button>
-            <Button onClick={() => setFloor(2)}>2</Button>
-            <Button onClick={() => setFloor(1)}>1</Button>
-            <Button onClick={() => setFloor(-1)}>L1</Button>
-            <Button onClick={() => setFloor(-2)}>L2</Button>
+            <Button onClick={() => setFloor("3")}>3</Button>
+            <Button onClick={() => setFloor("2")}>2</Button>
+            <Button onClick={() => setFloor("1")}>1</Button>
+            <Button onClick={() => setFloor("L1")}>L1</Button>
+            <Button onClick={() => setFloor("L2")}>L2</Button>
           </ButtonGroup>
         </div>
       </div>

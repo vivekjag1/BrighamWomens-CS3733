@@ -7,23 +7,23 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import { Node, Edge } from "database";
 
-function MapEditor(props: { floor: number; nodes: Node[]; edges: Edge[] }) {
+function MapEditor(props: { floor: string; nodes: Node[]; edges: Edge[] }) {
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
-    case -2:
+    case "L2":
       map = lowerLevel2;
       break;
-    case -1:
+    case "L1":
       map = lowerLevel1;
       break;
-    case 1:
+    case "1":
       map = firstFloor;
       break;
-    case 2:
+    case "2":
       map = secondFloor;
       break;
-    case 3:
+    case "3":
       map = thirdFloor;
       break;
   }
