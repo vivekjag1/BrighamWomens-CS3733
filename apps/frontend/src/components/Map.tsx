@@ -6,10 +6,10 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 
-function Map(props: { floor: number; nodes: number[][] }) {
+function Map(props: { activefloor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
   let map;
-  switch (props.floor) {
+  switch (props.activefloor) {
     case -2:
       map = lowerLevel2;
       break;
@@ -55,9 +55,8 @@ function Map(props: { floor: number; nodes: number[][] }) {
   splitPaths.push(props.nodes.slice(startFloor));
 
   const filteredSplitPaths = splitPaths.filter(
-    (splitPath) => splitPath[0][2] == props.floor,
+    (splitPath) => splitPath[0][2] == props.activefloor,
   );
-
   const listOfPolylineStrings: string[] = [];
   for (let i = 0; i < filteredSplitPaths.length; i++) {
     let polylineString = "";
@@ -86,7 +85,7 @@ function Map(props: { floor: number; nodes: number[][] }) {
                   }
                 />
               ))}
-              {props.floor === startNode.floor && (
+              {props.activefloor === startNode.floor && (
                 <circle
                   r="10"
                   cx={startNode.xCoordinate}
@@ -94,7 +93,7 @@ function Map(props: { floor: number; nodes: number[][] }) {
                   fill="green"
                 />
               )}
-              {props.floor === endNode.floor && (
+              {props.activefloor === endNode.floor && (
                 <circle
                   r="10"
                   cx={endNode.xCoordinate}
