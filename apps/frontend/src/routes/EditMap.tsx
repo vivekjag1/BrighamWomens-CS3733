@@ -1,5 +1,5 @@
 import MapEditButton from "../components/MapEditButton.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
@@ -25,6 +25,8 @@ function EditMap() {
   const [localNodes, setLocalNodes] = useState<Node[]>([]);
   const [localEdges, setLocalEdges] = useState<Edge[]>([]);
   const [localFloor, setLocalFloor] = useState<string>("1");
+
+  const didMount = useRef(false);
 
   async function renderFloor(floor: string) {
     setLocalNodes([]); // clear
@@ -58,6 +60,13 @@ function EditMap() {
   }
 
   useEffect(() => {
+    // render first floor on initial page load
+    if (!didMount.current) {
+      renderFloor("1");
+      didMount.current = true;
+      return;
+    }
+
     // get nodeIDs on this floor
     const nodeIDs = localNodes.map((node) => node.nodeID);
 
