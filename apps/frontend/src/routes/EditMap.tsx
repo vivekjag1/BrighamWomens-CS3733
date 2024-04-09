@@ -1,17 +1,28 @@
 import MapEditButton from "../components/MapEditButton.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
 import MapEditor from "../components/MapEditor.tsx";
 import { Button, ButtonGroup } from "@mui/material";
 
+export type EdgeCoordinates = {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+};
+
 function EditMap() {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const [floor, setFloor] = useState<string>("1");
 
   async function renderFloor(floor: string) {
+    setNodes([]); // clear
+    setEdgeCoords([]); // clear
+    setFloor(floor);
+
     const queryParams: Record<string, string> = {
       [NavigateAttributes.floorKey]: floor,
     };
@@ -28,20 +39,36 @@ function EditMap() {
       .get(nodeURL.toString())
       .then((response) => {
         setNodes(response.data);
-      })
-      .catch(console.error);
 
-    await axios
-      .get(edgeURL.toString())
+        return axios.get(edgeURL.toString());
+      })
       .then((response) => {
-        setEdges(response.data);
+        const edges: Edge[] = response.data;
+
+        // get nodeIDs on this floor
+        const nodeIDs = nodes.map((node) => node.nodeID);
+        console.log(nodeIDs);
+
+        const edgeCoordsOnFloor: EdgeCoordinates[] = [];
+        for (const edge of edges) {
+          const start = nodeIDs.indexOf(edge.startNodeID);
+          const end = nodeIDs.indexOf(edge.endNodeID);
+
+          // if start and end nodes exist on this floor, add the edge
+          if (start != -1 && end != -1) {
+            edgeCoordsOnFloor.push({
+              startX: parseInt(nodes[start].xcoord),
+              startY: parseInt(nodes[start].ycoord),
+              endX: parseInt(nodes[end].xcoord),
+              endY: parseInt(nodes[end].ycoord),
+            });
+          }
+        }
+
+        setEdgeCoords(edgeCoordsOnFloor);
       })
       .catch(console.error);
   }
-
-  useEffect(() => {
-    renderFloor(floor);
-  }, [floor]);
 
   return (
     <div>
@@ -50,15 +77,15 @@ function EditMap() {
           <MapEditButton />
         </div>
         <div className="h-screen flex flex-col justify-center ">
-          <MapEditor floor={floor} nodes={nodes} edges={edges} />
+          <MapEditor floor={floor} nodes={nodes} edges={edgeCoords} />
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => setFloor("3")}>3</Button>
-            <Button onClick={() => setFloor("2")}>2</Button>
-            <Button onClick={() => setFloor("1")}>1</Button>
-            <Button onClick={() => setFloor("L1")}>L1</Button>
-            <Button onClick={() => setFloor("L2")}>L2</Button>
+            <Button onClick={() => renderFloor("3")}>3</Button>
+            <Button onClick={() => renderFloor("2")}>2</Button>
+            <Button onClick={() => renderFloor("1")}>1</Button>
+            <Button onClick={() => renderFloor("L1")}>L1</Button>
+            <Button onClick={() => renderFloor("L2")}>L2</Button>
           </ButtonGroup>
         </div>
       </div>

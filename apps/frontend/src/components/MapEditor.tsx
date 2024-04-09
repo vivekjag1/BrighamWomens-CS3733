@@ -5,9 +5,14 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
-import { Node, Edge } from "database";
+import { Node } from "database";
+import { EdgeCoordinates } from "../routes/EditMap.tsx";
 
-function MapEditor(props: { floor: string; nodes: Node[]; edges: Edge[] }) {
+function MapEditor(props: {
+  floor: string;
+  nodes: Node[];
+  edges: EdgeCoordinates[];
+}) {
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
@@ -40,8 +45,19 @@ function MapEditor(props: { floor: string; nodes: Node[]; edges: Edge[] }) {
               className="rounded-xl"
             >
               <image href={map} />
+              {props.edges.map((edge) => (
+                <line
+                  id="animated-line"
+                  x1={edge.startX}
+                  x2={edge.endX}
+                  y1={edge.startY}
+                  y2={edge.endY}
+                  stroke="red"
+                  strokeWidth="5"
+                />
+              ))}
               {props.nodes.map((node) => (
-                <circle r="10" cx={node.xcoord} cy={node.ycoord} fill="blue" />
+                <circle r="12" cx={node.xcoord} cy={node.ycoord} fill="blue" />
               ))}
             </svg>
           </TransformComponent>
