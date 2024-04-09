@@ -4,7 +4,7 @@ import React, { useState } from "react";
 const styles = {
   color: "#FFFFFF",
   width: "50px",
-  height: "50px",
+  height: "6.5vh",
   "&:hover": {
     backgroundColor: "rgba(0,0,0,0.15)",
   },

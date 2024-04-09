@@ -68,11 +68,16 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
   }
 
   return (
-    <div>
-      <div>
-        <TransformWrapper>
+    <div className="w-screen h-screen">
+      <div className="w-screen h-screen">
+        <TransformWrapper initialScale={1}>
           <TransformComponent>
-            <svg viewBox="0 0 5000 3400" height="98.5vh" className="rounded-xl">
+            <svg
+              viewBox="0 0 5000 3400"
+              width="75vw"
+              height="100vh"
+              className="rounded-xl"
+            >
               <image href={map} />
               {filteredSplitPaths.map((path) => (
                 <polyline
