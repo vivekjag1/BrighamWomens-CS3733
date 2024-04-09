@@ -7,9 +7,11 @@ import { NavigateAttributes } from "common/src/APICommon.ts";
 const router: Router = express.Router();
 
 router.get("/", async function (req: Request, res: Response): Promise<void> {
-  if (req.query) {
-    const { [NavigateAttributes.floorKey]: requestedFloor } = req.query;
+  const { [NavigateAttributes.floorKey]: requestedFloor } = req.query;
 
+  // no floor query in url
+  if (requestedFloor != undefined) {
+    // get nodes on a specific floor
     const nodesInFloor: Node[] = await client.node.findMany({
       where: {
         floor: requestedFloor!.toString(),
@@ -17,11 +19,11 @@ router.get("/", async function (req: Request, res: Response): Promise<void> {
     });
 
     res.json(nodesInFloor);
-    return;
+  } else {
+    // get all nodes
+    const requests: Node[] = await client.node.findMany();
+    res.json(requests);
   }
-
-  const requests: Node[] = await client.node.findMany();
-  res.json(requests);
 });
 
 export default router;
