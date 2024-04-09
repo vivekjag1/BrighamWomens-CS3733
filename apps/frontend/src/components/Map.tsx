@@ -18,16 +18,19 @@ function Map(props: { floor: number; coords: number[][] }) {
     yCoordinate: props.coords[length - 1][1],
   };
 
-  let listOfPoints: string = "";
-  console.log(props.floor);
-  const filteredCoords = props.coords.filter(
-    (value) => value[2] == props.floor,
-  );
-  console.log(filteredCoords);
-  for (let i = 0; i < filteredCoords.length; i++) {
-    listOfPoints =
-      listOfPoints + filteredCoords[i][0] + "," + filteredCoords[i][1] + " ";
+  const splitPath: number[][][] = [];
+  let startFloor: number = 0;
+  let endFloor: number = 0;
+  for (let i = 0; i < length - 1; i++) {
+    if (props.coords[i][2] != props.coords[i + 1][2]) {
+      endFloor = i + 1;
+      splitPath.push(props.coords.slice(startFloor, endFloor));
+      startFloor = i + 1;
+    }
   }
+  splitPath.push(props.coords.slice(startFloor));
+  console.log(splitPath);
+  const listOfPoints: string = "";
 
   // Determines which map to load depending on floor prop.
   let map;
