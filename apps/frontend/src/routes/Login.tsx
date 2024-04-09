@@ -52,29 +52,4 @@ function Login() {
     </div>
   );
 }
-
-// function AuthZeroLogin() {
-//   const navigate = useNavigate();
-//
-//   return (
-//     <Auth0Provider
-//       useRefreshTokens
-//       cacheLocation="localstorage"
-//       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
-//       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
-//       onRedirectCallback={(appState) => {
-//           navigate(appState?.returnTo || window.location.pathname);
-//
-//       }}
-//       authorizationParams={{
-//         redirect_uri: window.location.origin,
-//         audience: "/api",
-//         scope: "openid profile email offline_access",
-//       }}
-//     >
-//       <Login />
-//     </Auth0Provider>
-//   );
-// }
-
 export default Login;
