@@ -1,26 +1,23 @@
 import Map from "../components/Map.tsx";
 import { Button, ButtonGroup } from "@mui/material";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 
+/*const coords = [[0,0], [0,0]];*/
+
 function Home() {
-  /* const coords = [
-    [0, 0],
-    [0, 0],
-  ];*/
   const [coords, setCoords] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
 
-  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
+  async function formHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
-
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -33,8 +30,8 @@ function Home() {
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    console.log(url.toString());
     url.search = params.toString();
+    console.log(url.toString());
 
     await axios
       .get(url.toString())

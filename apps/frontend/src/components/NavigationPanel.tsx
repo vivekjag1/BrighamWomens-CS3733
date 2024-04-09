@@ -40,7 +40,9 @@ function NavigationPanel(props: {
             <p className="text-l font-normal">Current Location</p>
             <select name="currentLocation" className="w-[15vw]">
               {nodes.map((node) => (
-                <option value={node.nodeID}>{node.longName}</option>
+                <option key={node.nodeID} value={node.nodeID}>
+                  {node.longName}
+                </option>
               ))}
             </select>
           </div>
@@ -48,7 +50,9 @@ function NavigationPanel(props: {
             <p>Destination</p>
             <select name="destination" className="w-[15vw]">
               {nodes.map((node) => (
-                <option value={node.nodeID}>{node.longName}</option>
+                <option key={node.nodeID} value={node.nodeID}>
+                  {node.longName}
+                </option>
               ))}
             </select>
           </div>
