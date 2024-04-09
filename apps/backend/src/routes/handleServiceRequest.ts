@@ -24,7 +24,7 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
             description: request.serviceRequest.description,
             priority: request.serviceRequest.priority,
             status: request.serviceRequest.status,
-            requestedTime: new Date(),
+            requestedTime: request.serviceRequest.requestedTime,
             assignedTo: "Bestest Joe",
           },
         },
