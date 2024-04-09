@@ -38,7 +38,7 @@ function NewHeader() {
       <div className="h-screen w-5vw"></div>
       <div className="absolute z-10">
         <div
-          className={`pl-1 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-5vw transition-width" : "w-15vw transition-width"}`}
+          className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-[80px] transition-width" : "w-[200px] transition-width"}`}
         >
           <div className="flex flex-row ">
             <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
