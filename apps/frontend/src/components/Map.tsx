@@ -5,6 +5,7 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
+
 function Map(props: { floor: number; coords: number[][] }) {
   // Determines instructions for drawing path on map
   const length = props.coords.length;
@@ -29,8 +30,20 @@ function Map(props: { floor: number; coords: number[][] }) {
     }
   }
   splitPath.push(props.coords.slice(startFloor));
-  console.log(splitPath);
-  const listOfPoints: string = "";
+
+  const filteredSplitPath = splitPath.filter(
+    (value) => value[0][2] == props.floor,
+  );
+
+  const listOfPolylineStrings: string[] = [];
+  for (let i = 0; i < filteredSplitPath.length; i++) {
+    let polylineString = "";
+    for (let j = 0; j < filteredSplitPath[i].length; j++) {
+      polylineString +=
+        filteredSplitPath[i][j][0] + "," + filteredSplitPath[i][j][1] + " ";
+    }
+    listOfPolylineStrings.push(polylineString);
+  }
 
   // Determines which map to load depending on floor prop.
   let map;
@@ -64,12 +77,17 @@ function Map(props: { floor: number; coords: number[][] }) {
               className="rounded-xl"
             >
               <image href={map} />
-              <polyline
-                stroke="blue"
-                strokeWidth="5"
-                fill="none"
-                points={listOfPoints}
-              />
+              {filteredSplitPath.map((path) => (
+                <polyline
+                  key={path[0].toString()}
+                  stroke="blue"
+                  strokeWidth="5"
+                  fill="none"
+                  points={
+                    listOfPolylineStrings[filteredSplitPath.indexOf(path)]
+                  }
+                />
+              ))}
               <circle
                 r="10"
                 cx={startNode.xCoordinate}
