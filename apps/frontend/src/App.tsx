@@ -22,6 +22,7 @@ import AuthComp from "./components/AuthenticationComponent.tsx";
 import Home from "./routes/Home.tsx";
 import SideNavBarV1 from "./archive/SideNavBarV1.tsx";
 import Login from "./routes/Login.tsx";
+import paths from "./paths/paths.tsx";
 function App() {
   // const navigate = useNavigate();
   const router = createBrowserRouter([
@@ -30,48 +31,48 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "",
+          path: paths.LOGIN,
           element: <Login />,
         },
 
         {
-          path: "home",
+          path: paths.HOME,
           element: <Home />,
         },
         {
-          path: "data",
+          path: paths.MAP_DATA,
           element: <AuthComp component={PathTables} />,
         },
         {
-          path: "services",
+          path: paths.SERVICES,
           element: <Services />,
         },
         {
-          path: "services/medicine",
+          path: paths.MEDICINE_REQUEST,
           element: <MedicineDeliveryForm />,
         },
         {
-          path: "services/medical-device",
+          path: paths.MEDICAL_DEVICE_DELIVERY,
           element: <MedicalDeviceDeliveryForm />,
         },
         {
-          path: "services/room-reservation",
+          path: paths.ROOM_RESERVATION,
           element: <RoomReservation />,
         },
         {
-          path: "/home/services/sanitation-form",
+          path: paths.SANITATION_FORM,
           element: <SanitationForm />,
         },
         {
-          path: "services/security",
+          path: paths.SECURITY_REQUEST,
           element: <SecurityRequest />,
         },
         {
-          path: "services/data",
+          path: paths.SERVICES_DATA,
           element: <ServicesTable />,
         },
         {
-          path: "edit",
+          path: paths.EDITED_MAP,
           element: <EditMap />,
         },
       ],
