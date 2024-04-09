@@ -41,7 +41,6 @@ function NavigationPanel(props: {
             where to go.
           </p>
           <div>
-            <p className="text-l font-normal">Current Location</p>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -62,7 +61,6 @@ function NavigationPanel(props: {
             />
           </div>
           <div>
-            <p>Destination</p>
             <Autocomplete
               disablePortal
               id="combo-box-demo-dest"
