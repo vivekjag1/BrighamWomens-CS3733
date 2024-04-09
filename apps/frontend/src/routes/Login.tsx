@@ -1,8 +1,10 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import bwhLogoSemiNaked from "../../assets/bwh-logo-semi-naked.svg";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -12,6 +14,9 @@ function Login() {
       },
     });
     console.log("hello world");
+  }
+  function handlePathfind() {
+    navigate("/home");
   }
 
   return (
@@ -27,9 +32,21 @@ function Login() {
               src={bwhLogoSemiNaked}
               alt="Brigham and Women's Hospital Logo"
             />
-            {/*<p className="font-bold text-3xl text-blue-900">Welcome Back!</p>*/}
-            <p className="font-bold text-2xl text-blue-900">Click to Login</p>
+            <p className="font-bold text-2xl text-blue-900">
+              Are you a staff member? Click to Login
+            </p>
           </button>
+          <div className="flex flex-col items-start justify-start align-middle gap-2">
+            <button
+              type="submit"
+              className="flex flex-col justify-center"
+              onClick={handlePathfind}
+            >
+              <p className="font-bold text-2xl text-blue-900">
+                Click here to navigate through the hospital!
+              </p>
+            </button>
+          </div>
         </form>
       </div>
     </div>
