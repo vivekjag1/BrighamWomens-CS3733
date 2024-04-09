@@ -4,7 +4,7 @@ import { ServiceRequestGetter } from "../components/ServiceRequestGetter.tsx";
 
 function ServiceTable() {
   return (
-    <div className=" h-screen overflow-y-scroll">
+    <div className=" h-screen ">
       <div className="w-full justify-items-center">
         <div className={"flex flex-col items-center gap-5"}>
           <h1 className="pt-9 text-3xl text-center font-bold">

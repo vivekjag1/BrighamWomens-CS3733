@@ -19,7 +19,7 @@ export function SecurityRequest() {
   const [nodeHolder, setNodeHolder] = useState<string>("");
 
   return (
-    <div className=" h-screen overflow-y-scroll">
+    <div className=" h-screen ">
       <div className="w-full h-screen bg-gray-200 pt-[3rem] flex justify-center">
         <div>
           <Card className="drop-shadow-2xl" sx={{ borderRadius: "10px" }}>
