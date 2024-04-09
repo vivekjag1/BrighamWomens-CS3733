@@ -1,9 +1,9 @@
 import Map from "../components/Map.tsx";
-import { Button, ButtonGroup } from "@mui/material";
 import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
+import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
   // Sets the floor number depending on which button user clicks
@@ -54,39 +54,8 @@ function Home() {
         <div className="h-screen flex flex-col justify-center">
           <Map floor={floor} coords={coords} />
         </div>
-        <div className="absolute left-[95%] top-[78%]">
-          <ButtonGroup orientation="vertical" variant="contained">
-            <Button
-              onClick={() => handleMapSwitch(3)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              3
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(2)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              2
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(1)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              1
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(-1)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              L1
-            </Button>
-            <Button
-              onClick={() => handleMapSwitch(-2)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              L2
-            </Button>
-          </ButtonGroup>
+        <div className="absolute left-[95%] top-[72%]">
+          <MapToggle onClick={handleMapSwitch} />
         </div>
       </div>
     </div>
