@@ -4,6 +4,7 @@ import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
+import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 //import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
@@ -149,6 +150,31 @@ function SideNavBarV1() {
                     }
                   >
                     Service Data
+                  </h2>
+                </div>
+              </Link>
+            </div>
+            <div className="m-4">
+              <Link to="/edit">
+                <div
+                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                >
+                  <EditLocationAltIcon
+                    sx={{
+                      marginRight: "5px",
+                      marginTop: "-3px",
+                      fontSize: "30px",
+                      color: "white",
+                    }}
+                  />
+                  <h2
+                    className={
+                      isCollapsed
+                        ? "hidden"
+                        : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
+                    }
+                  >
+                    Edit Map
                   </h2>
                 </div>
               </Link>
