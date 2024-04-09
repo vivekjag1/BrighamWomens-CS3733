@@ -5,25 +5,8 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
-function Map(props: { floor: number; coords: number[][] }) {
-  // Determines instructions for drawing path on map
-  const length = props.coords.length;
-  const startNode = {
-    xCoordinate: props.coords[0][0],
-    yCoordinate: props.coords[0][1],
-  };
 
-  const endNode = {
-    xCoordinate: props.coords[length - 1][0],
-    yCoordinate: props.coords[length - 1][1],
-  };
-
-  let listOfPoints: string = "";
-  for (let i = 0; i < length; i++) {
-    listOfPoints =
-      listOfPoints + props.coords[i][0] + "," + props.coords[i][1] + " ";
-  }
-
+function Map(props: { floor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
@@ -44,36 +27,81 @@ function Map(props: { floor: number; coords: number[][] }) {
       break;
   }
 
+  // Determines instructions for drawing starting and ending points on path
+  const startNode = {
+    xCoordinate: props.nodes[0][0],
+    yCoordinate: props.nodes[0][1],
+    floor: props.nodes[0][2],
+  };
+
+  const length = props.nodes.length;
+  const endNode = {
+    xCoordinate: props.nodes[length - 1][0],
+    yCoordinate: props.nodes[length - 1][1],
+    floor: props.nodes[length - 1][2],
+  };
+
+  // Determines instructions for drawing path from a start node to end node
+  const splitPaths: number[][][] = [];
+  let startFloor: number = 0;
+  let endFloor: number = 0;
+  for (let i = 0; i < length - 1; i++) {
+    if (props.nodes[i][2] != props.nodes[i + 1][2]) {
+      endFloor = i + 1;
+      splitPaths.push(props.nodes.slice(startFloor, endFloor));
+      startFloor = i + 1;
+    }
+  }
+  splitPaths.push(props.nodes.slice(startFloor));
+
+  const filteredSplitPaths = splitPaths.filter(
+    (splitPath) => splitPath[0][2] == props.floor,
+  );
+
+  const listOfPolylineStrings: string[] = [];
+  for (let i = 0; i < filteredSplitPaths.length; i++) {
+    let polylineString = "";
+    for (let j = 0; j < filteredSplitPaths[i].length; j++) {
+      polylineString +=
+        filteredSplitPaths[i][j][0] + "," + filteredSplitPaths[i][j][1] + " ";
+    }
+    listOfPolylineStrings.push(polylineString);
+  }
+
   return (
     <div>
       <div>
         <TransformWrapper>
           <TransformComponent>
-            <svg
-              viewBox="0 0 5000 3400"
-              width="auto"
-              height="98vh"
-              className="rounded-xl"
-            >
+            <svg viewBox="0 0 5000 3400" height="98.5vh" className="rounded-xl">
               <image href={map} />
-              <polyline
-                stroke="blue"
-                strokeWidth="5"
-                fill="none"
-                points={listOfPoints}
-              />
-              <circle
-                r="10"
-                cx={startNode.xCoordinate}
-                cy={startNode.yCoordinate}
-                fill="green"
-              />
-              <circle
-                r="10"
-                cx={endNode.xCoordinate}
-                cy={endNode.yCoordinate}
-                fill="red"
-              />
+              {filteredSplitPaths.map((path) => (
+                <polyline
+                  key={path[0].toString()}
+                  stroke="blue"
+                  strokeWidth="5"
+                  fill="none"
+                  points={
+                    listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
+                  }
+                />
+              ))}
+              {props.floor === startNode.floor && (
+                <circle
+                  r="10"
+                  cx={startNode.xCoordinate}
+                  cy={startNode.yCoordinate}
+                  fill="green"
+                />
+              )}
+              {props.floor === endNode.floor && (
+                <circle
+                  r="10"
+                  cx={endNode.xCoordinate}
+                  cy={endNode.yCoordinate}
+                  fill="red"
+                />
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>

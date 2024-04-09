@@ -186,11 +186,8 @@ export class Graph {
           //get G, H, and F values of the child node
           const g: number =
             currentNode.g +
-            this.squaredDistanceBetweenNodes(nextToCheck, currentNode.nodeID);
-          const h: number = this.squaredDistanceBetweenNodes(
-            nextToCheck,
-            endNodeID,
-          );
+            this.distanceBetweenNodes(nextToCheck, currentNode.nodeID);
+          const h: number = this.distanceBetweenNodes(nextToCheck, endNodeID);
           const f = g + h;
 
           //check if path should be skipped
@@ -220,15 +217,18 @@ export class Graph {
     return path;
   }
 
-  public squaredDistanceBetweenNodes(a: string, b: string): number {
+  public distanceBetweenNodes(a: string, b: string): number {
     const nodeA: GraphNode = this.getNodeWithNodeID(a);
     const nodeB: GraphNode = this.getNodeWithNodeID(b);
     if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
-      return 10;
+      return 100;
     }
-    return (
+    if (nodeA.nodeType == "STAI" && nodeB.nodeType == "STAI") {
+      return 200;
+    }
+    return Math.sqrt(
       Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
-      Math.pow(nodeB._ycoord - nodeA._ycoord, 2)
+        Math.pow(nodeB._ycoord - nodeA._ycoord, 2),
     );
   }
 

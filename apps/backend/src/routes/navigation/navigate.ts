@@ -16,13 +16,13 @@ router.get("/", async (req, res) => {
 
   const startNode = await prisma.node.findFirst({
     where: {
-      longName: startName!.toString(),
+      nodeID: startName!.toString(),
     },
   });
 
   const endNode = await prisma.node.findFirst({
     where: {
-      longName: endName!.toString(),
+      nodeID: endName!.toString(),
     },
   });
 

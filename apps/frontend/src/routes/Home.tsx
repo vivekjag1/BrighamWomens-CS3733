@@ -1,28 +1,28 @@
 import Map from "../components/Map.tsx";
-import { Button, ButtonGroup } from "@mui/material";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
-/*import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";*/
+import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import axios from "axios";
+import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
-  const coords = [
-    [0, 0],
-    [0, 0],
-  ];
-  /*const [coords, setCoords] = useState<number[][]>([
+  // Sets the floor number depending on which button user clicks
+  const [floor, setFloor] = useState<number>(-1);
+  function handleMapSwitch(x: number) {
+    setFloor(x);
+  }
+
+  // Retrieves path from current location to destination in the form of a list of a nodes
+  const [nodes, setNodes] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
-*/
 
-  /*
-  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
-
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -35,40 +35,27 @@ function Home() {
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    console.log(url.toString());
     url.search = params.toString();
 
     await axios
       .get(url.toString())
       .then(function (response) {
-        console.log(response.data);
-        setCoords(response.data);
+        setNodes(response.data);
       })
       .catch(console.error);
   }
-*/
 
-  const [floor, setFloor] = useState<number>(-1);
-  function handleMapSwitch(x: number) {
-    setFloor(x);
-  }
   return (
     <div>
-      <div className="relative flex gap-4 bg-[#F1F1E6]">
-        <div className="h-screen ml-4 flex flex-col justify-center">
-          <NavigationPanel />
+      <div className="relative flex justify-evenly bg-[#F1F1E6]">
+        <div className="h-screen flex flex-col justify-center">
+          <NavigationPanel onSubmit={handleForm} />
         </div>
-        <div className="h-screen flex flex-col justify-center ">
-          <Map floor={floor} coords={coords} />
+        <div className="h-screen flex flex-col justify-center">
+          <Map floor={floor} nodes={nodes} />
         </div>
-        <div className="absolute left-[95%] top-[74%]">
-          <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => handleMapSwitch(3)}>3</Button>
-            <Button onClick={() => handleMapSwitch(2)}>2</Button>
-            <Button onClick={() => handleMapSwitch(1)}>1</Button>
-            <Button onClick={() => handleMapSwitch(-1)}>L1</Button>
-            <Button onClick={() => handleMapSwitch(-2)}>L2</Button>
-          </ButtonGroup>
+        <div className="absolute left-[95%] top-[72%]">
+          <MapToggle onClick={handleMapSwitch} />
         </div>
       </div>
     </div>
