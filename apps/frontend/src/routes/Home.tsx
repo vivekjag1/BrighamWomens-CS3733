@@ -16,37 +16,36 @@ function Home() {
   ]);
 */
 
-  /*
-  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault(); // prevent page refresh
+  // async function formHandler(event: React.FormEvent<HTMLFormElement>) {
+  //   event.preventDefault(); // prevent page refresh
 
-    // Access the form data
-    const formData = new FormData(event.target as HTMLFormElement);
+  // Access the form data
+  // const formData = new FormData(event.target as HTMLFormElement);
+  //
+  // const queryParams: Record<string, string> = {
+  //   [NavigateAttributes.startLocationKey]: formData
+  //     .get(NavigateAttributes.startLocationKey)!
+  //     .toString(),
+  //   [NavigateAttributes.endLocationKey]: formData
+  //     .get(NavigateAttributes.endLocationKey)!
+  //     .toString(),
+  // };
+  //
+  // const params: URLSearchParams = new URLSearchParams(queryParams);
+  //
+  // const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
+  // // console.log(url.toString());
+  // url.search = params.toString();
 
-    const queryParams: Record<string, string> = {
-      [NavigateAttributes.startLocationKey]: formData
-        .get(NavigateAttributes.startLocationKey)!
-        .toString(),
-      [NavigateAttributes.endLocationKey]: formData
-        .get(NavigateAttributes.endLocationKey)!
-        .toString(),
-    };
-
-    const params: URLSearchParams = new URLSearchParams(queryParams);
-
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    // console.log(url.toString());
-    url.search = params.toString();
-
-    await axios
-      .get(url.toString())
-      .then(function (response) {
-        // console.log(response.data);
-        setCoords(response.data);
-      })
-      .catch(console.error);
-  }
-*/
+  //   await axios
+  //     .get(url.toString())
+  //     .then(function (response) {
+  //       // console.log(response.data);
+  //       setCoords(response.data);
+  //     })
+  //     .catch(console.error);
+  // }
+  // */
 
   const [floor, setFloor] = useState<number>(-1);
   function handleMapSwitch(x: number) {

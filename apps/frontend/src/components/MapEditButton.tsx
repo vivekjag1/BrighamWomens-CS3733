@@ -1,25 +1,12 @@
-import { Button } from "@mui/material";
-import { FormEventHandler } from "react";
-
-function MapEditButton(props: {
-  onSubmit: FormEventHandler<HTMLFormElement> | undefined;
-}) {
+function MapEditButton() {
   return (
     <div>
-      <div className="bg-[#f6f8fa]">
-        <form
-          className="flex flex-col gap-6 p-6 rounded-lg shadow-[0_2px_4px_4px_rgba(0,0,0,0.25)]"
-          onSubmit={props.onSubmit}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: "#0146B1",
-            }}
-          >
-            Edit Map
-          </Button>
+      <div className="w-[17.5vw] h-[98vh] p-5 bg-[#D9D9D9] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
+        <form className="flex flex-col justify-start gap-6">
+          <h2 className="text-4xl font-bold text-secondary">Edit Map</h2>
+          <p className="text-l font-normal text-black">
+            To be done in Iteration 3 😞
+          </p>
         </form>
       </div>
     </div>
