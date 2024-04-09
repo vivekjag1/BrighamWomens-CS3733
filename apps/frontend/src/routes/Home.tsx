@@ -45,6 +45,7 @@ function Home() {
       .then(function (response) {
         setNodes(response.data);
         console.log(response.data);
+        setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
   }
