@@ -1,21 +1,22 @@
 import Map from "../components/Map.tsx";
-import LocationSelector from "../components/LocationSelector.tsx";
-import { Button, ButtonGroup, IconButton } from "@mui/material";
-import EditLocationIcon from "@mui/icons-material/EditLocation";
+import { Button, ButtonGroup } from "@mui/material";
 import { useState } from "react";
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";
+import NavigationPanel from "../components/NavigationPanel.tsx";
+/*import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import axios from "axios";*/
 
 function Home() {
-  const [panelToggled, setPanelToggled] = useState(false);
-  const [coords, setCoords] = useState<number[][]>([
+  const coords = [
+    [0, 0],
+    [0, 0],
+  ];
+  /*const [coords, setCoords] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
-  function clickHandler() {
-    setPanelToggled(!panelToggled);
-  }
+*/
 
+  /*
   async function formHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
@@ -45,6 +46,7 @@ function Home() {
       })
       .catch(console.error);
   }
+*/
 
   const [floor, setFloor] = useState<number>(-1);
   function handleMapSwitch(x: number) {
@@ -52,34 +54,12 @@ function Home() {
   }
   return (
     <div>
-      <div className="relative">
-        <div className="flex justify-end">
-          <Map floor={floor} coords={coords} />
+      <div className="relative flex gap-4 bg-[#F1F1E6]">
+        <div className="h-screen ml-4 flex flex-col justify-center">
+          <NavigationPanel />
         </div>
-        <div className="absolute top-4 left-4">
-          <IconButton
-            onClick={clickHandler}
-            size="large"
-            sx={{
-              backgroundColor: "#f6f8fa",
-              borderRadius: "10px",
-              "&:hover": {
-                backgroundColor: "#a1a1a1",
-              },
-              width: "50px",
-              height: "50px",
-              marginBottom: "10px",
-            }}
-          >
-            <EditLocationIcon
-              sx={{
-                width: "35px",
-                height: "35px",
-                color: "#3b4146",
-              }}
-            />
-          </IconButton>
-          {panelToggled && <LocationSelector onSubmit={formHandler} />}
+        <div className="h-screen flex flex-col justify-center ">
+          <Map floor={floor} coords={coords} />
         </div>
         <div className="absolute left-[95%] top-[74%]">
           <ButtonGroup orientation="vertical" variant="contained">

@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import NewHeader from "../components/NewHeader.tsx";
+import SideNavBar from "./SideNavBar.tsx";
 
 function Layout() {
   return (
-    <div className="flex flex-row">
-      <NewHeader />
-      <main>
+    <div className="w-screen h-screen flex">
+      <SideNavBar />
+      <main className="grow">
         <Outlet />
       </main>
     </div>

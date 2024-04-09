@@ -1,9 +1,10 @@
 import express, { Router } from "express";
-const router: Router = express.Router();
 import { PrismaClient } from "database";
-const prisma = new PrismaClient();
-import { Graph } from "../../fileInput/Graph.ts";
+import { Graph, PathAlgorithm } from "../../fileInput/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
+
+const router: Router = express.Router();
+const prisma = new PrismaClient();
 
 // Handles incoming path requests
 router.get("/", async (req, res) => {
@@ -31,7 +32,11 @@ router.get("/", async (req, res) => {
     await prisma.edge.findMany(),
   );
 
-  const path = graph.getPath(startNode!.nodeID, endNode!.nodeID, "A*");
+  const path = graph.getPath(
+    startNode!.nodeID,
+    endNode!.nodeID,
+    PathAlgorithm.AStar,
+  );
 
   const pathAsCoords: number[][] = [];
   for (let i = 0; i < path.length; i++) {

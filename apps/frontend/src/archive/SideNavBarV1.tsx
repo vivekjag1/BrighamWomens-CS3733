@@ -21,8 +21,8 @@ const insertLineBreaks = (text: string) => {
   return newText;
 };
 
-function NewHeader() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+function SideNavBarV1() {
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -35,8 +35,7 @@ function NewHeader() {
   // };
 
   return (
-    <>
-      <div className="h-screen w-5vw"></div>
+    <div>
       <div className="absolute z-10">
         <div
           className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-[80px] transition-width" : "w-[250px] transition-width"}`}
@@ -272,8 +271,8 @@ function NewHeader() {
       {/*        </button>*/}
       {/*    </div>*/}
       {/*</div>*/}
-    </>
+    </div>
   );
 }
 
-export default NewHeader;
+export default SideNavBarV1;

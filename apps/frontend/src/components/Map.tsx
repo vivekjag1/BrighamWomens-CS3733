@@ -52,10 +52,10 @@ function Map(props: { floor: number; coords: number[][] }) {
             <svg
               viewBox="0 0 5000 3400"
               width="auto"
-              height="92vh"
-              className="map"
+              height="98vh"
+              className="rounded-xl"
             >
-              <image href={map} className="map" />
+              <image href={map} />
               <polyline
                 stroke="blue"
                 strokeWidth="5"
