@@ -3,8 +3,8 @@ import React, { useState } from "react";
 
 const styles = {
   color: "#FFFFFF",
-  width: "50px",
-  height: "50px",
+  width: "3vw",
+  height: "5vh",
   "&:hover": {
     backgroundColor: "rgba(0,0,0,0.15)",
   },
@@ -39,7 +39,7 @@ function MapToggle(props: {
       value={activeMap}
       exclusive
       onChange={handleChange}
-      sx={{ backgroundColor: "#013B96" }}
+      sx={{ backgroundColor: "#013B96", height: "100%" }}
     >
       <ToggleButton
         onClick={() => props.onClick(3)}
