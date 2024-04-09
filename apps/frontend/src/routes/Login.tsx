@@ -1,7 +1,6 @@
 import React from "react";
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import bwhLogoSemiNaked from "../../assets/bwh-logo-semi-naked.svg";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { loginWithRedirect } = useAuth0();
@@ -9,7 +8,7 @@ function Login() {
     e.preventDefault();
     await loginWithRedirect({
       appState: {
-        returnTo: location.pathname,
+        returnTo: "/home",
       },
     });
     console.log("hello world");
@@ -37,27 +36,28 @@ function Login() {
   );
 }
 
-function AuthZeroLogin() {
-  const navigate = useNavigate();
+// function AuthZeroLogin() {
+//   const navigate = useNavigate();
+//
+//   return (
+//     <Auth0Provider
+//       useRefreshTokens
+//       cacheLocation="localstorage"
+//       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
+//       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
+//       onRedirectCallback={(appState) => {
+//           navigate(appState?.returnTo || window.location.pathname);
+//
+//       }}
+//       authorizationParams={{
+//         redirect_uri: window.location.origin,
+//         audience: "/api",
+//         scope: "openid profile email offline_access",
+//       }}
+//     >
+//       <Login />
+//     </Auth0Provider>
+//   );
+// }
 
-  return (
-    <Auth0Provider
-      useRefreshTokens
-      cacheLocation="localstorage"
-      domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
-      clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
-      onRedirectCallback={() => {
-        navigate("/home");
-      }}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: "/api",
-        scope: "openid profile email offline_access",
-      }}
-    >
-      <Login />
-    </Auth0Provider>
-  );
-}
-
-export default AuthZeroLogin;
+export default Login;
