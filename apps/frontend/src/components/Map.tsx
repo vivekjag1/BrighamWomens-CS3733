@@ -79,7 +79,7 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
             <svg
               viewBox="0 0 5000 3400"
               height="98.5vh"
-              width="74vw"
+              width="auto"
               className="rounded-xl"
             >
               <image href={map} />

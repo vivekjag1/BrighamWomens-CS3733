@@ -46,7 +46,7 @@ function NavigationPanel(props: {
               id="combo-box-demo"
               options={nodes}
               getOptionLabel={(option) => option.longName}
-              sx={{ width: "16rem" }}
+              sx={{ width: "1" }}
               renderInput={(params) => (
                 <TextField {...params} label="Current Location" />
               )}
@@ -66,7 +66,7 @@ function NavigationPanel(props: {
               id="combo-box-demo-dest"
               options={nodes}
               getOptionLabel={(option) => option.longName}
-              sx={{ width: "16rem" }}
+              sx={{ width: "1" }}
               renderInput={(params) => (
                 <TextField {...params} label="Destination" />
               )}
@@ -83,7 +83,11 @@ function NavigationPanel(props: {
             />
           </div>
           <div>
-            <Button type="submit" variant="contained">
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ backgroundColor: "#013B96", width: "8rem" }}
+            >
               Submit
             </Button>
           </div>
