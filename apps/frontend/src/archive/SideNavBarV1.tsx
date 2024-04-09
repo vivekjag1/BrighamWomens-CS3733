@@ -9,6 +9,7 @@ import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import { Link } from "react-router-dom";
 import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const insertLineBreaks = (text: string) => {
@@ -179,7 +180,34 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-
+            {/*Logout button */}
+            <div className="m-4">
+              <Link to="/edit">
+                {" "}
+                {/* enter link to button here to log out*/}
+                <div
+                  className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                >
+                  <LogoutIcon
+                    sx={{
+                      marginRight: "5px",
+                      marginTop: "-3px",
+                      fontSize: "30px",
+                      color: "white",
+                    }}
+                  />
+                  <h2
+                    className={
+                      isCollapsed
+                        ? "hidden"
+                        : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
+                    }
+                  >
+                    Logout
+                  </h2>
+                </div>
+              </Link>
+            </div>
             <div className="m-4">
               <div
                 style={{ cursor: "pointer" }}
