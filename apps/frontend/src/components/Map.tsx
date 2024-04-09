@@ -73,12 +73,7 @@ function Map(props: { floor: number; coords: number[][] }) {
       <div>
         <TransformWrapper>
           <TransformComponent>
-            <svg
-              viewBox="0 0 5000 3400"
-              width="auto"
-              height="98vh"
-              className="rounded-xl"
-            >
+            <svg viewBox="0 0 5000 3400" height="98.5vh" className="rounded-xl">
               <image href={map} />
               {filteredSplitPaths.map((path) => (
                 <polyline

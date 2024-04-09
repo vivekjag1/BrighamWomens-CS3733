@@ -47,14 +47,14 @@ function Home() {
 
   return (
     <div>
-      <div className="relative flex gap-4 bg-[#F1F1E6]">
-        <div className="h-screen ml-4 flex flex-col justify-center">
+      <div className="relative flex justify-evenly bg-[#F1F1E6]">
+        <div className="h-screen flex flex-col justify-center">
           <NavigationPanel onSubmit={formHandler} />
         </div>
-        <div className="h-screen flex flex-col justify-center ">
+        <div className="h-screen flex flex-col justify-center">
           <Map floor={floor} coords={coords} />
         </div>
-        <div className="absolute left-[95%] top-[74%]">
+        <div className="absolute left-[95%] top-[78%]">
           <ButtonGroup orientation="vertical" variant="contained">
             <Button
               onClick={() => handleMapSwitch(3)}
