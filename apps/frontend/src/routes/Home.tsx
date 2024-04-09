@@ -2,21 +2,19 @@ import Map from "../components/Map.tsx";
 import { Button, ButtonGroup } from "@mui/material";
 import { useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
-/*import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";*/
+import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import axios from "axios";
 
 function Home() {
-  const coords = [
+  /* const coords = [
     [0, 0],
     [0, 0],
-  ];
-  /*const [coords, setCoords] = useState<number[][]>([
+  ];*/
+  const [coords, setCoords] = useState<number[][]>([
     [0, 0],
     [0, 0],
   ]);
-*/
 
-  /*
   async function formHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
@@ -46,7 +44,6 @@ function Home() {
       })
       .catch(console.error);
   }
-*/
 
   const [floor, setFloor] = useState<number>(-1);
   function handleMapSwitch(x: number) {
@@ -56,7 +53,7 @@ function Home() {
     <div>
       <div className="relative flex gap-4 bg-[#F1F1E6]">
         <div className="h-screen ml-4 flex flex-col justify-center">
-          <NavigationPanel />
+          <NavigationPanel onSubmit={formHandler} />
         </div>
         <div className="h-screen flex flex-col justify-center ">
           <Map floor={floor} coords={coords} />
