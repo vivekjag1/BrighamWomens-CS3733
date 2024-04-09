@@ -21,10 +21,10 @@ function Login() {
     <div className="h-screen w-screen bg-cover bg-[url('../../assets/bwh-exterior-default.png')]  relative">
       <div className="h-screen w-screen relative flex flex-col justify-center items-center">
         <form
-          className="flex flex-col items-start justify-start align-middle gap-2 p-5 bg-white rounded-2xl absolute"
+          className="flex flex-col items-start justify-start align-middle gap-2 p-5 bg-white rounded-2xl dropshadow-2xlg hover:ring-white hover:ring-8 absolute"
           onSubmit={handleLogin}
         >
-          <button type="submit" className="flex flex-col items-center gap-2">
+          <button type="submit" className="flex flex-col items-center gap-2 ">
             <img
               className="w-[500px] h-[60px]"
               src={bwhLogoSemiNaked}
