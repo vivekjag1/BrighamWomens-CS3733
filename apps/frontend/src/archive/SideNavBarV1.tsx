@@ -36,6 +36,7 @@ function SideNavBarV1() {
 
   return (
     <div>
+      <div className="w-5vw"></div>
       <div className="absolute z-10">
         <div
           className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-[80px] transition-width" : "w-[250px] transition-width"}`}
