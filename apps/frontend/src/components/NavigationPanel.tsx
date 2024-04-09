@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
+import { Button, TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { FormEventHandler, useEffect, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import axios from "axios";
 import { Graph } from "../../../backend/src/fileInput/Graph.ts";
 import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
@@ -9,6 +9,9 @@ function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
 }) {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [startNode, setStartNode] = useState<string | null>(null);
+  const [destinationNode, setDestinationNode] = useState<string | null>(null);
+
   useEffect(() => {
     //get the nodes from the db
     async function getNodesFromDb() {
@@ -38,23 +41,80 @@ function NavigationPanel(props: {
           </p>
           <div>
             <p className="text-l font-normal">Current Location</p>
-            <select name="currentLocation" className="w-[15vw]">
+            {/*<select name="currentLocation" className="w-[15vw]">
               {nodes.map((node) => (
                 <option key={node.nodeID} value={node.nodeID}>
                   {node.longName}
                 </option>
               ))}
-            </select>
+            </select>*/}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              //options={nodes.map((node) => ({ label: node.longName, value: node.nodeID}))}
+              options={nodes}
+              getOptionLabel={(option) => option.longName}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Current Location" />
+              )}
+              //isOptionEqualToValue={(option, value) => option.value === value.value}
+              /*value={startNode ? { label: startNode.longName } : null}
+                    onChange={(e) => {
+                        setStartNode ({
+                            ...startNode,
+                            startNode: e.target.,
+                        });
+
+                    }}*/
+              onChange={(_, startNode) => {
+                setStartNode(startNode ? startNode.nodeID : "");
+              }}
+            />
+            <input
+              type="hidden"
+              name="currentLocation"
+              value={startNode || ""}
+            />
           </div>
           <div>
             <p>Destination</p>
-            <select name="destination" className="w-[15vw]">
+            {/*<select name="destination" className="w-[15vw]">
               {nodes.map((node) => (
                 <option key={node.nodeID} value={node.nodeID}>
                   {node.longName}
                 </option>
               ))}
-            </select>
+            </select>*/}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo-dest"
+              options={nodes}
+              getOptionLabel={(option) => option.longName}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Destination" />
+              )}
+              //isOptionEqualToValue={(option, value) => option.value === value.value}
+              /*value={nodes.map((node) => ({ node: node}))}
+                    onChange={(e) => {
+                        setDestinationNode ({
+                            ...destinationNode,
+                            destinationNode: e.target.value,
+                        });
+
+                    }}*/
+              onChange={(_, destinationNode) => {
+                setDestinationNode(
+                  destinationNode ? destinationNode.nodeID : "",
+                );
+              }}
+            />
+            <input
+              type="hidden"
+              name="destination"
+              value={destinationNode || ""}
+            />
           </div>
           <div>
             <Button type="submit" variant="contained">

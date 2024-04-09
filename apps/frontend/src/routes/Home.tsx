@@ -13,11 +13,15 @@ function Home() {
     [0, 0],
   ]);
 
+  //const [startNodeID, setStartNodeID] = useState('');
+  //const [destinationNodeID, setDestinationNodeID] = useState('');
+
   async function formHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
+    console.log(formData);
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -26,6 +30,7 @@ function Home() {
         .get(NavigateAttributes.endLocationKey)!
         .toString(),
     };
+    console.log(queryParams);
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
