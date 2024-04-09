@@ -28,12 +28,7 @@ function MapToggle(props: { onClick: (x: number) => void }) {
       onChange={handleChange}
       sx={{ backgroundColor: "#013B96" }}
     >
-      <ToggleButton
-        onClick={() => props.onClick(3)}
-        value="3"
-        sx={styles}
-        disabled
-      >
+      <ToggleButton onClick={() => props.onClick(3)} value="3" sx={styles}>
         3
       </ToggleButton>
       <ToggleButton onClick={() => props.onClick(2)} value="2" sx={styles}>
