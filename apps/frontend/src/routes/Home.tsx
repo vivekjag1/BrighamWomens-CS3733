@@ -51,7 +51,7 @@ function Home() {
         <div className="h-screen flex flex-col justify-center">
           <NavigationPanel onSubmit={formHandler} />
         </div>
-        <div className="h-screen flex flex-col justify-center align-end">
+        <div className="h-screen flex flex-col justify-center">
           <Map floor={floor} coords={coords} />
         </div>
         <div className="absolute left-[95%] top-[78%]">
