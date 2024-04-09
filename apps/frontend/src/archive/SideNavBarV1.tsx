@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../assets/bwh-logo-naked.svg";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
@@ -35,23 +36,22 @@ function SideNavBarV1() {
 
   return (
     <div>
+      <div className="w-5vw"></div>
       <div className="absolute z-10">
         <div
-          className={
-            isCollapsed
-              ? " pl-1 shadow-lg h-screen w-5vw bg-secondary flex flex-col justify-content-start space-y-8"
-              : "pl-1 shadow-lg h-screen w-15vw bg-secondary flex flex-col justify-content-start space-y-8"
-          }
+          className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[80px]" : "w-[250px]"}`}
         >
-          <div className="flex flex-row ">
-            <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
-              <img className="h-40px" src={logo} alt="Logo" />
-            </div>
+          <div className="flex flex-row justify-content-start">
+            <Link to="/home">
+              <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
+                <img className="h-40px" src={logo} alt="Logo" />
+              </div>
+            </Link>
             <h2
               className={
                 isCollapsed
                   ? "hidden"
-                  : "p-5 font-bold text-white text-md flex items-center"
+                  : "p-5 font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"
               }
             >
               {insertLineBreaks("Brigham and Women's Hospital")}
@@ -61,7 +61,7 @@ function SideNavBarV1() {
           <div className="m-4">
             <Link to="/home">
               <div
-                className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                className="flex flex-row whitespace-pre-wrap" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
               >
                 <MapIcon
                   sx={{
@@ -73,7 +73,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap"
                   }
                 >
                   Map
@@ -99,7 +101,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap"
                   }
                 >
                   Services
@@ -115,7 +119,7 @@ function SideNavBarV1() {
               <div
                 className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
               >
-                <TocIcon
+                <AddLocationAltIcon
                   sx={{
                     marginRight: "5px",
                     marginTop: "-3px",
@@ -125,7 +129,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md whitespace-nowrap overflow-hidden"
                   }
                 >
                   Map Data
@@ -151,7 +157,9 @@ function SideNavBarV1() {
                 />
                 <h2
                   className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
+                    isCollapsed
+                      ? "hidden"
+                      : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
                   }
                 >
                   Service Data

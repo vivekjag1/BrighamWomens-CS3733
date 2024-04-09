@@ -50,6 +50,10 @@ export default {
       left: {
         200: "200px",
       },
+
+      transitionProperty: {
+        width: "width",
+      },
     },
   },
   plugins: [],

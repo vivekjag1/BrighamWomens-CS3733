@@ -4,4 +4,5 @@ export type ServiceRequest = {
   priority: string;
   status: string;
   description: string;
+  requestedTime: string;
 };

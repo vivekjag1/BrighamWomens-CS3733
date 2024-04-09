@@ -15,7 +15,7 @@ export class FileAttributes {
 }
 
 export class NavigateAttributes {
-  static readonly startLocationKey: string = "start";
-  static readonly endLocationKey: string = "end";
+  static readonly startLocationKey: string = "currentLocation";
+  static readonly endLocationKey: string = "destination";
   static readonly floorKey: string = "floor";
 }

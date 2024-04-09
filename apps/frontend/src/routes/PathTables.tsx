@@ -146,12 +146,20 @@ const NodeTable = () => {
 
             <div className="flex flex-row items-center gap-2 mb-5 mt-2">
               <div>
-                <Button variant="contained" onClick={uploadFiles}>
+                <Button
+                  variant="contained"
+                  onClick={uploadFiles}
+                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                >
                   Upload Map Data
                 </Button>
               </div>
               <div>
-                <Button variant="contained" onClick={downloadFiles}>
+                <Button
+                  variant="contained"
+                  onClick={downloadFiles}
+                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                >
                   Download Map Data
                 </Button>
               </div>
