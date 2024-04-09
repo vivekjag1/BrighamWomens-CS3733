@@ -7,15 +7,18 @@ import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
   // Sets the floor number depending on which button user clicks
-  const [floor, setFloor] = useState<number>(-1);
+  const [activeFloor, setActiveFloor] = useState<number>(-1);
   function handleMapSwitch(x: number) {
-    setFloor(x);
+    setActiveFloor(x);
   }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [nodes, setNodes] = useState<number[][]>([
-    [0, 0],
-    [0, 0],
+    [0, 0, -2],
+    [0, 0, -1],
+    [0, 0, 1],
+    [0, 0, 2],
+    [0, 0, 3],
   ]);
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
@@ -41,6 +44,8 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setNodes(response.data);
+        console.log(response.data);
+        setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
   }
@@ -52,10 +57,14 @@ function Home() {
           <NavigationPanel onSubmit={handleForm} />
         </div>
         <div className="h-screen flex flex-col justify-center">
-          <Map floor={floor} nodes={nodes} />
+          <Map activefloor={activeFloor} nodes={nodes} />
         </div>
         <div className="absolute left-[95%] top-[72%]">
-          <MapToggle onClick={handleMapSwitch} />
+          <MapToggle
+            activeFloor={activeFloor}
+            onClick={handleMapSwitch}
+            nodes={nodes}
+          />
         </div>
       </div>
     </div>
