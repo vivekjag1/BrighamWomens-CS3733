@@ -9,6 +9,7 @@ import SanitationForm from "../routes/SanitationForm.tsx";
 //import MedicineRequest from "../routes/MedicineRequest-styled.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import PathTables from "../routes/PathTables.tsx";
+import EditMap from "../routes/EditMap.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Home /> },
@@ -23,6 +24,7 @@ const routes = [
   { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
+  { path: paths.EDITED_MAP, element: <EditMap /> },
 ];
 
 export default routes;
