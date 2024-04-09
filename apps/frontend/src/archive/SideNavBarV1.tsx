@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../assets/bwh-logo-naked.svg";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
@@ -35,13 +36,10 @@ function SideNavBarV1() {
 
   return (
     <div>
+      <div className="w-5vw"></div>
       <div className="absolute z-10">
         <div
-          className={
-            isCollapsed
-              ? " pl-1 shadow-lg h-screen w-5vw bg-secondary flex flex-col justify-content-start space-y-8"
-              : "pl-1 shadow-lg h-screen w-15vw bg-secondary flex flex-col justify-content-start space-y-8"
-          }
+          className={`pl-2 shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 ${isCollapsed ? "w-[80px] transition-width" : "w-[250px] transition-width"}`}
         >
           <div className="flex flex-row ">
             <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
@@ -51,7 +49,7 @@ function SideNavBarV1() {
               className={
                 isCollapsed
                   ? "hidden"
-                  : "p-5 font-bold text-white text-md flex items-center"
+                  : "p-5 font-bold text-white text-md flex items-center max-w-30"
               }
             >
               {insertLineBreaks("Brigham and Women's Hospital")}
@@ -115,7 +113,7 @@ function SideNavBarV1() {
               <div
                 className="flex flex-row justify-content-start" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
               >
-                <TocIcon
+                <AddLocationAltIcon
                   sx={{
                     marginRight: "5px",
                     marginTop: "-3px",
