@@ -42,32 +42,15 @@ function NavigationPanel(props: {
           </p>
           <div>
             <p className="text-l font-normal">Current Location</p>
-            {/*<select name="currentLocation" className="w-[15vw]">
-              {nodes.map((node) => (
-                <option key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </option>
-              ))}
-            </select>*/}
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              //options={nodes.map((node) => ({ label: node.longName, value: node.nodeID}))}
               options={nodes}
               getOptionLabel={(option) => option.longName}
               sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} label="Current Location" />
               )}
-              //isOptionEqualToValue={(option, value) => option.value === value.value}
-              /*value={startNode ? { label: startNode.longName } : null}
-                    onChange={(e) => {
-                        setStartNode ({
-                            ...startNode,
-                            startNode: e.target.,
-                        });
-
-                    }}*/
               onChange={(_, startNode) => {
                 setStartNode(startNode ? startNode.nodeID : "");
               }}
@@ -80,13 +63,6 @@ function NavigationPanel(props: {
           </div>
           <div>
             <p>Destination</p>
-            {/*<select name="destination" className="w-[15vw]">
-              {nodes.map((node) => (
-                <option key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </option>
-              ))}
-            </select>*/}
             <Autocomplete
               disablePortal
               id="combo-box-demo-dest"
@@ -96,15 +72,6 @@ function NavigationPanel(props: {
               renderInput={(params) => (
                 <TextField {...params} label="Destination" />
               )}
-              //isOptionEqualToValue={(option, value) => option.value === value.value}
-              /*value={nodes.map((node) => ({ node: node}))}
-                    onChange={(e) => {
-                        setDestinationNode ({
-                            ...destinationNode,
-                            destinationNode: e.target.value,
-                        });
-
-                    }}*/
               onChange={(_, destinationNode) => {
                 setDestinationNode(
                   destinationNode ? destinationNode.nodeID : "",
