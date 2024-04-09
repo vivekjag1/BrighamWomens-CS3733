@@ -46,7 +46,7 @@ function SideNavBarV1() {
       <div>
         <div className=" z-10">
           <div
-            className={` shadow-lg h-screen bg-secondary flex flex-col justify-content-start space-y-8 transition-width ease-in-out duration-200 ${isCollapsed ? "w-[5rem]" : "w-[16rem]"}`}
+            className={`shadow-lg h-screen bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 ${isCollapsed ? "w-[5rem]" : "w-[16rem]"}`}
           >
             <div className=" pl-[.5rem] flex flex-row">
               <Link to="/home">
@@ -55,11 +55,11 @@ function SideNavBarV1() {
                 </div>
               </Link>
               <h2
-                className={
+                className="pl-[2rem] font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden" /*{
                   isCollapsed
                     ? "hidden"
                     : "pl-[2rem] font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"
-                }
+                }*/
               >
                 {insertLineBreaks("Brigham and Women's Hospital")}
               </h2>
@@ -214,7 +214,7 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-[1.5rem]">
+            <div className="m-[1.5rem] flex">
               <div
                 style={{ cursor: "pointer" }}
                 className="flex flex-row"
