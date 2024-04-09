@@ -19,9 +19,14 @@ function Map(props: { floor: number; coords: number[][] }) {
   };
 
   let listOfPoints: string = "";
-  for (let i = 0; i < length; i++) {
+  console.log(props.floor);
+  const filteredCoords = props.coords.filter(
+    (value) => value[2] == props.floor,
+  );
+  console.log(filteredCoords);
+  for (let i = 0; i < filteredCoords.length; i++) {
     listOfPoints =
-      listOfPoints + props.coords[i][0] + "," + props.coords[i][1] + " ";
+      listOfPoints + filteredCoords[i][0] + "," + filteredCoords[i][1] + " ";
   }
 
   // Determines which map to load depending on floor prop.
