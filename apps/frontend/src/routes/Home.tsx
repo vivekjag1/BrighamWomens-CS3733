@@ -59,7 +59,7 @@ function Home() {
         <div className="h-screen flex flex-col justify-center">
           <Map activefloor={activeFloor} nodes={nodes} />
         </div>
-        <div className="absolute left-[95%] top-[72%]">
+        <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle
             activeFloor={activeFloor}
             onClick={handleMapSwitch}
