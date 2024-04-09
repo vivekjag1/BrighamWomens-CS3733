@@ -70,12 +70,16 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
   return (
     <div>
       <div>
-        <TransformWrapper>
+        <TransformWrapper
+          initialPositionX={-200}
+          initialPositionY={-100}
+          initialScale={1.2}
+        >
           <TransformComponent>
             <svg
               viewBox="0 0 5000 3400"
               height="98.5vh"
-              width="74vw"
+              width="auto"
               className="rounded-xl"
             >
               <image href={map} />
