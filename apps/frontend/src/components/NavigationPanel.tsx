@@ -1,13 +1,14 @@
 import { Button, TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import React, { FormEventHandler, useEffect, useState } from "react";
 import axios from "axios";
 import { Graph } from "../../../backend/src/fileInput/Graph.ts";
 import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { FormEventHandler, useEffect, useState } from "react";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
 }) {
+  // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [startNode, setStartNode] = useState<string | null>(null);
   const [destinationNode, setDestinationNode] = useState<string | null>(null);
@@ -29,7 +30,7 @@ function NavigationPanel(props: {
 
   return (
     <div>
-      <div className="w-[17.5vw] h-[98vh] p-5 bg-[#D9D9D9] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
+      <div className="w-[20vw] h-[98vh] p-5 bg-[#D9D9D9] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
         <form
           className="flex flex-col justify-start gap-6"
           onSubmit={props.onSubmit}

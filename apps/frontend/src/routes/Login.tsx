@@ -1,18 +1,22 @@
 import React from "react";
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import bwhLogoSemiNaked from "../../assets/bwh-logo-semi-naked.svg";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     await loginWithRedirect({
       appState: {
-        returnTo: location.pathname,
+        returnTo: "/home",
       },
     });
     console.log("hello world");
+  }
+  function handlePathfind() {
+    navigate("/home");
   }
 
   return (
@@ -28,36 +32,49 @@ function Login() {
               src={bwhLogoSemiNaked}
               alt="Brigham and Women's Hospital Logo"
             />
-            {/*<p className="font-bold text-3xl text-blue-900">Welcome Back!</p>*/}
-            <p className="font-bold text-2xl text-blue-900">Click to Login</p>
+            <p className="font-bold text-2xl text-blue-900">
+              Are you a staff member? Click to Login
+            </p>
           </button>
+          <div className="flex flex-col items-start justify-start align-middle gap-2">
+            <button
+              type="submit"
+              className="flex flex-col justify-center"
+              onClick={handlePathfind}
+            >
+              <p className="font-bold text-2xl text-blue-900">
+                Click here to navigate through the hospital!
+              </p>
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
 
-function AuthZeroLogin() {
-  const navigate = useNavigate();
+// function AuthZeroLogin() {
+//   const navigate = useNavigate();
+//
+//   return (
+//     <Auth0Provider
+//       useRefreshTokens
+//       cacheLocation="localstorage"
+//       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
+//       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
+//       onRedirectCallback={(appState) => {
+//           navigate(appState?.returnTo || window.location.pathname);
+//
+//       }}
+//       authorizationParams={{
+//         redirect_uri: window.location.origin,
+//         audience: "/api",
+//         scope: "openid profile email offline_access",
+//       }}
+//     >
+//       <Login />
+//     </Auth0Provider>
+//   );
+// }
 
-  return (
-    <Auth0Provider
-      useRefreshTokens
-      cacheLocation="localstorage"
-      domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
-      clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
-      onRedirectCallback={() => {
-        navigate("/home");
-      }}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: "/api",
-        scope: "openid profile email offline_access",
-      }}
-    >
-      <Login />
-    </Auth0Provider>
-  );
-}
-
-export default AuthZeroLogin;
+export default Login;

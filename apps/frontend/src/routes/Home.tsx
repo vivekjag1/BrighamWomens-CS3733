@@ -1,22 +1,27 @@
 import Map from "../components/Map.tsx";
-import { Button, ButtonGroup } from "@mui/material";
 import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-
-/*const coords = [[0,0], [0,0]];*/
+import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
-  const [coords, setCoords] = useState<number[][]>([
-    [0, 0],
-    [0, 0],
+  // Sets the floor number depending on which button user clicks
+  const [activeFloor, setActiveFloor] = useState<number>(-1);
+  function handleMapSwitch(x: number) {
+    setActiveFloor(x);
+  }
+
+  // Retrieves path from current location to destination in the form of a list of a nodes
+  const [nodes, setNodes] = useState<number[][]>([
+    [0, 0, -2],
+    [0, 0, -1],
+    [0, 0, 1],
+    [0, 0, 2],
+    [0, 0, 3],
   ]);
 
-  //const [startNodeID, setStartNodeID] = useState('');
-  //const [destinationNodeID, setDestinationNodeID] = useState('');
-
-  async function formHandler(event: FormEvent<HTMLFormElement>) {
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
@@ -41,33 +46,28 @@ function Home() {
     await axios
       .get(url.toString())
       .then(function (response) {
+        setNodes(response.data);
         console.log(response.data);
-        setCoords(response.data);
+        setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
   }
 
-  const [floor, setFloor] = useState<number>(-1);
-  function handleMapSwitch(x: number) {
-    setFloor(x);
-  }
   return (
     <div>
-      <div className="relative flex gap-4 bg-[#F1F1E6]">
-        <div className="h-screen ml-4 flex flex-col justify-center">
-          <NavigationPanel onSubmit={formHandler} />
+      <div className="relative flex justify-evenly bg-[#F1F1E6]">
+        <div className="h-screen flex flex-col justify-center">
+          <NavigationPanel onSubmit={handleForm} />
         </div>
-        <div className="h-screen flex flex-col justify-center ">
-          <Map floor={floor} coords={coords} />
+        <div className="h-screen flex flex-col justify-center">
+          <Map activefloor={activeFloor} nodes={nodes} />
         </div>
-        <div className="absolute left-[95%] top-[74%]">
-          <ButtonGroup orientation="vertical" variant="contained">
-            <Button onClick={() => handleMapSwitch(3)}>3</Button>
-            <Button onClick={() => handleMapSwitch(2)}>2</Button>
-            <Button onClick={() => handleMapSwitch(1)}>1</Button>
-            <Button onClick={() => handleMapSwitch(-1)}>L1</Button>
-            <Button onClick={() => handleMapSwitch(-2)}>L2</Button>
-          </ButtonGroup>
+        <div className="absolute left-[95%] top-[72%]">
+          <MapToggle
+            activeFloor={activeFloor}
+            onClick={handleMapSwitch}
+            nodes={nodes}
+          />
         </div>
       </div>
     </div>
