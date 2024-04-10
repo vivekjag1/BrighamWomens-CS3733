@@ -7,6 +7,7 @@ export default {
         primary: "#009CA6",
         secondary: "#013B96",
         offwhite: "#eaeaea",
+        gold: "#D4B547",
       },
       width: {
         "5vw": "5vw",
