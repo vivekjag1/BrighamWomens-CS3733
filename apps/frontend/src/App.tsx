@@ -36,35 +36,36 @@ function App() {
         },
         {
           path: paths.SERVICES,
-          element: <Services />,
+          element: <AuthComp component={Services} />,
         },
         {
           path: paths.MEDICINE_REQUEST,
-          element: <MedicineDeliveryForm />,
+          element: <AuthComp component={MedicineDeliveryForm} />,
         },
         {
           path: paths.MEDICAL_DEVICE_DELIVERY,
-          element: <MedicalDeviceDeliveryForm />,
+
+          element: <AuthComp component={MedicalDeviceDeliveryForm} />,
         },
         {
           path: paths.ROOM_RESERVATION,
-          element: <RoomReservation />,
+          element: <AuthComp component={RoomReservation} />,
         },
         {
           path: paths.SANITATION_FORM,
-          element: <SanitationForm />,
+          element: <AuthComp component={SanitationForm} />,
         },
         {
           path: paths.SECURITY_REQUEST,
-          element: <SecurityRequest />,
+          element: <AuthComp component={SecurityRequest} />,
         },
         {
           path: paths.SERVICES_DATA,
-          element: <ServicesTable />,
+          element: <AuthComp component={ServicesTable} />,
         },
         {
           path: paths.EDITED_MAP,
-          element: <EditMap />,
+          element: <AuthComp component={EditMap} />,
         },
       ],
     },

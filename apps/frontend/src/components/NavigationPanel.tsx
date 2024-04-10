@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import axios from "axios";
 import { Graph } from "../../../backend/src/fileInput/Graph.ts";
@@ -10,6 +10,9 @@ function NavigationPanel(props: {
 }) {
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [startNode, setStartNode] = useState<string | null>(null);
+  const [destinationNode, setDestinationNode] = useState<string | null>(null);
+
   useEffect(() => {
     //get the nodes from the db
     async function getNodesFromDb() {
@@ -38,30 +41,52 @@ function NavigationPanel(props: {
             where to go.
           </p>
           <div>
-            <p className="text-l font-normal">Current Location</p>
-            <select name="currentLocation" className="w-[15vw]">
-              {nodes.map((node) => (
-                <option key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </option>
-              ))}
-            </select>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={nodes}
+              getOptionLabel={(option) => option.longName}
+              sx={{ width: "1" }}
+              renderInput={(params) => (
+                <TextField {...params} label="Current Location" />
+              )}
+              onChange={(_, startNode) => {
+                setStartNode(startNode ? startNode.nodeID : "");
+              }}
+            />
+            <input
+              type="hidden"
+              name="currentLocation"
+              value={startNode || ""}
+            />
           </div>
           <div>
-            <p>Destination</p>
-            <select name="destination" className="w-[15vw]">
-              {nodes.map((node) => (
-                <option key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </option>
-              ))}
-            </select>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo-dest"
+              options={nodes}
+              getOptionLabel={(option) => option.longName}
+              sx={{ width: "1" }}
+              renderInput={(params) => (
+                <TextField {...params} label="Destination" />
+              )}
+              onChange={(_, destinationNode) => {
+                setDestinationNode(
+                  destinationNode ? destinationNode.nodeID : "",
+                );
+              }}
+            />
+            <input
+              type="hidden"
+              name="destination"
+              value={destinationNode || ""}
+            />
           </div>
           <div>
             <Button
               type="submit"
               variant="contained"
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
+              style={{ backgroundColor: "#013B96", width: "8rem" }}
             >
               Submit
             </Button>
