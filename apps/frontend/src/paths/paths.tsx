@@ -9,7 +9,7 @@ const paths = {
   SERVICES_DATA: "/services/data",
   MAP_DATA: "/data",
   FORM_STARTER: "/services/form",
-  EDITED_MAP: "/edit",
+  MAP_EDITOR: "/edit",
   SECURITY_REQUEST: "/services/security",
 };
 

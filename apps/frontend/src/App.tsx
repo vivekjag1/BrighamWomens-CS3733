@@ -64,7 +64,7 @@ function App() {
           element: <AuthComp component={ServicesTable} />,
         },
         {
-          path: paths.EDITED_MAP,
+          path: paths.MAP_EDITOR,
           element: <AuthComp component={EditMap} />,
         },
       ],
