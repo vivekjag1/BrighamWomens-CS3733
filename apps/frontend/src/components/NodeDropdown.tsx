@@ -1,10 +1,10 @@
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Graph } from "../../../backend/src/fileInput/Graph.ts";
-import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
 import Autocomplete from "@mui/material/Autocomplete";
 import { TextField } from "@mui/material";
+import { createNodes } from "common/src/GraphCommon.ts";
 
 interface NodeDropdownProps {
   value: string;
@@ -18,7 +18,7 @@ const NodeDropdown = ({ value, onChange }: NodeDropdownProps) => {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = Graph.createNodes(rawNodes.data);
+      let graphNodes = createNodes(rawNodes.data);
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),

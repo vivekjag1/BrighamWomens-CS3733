@@ -1,9 +1,9 @@
 import { Button, TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import axios from "axios";
-import { Graph } from "../../../backend/src/fileInput/Graph.ts";
-import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
 import { FormEventHandler, useEffect, useState } from "react";
+import { createNodes } from "common/src/GraphCommon.ts";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
@@ -17,7 +17,7 @@ function NavigationPanel(props: {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = Graph.createNodes(rawNodes.data);
+      let graphNodes = createNodes(rawNodes.data);
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),

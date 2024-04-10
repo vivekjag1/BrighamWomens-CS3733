@@ -87,8 +87,8 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
               {filteredSplitPaths.map((path) => (
                 <polyline
                   key={path[0].toString()}
-                  stroke="red"
-                  strokeWidth=".5em"
+                  stroke="#012D5A"
+                  strokeWidth=".9em"
                   fill="none"
                   points={
                     listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
