@@ -1,11 +1,16 @@
 const paths = {
   LOGIN: "/",
   HOME: "/home",
-  SERVICES: "/home/services",
-  MEDICINE_REQUEST: "/home/services/medicine",
-  SERVICES_DATA: "/home/services/data",
-  MAP_DATA: "/home/data",
-  FORM_STARTER: "/home/services/form",
+  SERVICES: "/services",
+  MEDICINE_REQUEST: "/services/medicine",
+  MEDICAL_DEVICE_DELIVERY: "/services/medical-device",
+  ROOM_RESERVATION: "/services/room-reservation",
+  SANITATION_FORM: "/services/sanitation-form",
+  SERVICES_DATA: "/services/data",
+  MAP_DATA: "/data",
+  FORM_STARTER: "/services/form",
+  EDITED_MAP: "/edit",
+  SECURITY_REQUEST: "/services/security",
 };
 
 export default paths;

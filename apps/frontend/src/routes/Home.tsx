@@ -1,27 +1,32 @@
 import Map from "../components/Map.tsx";
-import LocationSelector from "../components/LocationSelector.tsx";
-import { IconButton } from "@mui/material";
-import EditLocationIcon from "@mui/icons-material/EditLocation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
+import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
-  const [panelToggled, setPanelToggled] = useState(false);
-  const [coords, setCoords] = useState<number[][]>([
-    [0, 0],
-    [0, 0],
-  ]);
-  function clickHandler() {
-    setPanelToggled(!panelToggled);
+  // Sets the floor number depending on which button user clicks
+  const [activeFloor, setActiveFloor] = useState<number>(-1);
+  function handleMapSwitch(x: number) {
+    setActiveFloor(x);
   }
 
-  async function formHandler(event: React.FormEvent<HTMLFormElement>) {
+  // Retrieves path from current location to destination in the form of a list of a nodes
+  const [nodes, setNodes] = useState<number[][]>([
+    [0, 0, -2],
+    [0, 0, -1],
+    [0, 0, 1],
+    [0, 0, 2],
+    [0, 0, 3],
+  ]);
+
+  async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
-
+    console.log(formData);
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -30,50 +35,39 @@ function Home() {
         .get(NavigateAttributes.endLocationKey)!
         .toString(),
     };
+    console.log(queryParams);
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    console.log(url.toString());
     url.search = params.toString();
+    console.log(url.toString());
 
     await axios
       .get(url.toString())
       .then(function (response) {
+        setNodes(response.data);
         console.log(response.data);
-        setCoords(response.data);
+        setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
   }
 
   return (
     <div>
-      <div className="relative">
-        <Map coords={coords} />
-        <div className="absolute top-4 left-4">
-          <IconButton
-            onClick={clickHandler}
-            size="large"
-            sx={{
-              backgroundColor: "#f6f8fa",
-              borderRadius: "10px",
-              "&:hover": {
-                backgroundColor: "#a1a1a1",
-              },
-              width: "50px",
-              height: "50px",
-              marginBottom: "10px",
-            }}
-          >
-            <EditLocationIcon
-              sx={{
-                width: "35px",
-                height: "35px",
-                color: "#3b4146",
-              }}
-            />
-          </IconButton>
-          {panelToggled && <LocationSelector onSubmit={formHandler} />}
+      <div className="relative flex justify-evenly bg-[#F1F1E6]">
+        <div className=" h-screen flex flex-col justify-center">
+          <NavigationPanel onSubmit={handleForm} />
+        </div>
+        <div className="h-screen flex flex-col justify-center">
+          <Map activefloor={activeFloor} nodes={nodes} />
+        </div>
+        <div className="fixed right-[2%] bottom-[2%]">
+          <MapToggle
+            activeFloor={activeFloor}
+            onClick={handleMapSwitch}
+            nodes={nodes}
+          />
         </div>
       </div>
     </div>

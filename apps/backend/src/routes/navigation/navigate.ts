@@ -1,9 +1,10 @@
 import express, { Router } from "express";
-const router: Router = express.Router();
 import { PrismaClient } from "database";
-const prisma = new PrismaClient();
-import { Graph } from "../../fileInput/Graph.ts";
+import { Graph, PathAlgorithm } from "../../fileInput/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
+
+const router: Router = express.Router();
+const prisma = new PrismaClient();
 
 // Handles incoming path requests
 router.get("/", async (req, res) => {
@@ -15,13 +16,13 @@ router.get("/", async (req, res) => {
 
   const startNode = await prisma.node.findFirst({
     where: {
-      longName: startName!.toString(),
+      nodeID: startName!.toString(),
     },
   });
 
   const endNode = await prisma.node.findFirst({
     where: {
-      longName: endName!.toString(),
+      nodeID: endName!.toString(),
     },
   });
 
@@ -31,8 +32,28 @@ router.get("/", async (req, res) => {
     await prisma.edge.findMany(),
   );
 
-  const coords = graph.getPathAsCoords(startNode!.nodeID, endNode!.nodeID);
-  res.status(200).json(coords);
+  const path = graph.getPath(
+    startNode!.nodeID,
+    endNode!.nodeID,
+    PathAlgorithm.AStar,
+  );
+
+  const pathAsCoords: number[][] = [];
+  for (let i = 0; i < path.length; i++) {
+    const node = await prisma.node.findFirst({
+      where: {
+        nodeID: path[i],
+      },
+    });
+    pathAsCoords.push([
+      +node!.xcoord,
+      +node!.ycoord,
+      Graph.getNumFromFloor(node!.floor),
+    ]);
+  }
+  console.log("testing" + pathAsCoords);
+
+  res.status(200).json(pathAsCoords);
 });
 
 export default router;

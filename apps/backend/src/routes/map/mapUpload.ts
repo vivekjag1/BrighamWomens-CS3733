@@ -30,7 +30,7 @@ router.post(
     if (files) {
       const nodeFile: Express.Multer.File[] = files[FileAttributes.nodeKey];
       const edgeFile: Express.Multer.File[] = files[FileAttributes.edgeKey];
-      if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 2)) {
+      if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 3)) {
         await checkDBStatus();
         console.log("checkDBStatus done");
         await populateDatabases(nodeFile[0], edgeFile[0]);

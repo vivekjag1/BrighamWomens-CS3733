@@ -2,32 +2,55 @@ import { useState } from "react";
 import axios from "axios";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  TextField,
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import NodeDropdown from "../components/NodeDropdown.tsx";
+import dayjs, { Dayjs } from "dayjs";
 //import {ServiceRequest} from "common/src/ServiceRequest.ts";
+
+const initialState: MedicineDeliveryObject = {
+  medicineName: "",
+  dosage: "",
+  patientName: "",
+  serviceRequest: {
+    requestingUsername: "",
+    location: "",
+    priority: "",
+    status: "Unassigned",
+    description: "",
+    requestedTime: dayjs().toISOString(),
+  },
+};
 
 export function MedicineDeliveryForm() {
   const [medicineDelivery, setMedicineDelivery] =
-    useState<MedicineDeliveryObject>({
-      medicineName: "",
-      dosage: "",
-      patientName: "",
-      userInstructions: "",
-      request: {
-        roomNum: "",
-        deliveryInstructions: "",
-        requestingUsername: "",
-        location: "",
-      },
-    });
+    useState<MedicineDeliveryObject>(initialState);
+  const [date, setDate] = useState<Dayjs>(dayjs());
 
   const validateForm = () => {
     const isValid =
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
       medicineDelivery.patientName &&
-      medicineDelivery.request.roomNum &&
-      medicineDelivery.request.requestingUsername &&
-      medicineDelivery.request.location;
+      medicineDelivery.serviceRequest.requestingUsername &&
+      medicineDelivery.serviceRequest.location &&
+      medicineDelivery.serviceRequest.priority;
     return isValid;
   };
 
@@ -46,33 +69,29 @@ export function MedicineDeliveryForm() {
     // formData.append('medicineDelivery.request.location', medicineDelivery.request.location);
 
     if (validateForm()) {
-      if (!isNaN(Number(medicineDelivery.request.roomNum))) {
-        try {
-          // const response = await axios.post('/api/service', formData, {
-          //     headers: { 'Content-Type': 'multipart/form-data' },
-          // });
-          const response = await axios.post(
-            APIEndpoints.servicePostRequests,
-            medicineDelivery,
-            {
-              headers: { "Content-Type": "application/json" },
-            },
-          );
+      try {
+        // const response = await axios.post('/api/service', formData, {
+        //     headers: { 'Content-Type': 'multipart/form-data' },
+        // });
+        const response = await axios.post(
+          APIEndpoints.servicePostRequests,
+          medicineDelivery,
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
 
-          if (response.status === 200) {
-            console.log("Submission successful", response.data);
-            alert("Medicine Request sent!");
-            clear();
-          } else {
-            console.error("Submission failed with status:", response.status);
-            alert("Medicine Request failed!");
-          }
-        } catch (error) {
-          console.error("Error submitting the form:", error);
-          alert("Medicine Request failed! Room Number must be a number.");
+        if (response.status === 200) {
+          console.log("Submission successful", response.data);
+          alert("Medicine Request sent!");
+          clear();
+        } else {
+          console.error("Submission failed with status:", response.status);
+          alert("Medicine Request failed!");
         }
-      } else {
-        alert("Room Number is invalid!");
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+        alert("Medicine Request failed!");
       }
     } else {
       alert("You must fill out all the required information!");
@@ -80,207 +99,290 @@ export function MedicineDeliveryForm() {
   }
 
   function clear() {
-    setMedicineDelivery({
-      medicineName: "",
-      dosage: "",
-      patientName: "",
-      userInstructions: "",
-      request: {
-        roomNum: "",
-        deliveryInstructions: "",
-        requestingUsername: "",
-        location: "",
-      },
-    });
+    setDate(dayjs());
+    setMedicineDelivery(initialState);
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-5">
-      <h2 className="text-xl font-semibold mb-4">
-        Medicine Service Request Form
-      </h2>
-      <div className="grid grid-cols-1 gap-4">
-        <TextField
-          type="text"
-          label="Medicine Name"
-          name="medicineName"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.medicineName}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              medicineName: e.target.value,
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Dosage"
-          name="dosage"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.dosage}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              dosage: e.target.value,
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Patient Name"
-          name="patientName"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.patientName}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              patientName: e.target.value,
-            })
-          }
-        />
-        <TextField
-          label="User Instructions (Optional)"
-          name="userInstructions"
-          variant="outlined"
-          size="small"
-          fullWidth
-          multiline
-          rows={4}
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.userInstructions}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              userInstructions: e.target.value,
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Room Number"
-          name="roomNum"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.roomNum}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                roomNum: e.target.value,
-              },
-            })
-          }
-        />
-        <TextField
-          label="Delivery Instructions (Optional)"
-          name="deliveryInstructions"
-          variant="outlined"
-          size="small"
-          fullWidth
-          multiline
-          rows={4}
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.deliveryInstructions}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                deliveryInstructions: e.target.value,
-              },
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Requesting Username"
-          name="requestingUsername"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.requestingUsername}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                requestingUsername: e.target.value,
-              },
-            })
-          }
-        />
-        <TextField
-          type="text"
-          label="Requesting Location"
-          name="location"
-          variant="outlined"
-          size="small"
-          fullWidth
-          className="bg-gray-50"
-          InputProps={{ style: { fontSize: ".9rem" } }}
-          InputLabelProps={{ style: { color: "#a4aab5", fontSize: ".9rem" } }}
-          value={medicineDelivery.request.location}
-          onChange={(e) =>
-            setMedicineDelivery({
-              ...medicineDelivery,
-              request: {
-                ...medicineDelivery.request,
-                location: e.target.value,
-              },
-            })
-          }
-        />
-        <div className="flex justify-end gap-8">
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "#EA422D",
-              color: "white",
-              width: "8rem",
-            }}
-            onClick={clear}
-          >
-            Clear
-          </Button>
-          <Button
-            variant="contained"
-            style={{ width: "8rem" }}
-            onClick={submit}
-          >
-            Submit
-          </Button>
-        </div>
+    <div className="h-screen ">
+      <div className="w-full h-screen bg-gray-200 flex justify-center items-start pt-[3rem]">
+        <Card className="drop-shadow-2xl" sx={{ borderRadius: "10px" }}>
+          <CardContent>
+            <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
+              Medicine Service Request
+            </h1>
+            <div className="h-auto flex justify-center items-center w-[30rem]">
+              <form
+                noValidate
+                autoComplete="off"
+                className="space-y-4 flex flex-col justify-center items-center"
+              >
+                <TextField
+                  label="Requesting Username"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                  value={medicineDelivery.serviceRequest.requestingUsername}
+                  onChange={(e) =>
+                    setMedicineDelivery({
+                      ...medicineDelivery,
+                      serviceRequest: {
+                        ...medicineDelivery.serviceRequest,
+                        requestingUsername: e.target.value,
+                      },
+                    })
+                  }
+                  required
+                />
+
+                <NodeDropdown
+                  value={medicineDelivery.serviceRequest.location}
+                  onChange={(newValue: string) =>
+                    setMedicineDelivery((medicineDelivery) => ({
+                      ...medicineDelivery,
+                      serviceRequest: {
+                        ...medicineDelivery.serviceRequest,
+                        location: newValue,
+                      },
+                    }))
+                  }
+                />
+
+                {/*<TextField*/}
+                {/*    label="Location"*/}
+                {/*    variant="outlined"*/}
+                {/*    fullWidth*/}
+                {/*    sx={{width: "25rem"}}*/}
+                {/*    className="bg-gray-50"*/}
+                {/*    InputProps={{style: {fontSize: ".9rem"}}}*/}
+                {/*    InputLabelProps={{*/}
+                {/*        style: {color: "#a4aab5", fontSize: ".9rem"},*/}
+                {/*    }}*/}
+                {/*    size="small"*/}
+                {/*    value={medicineDelivery.serviceRequest.location}*/}
+                {/*    onChange={(e) =>*/}
+                {/*        setMedicineDelivery({*/}
+                {/*            ...medicineDelivery,*/}
+                {/*            serviceRequest: {*/}
+                {/*                ...medicineDelivery.serviceRequest,*/}
+                {/*                location: e.target.value,*/}
+                {/*            },*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*    required*/}
+                {/*/>*/}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    components={["DateTimePicker"]}
+                    sx={{ width: "25rem", paddingBottom: ".3rem" }}
+                  >
+                    <DateTimePicker
+                      label="Service Time *"
+                      className="bg-gray-50"
+                      value={date}
+                      onChange={(newValue) => {
+                        setMedicineDelivery((currentMedicineDelivery) => ({
+                          ...currentMedicineDelivery,
+                          serviceRequest: {
+                            ...currentMedicineDelivery.serviceRequest,
+                            requestedTime: newValue
+                              ? newValue.toISOString()
+                              : "",
+                          },
+                        }));
+                      }}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+                <TextField
+                  label="Medicine Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                  value={medicineDelivery.medicineName}
+                  onChange={(e) =>
+                    setMedicineDelivery({
+                      ...medicineDelivery,
+                      medicineName: e.target.value,
+                    })
+                  }
+                  required
+                />
+                <TextField
+                  label="Dosage"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                  value={medicineDelivery.dosage}
+                  onChange={(e) =>
+                    setMedicineDelivery({
+                      ...medicineDelivery,
+                      dosage: e.target.value,
+                    })
+                  }
+                  required
+                />
+
+                <TextField
+                  label="Patient Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                  value={medicineDelivery.patientName}
+                  onChange={(e) =>
+                    setMedicineDelivery({
+                      ...medicineDelivery,
+                      patientName: e.target.value,
+                    })
+                  }
+                  required
+                />
+
+                <TextField
+                  label="Description (Optional)"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  sx={{ width: "25rem" }}
+                  className="bg-gray-50"
+                  InputProps={{ style: { fontSize: ".9rem" } }}
+                  InputLabelProps={{
+                    style: { color: "#a4aab5", fontSize: ".9rem" },
+                  }}
+                  size="small"
+                  value={medicineDelivery.serviceRequest.description}
+                  onChange={(e) =>
+                    setMedicineDelivery({
+                      ...medicineDelivery,
+                      serviceRequest: {
+                        ...medicineDelivery.serviceRequest,
+                        description: e.target.value,
+                      },
+                    })
+                  }
+                />
+
+                <FormControl sx={{ width: "25rem" }} size="small">
+                  <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+                    Status *
+                  </InputLabel>
+                  <Select
+                    name="status"
+                    className="bg-gray-50"
+                    sx={{ fontSize: ".9rem" }}
+                    label="Status *"
+                    value={medicineDelivery.serviceRequest.status}
+                    onChange={(e) =>
+                      setMedicineDelivery({
+                        ...medicineDelivery,
+                        serviceRequest: {
+                          ...medicineDelivery.serviceRequest,
+                          status: e.target.value,
+                        },
+                      })
+                    }
+                  >
+                    <MenuItem value="Unassigned">Unassigned</MenuItem>
+                    <MenuItem value="Assigned">Assigned</MenuItem>
+                    <MenuItem value="InProgress">InProgress</MenuItem>
+                    <MenuItem value="Closed">Closed</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl
+                  component="fieldset"
+                  margin="normal"
+                  sx={{ width: "25rem" }}
+                >
+                  <FormLabel sx={{ fontSize: ".9rem" }}>Priority *</FormLabel>
+                  <RadioGroup
+                    row
+                    name="priority"
+                    value={medicineDelivery.serviceRequest.priority}
+                    onChange={(e) =>
+                      setMedicineDelivery({
+                        ...medicineDelivery,
+                        serviceRequest: {
+                          ...medicineDelivery.serviceRequest,
+                          priority: e.target.value,
+                        },
+                      })
+                    }
+                    sx={{ marginLeft: ".52rem" }}
+                  >
+                    <FormControlLabel
+                      value="Low"
+                      control={<Radio />}
+                      label="Low"
+                    />
+                    <FormControlLabel
+                      value="Medium"
+                      control={<Radio />}
+                      label="Medium"
+                    />
+                    <FormControlLabel
+                      value="High"
+                      control={<Radio />}
+                      label="High"
+                    />
+                    <FormControlLabel
+                      value="Emergency"
+                      control={<Radio />}
+                      label="Emergency"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <div className="flex justify-between w-full mt-4">
+                  <Button
+                    variant="contained"
+                    onClick={clear}
+                    style={{
+                      backgroundColor: "#EA422D",
+                      color: "white",
+                      width: "8rem",
+                    }}
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={submit}
+                    className="justify-end"
+                    style={{ backgroundColor: "#013B96", width: "8rem" }}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
-
 export default MedicineDeliveryForm;

@@ -1,8 +1,6 @@
 import client from "../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
 import { Edge } from "database";
-//import { APIEndpoints } from "common/src/APICommon.ts";
-
 const router: Router = express.Router();
 
 router.get("/", async function (req: Request, res: Response): Promise<void> {
