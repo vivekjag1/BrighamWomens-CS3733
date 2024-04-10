@@ -1,3 +1,4 @@
+import { Link, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import logo from "../../assets/bwh-logo-naked.svg";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
@@ -6,7 +7,6 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 //import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
 import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -29,6 +29,8 @@ function SideNavBarV1() {
   const { isAuthenticated } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { logout } = useAuth0();
+
+  const location = useLocation();
 
   const handleLogout = () => {
     // logout({returnTo: window.location.origin} );
@@ -68,13 +70,14 @@ function SideNavBarV1() {
             <div className="">
               <div className="ml-[1.5rem] mr-[1.5rem]">
                 <Link to="/home">
-                  <div className="flex flex-row whitespace-pre-wrap">
+                  <div
+                    className={`flex flex-row ${location.pathname === "/home" ? "text-primary" : "text-white"}`}
+                  >
                     <MapIcon
                       sx={{
                         marginRight: "5px",
                         marginTop: "-3px",
                         fontSize: "30px",
-                        color: "white",
                       }}
                     />
                     <h2
@@ -92,14 +95,13 @@ function SideNavBarV1() {
               <div className="m-[1.5rem]">
                 <Link to="/services">
                   <div
-                    className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                    className={`flex flex-row ${location.pathname === "/services" ? "text-primary" : "text-white"}`}
                   >
                     <VolunteerActivismIcon
                       sx={{
                         marginRight: "5px",
                         marginTop: "-3px",
                         fontSize: "30px",
-                        color: "white",
                       }}
                     />
                     <h2
@@ -116,13 +118,14 @@ function SideNavBarV1() {
               </div>
               <div className="m-[1.5rem]">
                 <Link to="/data">
-                  <div className="flex flex-row">
+                  <div
+                    className={`flex flex-row ${location.pathname === "/data" ? "text-primary" : "text-white"}`}
+                  >
                     <AddLocationAltIcon
                       sx={{
                         marginRight: "5px",
                         marginTop: "-3px",
                         fontSize: "30px",
-                        color: "white",
                       }}
                     />
                     <h2
@@ -140,14 +143,13 @@ function SideNavBarV1() {
               <div className="m-[1.5rem]">
                 <Link to="/services/data">
                   <div
-                    className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                    className={`flex flex-row ${location.pathname === "/services/data" ? "text-primary" : "text-white"}`} /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                   >
                     <TocIcon
                       sx={{
                         marginRight: "5px",
                         marginTop: "-3px",
                         fontSize: "30px",
-                        color: "white",
                       }}
                     />
                     <h2
@@ -165,14 +167,13 @@ function SideNavBarV1() {
               <div className="m-[1.5rem]">
                 <Link to="/edit">
                   <div
-                    className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                    className={`flex flex-row ${location.pathname === "/edit" ? "text-primary" : "text-white"}`} /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
                   >
                     <EditLocationAltIcon
                       sx={{
                         marginRight: "5px",
                         marginTop: "-3px",
                         fontSize: "30px",
-                        color: "white",
                       }}
                     />
                     <h2
