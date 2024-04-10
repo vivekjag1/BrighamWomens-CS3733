@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../assets/bwh-logo-naked.svg";
+import logo from "../../assets/bwh-logo-fancy.png";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
@@ -50,20 +50,21 @@ function SideNavBarV1() {
           >
             <div className=" flex flex-row self-center">
               <Link to="/home">
-                <div className="shadow-lg rounded-full bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
+                <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
                   <img className="h-40px" src={logo} alt="Logo" />
                 </div>
               </Link>
-              {/*<h2*/}
-              {/*  className="pl-[2rem] font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"> {*/}
-              {/*    isCollapsed*/}
-              {/*      ? "hidden"*/}
-              {/*      : "pl-[2rem] font-bold text-white text-md flex items-center max-w-30 whitespace-nowrap overflow-hidden"*/}
-              {/*  }*/}
-              {/*>*/}
-              {/*  {insertLineBreaks("Brigham and Women's Hospital")}*/}
-              {/*</h2>*/}
             </div>
+            {/*<h2*/}
+            {/*  className={*/}
+            {/*    isCollapsed*/}
+            {/*      ? "hidden"*/}
+            {/*      : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"*/}
+            {/*  }*/}
+            {/*>*/}
+            {/*Brigham and*/}
+            {/*Women's Hospital*/}
+            {/*</h2>*/}
 
             <div className="">
               <div className="ml-[1.5rem] mr-[1.5rem]">
@@ -187,34 +188,6 @@ function SideNavBarV1() {
                   </div>
                 </Link>
               </div>
-              {/*Logout button */}
-              <div className="m-[1.5rem]" onClick={handleLogout}>
-                <Link to="/">
-                  {" "}
-                  {/* enter link to button here to log out*/}
-                  <div
-                    className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
-                  >
-                    <LogoutIcon
-                      sx={{
-                        marginRight: "5px",
-                        marginTop: "-3px",
-                        fontSize: "30px",
-                        color: "white",
-                      }}
-                    />
-                    <h2
-                      className={
-                        isCollapsed
-                          ? "hidden"
-                          : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
-                      }
-                    >
-                      Logout
-                    </h2>
-                  </div>
-                </Link>
-              </div>
               <div className="m-[1.5rem] flex">
                 <div
                   style={{ cursor: "pointer" }}
@@ -250,6 +223,35 @@ function SideNavBarV1() {
                     Collapse
                   </h2>
                 </div>
+              </div>
+              {/*Logout button */}
+              <div className="m-[1.5rem]" onClick={handleLogout}>
+                <Link to="/">
+                  {" "}
+                  {/* enter link to button here to log out*/}
+                  <div
+                    className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                  >
+                    <LogoutIcon
+                      sx={{
+                        marginRight: "5px",
+                        marginTop: "140px",
+                        fontSize: "30px",
+                        color: "white",
+                      }}
+                    />
+                    <h2
+                      className={
+                        isCollapsed
+                          ? "hidden"
+                          : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
+                      }
+                      style={{ marginTop: "144px" }}
+                    >
+                      Logout
+                    </h2>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
