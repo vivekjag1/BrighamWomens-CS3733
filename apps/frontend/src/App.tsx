@@ -15,17 +15,15 @@ import Login from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 function App() {
-  // const navigate = useNavigate();
   const router = createBrowserRouter([
+    {
+      path: paths.LOGIN,
+      element: <Login />,
+    },
     {
       path: "/",
       element: <Layout />,
       children: [
-        {
-          path: paths.LOGIN,
-          element: <Login />,
-        },
-
         {
           path: paths.HOME,
           element: <Home />,

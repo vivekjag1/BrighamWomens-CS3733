@@ -13,7 +13,7 @@ export type EdgeCoordinates = {
   endY: number;
 };
 
-function EditMap() {
+export default function EditMap() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
   const [floor, setFloor] = useState<string>("1");
@@ -139,5 +139,3 @@ function EditMap() {
     </div>
   );
 }
-
-export default EditMap;

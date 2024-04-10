@@ -288,7 +288,7 @@ function SideNavBarV1() {
                     <LogoutIcon
                       sx={{
                         marginRight: "5px",
-                        marginTop: "175px",
+                        marginTop: "140px",
                         fontSize: "30px",
                         color: "white",
                         transform: "scaleX(-1)",
@@ -300,7 +300,7 @@ function SideNavBarV1() {
                           ? "hidden"
                           : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
                       }
-                      style={{ marginTop: "179px" }}
+                      style={{ marginTop: "143px" }}
                     >
                       Logout
                     </h2>
