@@ -5,6 +5,7 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
+import LocationIcon from "@mui/icons-material/LocationOn";
 
 function Map(props: { activefloor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
@@ -86,30 +87,33 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
               {filteredSplitPaths.map((path) => (
                 <polyline
                   key={path[0].toString()}
-                  stroke="blue"
-                  strokeWidth="5"
+                  stroke="red"
+                  strokeWidth=".5em"
                   fill="none"
                   points={
                     listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                   }
                 />
               ))}
-              {props.activefloor === startNode.floor && (
-                <circle
-                  r="10"
-                  cx={startNode.xCoordinate}
-                  cy={startNode.yCoordinate}
-                  fill="green"
-                />
-              )}
-              {props.activefloor === endNode.floor && (
-                <circle
-                  r="10"
-                  cx={endNode.xCoordinate}
-                  cy={endNode.yCoordinate}
-                  fill="red"
-                />
-              )}
+              <svg
+                width="100px"
+                x={startNode.xCoordinate - 50}
+                y={startNode.yCoordinate - 1740}
+                className="drop-shadow"
+              >
+                {props.activefloor == startNode.floor && (
+                  <LocationIcon sx={{ color: "green" }} />
+                )}
+              </svg>
+              <svg
+                width="100px"
+                x={endNode.xCoordinate - 50}
+                y={endNode.yCoordinate - 1740}
+              >
+                {props.activefloor == endNode.floor && (
+                  <LocationIcon sx={{ color: "red" }} />
+                )}
+              </svg>
             </svg>
           </TransformComponent>
         </TransformWrapper>
