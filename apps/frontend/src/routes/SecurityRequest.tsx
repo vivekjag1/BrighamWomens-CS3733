@@ -191,7 +191,7 @@ export function SecurityRequest() {
                     </Button>
                     <Button
                       variant="contained"
-                      style={{ backgroundColor: "secondary", width: "8rem" }}
+                      style={{ width: "8rem", backgroundColor: "#012D5A" }}
                     >
                       Submit
                     </Button>

@@ -182,7 +182,7 @@ export function MedicalDeviceDeliveryForm() {
                     </Button>
                     <Button
                       variant="contained"
-                      style={{ backgroundColor: "secondary", width: "8rem" }}
+                      style={{ backgroundColor: "#012D5A", width: "8rem" }}
                     >
                       Submit
                     </Button>
