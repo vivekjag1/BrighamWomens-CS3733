@@ -215,10 +215,10 @@ const NodeTable = () => {
                     <th scope="col" className="px-6 py-3">
                       nodeType
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-0 py-3">
                       longName
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-0 py-3">
                       shortName
                     </th>
                   </tr>
