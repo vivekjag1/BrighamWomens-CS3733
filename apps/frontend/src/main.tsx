@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
       authorizationParams={{
         redirect_uri:
-          "https://ec2-18-118-141-194.us-east-2.compute.amazonaws.com/home",
+          "https://ec2-18-223-108-47.us-east-2.compute.amazonaws.com/home",
         //scope: "openid profile email offline_access",
       }}
       // onRedirectCallback={(appState) => {
