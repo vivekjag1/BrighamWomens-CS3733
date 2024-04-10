@@ -1,9 +1,9 @@
 import { Button, TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import axios from "axios";
-import { Graph } from "../../../backend/src/fileInput/Graph.ts";
-import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
 import { FormEventHandler, useEffect, useState } from "react";
+import { createNodes } from "common/src/GraphCommon.ts";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
@@ -17,7 +17,7 @@ function NavigationPanel(props: {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = Graph.createNodes(rawNodes.data);
+      let graphNodes = createNodes(rawNodes.data);
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),
@@ -30,7 +30,7 @@ function NavigationPanel(props: {
 
   return (
     <div>
-      <div className="w-[20vw] h-[98vh] p-5 bg-[#D9D9D9] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
+      <div className="w-[20vw] h-[98vh] p-5 bg-[#e5e7eb] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
         <form
           className="flex flex-col justify-start gap-6"
           onSubmit={props.onSubmit}
@@ -86,7 +86,7 @@ function NavigationPanel(props: {
             <Button
               type="submit"
               variant="contained"
-              style={{ backgroundColor: "#013B96", width: "8rem" }}
+              style={{ backgroundColor: "#012D5A", width: "8rem" }}
             >
               Submit
             </Button>

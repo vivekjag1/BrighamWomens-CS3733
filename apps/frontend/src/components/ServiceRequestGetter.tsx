@@ -46,11 +46,16 @@ export function ServiceRequestGetter() {
     let data = requestData;
 
     if (filterBySearch) {
-      data = data.filter((item) =>
-        item.location
-          .toString()
-          .toLowerCase()
-          .includes(filterBySearch.toLowerCase()),
+      data = data.filter(
+        (item) =>
+          item.location
+            .toString()
+            .toLowerCase()
+            .includes(filterBySearch.toLowerCase()) ||
+          item.requestingUsername
+            .toLowerCase()
+            .includes(filterBySearch.toLowerCase()) ||
+          item.assignedTo.toLowerCase().includes(filterBySearch.toLowerCase()),
       );
     }
 
@@ -147,7 +152,7 @@ export function ServiceRequestGetter() {
             type="text"
             id="table-search"
             className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-[20rem] bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search by Location"
+            placeholder="Search for Service Requests"
             onChange={(e) => setFilterBySearch(e.target.value)}
           />
         </div>
@@ -196,7 +201,7 @@ export function ServiceRequestGetter() {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: "#0146B1",
+              backgroundColor: "#012D5A",
             }}
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
           >
@@ -233,13 +238,13 @@ export function ServiceRequestGetter() {
             </th>
 
             <th scope="col" className="px-6 py-3">
-              Entered Time
+              Requested Time
             </th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((request) => (
-            <tr className="bg-white border-b" key={request.serviceID}>
+            <tr className="bg-white border-b h-16" key={request.serviceID}>
               <td className="px-6 py-4">{request.serviceID}</td>
               <td className="px-6 py-4">{truncateString(request.type, 20)}</td>
               <td className="px-6 py-4">
@@ -255,16 +260,29 @@ export function ServiceRequestGetter() {
                   ))}
                 </select>
               </td>
-              <td className="px-6 py-4">
-                {truncateString(request.priority, 10)}
+              <td className="flex justify-center items-center space-x-2 px-6 pt-[26px]">
+                <span
+                  className={`w-3 h-3 rounded-full ${
+                    request.priority === "Low"
+                      ? "bg-green-500"
+                      : request.priority === "Medium"
+                        ? "bg-yellow-500"
+                        : request.priority === "High"
+                          ? "bg-orange-500"
+                          : request.priority === "Emergency"
+                            ? "bg-red-500"
+                            : "bg-gray-200"
+                  }`}
+                ></span>
+                <span>{truncateString(request.priority, 10)}</span>
               </td>
               <td className="px-6 py-4">
                 {truncateString(request.requestingUsername, 15)}
               </td>
-              <td className="px-6 py-4">
+              <td className="px-4 py-4">
                 {truncateString(request.location, 15)}
               </td>
-              <td className="px-6 py-4">
+              <td className="px-5 py-4">
                 {request.description && request.description.trim() !== ""
                   ? truncateString(request.description, 20)
                   : "N/A"}
@@ -273,7 +291,7 @@ export function ServiceRequestGetter() {
                 {truncateString(request.assignedTo, 15)}
               </td>
               <td className="px-6 py-4">
-                {truncateString(request.enteredTime.toString(), 20)}
+                {truncateString(request.requestedTime.toString(), 20)}
               </td>
             </tr>
           ))}

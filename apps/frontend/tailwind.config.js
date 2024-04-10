@@ -5,8 +5,10 @@ export default {
     extend: {
       colors: {
         primary: "#009CA6",
-        secondary: "#013B96",
+        secondary: "#012D5A",
         offwhite: "#eaeaea",
+        gold: "#D4B547",
+        highlight: "#F6BD38",
       },
       width: {
         "5vw": "5vw",

@@ -24,7 +24,7 @@ const routes = [
   { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
-  { path: paths.EDITED_MAP, element: <EditMap /> },
+  { path: paths.MAP_EDITOR, element: <EditMap /> },
 ];
 
 export default routes;

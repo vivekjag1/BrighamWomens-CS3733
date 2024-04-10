@@ -1,5 +1,5 @@
-import { GraphNode } from "./GraphNode.ts";
-import { GraphEdge } from "./GraphEdge.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
+import { GraphEdge } from "common/src/GraphEdge.ts";
 import { PrismaClient } from "database";
 import fs from "fs";
 const prisma = new PrismaClient();

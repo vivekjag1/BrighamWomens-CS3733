@@ -9,8 +9,8 @@ import {
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { FormEventHandler, useEffect, useState } from "react";
 import axios from "axios";
-import { Graph } from "../../../backend/src/fileInput/Graph.ts";
-import { GraphNode } from "../../../backend/src/fileInput/GraphNode.ts";
+import { createNodes } from "common/src/GraphCommon.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
 
 function LocationSelector(props: {
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
@@ -35,7 +35,7 @@ function LocationSelector(props: {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = Graph.createNodes(rawNodes.data);
+      let graphNodes = createNodes(rawNodes.data);
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),

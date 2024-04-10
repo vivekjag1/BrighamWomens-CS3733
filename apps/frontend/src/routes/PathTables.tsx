@@ -149,7 +149,7 @@ const NodeTable = () => {
                 <Button
                   variant="contained"
                   onClick={uploadFiles}
-                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                  sx={{ backgroundColor: "#012D5A" }}
                 >
                   Upload Map Data
                 </Button>
@@ -158,7 +158,7 @@ const NodeTable = () => {
                 <Button
                   variant="contained"
                   onClick={downloadFiles}
-                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                  sx={{ backgroundColor: "#012D5A" }}
                 >
                   Download Map Data
                 </Button>
@@ -215,10 +215,10 @@ const NodeTable = () => {
                     <th scope="col" className="px-6 py-3">
                       nodeType
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-0 py-3">
                       longName
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-0 py-3">
                       shortName
                     </th>
                   </tr>

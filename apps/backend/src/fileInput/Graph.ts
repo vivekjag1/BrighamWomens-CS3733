@@ -1,8 +1,7 @@
-import { GraphNode } from "./GraphNode.ts";
-import { GraphEdge } from "./GraphEdge.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
+import { GraphEdge } from "common/src/GraphEdge.ts";
 import type { Node, Edge } from "database";
-//import {Simulate} from "react-dom/test-utils";
-//import close = Simulate.close;
+import { createNodes } from "common/src/GraphCommon.ts";
 
 export enum PathAlgorithm {
   AStar,
@@ -15,31 +14,8 @@ export class Graph {
   private edgeArray: GraphEdge[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
-    this.nodeArray = Graph.createNodes(nodeInput);
+    this.nodeArray = createNodes(nodeInput);
     this.edgeArray = this.createEdges(edgeInput);
-  }
-
-  //Converts the Node objects given from the prisma database
-  // into GraphNode objects
-  public static createNodes(input: Node[]): GraphNode[] {
-    const output: GraphNode[] = [];
-
-    for (const value of input) {
-      output.push(
-        new GraphNode(
-          value.nodeID,
-          value.xcoord,
-          value.ycoord,
-          value.floor,
-          value.building,
-          value.nodeType,
-          value.longName,
-          value.shortName,
-        ),
-      );
-    }
-
-    return output;
   }
 
   //Converts the Edge objects given from the prisma database
