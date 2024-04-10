@@ -29,8 +29,8 @@ export function NodeGetter() {
           <td className="px-6 py-4">{node.floor}</td>
           <td className="px-6 py-4">{node.building}</td>
           <td className="px-6 py-4">{node.nodeType}</td>
-          <td className="px-6 py-4">{node.longName}</td>
-          <td className="px-6 py-4">{node.shortName}</td>
+          <td className="px-0 py-4">{node.longName}</td>
+          <td className="px-0 py-4">{node.shortName}</td>
         </tr>
       ))}
     </tbody>
