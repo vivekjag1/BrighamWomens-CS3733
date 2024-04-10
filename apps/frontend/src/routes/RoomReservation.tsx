@@ -169,7 +169,7 @@ export function RoomReservation() {
                     <Button
                       variant="contained"
                       className="justify-end"
-                      style={{ backgroundColor: "#013B96", width: "8rem" }}
+                      style={{ backgroundColor: "secondary", width: "8rem" }}
                     >
                       Submit
                     </Button>

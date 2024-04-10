@@ -372,7 +372,7 @@ export function MedicineDeliveryForm() {
                     variant="contained"
                     onClick={submit}
                     className="justify-end"
-                    style={{ backgroundColor: "#013B96", width: "8rem" }}
+                    style={{ backgroundColor: "secondary", width: "8rem" }}
                   >
                     Submit
                   </Button>
