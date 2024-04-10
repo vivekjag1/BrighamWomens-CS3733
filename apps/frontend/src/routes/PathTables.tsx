@@ -149,7 +149,7 @@ const NodeTable = () => {
                 <Button
                   variant="contained"
                   onClick={uploadFiles}
-                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                  sx={{ backgroundColor: "secondary" }}
                 >
                   Upload Map Data
                 </Button>
@@ -158,7 +158,7 @@ const NodeTable = () => {
                 <Button
                   variant="contained"
                   onClick={downloadFiles}
-                  sx={{ backgroundColor: "rgb(1,70,177)" }}
+                  sx={{ backgroundColor: "secondary" }}
                 >
                   Download Map Data
                 </Button>
