@@ -201,7 +201,7 @@ export function ServiceRequestGetter() {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: "#0146B1",
+              backgroundColor: "#012D5A",
             }}
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
           >
