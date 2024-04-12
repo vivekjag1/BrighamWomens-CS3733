@@ -13,19 +13,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
-//import * as auth0 from '@auth0/auth0-react';
-
-// const insertLineBreaks = (text: string) => {
-//   const words = text.split(" ");
-//   const newText: Array<string | JSX.Element> = [];
-//   for (let i = 0; i < words.length; i += 2) {
-//     newText.push(words.slice(i, i + 2).join(" "));
-//     if (i + 2 < words.length) {
-//       newText.push((<br key={i.toString()} />) as JSX.Element);
-//     }
-//   }
-//   return newText;
-// };
 
 function SideNavBarV1() {
   const { isAuthenticated } = useAuth0();
@@ -59,21 +46,11 @@ function SideNavBarV1() {
         >
           <div className=" flex flex-row self-center">
             <Link to="/home">
-              <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
-                <img className="h-40px" src={logo} alt="Logo" />
+              <div className="rounded-lg mb-10 mt-10 w-60px h-60px flex justify-center items-center">
+                <img className="h-60px" src={logo} alt="Logo" />
               </div>
             </Link>
           </div>
-          {/*<h2*/}
-          {/*  className={*/}
-          {/*    isCollapsed*/}
-          {/*      ? "hidden"*/}
-          {/*      : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*Brigham and*/}
-          {/*Women's Hospital*/}
-          {/*</h2>*/}
 
           <div className="">
             <div className="ml-[1.5rem] mr-[1.5rem] relative parent">
