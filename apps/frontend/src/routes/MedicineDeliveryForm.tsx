@@ -2,26 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-} from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { FormControl } from "@mui/material";
 import NodeDropdown from "../components/NodeDropdown.tsx";
 import dayjs, { Dayjs } from "dayjs";
 import FormContainer from "../components/FormContainer.tsx";
 import CustomTextField from "../components/CustomTextField.tsx";
-//import {ServiceRequest} from "common/src/ServiceRequest.ts";
+import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
+import CustomClearButton from "../components/CustomClearButton.tsx";
+import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
+import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
+import CustomDatePicker from "../components/CustomDatePicker.tsx";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -54,24 +44,8 @@ export function MedicineDeliveryForm() {
   };
 
   async function submit() {
-    console.log(medicineDelivery);
-    // const formData = new FormData();
-    //
-    // formData.append('medicineDelivery.medicineName', medicineDelivery.medicineName);
-    // formData.append('medicineDelivery.dosage', medicineDelivery.dosage);
-    // formData.append('medicineDelivery.patientName', medicineDelivery.patientName);
-    // formData.append('medicineDelivery.userInstructions', medicineDelivery.userInstructions);
-    //
-    // formData.append('medicineDelivery.request.roomNum', medicineDelivery.request.roomNum);
-    // formData.append('medicineDelivery.request.deliveryInstructions', medicineDelivery.request.deliveryInstructions);
-    // formData.append('medicineDelivery.request.requestingUsername', medicineDelivery.request.requestingUsername);
-    // formData.append('medicineDelivery.request.location', medicineDelivery.request.location);
-
     if (validateForm()) {
       try {
-        // const response = await axios.post('/api/service', formData, {
-        //     headers: { 'Content-Type': 'multipart/form-data' },
-        // });
         const response = await axios.post(
           APIEndpoints.servicePostRequests,
           medicineDelivery,
@@ -141,50 +115,19 @@ export function MedicineDeliveryForm() {
             }
           />
 
-          {/*<TextField*/}
-          {/*    label="Location"*/}
-          {/*    variant="outlined"*/}
-          {/*    fullWidth*/}
-          {/*    sx={{width: "25rem"}}*/}
-          {/*    className="bg-gray-50"*/}
-          {/*    InputProps={{style: {fontSize: ".9rem"}}}*/}
-          {/*    InputLabelProps={{*/}
-          {/*        style: {color: "#a4aab5", fontSize: ".9rem"},*/}
-          {/*    }}*/}
-          {/*    size="small"*/}
-          {/*    value={medicineDelivery.serviceRequest.location}*/}
-          {/*    onChange={(e) =>*/}
-          {/*        setMedicineDelivery({*/}
-          {/*            ...medicineDelivery,*/}
-          {/*            serviceRequest: {*/}
-          {/*                ...medicineDelivery.serviceRequest,*/}
-          {/*                location: e.target.value,*/}
-          {/*            },*/}
-          {/*        })*/}
-          {/*    }*/}
-          {/*    required*/}
-          {/*/>*/}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer
-              components={["DateTimePicker"]}
-              sx={{ width: "25rem", paddingBottom: ".3rem" }}
-            >
-              <DateTimePicker
-                label="Service Time *"
-                className="bg-gray-50"
-                value={date}
-                onChange={(newValue) => {
-                  setMedicineDelivery((currentMedicineDelivery) => ({
-                    ...currentMedicineDelivery,
-                    serviceRequest: {
-                      ...currentMedicineDelivery.serviceRequest,
-                      requestedTime: newValue ? newValue.toISOString() : "",
-                    },
-                  }));
-                }}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
+          <CustomDatePicker
+            value={date}
+            onChange={(newValue) => {
+              setMedicineDelivery((currentMedicineDelivery) => ({
+                ...currentMedicineDelivery,
+                serviceRequest: {
+                  ...currentMedicineDelivery.serviceRequest,
+                  requestedTime: newValue ? newValue.toISOString() : "",
+                },
+              }));
+            }}
+          />
+
           <CustomTextField
             label="Medicine Name"
             value={medicineDelivery.medicineName}
@@ -196,6 +139,7 @@ export function MedicineDeliveryForm() {
             }
             required
           />
+
           <CustomTextField
             label="Dosage"
             value={medicineDelivery.dosage}
@@ -235,40 +179,26 @@ export function MedicineDeliveryForm() {
           />
 
           <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
-              Status *
-            </InputLabel>
-            <Select
-              name="status"
-              className="bg-gray-50"
-              sx={{ fontSize: ".9rem" }}
-              label="Status *"
+            <CustomStatusDropdown
               value={medicineDelivery.serviceRequest.status}
               onChange={(e) =>
                 setMedicineDelivery({
                   ...medicineDelivery,
                   serviceRequest: {
                     ...medicineDelivery.serviceRequest,
-                    status: e.target.value,
+                    status: e.target.value ? e.target.value.toString() : "",
                   },
                 })
               }
-            >
-              <MenuItem value="Unassigned">Unassigned</MenuItem>
-              <MenuItem value="Assigned">Assigned</MenuItem>
-              <MenuItem value="InProgress">InProgress</MenuItem>
-              <MenuItem value="Closed">Closed</MenuItem>
-            </Select>
+            />
           </FormControl>
+
           <FormControl
             component="fieldset"
             margin="normal"
             sx={{ width: "25rem" }}
           >
-            <FormLabel sx={{ fontSize: ".9rem" }}>Priority *</FormLabel>
-            <RadioGroup
-              row
-              name="priority"
+            <CustomPrioritySelector
               value={medicineDelivery.serviceRequest.priority}
               onChange={(e) =>
                 setMedicineDelivery({
@@ -279,42 +209,12 @@ export function MedicineDeliveryForm() {
                   },
                 })
               }
-              sx={{ marginLeft: ".52rem" }}
-            >
-              <FormControlLabel value="Low" control={<Radio />} label="Low" />
-              <FormControlLabel
-                value="Medium"
-                control={<Radio />}
-                label="Medium"
-              />
-              <FormControlLabel value="High" control={<Radio />} label="High" />
-              <FormControlLabel
-                value="Emergency"
-                control={<Radio />}
-                label="Emergency"
-              />
-            </RadioGroup>
+            />
           </FormControl>
           <div className="flex justify-between w-full mt-4">
-            <Button
-              variant="contained"
-              onClick={clear}
-              style={{
-                backgroundColor: "#EA422D",
-                color: "white",
-                width: "8rem",
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              variant="contained"
-              onClick={submit}
-              className="justify-end"
-              style={{ backgroundColor: "#012D5A", width: "8rem" }}
-            >
-              Submit
-            </Button>
+            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
+
+            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
           </div>
         </form>
       </div>
