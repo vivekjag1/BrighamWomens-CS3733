@@ -111,7 +111,7 @@ function SideNavBarV1() {
 
             <div className="m-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/services"
+                to="/home/services"
                 className="inline-block"
                 onClick={() => setActivePage(pagePaths.Services)}
               >

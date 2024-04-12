@@ -1,6 +1,7 @@
 // import { Auth0Provider } from "@auth0/auth0-react";
 import { Outlet } from "react-router-dom";
-import SideNavBar from "../archive/SideNavBarV1.tsx";
+import SideNavBar from "../components/SideNavBar.tsx";
+/*import SideNavBar from "../archive/SideNavBarV1.tsx";*/
 
 function Layout() {
   return (

@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: `${window.location.origin}/home`,
         //scope: "openid profile email offline_access",
       }}
       // onRedirectCallback={(appState) => {
