@@ -8,7 +8,7 @@ import MedicalDeviceDeliveryForm from "../routes/MedicalDeviceDeliveryForm.tsx";
 import SanitationForm from "../routes/SanitationForm.tsx";
 //import MedicineRequest from "../routes/MedicineRequest-styled.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
-import PathTables from "../routes/PathTables.tsx";
+import PathTables from "../routes/MapData.tsx";
 import EditMap from "../routes/EditMap.tsx";
 
 const routes = [
