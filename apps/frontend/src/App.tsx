@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
+
 import Home from "./routes/Home.tsx";
 import Hero from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
@@ -13,7 +14,7 @@ import RoomReservation from "./routes/RoomReservation.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
 import EditMap from "./routes/EditMap.tsx";
-import PathTables from "./routes/PathTables.tsx";
+import PathTables from "./routes/MapData.tsx";
 function App() {
   const router = createBrowserRouter([
     {
