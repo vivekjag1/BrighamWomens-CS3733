@@ -6,6 +6,7 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
+import ZoomControls from "./ZoomControls.tsx";
 
 function Map(props: { activefloor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
@@ -71,11 +72,8 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
   return (
     <div>
       <div>
-        <TransformWrapper
-          initialPositionX={-200}
-          initialPositionY={-100}
-          initialScale={1.2}
-        >
+        <TransformWrapper>
+          <ZoomControls />
           <TransformComponent>
             <svg
               viewBox="0 0 5000 3400"
