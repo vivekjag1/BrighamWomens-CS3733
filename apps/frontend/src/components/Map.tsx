@@ -99,7 +99,6 @@ function Map(props: { activefloor: number; nodes: number[][] }) {
                 width="100px"
                 x={startNode.xCoordinate - 50}
                 y={startNode.yCoordinate - 1740}
-                className="drop-shadow"
               >
                 {props.activefloor == startNode.floor && (
                   <LocationIcon sx={{ color: "green" }} />
