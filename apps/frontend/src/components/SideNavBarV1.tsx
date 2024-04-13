@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import React, { useState } from "react";
-import logo from "../../assets/bwh-logo-fancy.png";
+import logo from "../../assets/bwh-logo-shield.png";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
