@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { PrismaClient } from "database";
-import { Graph, PathAlgorithm } from "../../fileInput/Graph.ts";
+import { Graph, PathAlgorithm } from "../../pathfinding/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
 
 const router: Router = express.Router();
@@ -51,7 +51,7 @@ router.get("/", async (req, res) => {
       Graph.getNumFromFloor(node!.floor),
     ]);
   }
-  console.log("testing" + pathAsCoords);
+  console.log(pathAsCoords);
 
   res.status(200).json(pathAsCoords);
 });

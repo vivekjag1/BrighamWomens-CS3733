@@ -5,13 +5,16 @@ import logger from "morgan";
 import mapUpload from "./routes/map/mapUpload.ts";
 import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
+import securityRequest from "./routes/securityRequest.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
+import handleMedicalDeviceDelivery from "./routes/handleMedicalDeviceDelivery.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
+import RoomReservationAPI from "./routes/RoomReservationAPI.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -41,9 +44,12 @@ app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
 app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
-
+app.use(APIEndpoints.roomReservation, RoomReservationAPI);
+app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
+app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

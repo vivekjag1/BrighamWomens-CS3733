@@ -6,9 +6,14 @@ export class APIEndpoints {
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
   static readonly servicePutRequests: string = "/api/service/putRequests";
+  static readonly servicePostSecurityRequest: string =
+    "/api/service/post/security";
   static readonly navigationRequest: string = "/api/navigation/get";
   static readonly sanitationPostRequests: string =
     "/api/service/sanitationPostRequests";
+  static readonly roomReservation: string = "/api/service/room-reservation";
+  static readonly medicalDeviceDelivery: string =
+    "/api/service/postMedicalDevice";
 }
 
 export class FileAttributes {
