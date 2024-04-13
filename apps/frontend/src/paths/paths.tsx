@@ -1,16 +1,24 @@
 const paths = {
   LOGIN: "/",
   HOME: "/home",
-  SERVICES: "/services",
-  MEDICINE_REQUEST: "/services/medicine",
-  MEDICAL_DEVICE_DELIVERY: "/services/medical-device",
-  ROOM_RESERVATION: "/services/room-reservation",
-  SANITATION_FORM: "/services/sanitation-form",
-  SERVICES_DATA: "/services/data",
-  MAP_DATA: "/data",
-  FORM_STARTER: "/services/form",
-  MAP_EDITOR: "/edit",
-  SECURITY_REQUEST: "/services/security",
+  SERVICES: "/home/services",
+  MEDICINE_REQUEST: "/home/services/medicine",
+  MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",
+  ROOM_RESERVATION: "/home/services/room-reservation",
+  SANITATION_FORM: "/home/services/sanitation-form",
+  SERVICES_DATA: "/home/services/data",
+  MAP_DATA: "/home/data",
+  FORM_STARTER: "/home/services/form",
+  MAP_EDITOR: "/home/edit",
+  SECURITY_REQUEST: "/home/services/security",
 };
 
 export default paths;
+
+// const pagePaths = {
+//   Map: paths.HOME,
+//   Services: paths.SERVICES,
+//   ServiceData: paths.SERVICES_DATA,
+//   MapData: paths.MAP_DATA,
+//   EditMap: paths.MAP_EDITOR,
+// };
