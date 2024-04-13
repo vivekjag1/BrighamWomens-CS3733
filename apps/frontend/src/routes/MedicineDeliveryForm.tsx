@@ -37,6 +37,7 @@ export function MedicineDeliveryForm() {
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
       medicineDelivery.patientName &&
+      medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.requestingUsername &&
       medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.priority;

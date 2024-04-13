@@ -1,9 +1,10 @@
-import { Button, TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete } from "@mui/material";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import axios from "axios";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { FormEventHandler, useEffect, useState } from "react";
 import { createNodes } from "common/src/GraphCommon.ts";
+import CustomSubmitButton from "./CustomSubmitButton.tsx";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
@@ -83,13 +84,7 @@ function NavigationPanel(props: {
             />
           </div>
           <div>
-            <Button
-              type="submit"
-              variant="contained"
-              style={{ backgroundColor: "#012D5A", width: "8rem" }}
-            >
-              Submit
-            </Button>
+            <CustomSubmitButton type="submit">Submit</CustomSubmitButton>
           </div>
         </form>
       </div>

@@ -1,4 +1,5 @@
 import Button, { ButtonProps } from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const CustomClearButton: React.FC<ButtonProps> = (props) => {
   return (
@@ -9,8 +10,11 @@ const CustomClearButton: React.FC<ButtonProps> = (props) => {
         color: "white",
         width: "8rem",
       }}
+      endIcon={<ClearIcon />}
       {...props}
-    />
+    >
+      CLEAR
+    </Button>
   );
 };
 

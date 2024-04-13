@@ -4,6 +4,9 @@ import axios from "axios";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
+import UploadIcon from "@mui/icons-material/Upload";
+import DownloadIcon from "@mui/icons-material/Download";
+
 const NodeTable = () => {
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
@@ -150,6 +153,7 @@ const NodeTable = () => {
                   variant="contained"
                   onClick={uploadFiles}
                   sx={{ backgroundColor: "#012D5A" }}
+                  endIcon={<UploadIcon />}
                 >
                   Upload Map Data
                 </Button>
@@ -159,6 +163,7 @@ const NodeTable = () => {
                   variant="contained"
                   onClick={downloadFiles}
                   sx={{ backgroundColor: "#012D5A" }}
+                  endIcon={<DownloadIcon />}
                 >
                   Download Map Data
                 </Button>
