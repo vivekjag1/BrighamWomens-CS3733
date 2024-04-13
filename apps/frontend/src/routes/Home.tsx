@@ -1,4 +1,4 @@
-import Map from "../components/Map.tsx";
+import MapPage from "../components/MapPage.tsx";
 import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -60,7 +60,7 @@ function Home() {
           <NavigationPanel onSubmit={handleForm} />
         </div>
         <div className="h-screen flex flex-col justify-center">
-          <Map activeFloor={activeFloor} nodes={nodes} />
+          <MapPage activeFloor={activeFloor} nodes={nodes} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

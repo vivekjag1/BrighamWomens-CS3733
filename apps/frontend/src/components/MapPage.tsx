@@ -6,8 +6,10 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import axios from "axios";
 
-function Map(props: { activeFloor: number; nodes: number[][] }) {
+function MapPage(props: { activeFloor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.activeFloor) {
@@ -194,7 +196,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
   );
 }
 
-export default Map;
+export default MapPage;
 
 function getStringFromFloor(floor: number): string {
   switch (floor) {
@@ -210,12 +212,22 @@ function getStringFromFloor(floor: number): string {
   }
 }
 
-function getTextualDirections(path: number[][]) {
+async function getTextualDirections(path: number[][]) {
+  const nodes = await axios.get(APIEndpoints.mapGetNodes);
+  const nodesMap: Map<number[], string> = new Map();
+  for (let i = 0; i < nodes.data.length - 1; i++) {
+    nodesMap.set(
+      [+nodes.data[i].xcoord, +nodes.data[i].ycoord, +nodes.data[i].floor],
+      nodes.data[i].longName,
+    );
+  }
+  console.log(nodesMap.get([1580, 2538, 2]));
   const textualPath: string[] = [];
   textualPath.push("Start at " + path[0]);
   for (let i = 1; i < path.length - 2; i++) {
     const a: number[] = path[i - 1];
     const b: number[] = path[i];
+    const bNode: string = nodesMap.get(path[i])!;
     const c: number[] = path[i + 1];
     const angle = getAngle(a, b, c);
     if (b[2] != c[2]) {
@@ -232,15 +244,15 @@ function getTextualDirections(path: number[][]) {
       }
     } else if (angle < Math.PI && angle > Math.PI / 2 + 0.001) {
       textualPath.push(
-        "Slight " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+        "Slight " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + bNode,
       );
     } else if (angle >= Math.PI / 2 - 0.001 && angle <= Math.PI / 2 + 0.001) {
       textualPath.push(
-        "Turn " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+        "Turn " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + bNode,
       );
     } else if (angle < Math.PI / 2 - 0.001) {
       textualPath.push(
-        "Sharp " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+        "Sharp " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + bNode,
       );
     }
   }
