@@ -29,6 +29,8 @@ export function SanitationForm() {
 
           <NodeDropdown
             value={nodeHolder}
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             onChange={(newValue: string) => {
               setNodeHolder(newValue);
             }}

@@ -103,6 +103,8 @@ export function MedicalDeviceDeliveryForm() {
 
           <NodeDropdown
             value={medicalDeviceDelivery.serviceRequest.location}
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             onChange={(newValue: string) => {
               setMedicalDeviceDelivery(
                 (currentMedicalDeviceDelivery: MedicalDeviceDelivery) => ({

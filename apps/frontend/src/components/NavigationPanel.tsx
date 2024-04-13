@@ -62,6 +62,8 @@ function NavigationPanel(props: {
           <div>
             <NodeDropdown
               value={pathNodeObject.startNode}
+              sx={{ width: "19rem", padding: 0 }}
+              label="Starting Location"
               onChange={(newValue: string) =>
                 setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -78,6 +80,8 @@ function NavigationPanel(props: {
           <div>
             <NodeDropdown
               value={pathNodeObject.endNode}
+              sx={{ width: "19rem", padding: 0 }}
+              label="Destination"
               onChange={(newValue: string) =>
                 setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
