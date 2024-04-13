@@ -103,12 +103,12 @@ export function RoomReservation() {
             <CustomPrioritySelector />
           </FormControl>
 
-          <div className="flex justify-between w-full mt-4">
+          <div className="flex justify-between w-full mt-4 px-10">
             <CustomClearButton>Clear</CustomClearButton>
 
             <CustomSubmitButton>Submit</CustomSubmitButton>
           </div>
-          <div className="text-center mt-4">
+          <div className="text-center">
             <p>Made by Vivek Jagadeesh, Taeha Song and Mohamed Adem Djadid</p>
           </div>
         </form>

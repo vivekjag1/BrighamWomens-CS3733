@@ -87,7 +87,7 @@ export function SecurityRequest() {
             <CustomSubmitButton>Submit</CustomSubmitButton>
           </div>
           <div className="text-center mt-4">
-            <p>Made by Daniel Gorbunov, Colin Masucci and Lily Jones</p>
+            <p>Made by Daniel Gorbunov and Colin Masucci</p>
           </div>
         </form>
       </div>
