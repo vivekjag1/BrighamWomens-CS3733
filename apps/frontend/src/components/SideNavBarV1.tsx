@@ -38,8 +38,8 @@ function SideNavBarV1() {
         >
           <div className=" flex flex-row self-center">
             <Link to={paths.HOME}>
-              <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
-                <img className="h-40px" src={logo} alt="Logo" />
+              <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-[60px] h-[60px] flex justify-center items-center">
+                <img className="h-[40px]" src={logo} alt="Logo" />
               </div>
             </Link>
           </div>
@@ -244,7 +244,10 @@ function SideNavBarV1() {
               </div>
             </div>
             {/*Logout button */}
-            <div className="m-[1.5rem]" onClick={handleLogout}>
+            <div
+              className="absolute bottom-1 to m-[1.5rem]"
+              onClick={handleLogout}
+            >
               <Link to={paths.LOGIN}>
                 {" "}
                 {/* enter link to button here to log out*/}
