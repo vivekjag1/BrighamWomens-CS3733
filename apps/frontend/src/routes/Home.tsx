@@ -63,7 +63,7 @@ function Home() {
 
   return (
     <div>
-      <div className="relative bg-[#F1F1E6]">
+      <div className="relative bg-offwhite">
         <Map activeFloor={activeFloor} nodes={nodes} />
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

@@ -74,9 +74,14 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
         <TransformWrapper initialScale={1}>
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%" }}
-            contentStyle={{ width: "100%", height: "100%" }}
+            contentStyle={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            <svg viewBox="0 0 5000 3400" height="100vh" width="100vw">
+            <svg viewBox="0 0 5000 3400" height="100vh">
               <image href={map} />
               {filteredSplitPaths.map((path) => (
                 <>
