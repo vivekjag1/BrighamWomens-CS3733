@@ -1,20 +1,10 @@
 import React from "react";
-import "./Login.css";
+import "../styles/Login.css";
 /*import { useAuth0 } from "@auth0/auth0-react";*/
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  /*const { loginWithRedirect } = useAuth0();*/
-  /*  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/home",
-      },
-    });
-    console.log("hello world");
-  }*/
   function handlePathfind() {
     navigate("/home");
   }
