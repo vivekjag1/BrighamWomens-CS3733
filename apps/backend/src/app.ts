@@ -5,6 +5,7 @@ import logger from "morgan";
 import mapUpload from "./routes/map/mapUpload.ts";
 import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
+import securityRequest from "./routes/securityRequest.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
@@ -39,6 +40,8 @@ app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+
+app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
