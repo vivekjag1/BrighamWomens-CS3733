@@ -8,8 +8,7 @@
 }
 
 .opening-remarks {
-  animation: fadeIn 5s;
-  animation-iteration-count: infinite;
+  animation: fadeIn 5s forwards;
 }
 
 @keyframes fadeIn {
