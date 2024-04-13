@@ -13,19 +13,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
-//import * as auth0 from '@auth0/auth0-react';
-
-// const insertLineBreaks = (text: string) => {
-//   const words = text.split(" ");
-//   const newText: Array<string | JSX.Element> = [];
-//   for (let i = 0; i < words.length; i += 2) {
-//     newText.push(words.slice(i, i + 2).join(" "));
-//     if (i + 2 < words.length) {
-//       newText.push((<br key={i.toString()} />) as JSX.Element);
-//     }
-//   }
-//   return newText;
-// };
 
 function SideNavBarV1() {
   const { isAuthenticated } = useAuth0();
