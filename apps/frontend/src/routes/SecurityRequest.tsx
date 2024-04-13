@@ -105,6 +105,8 @@ export function SecurityRequest() {
 
           <NodeDropdown
             value={securityRequestForm.serviceRequest.location}
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             onChange={(newValue: string) =>
               setSecurityRequestForm({
                 ...securityRequestForm,

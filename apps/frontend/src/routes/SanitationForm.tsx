@@ -103,6 +103,8 @@ export function SanitationForm() {
           />
 
           <NodeDropdown
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             value={sanitationRequest.serviceRequest.location}
             onChange={(newValue: string) =>
               setSanitationRequest(() => ({
