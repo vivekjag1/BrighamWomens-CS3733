@@ -73,7 +73,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
       <div>
         <TransformWrapper initialScale={1}>
           <TransformComponent
-            wrapperStyle={{ width: "100%", height: "100%" }}
+            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
             contentStyle={{
               width: "100%",
               height: "100%",
