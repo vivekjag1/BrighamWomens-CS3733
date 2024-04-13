@@ -39,19 +39,19 @@ function SideNavBarV1() {
           <div className="flex flex-row self-center">
             <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
               <div className="mb-5 mt-10 flex justify-center">
-                <img className="h-60px" src={logo} alt="Logo" />
+                <img className="h-[60px]" src={logo} alt="Logo" />
               </div>
-              <div className="mb-6">
-                <h1
-                  className={
-                    isCollapsed
-                      ? "hidden"
-                      : "text-xl font-bold text-white text-md whitespace-nowrap"
-                  }
-                >
-                  Hospital Kiosk
-                </h1>
-              </div>
+              {/*<div className="mb-6">*/}
+              {/*  <h1*/}
+              {/*    className={*/}
+              {/*      isCollapsed*/}
+              {/*        ? "hidden"*/}
+              {/*        : "text-xl font-bold text-white text-md whitespace-nowrap"*/}
+              {/*    }*/}
+              {/*  >*/}
+              {/*    Hospital Kiosk*/}
+              {/*  </h1>*/}
+              {/*</div>*/}
             </Link>
           </div>
 
