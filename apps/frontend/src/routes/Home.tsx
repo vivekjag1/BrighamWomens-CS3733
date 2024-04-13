@@ -1,7 +1,7 @@
 import Map from "../components/Map.tsx";
 import { useState } from "react";
-/*import NavigationPanel from "../components/NavigationPanel.tsx";
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import NavigationPanel from "../components/NavigationPanel.tsx";
+/*import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";*/
 import MapToggle from "../components/MapToggle.tsx";
 
@@ -65,6 +65,9 @@ function Home() {
     <div>
       <div className="relative bg-offwhite">
         <Map activeFloor={activeFloor} nodes={nodes} />
+        <div className="absolute left-[2%] top-[2%]">
+          <NavigationPanel />
+        </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle
             activeFloor={activeFloor}
