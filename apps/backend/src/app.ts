@@ -7,6 +7,7 @@ import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
+import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
@@ -39,6 +40,7 @@ app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
