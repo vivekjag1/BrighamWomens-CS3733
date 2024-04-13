@@ -10,6 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import dayjs from "dayjs";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
 // import { FormControl } from "react-bootstrap";
 // import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
@@ -205,6 +206,7 @@ export function ServiceRequestGetter() {
               backgroundColor: "#012D5A",
             }}
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+            endIcon={<SwapVertIcon />}
           >
             Toggle ID Sort
           </Button>
