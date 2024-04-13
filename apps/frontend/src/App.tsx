@@ -1,15 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-/*import PathTables from "./routes/PathTables.tsx";*/
 import Services from "./routes/Services.tsx";
-/*import MedicineDeliveryForm from "./routes/MedicineDeliveryForm.tsx";
-import MedicalDeviceDeliveryForm from "./routes/MedicalDeviceDeliveryForm.tsx";
-import RoomReservationType from "./routes/RoomReservationType.tsx";
-import SanitationForm from "./routes/SanitationForm.tsx";
-import SecurityRequest from "./routes/SecurityRequest.tsx";
-import ServicesTable from "./routes/ServicesTable.tsx";
-import EditMap from "./routes/EditMap.tsx";*/
-/*// import AuthComp from "./components/AuthenticationComponent.tsx";*/
+
 import Home from "./routes/Home.tsx";
 import Hero from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
