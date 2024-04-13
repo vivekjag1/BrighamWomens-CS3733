@@ -7,6 +7,8 @@ export class APIEndpoints {
   static readonly servicePostRequests: string = "/api/service/postRequests";
   static readonly servicePutRequests: string = "/api/service/putRequests";
   static readonly navigationRequest: string = "/api/navigation/get";
+  static readonly medicalDeviceDelivery: string =
+    "/api/service/postMedicalDevice";
 }
 
 export class FileAttributes {
