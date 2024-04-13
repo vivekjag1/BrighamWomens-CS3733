@@ -105,7 +105,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
                         : path[0][0]
                     }
                     cy={path[0][1]}
-                    fill="black"
+                    fill="#012D5A"
                   />
                   <text
                     x={
@@ -139,7 +139,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
                         : path[path.length - 1][0]
                     }
                     cy={path[path.length - 1][1]}
-                    fill="black"
+                    fill="#012D5A"
                   />
                   <text
                     x={
