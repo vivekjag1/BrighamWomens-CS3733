@@ -1,8 +1,8 @@
 import Map from "../components/Map.tsx";
-import { FormEvent, useState } from "react";
-import NavigationPanel from "../components/NavigationPanel.tsx";
+import { useState } from "react";
+/*import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";
+import axios from "axios";*/
 import MapToggle from "../components/MapToggle.tsx";
 
 function Home() {
@@ -12,8 +12,16 @@ function Home() {
     setActiveFloor(x);
   }
 
+  const nodes = [
+    [0, 0, -2],
+    [0, 0, -1],
+    [0, 0, 1],
+    [0, 0, 2],
+    [0, 0, 3],
+  ];
+
   // Retrieves path from current location to destination in the form of a list of a nodes
-  const [nodes, setNodes] = useState<number[][]>([
+  /*  const [nodes, setNodes] = useState<number[][]>([
     [0, 0, -2],
     [0, 0, -1],
     [0, 0, 1],
@@ -51,17 +59,12 @@ function Home() {
         setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
-  }
+  }*/
 
   return (
     <div>
-      <div className="relative flex justify-evenly bg-[#F1F1E6]">
-        <div className=" h-screen flex flex-col justify-center">
-          <NavigationPanel onSubmit={handleForm} />
-        </div>
-        <div className="h-screen flex flex-col justify-center">
-          <Map activeFloor={activeFloor} nodes={nodes} />
-        </div>
+      <div className="relative bg-[#F1F1E6]">
+        <Map activeFloor={activeFloor} nodes={nodes} />
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle
             activeFloor={activeFloor}

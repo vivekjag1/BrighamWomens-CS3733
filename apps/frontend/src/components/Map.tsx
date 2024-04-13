@@ -71,18 +71,12 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
   return (
     <div>
       <div>
-        <TransformWrapper
-          initialPositionX={-200}
-          initialPositionY={-100}
-          initialScale={1.2}
-        >
-          <TransformComponent>
-            <svg
-              viewBox="0 0 5000 3400"
-              height="98.5vh"
-              width="auto"
-              className="rounded-xl"
-            >
+        <TransformWrapper initialScale={1}>
+          <TransformComponent
+            wrapperStyle={{ width: "100%", height: "100%" }}
+            contentStyle={{ width: "100%", height: "100%" }}
+          >
+            <svg viewBox="0 0 5000 3400" height="100vh" width="100vw">
               <image href={map} />
               {filteredSplitPaths.map((path) => (
                 <>
