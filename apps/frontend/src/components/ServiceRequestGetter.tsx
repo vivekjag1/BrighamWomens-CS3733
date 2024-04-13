@@ -9,6 +9,7 @@ import {
   FormControl,
   Button,
 } from "@mui/material";
+import dayjs from "dayjs";
 // import { FormControl } from "react-bootstrap";
 // import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
@@ -291,7 +292,12 @@ export function ServiceRequestGetter() {
                 {truncateString(request.assignedTo, 15)}
               </td>
               <td className="px-6 py-4">
-                {truncateString(request.requestedTime.toString(), 20)}
+                {truncateString(
+                  dayjs
+                    .tz(request.requestedTime.toString(), "America/New_York")
+                    .toString(),
+                  14,
+                )}
               </td>
             </tr>
           ))}
