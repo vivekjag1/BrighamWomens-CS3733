@@ -245,7 +245,7 @@ function SideNavBarV1() {
             </div>
             {/*Logout button */}
             <div
-              className="absolute bottom-1 to m-[1.5rem]"
+              className="fixed bottom-1 to m-[1.5rem]"
               onClick={handleLogout}
             >
               <Link to={paths.LOGIN}>
