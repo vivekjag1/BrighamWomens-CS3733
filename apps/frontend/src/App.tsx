@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
 /*import MedicineDeliveryForm from "./routes/MedicineDeliveryForm.tsx";
 import MedicalDeviceDeliveryForm from "./routes/MedicalDeviceDeliveryForm.tsx";
-import RoomReservation from "./routes/RoomReservation.tsx";
+import RoomReservationType from "./routes/RoomReservationType.tsx";
 import SanitationForm from "./routes/SanitationForm.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";

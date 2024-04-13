@@ -12,15 +12,73 @@ import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import FormContainer from "../components/FormContainer.tsx";
+import { RoomReservationType } from "common/src/RoomReservationType.ts";
+import axios from "axios";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import dayjs, { Dayjs } from "dayjs";
 
-// import {TextField, Button} from '@mui/material';
-
+const initialState: RoomReservationType = {
+  endTime: dayjs().toISOString(),
+  reservationReason: "",
+  serviceRequest: {
+    requestingUsername: "",
+    location: "",
+    priority: "",
+    status: "Unassigned",
+    description: "",
+    requestedTime: dayjs().toISOString(),
+  },
+};
 export function RoomReservation() {
-  const dummyArray: string[] = [];
-  dummyArray.push("Hello");
-  dummyArray.push("World");
-  const [nodeHolder, setNodeHolder] = useState<string>("");
+  const [roomReservation, setRoomReservation] =
+    useState<RoomReservationType>(initialState);
+  const [startDate, setStartDate] = useState<Dayjs>(dayjs());
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const validateForm = () => {
+    const isValid =
+      roomReservation.reservationReason &&
+      roomReservation.endTime &&
+      roomReservation.serviceRequest.location &&
+      roomReservation.serviceRequest.requestingUsername &&
+      roomReservation.serviceRequest.requestedTime &&
+      roomReservation.serviceRequest.priority;
 
+    console.log(roomReservation);
+    return isValid;
+  };
+
+  async function submit() {
+    console.log("called submit function!");
+    if (validateForm()) {
+      try {
+        const response = await axios.post(
+          APIEndpoints.roomReservation,
+          roomReservation,
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (response.status === 200) {
+          console.log("Submission successful");
+          alert("Room Reservation sent!");
+          clear();
+        } else {
+          console.error("Submission failed with status:", response.status);
+          alert("Room Reservation failed!");
+        }
+      } catch (error) {
+        console.error("Error submitting the form!: ", error);
+        alert("Room Reservation Failed!");
+      }
+    } else {
+      alert("You must fill out all the required information");
+    }
+  }
+  function clear() {
+    setStartDate(dayjs());
+    setEndDate(dayjs());
+    setRoomReservation(initialState);
+  }
   return (
     <FormContainer>
       <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
@@ -33,13 +91,29 @@ export function RoomReservation() {
           className="space-y-4 flex flex-col justify-center items-center"
         >
           <NodeDropdown
-            value={nodeHolder}
-            onChange={(newValue: string) => {
-              setNodeHolder(newValue);
-            }}
+            value={roomReservation.serviceRequest.location}
+            onChange={(newValue: string) =>
+              setRoomReservation((roomReservation) => ({
+                ...roomReservation,
+                serviceRequest: {
+                  ...roomReservation.serviceRequest,
+                  location: newValue,
+                },
+              }))
+            }
           />
 
           <TextField
+            value={roomReservation.serviceRequest.requestingUsername}
+            onChange={(e) =>
+              setRoomReservation({
+                ...roomReservation,
+                serviceRequest: {
+                  ...roomReservation.serviceRequest,
+                  requestingUsername: e.target.value,
+                },
+              })
+            }
             id="outlined-basic"
             label="Reservation Name"
             variant="outlined"
@@ -58,11 +132,31 @@ export function RoomReservation() {
               sx={{ width: "25rem", padding: 0, margin: 0 }}
             >
               <DateTimePicker
+                value={startDate}
+                onChange={(newValue) => {
+                  setRoomReservation((currentReservation) => ({
+                    ...currentReservation,
+                    serviceRequest: {
+                      ...currentReservation.serviceRequest,
+                      requestedTime: newValue ? newValue.toISOString() : "",
+                    },
+                  }));
+                }}
                 label="Reservation Start Time"
                 className="bg-gray-50"
                 sx={{ width: "25rem", padding: 0 }}
               />
               <DateTimePicker
+                value={endDate}
+                onChange={(newValue) => {
+                  setRoomReservation((currentReservation) => ({
+                    ...currentReservation,
+                    serviceRequest: {
+                      ...currentReservation.serviceRequest,
+                      endTime: newValue ? newValue.toISOString() : "",
+                    },
+                  }));
+                }}
                 label="Reservation End Time"
                 className="bg-gray-50"
                 sx={{ width: "25rem", padding: 0, margin: 0 }}
@@ -70,6 +164,13 @@ export function RoomReservation() {
             </DemoContainer>
           </LocalizationProvider>
           <TextField
+            value={roomReservation.reservationReason}
+            onChange={(e) =>
+              setRoomReservation({
+                ...roomReservation,
+                reservationReason: e.target.value,
+              })
+            }
             id="outlined-basic"
             label="Reservation Purpose"
             multiline
@@ -85,6 +186,16 @@ export function RoomReservation() {
           />
 
           <CustomTextField
+            value={roomReservation.serviceRequest.description}
+            onChange={(e) =>
+              setRoomReservation({
+                ...roomReservation,
+                serviceRequest: {
+                  ...roomReservation.serviceRequest,
+                  description: e.target.value,
+                },
+              })
+            }
             label="Description (optional)"
             multiline
             rows={3}
@@ -100,13 +211,24 @@ export function RoomReservation() {
             margin="normal"
             sx={{ width: "25rem" }}
           >
-            <CustomPrioritySelector />
+            <CustomPrioritySelector
+              value={roomReservation.serviceRequest.priority}
+              onChange={(e) =>
+                setRoomReservation({
+                  ...roomReservation,
+                  serviceRequest: {
+                    ...roomReservation.serviceRequest,
+                    priority: e.target.value,
+                  },
+                })
+              }
+            />
           </FormControl>
 
           <div className="flex justify-between w-full mt-4 px-10">
-            <CustomClearButton>Clear</CustomClearButton>
+            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
 
-            <CustomSubmitButton>Submit</CustomSubmitButton>
+            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
           </div>
           <div className="text-center">
             <p>Made by Vivek Jagadeesh, Taeha Song and Mohamed Adem Djadid</p>
