@@ -8,6 +8,7 @@ import pathfindingAPI from "./routes/navigation/navigate.ts";
 import securityRequest from "./routes/securityRequest.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
+import handleMedicalDeviceDelivery from "./routes/handleMedicalDeviceDelivery.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
@@ -40,11 +41,13 @@ app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
 
 app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

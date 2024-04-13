@@ -9,6 +9,8 @@ export class APIEndpoints {
   static readonly servicePostSecurityRequest: string =
     "/api/service/post/security";
   static readonly navigationRequest: string = "/api/navigation/get";
+  static readonly medicalDeviceDelivery: string =
+    "/api/service/postMedicalDevice";
 }
 
 export class FileAttributes {
