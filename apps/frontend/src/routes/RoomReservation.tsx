@@ -91,6 +91,8 @@ export function RoomReservation() {
           className="space-y-4 flex flex-col justify-center items-center"
         >
           <NodeDropdown
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             value={roomReservation.serviceRequest.location}
             onChange={(newValue: string) =>
               setRoomReservation((roomReservation) => ({
