@@ -41,6 +41,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
     yCoordinate: props.nodes[length - 1][1],
     floor: props.nodes[length - 1][2],
   };
+  getTextualDirections(props.nodes);
 
   // Determines instructions for drawing path from a start node to end node
   const splitPaths: number[][][] = [];
@@ -207,4 +208,61 @@ function getStringFromFloor(floor: number): string {
     default:
       return floor.toString();
   }
+}
+
+function getTextualDirections(path: number[][]) {
+  const textualPath: string[] = [];
+  textualPath.push("Start at " + path[0]);
+  for (let i = 1; i < path.length - 2; i++) {
+    const a: number[] = path[i - 1];
+    const b: number[] = path[i];
+    const c: number[] = path[i + 1];
+    const angle = getAngle(a, b, c);
+    if (b[2] != c[2]) {
+      textualPath.push(
+        "Elevator " +
+          (Math.sign(c[2] - b[2]) == 1
+            ? c[2] - b[2] + " Floors Up"
+            : b[2] - c[2] + " Floors Down"),
+      );
+      i++;
+    } else if (angle <= Math.PI && angle > Math.PI - 0.2) {
+      if (textualPath[textualPath.length - 1] != "Straight") {
+        textualPath.push("Straight");
+      }
+    } else if (angle < Math.PI && angle > Math.PI / 2 + 0.001) {
+      textualPath.push(
+        "Slight " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+      );
+    } else if (angle >= Math.PI / 2 - 0.001 && angle <= Math.PI / 2 + 0.001) {
+      textualPath.push(
+        "Turn " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+      );
+    } else if (angle < Math.PI / 2 - 0.001) {
+      textualPath.push(
+        "Sharp " + (isRightTurn(a, b, c) ? "Right" : "Left") + " at " + b,
+      );
+    }
+  }
+  textualPath.push("End at " + path[path.length - 1]);
+  console.log(textualPath);
+  return textualPath;
+}
+
+function getAngle(a: number[], b: number[], c: number[]) {
+  const ab = getDistance(a, b);
+  const bc = getDistance(b, c);
+  const ac = getDistance(a, c);
+  return Math.acos(
+    (Math.pow(ab, 2) + Math.pow(bc, 2) - Math.pow(ac, 2)) / (2 * ab * bc),
+  );
+}
+
+function getDistance(a: number[], b: number[]): number {
+  return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
+}
+
+function isRightTurn(a: number[], b: number[], c: number[]): boolean {
+  //(𝑥2−𝑥1)(𝑦3−𝑦1)−(𝑦2−𝑦1)(𝑥3−𝑥1)
+  return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]) > 0;
 }
