@@ -34,14 +34,6 @@ function SideNavBarV1() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
-  const pagePaths = {
-    Map: paths.HOME,
-    Services: paths.SERVICES,
-    ServiceData: paths.SERVICES_DATA,
-    MapData: paths.MAP_DATA,
-    EditMap: paths.MAP_EDITOR,
-  };
-
   const handleLogout = () => {
     // logout({returnTo: window.location.origin} );
     logout().then().catch(console.error);
@@ -58,29 +50,19 @@ function SideNavBarV1() {
           className={`shadow-lg h-screen bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 ${isCollapsed ? "w-[5rem]" : "w-[11rem]"}`}
         >
           <div className=" flex flex-row self-center">
-            <Link to="/home">
+            <Link to={paths.HOME}>
               <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
                 <img className="h-40px" src={logo} alt="Logo" />
               </div>
             </Link>
           </div>
-          {/*<h2*/}
-          {/*  className={*/}
-          {/*    isCollapsed*/}
-          {/*      ? "hidden"*/}
-          {/*      : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*Brigham and*/}
-          {/*Women's Hospital*/}
-          {/*</h2>*/}
 
           <div className="">
             <div className="ml-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/home"
+                to={paths.HOME}
                 className="inline-block"
-                onClick={() => setActivePage(pagePaths.Map)}
+                onClick={() => setActivePage(paths.HOME)}
               >
                 <div className={`flex flex-row text-white`}>
                   <MapIcon
@@ -101,7 +83,7 @@ function SideNavBarV1() {
                   </h2>
                 </div>
                 <span
-                  className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == pagePaths.Map ? "scale-x-1" : "scale-x-0"}`}
+                  className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == paths.HOME ? "scale-x-1" : "scale-x-0"}`}
                   style={{
                     transformOrigin: "left",
                   }}
@@ -111,9 +93,9 @@ function SideNavBarV1() {
 
             <div className="m-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/home/services"
+                to={paths.SERVICES}
                 className="inline-block"
-                onClick={() => setActivePage(pagePaths.Services)}
+                onClick={() => setActivePage(paths.SERVICES)}
               >
                 <div className={`flex flex-row text-white`}>
                   <VolunteerActivismIcon
@@ -133,7 +115,7 @@ function SideNavBarV1() {
                     Services
                   </h2>
                   <span
-                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == pagePaths.Services ? "scale-x-1" : "scale-x-0"}`}
+                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == paths.SERVICES ? "scale-x-1" : "scale-x-0"}`}
                     style={{
                       transformOrigin: "left",
                     }}
@@ -143,9 +125,9 @@ function SideNavBarV1() {
             </div>
             <div className="m-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/services/data"
+                to={paths.SERVICES_DATA}
                 className="inline-block"
-                onClick={() => setActivePage(pagePaths.ServiceData)}
+                onClick={() => setActivePage(paths.SERVICES_DATA)}
               >
                 <div className={`flex flex-row text-white`}>
                   <TocIcon
@@ -165,7 +147,7 @@ function SideNavBarV1() {
                     Service Data
                   </h2>
                   <span
-                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == pagePaths.ServiceData ? "scale-x-1" : "scale-x-0"}`}
+                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == paths.SERVICES_DATA ? "scale-x-1" : "scale-x-0"}`}
                     style={{
                       transformOrigin: "left",
                     }}
@@ -175,9 +157,9 @@ function SideNavBarV1() {
             </div>
             <div className="m-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/data"
+                to={paths.MAP_DATA}
                 className="inline-block"
-                onClick={() => setActivePage(pagePaths.MapData)}
+                onClick={() => setActivePage(paths.MAP_DATA)}
               >
                 <div className={`flex flex-row text-white`}>
                   <AddLocationAltIcon
@@ -198,7 +180,7 @@ function SideNavBarV1() {
                   </h2>
                   <span
                     className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight
-                   transform hover:scale-x-1 transition-transform duration-300 ${activePage == pagePaths.MapData ? "scale-x-1" : "scale-x-0"}`}
+                   transform hover:scale-x-1 transition-transform duration-300 ${activePage == paths.MAP_DATA ? "scale-x-1" : "scale-x-0"}`}
                     style={{
                       transformOrigin: "left",
                     }}
@@ -208,9 +190,9 @@ function SideNavBarV1() {
             </div>
             <div className="m-[1.5rem] mr-[1.5rem] relative parent">
               <Link
-                to="/edit"
+                to={paths.MAP_EDITOR}
                 className="inline-block"
-                onClick={() => setActivePage(pagePaths.EditMap)}
+                onClick={() => setActivePage(paths.MAP_EDITOR)}
               >
                 <div className={`flex flex-row text-white`}>
                   <EditLocationAltIcon
@@ -230,7 +212,7 @@ function SideNavBarV1() {
                     Edit Map
                   </h2>
                   <span
-                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == pagePaths.EditMap ? "scale-x-1" : "scale-x-0"}`}
+                    className={`child absolute bottom-0 right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage == paths.MAP_EDITOR ? "scale-x-1" : "scale-x-0"}`}
                     style={{
                       transformOrigin: "left",
                     }}
@@ -276,7 +258,7 @@ function SideNavBarV1() {
             </div>
             {/*Logout button */}
             <div className="m-[1.5rem]" onClick={handleLogout}>
-              <Link to="/">
+              <Link to={paths.LOGIN}>
                 {" "}
                 {/* enter link to button here to log out*/}
                 <div

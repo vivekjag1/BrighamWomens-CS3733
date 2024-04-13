@@ -14,3 +14,11 @@ const paths = {
 };
 
 export default paths;
+
+// const pagePaths = {
+//   Map: paths.HOME,
+//   Services: paths.SERVICES,
+//   ServiceData: paths.SERVICES_DATA,
+//   MapData: paths.MAP_DATA,
+//   EditMap: paths.MAP_EDITOR,
+// };
