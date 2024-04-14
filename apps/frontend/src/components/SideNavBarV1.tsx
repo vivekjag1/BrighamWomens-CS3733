@@ -23,7 +23,11 @@ function SideNavBarV1() {
 
   const handleLogout = () => {
     // logout({returnTo: window.location.origin} );
-    logout().then().catch(console.error);
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
 
   const toggleCollapse = () => {
@@ -39,19 +43,30 @@ function SideNavBarV1() {
           <div className="flex flex-row self-center mb-6 max-h-[25rem] min-h-[10rem]">
             <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
               <div className="mb-5 mt-10 flex justify-center">
-                <img className="h-60px" src={logo} alt="Logo" />
+                <img className="h-[60px]" src={logo} alt="Logo" />
               </div>
               <div>
                 <h1
                   className={
                     isCollapsed
                       ? "hidden"
-                      : "text-xl font-bold text-white text-md whitespace-nowrap"
+                      : "text-xl font-bold text-white text-md whigtespace-nowrap"
                   }
                 >
                   Hospital Kiosk
                 </h1>
               </div>
+              {/*<div className="mb-6">*/}
+              {/*  <h1*/}
+              {/*    className={*/}
+              {/*      isCollapsed*/}
+              {/*        ? "hidden"*/}
+              {/*        : "text-xl font-bold text-white text-md whitespace-nowrap"*/}
+              {/*    }*/}
+              {/*  >*/}
+              {/*    Hospital Kiosk*/}
+              {/*  </h1>*/}
+              {/*</div>*/}
             </Link>
           </div>
 
@@ -254,23 +269,26 @@ function SideNavBarV1() {
                 </h2>
               </div>
             </div>
-          </div>
-          {/*Logout button */}
-          <div className="m-[1.5rem] mb-[1rem] flex" onClick={handleLogout}>
-            <Link to={paths.LOGIN}>
-              <div
-                className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
-              >
-                <LogoutIcon
-                  sx={{
-                    marginRight: "5px",
-                    marginTop: "-3px",
-                    fontSize: "30px",
-                    color: "white",
-                    transform: "scaleX(-1)",
-                  }}
-                />
-                <div>
+            {/*Logout button */}
+            <div
+              className="fixed bottom-1 to m-[1.5rem]"
+              onClick={handleLogout}
+            >
+              <Link to={paths.LOGIN}>
+                {" "}
+                {/* enter link to button here to log out*/}
+                <div
+                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+                >
+                  <LogoutIcon
+                    sx={{
+                      marginRight: "5px",
+                      marginTop: "140px",
+                      fontSize: "30px",
+                      color: "white",
+                      transform: "scaleX(-1)",
+                    }}
+                  />
                   <h2
                     className={
                       isCollapsed
@@ -281,8 +299,8 @@ function SideNavBarV1() {
                     Logout
                   </h2>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

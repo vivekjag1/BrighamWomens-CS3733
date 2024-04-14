@@ -5,6 +5,14 @@ import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
 
+const initialState: number[][] = [
+  [0, 0, -2],
+  [0, 0, -1],
+  [0, 0, 1],
+  [0, 0, 2],
+  [0, 0, 3],
+];
+
 function Home() {
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(-1);
@@ -13,13 +21,7 @@ function Home() {
   }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
-  const [nodes, setNodes] = useState<number[][]>([
-    [0, 0, -2],
-    [0, 0, -1],
-    [0, 0, 1],
-    [0, 0, 2],
-    [0, 0, 3],
-  ]);
+  const [nodes, setNodes] = useState<number[][]>(initialState);
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
@@ -27,30 +29,48 @@ function Home() {
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
     console.log(formData);
-    const queryParams: Record<string, string> = {
-      [NavigateAttributes.startLocationKey]: formData
-        .get(NavigateAttributes.startLocationKey)!
-        .toString(),
-      [NavigateAttributes.endLocationKey]: formData
-        .get(NavigateAttributes.endLocationKey)!
-        .toString(),
-    };
-    console.log(queryParams);
+    const startLocation = formData
+      .get(NavigateAttributes.startLocationKey)
+      ?.toString()
+      .trim();
+    const endLocation = formData
+      .get(NavigateAttributes.endLocationKey)
+      ?.toString()
+      .trim();
 
-    const params: URLSearchParams = new URLSearchParams(queryParams);
+    if (startLocation && endLocation) {
+      const queryParams: Record<string, string> = {
+        /*[NavigateAttributes.startLocationKey]: formData
+                .get(NavigateAttributes.startLocationKey)!
+                .toString(),
+            [NavigateAttributes.endLocationKey]: formData
+                .get(NavigateAttributes.endLocationKey)!
+                .toString(),*/
+        [NavigateAttributes.startLocationKey]: startLocation,
+        [NavigateAttributes.endLocationKey]: endLocation,
+      };
+      console.log(queryParams);
 
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    url.search = params.toString();
-    console.log(url.toString());
+      const params: URLSearchParams = new URLSearchParams(queryParams);
 
-    await axios
-      .get(url.toString())
-      .then(function (response) {
-        setNodes(response.data);
-        console.log(response.data);
-        setActiveFloor(response.data[0][2]);
-      })
-      .catch(console.error);
+      const url = new URL(
+        APIEndpoints.navigationRequest,
+        window.location.origin,
+      ); // window.location.origin: path relative to current url
+      url.search = params.toString();
+      console.log(url.toString());
+
+      await axios
+        .get(url.toString())
+        .then(function (response) {
+          setNodes(response.data);
+          console.log(response.data);
+          setActiveFloor(response.data[0][2]);
+        })
+        .catch(console.error);
+    } else {
+      setNodes(initialState);
+    }
   }
 
   return (
