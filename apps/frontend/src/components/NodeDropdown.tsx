@@ -37,7 +37,7 @@ const NodeDropdown = ({
     }
     getNodesFromDb().then();
   }, []);
-  
+
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     newValue: { label: string } | null,
