@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -129,41 +128,36 @@ export function RoomReservation() {
           />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer
-              components={["DateTimePicker"]}
+            <DateTimePicker
+              value={startDate}
+              onChange={(newValue) => {
+                setRoomReservation((currentReservation) => ({
+                  ...currentReservation,
+                  serviceRequest: {
+                    ...currentReservation.serviceRequest,
+                    requestedTime: newValue ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+              label="Reservation Start Time"
+              className="bg-gray-50"
+              sx={{ width: "25rem", padding: 0 }}
+            />
+            <DateTimePicker
+              value={endDate}
+              onChange={(newValue) => {
+                setRoomReservation((currentReservation) => ({
+                  ...currentReservation,
+                  serviceRequest: {
+                    ...currentReservation.serviceRequest,
+                    endTime: newValue ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+              label="Reservation End Time"
+              className="bg-gray-50"
               sx={{ width: "25rem", padding: 0, margin: 0 }}
-            >
-              <DateTimePicker
-                value={startDate}
-                onChange={(newValue) => {
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
-                    serviceRequest: {
-                      ...currentReservation.serviceRequest,
-                      requestedTime: newValue ? newValue.toISOString() : "",
-                    },
-                  }));
-                }}
-                label="Reservation Start Time"
-                className="bg-gray-50"
-                sx={{ width: "25rem", padding: 0 }}
-              />
-              <DateTimePicker
-                value={endDate}
-                onChange={(newValue) => {
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
-                    serviceRequest: {
-                      ...currentReservation.serviceRequest,
-                      endTime: newValue ? newValue.toISOString() : "",
-                    },
-                  }));
-                }}
-                label="Reservation End Time"
-                className="bg-gray-50"
-                sx={{ width: "25rem", padding: 0, margin: 0 }}
-              />
-            </DemoContainer>
+            />
           </LocalizationProvider>
           <TextField
             value={roomReservation.reservationReason}
