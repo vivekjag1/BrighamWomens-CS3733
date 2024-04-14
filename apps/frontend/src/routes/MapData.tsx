@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
@@ -129,27 +129,42 @@ const NodeTable = () => {
           </div>
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center gap-2">
-              <div className="flex flex-col items-center justify-center gap-2 pl-20">
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Node CSV:</p>
-                  <input
-                    id="importNodeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Node File"
-                    onChange={nodeFileChange}
-                  />
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Node File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: nodeFile ? "green" : "#012D5A" }}
+                  >
+                    {nodeFile ? nodeFile.name : "Upload File"}
+                    <input
+                      id="importNodeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Node File"
+                      onChange={nodeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
-
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Edge CSV:</p>
-                  <input
-                    id="importEdgeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Edge File"
-                    onChange={edgeFileChange}
-                  />
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Edge File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: edgeFile ? "green" : "#012D5A" }}
+                  >
+                    {edgeFile ? edgeFile.name : "Upload File"}
+                    <input
+                      id="importEdgeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Edge File"
+                      onChange={edgeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
               </div>
 

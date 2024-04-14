@@ -23,11 +23,11 @@ function App() {
     },
 
     {
-      path: paths.HOME,
+      path: paths.MAP,
       element: <Layout />,
       children: [
         {
-          path: paths.HOME,
+          path: paths.MAP,
           element: <Home />,
         },
         {
