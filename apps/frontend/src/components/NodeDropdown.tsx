@@ -1,11 +1,8 @@
-import { APIEndpoints } from "common/src/APICommon.ts";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
+import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { MenuItem, SxProps, Theme } from "@mui/material";
-import { createNodes } from "common/src/GraphCommon.ts";
 import { TextField } from "@mui/material";
+import { useGraphNodes } from "./useGraphNodes.ts";
 
 interface NodeDropdownProps {
   value: string;
@@ -22,22 +19,7 @@ const NodeDropdown = ({
   sx,
   className,
 }: NodeDropdownProps) => {
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
-
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
-    }
-    getNodesFromDb().then();
-  }, []);
+  const nodes = useGraphNodes();
 
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
