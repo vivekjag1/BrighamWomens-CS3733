@@ -121,11 +121,12 @@ export function MedicineDeliveryForm() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setMedicineDelivery((currentMedicineDelivery) => ({
                 ...currentMedicineDelivery,
                 serviceRequest: {
                   ...currentMedicineDelivery.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               }));
             }}
