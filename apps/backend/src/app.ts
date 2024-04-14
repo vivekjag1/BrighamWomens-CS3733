@@ -47,7 +47,6 @@ app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
 app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
 app.use(APIEndpoints.roomReservation, roomReservationAPI);
 app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
-
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
 /**
