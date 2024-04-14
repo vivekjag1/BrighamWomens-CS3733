@@ -99,7 +99,6 @@ function NavigationPanel(props: {
             <CustomClearButton type="reset" onClick={clear}>
               Clear
             </CustomClearButton>
-          <div>
             <CustomSubmitButton type="submit">Submit</CustomSubmitButton>
           </div>
         </form>
