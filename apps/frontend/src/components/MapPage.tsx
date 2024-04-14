@@ -99,6 +99,14 @@ function MapPage(props: {
               className="rounded-xl"
             >
               <image href={map} />
+              {filteredNodes.map((node) => (
+                <circle
+                  r="10"
+                  cx={node.xcoord}
+                  cy={node.ycoord}
+                  fill="#012D5A"
+                />
+              ))}
               {filteredSplitPaths.map((path) => (
                 <>
                   <polyline
@@ -200,14 +208,6 @@ function MapPage(props: {
                   <LocationIcon sx={{ color: "red" }} />
                 )}
               </svg>
-              {filteredNodes.map((node) => (
-                <circle
-                  r="10"
-                  cx={node.xcoord}
-                  cy={node.ycoord}
-                  fill="#012D5A"
-                />
-              ))}
             </svg>
           </TransformComponent>
         </TransformWrapper>
