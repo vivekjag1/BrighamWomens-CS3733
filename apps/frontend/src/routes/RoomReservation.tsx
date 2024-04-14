@@ -131,11 +131,12 @@ export function RoomReservation() {
             <DateTimePicker
               value={startDate}
               onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
                 setRoomReservation((currentReservation) => ({
                   ...currentReservation,
                   serviceRequest: {
                     ...currentReservation.serviceRequest,
-                    requestedTime: newValue ? newValue.toISOString() : "",
+                    requestedTime: isValid ? newValue.toISOString() : "",
                   },
                 }));
               }}
@@ -146,11 +147,12 @@ export function RoomReservation() {
             <DateTimePicker
               value={endDate}
               onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
                 setRoomReservation((currentReservation) => ({
                   ...currentReservation,
                   serviceRequest: {
                     ...currentReservation.serviceRequest,
-                    endTime: newValue ? newValue.toISOString() : "",
+                    endTime: isValid ? newValue.toISOString() : "",
                   },
                 }));
               }}
