@@ -1,9 +1,17 @@
 import Map from "../components/Map.tsx";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
-/*import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";*/
+import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
+
+const initialState: number[][] = [
+  [0, 0, -2],
+  [0, 0, -1],
+  [0, 0, 1],
+  [0, 0, 2],
+  [0, 0, 3],
+];
 
 function Home() {
   // Sets the floor number depending on which button user clicks
@@ -12,22 +20,8 @@ function Home() {
     setActiveFloor(x);
   }
 
-  const nodes = [
-    [0, 0, -2],
-    [0, 0, -1],
-    [0, 0, 1],
-    [0, 0, 2],
-    [0, 0, 3],
-  ];
-
   // Retrieves path from current location to destination in the form of a list of a nodes
-  /*  const [nodes, setNodes] = useState<number[][]>([
-    [0, 0, -2],
-    [0, 0, -1],
-    [0, 0, 1],
-    [0, 0, 2],
-    [0, 0, 3],
-  ]);
+  const [nodes, setNodes] = useState<number[][]>(initialState);
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
@@ -35,38 +29,58 @@ function Home() {
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
     console.log(formData);
-    const queryParams: Record<string, string> = {
-      [NavigateAttributes.startLocationKey]: formData
-        .get(NavigateAttributes.startLocationKey)!
-        .toString(),
-      [NavigateAttributes.endLocationKey]: formData
-        .get(NavigateAttributes.endLocationKey)!
-        .toString(),
-    };
-    console.log(queryParams);
+    const startLocation = formData
+      .get(NavigateAttributes.startLocationKey)
+      ?.toString()
+      .trim();
+    const endLocation = formData
+      .get(NavigateAttributes.endLocationKey)
+      ?.toString()
+      .trim();
 
-    const params: URLSearchParams = new URLSearchParams(queryParams);
+    if (startLocation && endLocation) {
+      const queryParams: Record<string, string> = {
+        /*[NavigateAttributes.startLocationKey]: formData
+                .get(NavigateAttributes.startLocationKey)!
+                .toString(),
+            [NavigateAttributes.endLocationKey]: formData
+                .get(NavigateAttributes.endLocationKey)!
+                .toString(),*/
+        [NavigateAttributes.startLocationKey]: startLocation,
+        [NavigateAttributes.endLocationKey]: endLocation,
+      };
+      console.log(queryParams);
 
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
-    url.search = params.toString();
-    console.log(url.toString());
+      const params: URLSearchParams = new URLSearchParams(queryParams);
 
-    await axios
-      .get(url.toString())
-      .then(function (response) {
-        setNodes(response.data);
-        console.log(response.data);
-        setActiveFloor(response.data[0][2]);
-      })
-      .catch(console.error);
-  }*/
+      const url = new URL(
+        APIEndpoints.navigationRequest,
+        window.location.origin,
+      ); // window.location.origin: path relative to current url
+      url.search = params.toString();
+      console.log(url.toString());
+
+      await axios
+        .get(url.toString())
+        .then(function (response) {
+          setNodes(response.data);
+          console.log(response.data);
+          setActiveFloor(response.data[0][2]);
+        })
+        .catch(console.error);
+    } else {
+      setNodes(initialState);
+    }
+  }
 
   return (
     <div>
-      <div className="relative bg-offwhite">
-        <Map activeFloor={activeFloor} nodes={nodes} />
-        <div className="absolute left-[1%] top-[2%]">
-          <NavigationPanel />
+      <div className="relative flex justify-evenly bg-[#F1F1E6] ml-[5rem]">
+        <div className=" h-screen flex flex-col justify-center">
+          <NavigationPanel onSubmit={handleForm} />
+        </div>
+        <div className="h-screen flex flex-col justify-center">
+          <Map activeFloor={activeFloor} nodes={nodes} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

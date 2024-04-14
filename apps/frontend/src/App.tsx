@@ -14,7 +14,7 @@ import RoomReservation from "./routes/RoomReservation.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
 import EditMap from "./routes/EditMap.tsx";
-import PathTables from "./routes/PathTables.tsx";
+import PathTables from "./routes/MapData.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -23,11 +23,11 @@ function App() {
     },
 
     {
-      path: paths.HOME,
+      path: paths.MAP,
       element: <Layout />,
       children: [
         {
-          path: paths.HOME,
+          path: paths.MAP,
           element: <Home />,
         },
         {

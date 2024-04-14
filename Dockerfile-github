@@ -62,8 +62,8 @@ RUN yarn turbo prune --scope=frontend --docker
 FROM installer AS prod-backend-builder
 WORKDIR /$WORKDIR
 
-# Remove the tests root, no need in prod
-RUN rm -r apps/backend/tests
+# Remove the test root, no need in prod
+RUN rm -r apps/backend/test
 
 # Build the unplugged files and cache stuff for this specific OS
 RUN yarn install
