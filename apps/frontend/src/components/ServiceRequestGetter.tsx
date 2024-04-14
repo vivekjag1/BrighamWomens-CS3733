@@ -22,6 +22,7 @@ export function ServiceRequestGetter() {
   const [filterByPriority, setFilterByPriority] = useState("Any");
   const [filterByStatus, setFilterByStatus] = useState("Any");
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
+  const [filterByType, setFilterByType] = useState("Any");
 
   useEffect(() => {
     async function fetchData() {
@@ -72,6 +73,10 @@ export function ServiceRequestGetter() {
       data = data.filter((item) => item.status.includes(filterByStatus));
     }
 
+    if (filterByType != "Any") {
+      data = data.filter((item) => item.type.includes(filterByType));
+    }
+
     const sortedData = data.sort((a, b) => {
       return sortOrder === "asc"
         ? a.serviceID - b.serviceID
@@ -84,6 +89,7 @@ export function ServiceRequestGetter() {
     filterBySearch,
     filterByPriority,
     filterByStatus,
+    filterByType,
     sortOrder,
   ]);
 
@@ -160,6 +166,27 @@ export function ServiceRequestGetter() {
         <div>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
             <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+              Type
+            </InputLabel>
+            <Select
+              name="Type"
+              className="bg-gray-50"
+              sx={{ fontSize: ".9rem" }}
+              label="Type"
+              size="small"
+              value={filterByType}
+              onChange={(e) => setFilterByType(e.target.value)}
+            >
+              <MenuItem value="Any">Any</MenuItem>
+              <MenuItem value="MedicineDelivery">MedicineDelivery</MenuItem>
+              <MenuItem value="SecurityService">SecurityService</MenuItem>
+              <MenuItem value="SanitationService">SanitationService</MenuItem>
+              <MenuItem value="RoomScheduling">RoomScheduling</MenuItem>
+              <MenuItem value="DeviceDelivery">DeviceDelivery</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
+            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
               Priority
             </InputLabel>
             <Select
@@ -198,6 +225,7 @@ export function ServiceRequestGetter() {
               <MenuItem value="Closed">Closed</MenuItem>
             </Select>
           </FormControl>
+
           <Button
             type="submit"
             variant="contained"
