@@ -14,8 +14,7 @@ function Login() {
         //scope: "openid profile email offline_access",
       }}
       onRedirectCallback={(appState) => {
-        const redirectURL = appState?.returnTo || window.location.origin;
-        navigate(redirectURL);
+        navigate(appState?.returnTo || window.location.origin);
       }}
     >
       <div className="w-screen h-screen flex">
