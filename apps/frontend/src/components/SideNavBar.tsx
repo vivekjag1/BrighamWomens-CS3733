@@ -65,7 +65,7 @@ function SideNavBar() {
             <h2
               style={{
                 opacity: collapsed ? 0 : 100,
-                fontWeight: 600,
+                fontWeight: 500,
               }}
               className="text-lg whitespace-nowrap"
             >
@@ -100,10 +100,10 @@ function SideNavBar() {
           <div className="flex flex-col justify-center">
             <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
               <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
-                <img className="h-[57px] pr-[1rem]" src={logo} alt="Logo" />
+                <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
                 <h2
                   style={{
-                    fontWeight: 600,
+                    fontWeight: 500,
                   }}
                   className={
                     isCollapsed
@@ -236,7 +236,7 @@ function SideNavBar() {
                   <LogoutIcon
                     sx={{
                       marginRight: "5px",
-                      marginBottom: "20px",
+                      marginBottom: "10px",
                       fontSize: "30px",
                       color: "white",
                       transform: "scaleX(-1)",
@@ -246,7 +246,7 @@ function SideNavBar() {
                     className={
                       isCollapsed
                         ? "hidden"
-                        : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
+                        : "font-bold text-white text-md container whitespace-nowrap overflow-hidden pt-[3px]"
                     }
                   >
                     Logout
