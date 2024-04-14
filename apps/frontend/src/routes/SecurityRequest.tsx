@@ -14,6 +14,7 @@ import { SecurityRequestType } from "common/src/SecurityRequestType.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import axios from "axios";
+import { useToast } from "../components/useToast.tsx";
 
 const initialState: SecurityRequestType = {
   numberPeople: "",
@@ -32,6 +33,7 @@ export function SecurityRequest() {
   const [securityRequestForm, setSecurityRequestForm] =
     useState<SecurityRequestType>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   const validateForm = () => {
     return (
@@ -57,18 +59,18 @@ export function SecurityRequest() {
 
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Security request sent!");
+          showToast("Security Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Security Request failed!");
+          showToast("Security Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Security Request failed!");
+        showToast("Security Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
