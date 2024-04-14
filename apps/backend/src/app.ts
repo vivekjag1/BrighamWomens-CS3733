@@ -11,6 +11,7 @@ import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
+import RoomReservationAPI from "./routes/RoomReservationAPI.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -39,7 +40,7 @@ app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
-
+app.use(APIEndpoints.roomReservation, RoomReservationAPI);
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
 /**
