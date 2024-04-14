@@ -12,7 +12,7 @@ import PathTables from "../routes/MapData.tsx";
 import EditMap from "../routes/EditMap.tsx";
 
 const routes = [
-  { path: paths.HOME, element: <Home /> },
+  { path: paths.MAP, element: <Home /> },
   { path: paths.SERVICES, element: <Services /> },
   { path: paths.MEDICINE_REQUEST, element: <MedicineDeliveryForm /> },
   {

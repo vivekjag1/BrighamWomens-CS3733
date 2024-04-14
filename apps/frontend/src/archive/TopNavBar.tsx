@@ -13,10 +13,7 @@ function TopNavBar() {
           />
         </div>
         <ul className="flex flex-row">
-          <Link
-            className="hover:bg-[#0146B1] flex items-center"
-            to={Paths.HOME}
-          >
+          <Link className="hover:bg-[#0146B1] flex items-center" to={Paths.MAP}>
             <li className="w-24 text-center text-white text-base font-bold mx-4">
               Home
             </li>
