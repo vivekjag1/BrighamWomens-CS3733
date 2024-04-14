@@ -7,10 +7,14 @@ import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
+import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
+import roomReservationAPI from "./routes/RoomReservationAPI.ts";
+import handleMedicalDeviceDelivery from "./routes/handleMedicalDeviceDelivery.ts";
+import securityRequest from "./routes/securityRequest.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -39,6 +43,10 @@ app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
+app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
+app.use(APIEndpoints.roomReservation, roomReservationAPI);
+app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
