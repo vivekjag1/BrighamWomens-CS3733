@@ -35,15 +35,15 @@ export function MedicineDeliveryForm() {
   const { showToast } = useToast();
 
   const validateForm = () => {
-    const isValid =
+    return (
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
       medicineDelivery.patientName &&
       medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.requestingUsername &&
       medicineDelivery.serviceRequest.location &&
-      medicineDelivery.serviceRequest.priority;
-    return isValid;
+      medicineDelivery.serviceRequest.priority
+    );
   };
 
   async function submit() {

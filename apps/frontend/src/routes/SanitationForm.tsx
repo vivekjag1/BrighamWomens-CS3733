@@ -36,13 +36,13 @@ export function SanitationForm() {
   const { showToast } = useToast();
 
   const validateForm = () => {
-    const isValid =
+    return (
       sanitationRequest.sanitationType &&
       sanitationRequest.requiredEquipment &&
       sanitationRequest.serviceRequest.requestingUsername &&
       sanitationRequest.serviceRequest.location &&
-      sanitationRequest.serviceRequest.priority;
-    return isValid;
+      sanitationRequest.serviceRequest.priority
+    );
   };
 
   async function submit() {

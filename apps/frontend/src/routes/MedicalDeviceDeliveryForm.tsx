@@ -39,13 +39,13 @@ export function MedicalDeviceDeliveryForm() {
   }
 
   const validateForm = () => {
-    const isValid =
+    return (
       medicalDeviceDelivery.deviceType &&
       medicalDeviceDelivery.quantity &&
       medicalDeviceDelivery.serviceRequest.requestingUsername &&
       medicalDeviceDelivery.serviceRequest.location &&
-      medicalDeviceDelivery.serviceRequest.priority;
-    return isValid;
+      medicalDeviceDelivery.serviceRequest.priority
+    );
   };
 
   async function submit() {
