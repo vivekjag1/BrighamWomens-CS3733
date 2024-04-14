@@ -9,7 +9,7 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 
-function MapPage(props: {
+function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
@@ -86,18 +86,17 @@ function MapPage(props: {
   return (
     <div>
       <div>
-        <TransformWrapper
-          initialPositionX={-200}
-          initialPositionY={-100}
-          initialScale={1.2}
-        >
-          <TransformComponent>
-            <svg
-              viewBox="0 0 5000 3400"
-              height="98.5vh"
-              width="auto"
-              className="rounded-xl"
-            >
+        <TransformWrapper initialScale={1}>
+          <TransformComponent
+            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+            contentStyle={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <svg viewBox="0 0 5000 3400" height="100vh">
               <image href={map} />
               {filteredNodes.map((node) => (
                 <circle
@@ -216,7 +215,7 @@ function MapPage(props: {
   );
 }
 
-export default MapPage;
+export default MapImage;
 
 function getStringFromFloor(floor: number): string {
   switch (floor) {
@@ -224,9 +223,6 @@ function getStringFromFloor(floor: number): string {
       return "L1";
     case -2:
       return "L2";
-    case 1:
-    case 2:
-    case 3:
     default:
       return floor.toString();
   }

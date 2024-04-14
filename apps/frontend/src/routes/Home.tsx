@@ -1,4 +1,4 @@
-import MapPage from "../components/MapPage.tsx";
+import MapImage from "../components/MapImage.tsx";
 import { FormEvent, useState, useEffect } from "react";
 import NavigationPanel from "../components/NavigationPanel.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -74,12 +74,10 @@ function Home() {
 
   return (
     <div>
-      <div className="relative flex justify-evenly bg-[#F1F1E6]">
-        <div className=" h-screen flex flex-col justify-center">
-          <NavigationPanel onSubmit={handleForm} nodes={nodes} />
-        </div>
-        <div className="h-screen flex flex-col justify-center">
-          <MapPage activeFloor={activeFloor} path={path} nodes={nodes} />
+      <div className="relative bg-offwhite">
+        <MapImage activeFloor={activeFloor} path={path} nodes={nodes} />
+        <div className="absolute left-[1%] top-[2%]">
+          <NavigationPanel onSubmit={handleForm} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

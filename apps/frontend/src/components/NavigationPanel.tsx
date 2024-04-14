@@ -1,51 +1,80 @@
+import { APIEndpoints } from "common/src/APICommon.ts";
+import axios from "axios";
 import { GraphNode } from "common/src/GraphNode.ts";
-import { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
+import { createNodes } from "common/src/GraphCommon.ts";
+import NavigateButton from "./NavigateButton.tsx";
 import NodeDropdown from "./NodeDropdown.tsx";
 import { PathNodesObject } from "common/src/Path.ts";
-import CustomClearButton from "./CustomClearButton.tsx";
-import CustomSubmitButton from "./CustomSubmitButton.tsx";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import IconButton from "@mui/material/IconButton";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PlaceIcon from "@mui/icons-material/Place";
+import PathAlgorithmDropdown, {
+  PathAlgorithm,
+} from "./PathAlgorithmDropdown.tsx";
 
 const initialState: PathNodesObject = {
   startNode: "",
   endNode: "",
 };
 
-function NavigationPanel(props: {
-  onSubmit: FormEventHandler<HTMLFormElement>;
-  nodes: GraphNode[];
-}) {
-  const nodes = props.nodes;
+const textFieldStyles = {
+  width: "17vw",
+};
+
+const defaultPathAlgorithm: PathAlgorithm = "A-Star";
+
+function NavigationPanel(props: { onSubmit: FormEventHandler }) {
+  // Populates selection menu from database
+  const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
+  const [pathAlgorithm, setPathAlgorithm] =
+    useState<string>(defaultPathAlgorithm);
 
   function getNodeID(value: string): string {
     const foundNode = nodes.find((node) => node.longName === value);
     return foundNode ? foundNode.nodeID : "";
   }
 
-  function clear() {
-    setPathNodeObject(initialState);
+  useEffect(() => {
+    //get the nodes from the db
+    async function getNodesFromDb() {
+      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
+      let graphNodes = createNodes(rawNodes.data);
+      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
+      graphNodes = graphNodes.sort((a, b) =>
+        a.longName.localeCompare(b.longName),
+      );
+      setNodes(graphNodes);
+      return graphNodes;
+    }
+    getNodesFromDb().then();
+  }, []);
+
+  function swapLocations() {
+    const start = pathNodeObject.startNode;
+    setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
   }
 
   return (
     <div>
-      <div className="w-[20vw] h-[98vh] p-5 bg-[#e5e7eb] rounded-lg shadow-[0_0_4px_2px_rgba(0,0,0,0.25)]">
+      <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
         <form
-          className="flex flex-col justify-start gap-6"
+          className="flex flex-col"
           noValidate
           onSubmit={props.onSubmit}
           onReset={props.onSubmit}
         >
-          <h2 className="text-4xl font-bold text-secondary">Navigation</h2>
-          <p className="text-l font-normal text-black">
-            Please enter your current location and destination to figure out
-            where to go.
-          </p>
-          <div>
+          <h2 className="text-2xl font-bold text-secondary">Navigation</h2>
+          <div className="flex flex-row gap-1 items-center mt-[1rem]">
+            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
               value={pathNodeObject.startNode}
-              sx={{ width: "19rem", padding: 0 }}
-              label="Starting Location"
+              sx={textFieldStyles}
+              label="Start Location"
               onChange={(newValue: string) =>
                 setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -59,11 +88,13 @@ function NavigationPanel(props: {
               value={getNodeID(pathNodeObject.startNode)}
             />
           </div>
-          <div>
+          <MoreVertIcon style={{ color: "#012D5A" }} />
+          <div className="flex flex-row gap-1 items-center">
+            <PlaceIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
               value={pathNodeObject.endNode}
-              sx={{ width: "19rem", padding: 0 }}
-              label="Destination"
+              sx={textFieldStyles}
+              label="End Location"
               onChange={(newValue: string) =>
                 setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -77,13 +108,24 @@ function NavigationPanel(props: {
               value={getNodeID(pathNodeObject.endNode)}
             />
           </div>
-          <div className="flex justify-between w-full mt-4">
-            <CustomClearButton type="reset" onClick={clear}>
-              Clear
-            </CustomClearButton>
-            <CustomSubmitButton type="submit">Submit</CustomSubmitButton>
+          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
+            <PathAlgorithmDropdown
+              value={pathAlgorithm}
+              sx={{ width: "9vw" }}
+              label="Algorithm"
+              onChange={setPathAlgorithm}
+            ></PathAlgorithmDropdown>
+            <NavigateButton type="submit" className={"flex"} />
           </div>
         </form>
+        <div className="min-h-full flex flex-col justify-center align-start">
+          <IconButton>
+            <SwapVertIcon
+              style={{ alignSelf: "left" }}
+              onClick={swapLocations}
+            />
+          </IconButton>
+        </div>
       </div>
     </div>
   );
