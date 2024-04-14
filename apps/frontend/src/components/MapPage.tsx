@@ -6,10 +6,22 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
-import { APIEndpoints } from "common/src/APICommon.ts";
-import axios from "axios";
+import { GraphNode } from "common/src/GraphNode.ts";
+import { getNumFromFloor } from "common/src/GraphCommon.ts";
 
-function MapPage(props: { activeFloor: number; nodes: number[][] }) {
+function MapPage(props: {
+  activeFloor: number;
+  path: number[][];
+  nodes: GraphNode[];
+}) {
+  const nodesData = props.nodes;
+  const filteredNodes: GraphNode[] = [];
+  for (let i = 0; i < nodesData.length; i++) {
+    if (getNumFromFloor(nodesData[i].floor) == props.activeFloor) {
+      filteredNodes.push(nodesData[i]);
+    }
+  }
+
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.activeFloor) {
@@ -32,31 +44,31 @@ function MapPage(props: { activeFloor: number; nodes: number[][] }) {
 
   // Determines instructions for drawing starting and ending points on path
   const startNode = {
-    xCoordinate: props.nodes[0][0],
-    yCoordinate: props.nodes[0][1],
-    floor: props.nodes[0][2],
+    xCoordinate: props.path[0][0],
+    yCoordinate: props.path[0][1],
+    floor: props.path[0][2],
   };
 
-  const length = props.nodes.length;
+  const length = props.path.length;
   const endNode = {
-    xCoordinate: props.nodes[length - 1][0],
-    yCoordinate: props.nodes[length - 1][1],
-    floor: props.nodes[length - 1][2],
+    xCoordinate: props.path[length - 1][0],
+    yCoordinate: props.path[length - 1][1],
+    floor: props.path[length - 1][2],
   };
-  getTextualDirections(props.nodes);
+  getTextualDirections(props.path);
 
   // Determines instructions for drawing path from a start node to end node
   const splitPaths: number[][][] = [];
   let startFloor: number = 0;
   let endFloor: number = 0;
   for (let i = 0; i < length - 1; i++) {
-    if (props.nodes[i][2] != props.nodes[i + 1][2]) {
+    if (props.path[i][2] != props.path[i + 1][2]) {
       endFloor = i + 1;
-      splitPaths.push(props.nodes.slice(startFloor, endFloor));
+      splitPaths.push(props.path.slice(startFloor, endFloor));
       startFloor = i + 1;
     }
   }
-  splitPaths.push(props.nodes.slice(startFloor));
+  splitPaths.push(props.path.slice(startFloor));
 
   const filteredSplitPaths = splitPaths.filter(
     (splitPath) => splitPath[0][2] == props.activeFloor,
@@ -126,8 +138,8 @@ function MapPage(props: { activeFloor: number; nodes: number[][] }) {
                     dy=".35em"
                   >
                     {getStringFromFloor(
-                      props.nodes[
-                        Math.max(props.nodes.indexOf(path[0]) - 1, 0)
+                      props.path[
+                        Math.max(props.path.indexOf(path[0]) - 1, 0)
                       ][2],
                     )}
                   </text>
@@ -160,10 +172,10 @@ function MapPage(props: { activeFloor: number; nodes: number[][] }) {
                     dy=".35em"
                   >
                     {getStringFromFloor(
-                      props.nodes[
+                      props.path[
                         Math.min(
-                          props.nodes.indexOf(path[path.length - 1]) + 1,
-                          props.nodes.length - 1,
+                          props.path.indexOf(path[path.length - 1]) + 1,
+                          props.path.length - 1,
                         )
                       ][2],
                     )}
@@ -188,6 +200,14 @@ function MapPage(props: { activeFloor: number; nodes: number[][] }) {
                   <LocationIcon sx={{ color: "red" }} />
                 )}
               </svg>
+              {filteredNodes.map((node) => (
+                <circle
+                  r="10"
+                  cx={node.xcoord}
+                  cy={node.ycoord}
+                  fill="primary"
+                />
+              ))}
             </svg>
           </TransformComponent>
         </TransformWrapper>
@@ -212,16 +232,9 @@ function getStringFromFloor(floor: number): string {
   }
 }
 
-async function getTextualDirections(path: number[][]) {
-  const nodes = await axios.get(APIEndpoints.mapGetNodes);
+function getTextualDirections(path: number[][]) {
   const nodesMap: Map<number[], string> = new Map();
-  for (let i = 0; i < nodes.data.length - 1; i++) {
-    nodesMap.set(
-      [+nodes.data[i].xcoord, +nodes.data[i].ycoord, +nodes.data[i].floor],
-      nodes.data[i].longName,
-    );
-  }
-  console.log(nodesMap.get([1580, 2538, 2]));
+
   const textualPath: string[] = [];
   textualPath.push("Start at " + path[0]);
   for (let i = 1; i < path.length - 2; i++) {

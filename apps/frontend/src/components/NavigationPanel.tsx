@@ -1,32 +1,15 @@
 import { Button, TextField, Autocomplete } from "@mui/material";
-import { APIEndpoints } from "common/src/APICommon.ts";
-import axios from "axios";
 import { GraphNode } from "common/src/GraphNode.ts";
-import { FormEventHandler, useEffect, useState } from "react";
-import { createNodes } from "common/src/GraphCommon.ts";
+import { FormEventHandler, useState } from "react";
 
 function NavigationPanel(props: {
   onSubmit: FormEventHandler<HTMLFormElement>;
+  nodes: GraphNode[];
 }) {
   // Populates selection menu from database
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [startNode, setStartNode] = useState<string | null>(null);
   const [destinationNode, setDestinationNode] = useState<string | null>(null);
-
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
-    }
-    getNodesFromDb().then();
-  }, []);
+  const nodes = props.nodes;
 
   return (
     <div>
