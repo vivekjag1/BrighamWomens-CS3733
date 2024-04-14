@@ -8,6 +8,7 @@ import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
+import { motion } from "framer-motion";
 
 function MapImage(props: {
   activeFloor: number;
@@ -108,14 +109,22 @@ function MapImage(props: {
               ))}
               {filteredSplitPaths.map((path) => (
                 <>
-                  <polyline
-                    key={path[0].toString()}
-                    stroke="#012D5A"
-                    strokeWidth="6"
+                  <motion.polyline
                     fill="none"
+                    stroke="#012D5A"
+                    strokeWidth="7"
                     points={
                       listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                     }
+                    strokeDasharray={25}
+                    initial={{ strokeDashoffset: 25 }}
+                    animate={{ strokeDashoffset: [25, -25] }}
+                    transition={{
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: 0.8,
+                      ease: "linear",
+                    }}
                   />
                   <circle
                     r="25"
