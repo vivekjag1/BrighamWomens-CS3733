@@ -32,16 +32,16 @@ function SideNavBarV1() {
 
   return (
     <div>
-      <div className=" z-10">
+      <div className="z-10 absolute">
         <div
           className={`shadow-lg h-screen bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 ${isCollapsed ? "w-[5rem]" : "w-[11rem]"}`}
         >
-          <div className="flex flex-row self-center">
+          <div className="flex flex-row self-center mb-6 max-h-[25rem] min-h-[10rem]">
             <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
               <div className="mb-5 mt-10 flex justify-center">
                 <img className="h-60px" src={logo} alt="Logo" />
               </div>
-              <div className="mb-6">
+              <div>
                 <h1
                   className={
                     isCollapsed
@@ -73,8 +73,8 @@ function SideNavBarV1() {
                   <h2
                     className={
                       isCollapsed
-                        ? "hidden"
-                        : "font-bold text-white text-md whitespace-nowrap"
+                        ? "opacity-0 hidden"
+                        : "font-bold text-white text-md whitespace-nowrap opacity-100 transition-opacity duration-1000"
                     }
                   >
                     Map
@@ -218,7 +218,7 @@ function SideNavBarV1() {
                 </div>
               </Link>
             </div>
-            <div className="m-[1.5rem] flex">
+            <div className="m-[1.5rem] mr-[1.5rem] flex">
               <div
                 style={{ cursor: "pointer" }}
                 className="flex flex-row"
@@ -254,36 +254,35 @@ function SideNavBarV1() {
                 </h2>
               </div>
             </div>
-            {/*Logout button */}
-            <div className="m-[1.5rem]" onClick={handleLogout}>
-              <Link to={paths.LOGIN}>
-                {" "}
-                {/* enter link to button here to log out*/}
-                <div
-                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
-                >
-                  <LogoutIcon
-                    sx={{
-                      marginRight: "5px",
-                      marginTop: "140px",
-                      fontSize: "30px",
-                      color: "white",
-                      transform: "scaleX(-1)",
-                    }}
-                  />
+          </div>
+          {/*Logout button */}
+          <div className="m-[1.5rem] mb-[1rem] flex" onClick={handleLogout}>
+            <Link to={paths.LOGIN}>
+              <div
+                className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
+              >
+                <LogoutIcon
+                  sx={{
+                    marginRight: "5px",
+                    marginTop: "-3px",
+                    fontSize: "30px",
+                    color: "white",
+                    transform: "scaleX(-1)",
+                  }}
+                />
+                <div>
                   <h2
                     className={
                       isCollapsed
                         ? "hidden"
                         : "font-bold text-white text-md container whitespace-nowrap overflow-hidden"
                     }
-                    style={{ marginTop: "143px" }}
                   >
                     Logout
                   </h2>
                 </div>
-              </Link>
-            </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>

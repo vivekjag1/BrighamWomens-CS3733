@@ -55,7 +55,7 @@ function Home() {
 
   return (
     <div>
-      <div className="relative flex justify-evenly bg-[#F1F1E6]">
+      <div className="relative flex justify-evenly bg-[#F1F1E6] ml-[5rem]">
         <div className=" h-screen flex flex-col justify-center">
           <NavigationPanel onSubmit={handleForm} />
         </div>

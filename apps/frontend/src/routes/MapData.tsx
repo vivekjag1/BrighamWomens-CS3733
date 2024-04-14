@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
@@ -132,13 +132,23 @@ const NodeTable = () => {
               <div className="flex flex-col items-center justify-center gap-2 pl-20">
                 <div className="flex flex-row items-center pl-4">
                   <p className="mr-2">Import Node CSV:</p>
-                  <input
-                    id="importNodeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Node File"
-                    onChange={nodeFileChange}
-                  />
+
+                  <div>
+                    <input
+                      accept=".text/csv" // You can specify the accepted file types here
+                      id="importNodeFile"
+                      name="Import node file"
+                      type="file"
+                      multiple={false}
+                      style={{ display: "none" }}
+                      onChange={nodeFileChange}
+                    />
+                    <label htmlFor="file-upload">
+                      <Button variant="contained" component="span">
+                        Choose File
+                      </Button>
+                    </label>
+                  </div>
                 </div>
 
                 <div className="flex flex-row items-center pl-4">
