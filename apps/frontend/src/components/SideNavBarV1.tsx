@@ -23,7 +23,11 @@ function SideNavBarV1() {
 
   const handleLogout = () => {
     // logout({returnTo: window.location.origin} );
-    logout().then().catch(console.error);
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
 
   const toggleCollapse = () => {
