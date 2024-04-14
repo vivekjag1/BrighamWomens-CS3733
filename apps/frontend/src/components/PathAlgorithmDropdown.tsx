@@ -1,7 +1,7 @@
 import Autocomplete from "@mui/material/Autocomplete";
-import { MenuItem, SxProps, Theme } from "@mui/material";
-import { TextField } from "@mui/material";
+import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
 import { SyntheticEvent } from "react";
+import { PathAlgorithm } from "common/src/Path.ts";
 
 interface DropdownProps {
   value: string;
@@ -10,8 +10,6 @@ interface DropdownProps {
   sx?: SxProps<Theme>;
   className?: string;
 }
-
-export type PathAlgorithm = "A-Star" | "BFS" | "DFS";
 
 const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS"];
 

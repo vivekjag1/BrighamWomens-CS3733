@@ -1,6 +1,6 @@
 import MapImage from "../components/MapImage.tsx";
 import { FormEvent, useState, useEffect } from "react";
-import NavigationPanel from "../components/NavigationPanel.tsx";
+import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
@@ -45,7 +45,6 @@ function Home() {
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
-    //console.log(formData);
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -53,20 +52,21 @@ function Home() {
       [NavigateAttributes.endLocationKey]: formData
         .get(NavigateAttributes.endLocationKey)!
         .toString(),
+      [NavigateAttributes.algorithmKey]: formData
+        .get(NavigateAttributes.algorithmKey)!
+        .toString(),
     };
-    //console.log(queryParams);
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
 
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin); // window.location.origin: path relative to current url
+    // window.location.origin: path relative to current url
+    const url = new URL(APIEndpoints.navigationRequest, window.location.origin);
     url.search = params.toString();
-    //console.log(url.toString());
 
     await axios
       .get(url.toString())
       .then(function (response) {
         setPath(response.data);
-        //console.log(response.data);
         setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
@@ -77,7 +77,7 @@ function Home() {
       <div className="relative bg-offwhite">
         <MapImage activeFloor={activeFloor} path={path} nodes={nodes} />
         <div className="absolute left-[1%] top-[2%]">
-          <NavigationPanel onSubmit={handleForm} />
+          <NavigateCard onSubmit={handleForm} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

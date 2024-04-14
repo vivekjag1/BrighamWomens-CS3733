@@ -1,19 +1,17 @@
-import { APIEndpoints } from "common/src/APICommon.ts";
+import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import { GraphNode } from "common/src/GraphNode.ts";
 import React, { FormEventHandler, useEffect, useState } from "react";
 import { createNodes } from "common/src/GraphCommon.ts";
 import NavigateButton from "./NavigateButton.tsx";
 import NodeDropdown from "./NodeDropdown.tsx";
-import { PathNodesObject } from "common/src/Path.ts";
+import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlaceIcon from "@mui/icons-material/Place";
-import PathAlgorithmDropdown, {
-  PathAlgorithm,
-} from "./PathAlgorithmDropdown.tsx";
+import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
 
 const initialState: PathNodesObject = {
   startNode: "",
@@ -26,7 +24,7 @@ const textFieldStyles = {
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
-function NavigationPanel(props: { onSubmit: FormEventHandler }) {
+function NavigateCard(props: { onSubmit: FormEventHandler }) {
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathNodeObject, setPathNodeObject] =
@@ -68,7 +66,7 @@ function NavigationPanel(props: { onSubmit: FormEventHandler }) {
           onSubmit={props.onSubmit}
           onReset={props.onSubmit}
         >
-          <h2 className="text-2xl font-bold text-secondary">Navigation</h2>
+          <h2 className="text-2xl font-extralight text-secondary">Navigate</h2>
           <div className="flex flex-row gap-1 items-center mt-[1rem]">
             <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
@@ -84,7 +82,7 @@ function NavigationPanel(props: { onSubmit: FormEventHandler }) {
             />
             <input
               type="hidden"
-              name="currentLocation"
+              name={`${NavigateAttributes.startLocationKey}`}
               value={getNodeID(pathNodeObject.startNode)}
             />
           </div>
@@ -104,7 +102,7 @@ function NavigationPanel(props: { onSubmit: FormEventHandler }) {
             />
             <input
               type="hidden"
-              name="destination"
+              name={`${NavigateAttributes.endLocationKey}`}
               value={getNodeID(pathNodeObject.endNode)}
             />
           </div>
@@ -115,6 +113,11 @@ function NavigationPanel(props: { onSubmit: FormEventHandler }) {
               label="Algorithm"
               onChange={setPathAlgorithm}
             ></PathAlgorithmDropdown>
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.algorithmKey}`}
+              value={pathAlgorithm}
+            />
             <NavigateButton type="submit" className={"flex"} />
           </div>
         </form>
@@ -131,4 +134,4 @@ function NavigationPanel(props: { onSubmit: FormEventHandler }) {
   );
 }
 
-export default NavigationPanel;
+export default NavigateCard;
