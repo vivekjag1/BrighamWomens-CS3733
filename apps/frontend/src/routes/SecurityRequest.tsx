@@ -121,11 +121,12 @@ export function SecurityRequest() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setSecurityRequestForm({
                 ...securityRequestForm,
                 serviceRequest: {
                   ...securityRequestForm.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               });
             }}

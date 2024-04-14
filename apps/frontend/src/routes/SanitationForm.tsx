@@ -120,11 +120,12 @@ export function SanitationForm() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setSanitationRequest((currentSanitationRequest) => ({
                 ...currentSanitationRequest,
                 serviceRequest: {
                   ...currentSanitationRequest.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               }));
             }}

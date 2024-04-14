@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 * {
-  font-family: Roboto, system-ui, sans-serif;
+  font-family: Poppins, Roboto, system-ui, sans-serif;
 }
