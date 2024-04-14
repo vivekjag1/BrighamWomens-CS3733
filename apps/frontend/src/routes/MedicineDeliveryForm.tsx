@@ -12,6 +12,7 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomDatePicker from "../components/CustomDatePicker.tsx";
+import { useToast } from "../components/useToast.tsx";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -31,6 +32,7 @@ export function MedicineDeliveryForm() {
   const [medicineDelivery, setMedicineDelivery] =
     useState<MedicineDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   const validateForm = () => {
     const isValid =
@@ -57,18 +59,21 @@ export function MedicineDeliveryForm() {
 
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Medicine Request sent!");
+          // alert("Medicine Request sent!");
+          showToast("Medicine Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Medicine Request failed!");
+          //alert("Medicine Request failed!");
+          showToast("Medicine Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Medicine Request failed!");
+        showToast("Medicine Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      //alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
@@ -121,12 +126,11 @@ export function MedicineDeliveryForm() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
-              const isValid = newValue && dayjs(newValue).isValid();
               setMedicineDelivery((currentMedicineDelivery) => ({
                 ...currentMedicineDelivery,
                 serviceRequest: {
                   ...currentMedicineDelivery.serviceRequest,
-                  requestedTime: isValid ? newValue.toISOString() : "",
+                  requestedTime: newValue ? newValue.toISOString() : "",
                 },
               }));
             }}

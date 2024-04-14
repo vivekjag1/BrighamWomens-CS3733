@@ -15,6 +15,7 @@ import { RoomReservationType } from "common/src/RoomReservationType.ts";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
+import { useToast } from "../components/useToast.tsx";
 
 const initialState: RoomReservationType = {
   endTime: dayjs().toISOString(),
@@ -33,6 +34,7 @@ export function RoomReservation() {
     useState<RoomReservationType>(initialState);
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
   const validateForm = () => {
     const isValid =
       roomReservation.reservationReason &&
@@ -47,7 +49,6 @@ export function RoomReservation() {
   };
 
   async function submit() {
-    console.log("called submit function!");
     if (validateForm()) {
       try {
         const response = await axios.post(
@@ -59,18 +60,21 @@ export function RoomReservation() {
         );
         if (response.status === 200) {
           console.log("Submission successful");
-          alert("Room Reservation sent!");
+          //alert("Room Reservation sent!");
+          showToast("Room Reservation sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Room Reservation failed!");
+          //alert("Room Reservation failed!");
         }
       } catch (error) {
         console.error("Error submitting the form!: ", error);
-        alert("Room Reservation Failed!");
+        //alert("Room Reservation Failed!");
+        showToast("Room Reservation failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information");
+      //alert("You must fill out all the required information");
+      showToast("Fill out all the required information!", "warning");
     }
   }
   function clear() {

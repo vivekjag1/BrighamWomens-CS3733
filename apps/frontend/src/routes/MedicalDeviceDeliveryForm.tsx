@@ -12,6 +12,7 @@ import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
+import { useToast } from "../components/useToast.tsx";
 
 const initialState: MedicalDeviceDelivery = {
   deviceType: "",
@@ -30,6 +31,7 @@ export function MedicalDeviceDeliveryForm() {
   const [medicalDeviceDelivery, setMedicalDeviceDelivery] =
     useState<MedicalDeviceDelivery>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   function clear() {
     setDate(dayjs());
@@ -60,18 +62,18 @@ export function MedicalDeviceDeliveryForm() {
 
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Medical device delivery form sent!");
+          showToast("Medical Device Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status: ", response.status);
-          alert("Medical Device Request failed!");
+          showToast("Medical Device Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form: ", error);
-        alert("Medical Device Request failed!");
+        showToast("Medical Device Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 

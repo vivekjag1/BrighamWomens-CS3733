@@ -14,6 +14,7 @@ import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
+import { useToast } from "../components/useToast.tsx";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -32,6 +33,7 @@ export function SanitationForm() {
   const [sanitationRequest, setSanitationRequest] =
     useState<SanitationRequestObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   const validateForm = () => {
     const isValid =
@@ -56,18 +58,22 @@ export function SanitationForm() {
 
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Sanitation Request sent!");
+          //alert("Sanitation Request sent!");
+          showToast("Sanitation Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Sanitation Request failed!");
+          //alert("Sanitation Request failed!");
+          showToast("Sanitation Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Sanitation Request failed!");
+        //alert("Sanitation Request failed!");
+        showToast("Sanitation Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      //alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 

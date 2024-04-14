@@ -57,7 +57,10 @@ export function ServiceRequestGetter() {
           item.requestingUsername
             .toLowerCase()
             .includes(filterBySearch.toLowerCase()) ||
-          item.assignedTo.toLowerCase().includes(filterBySearch.toLowerCase()),
+          item.assignedTo
+            .toLowerCase()
+            .includes(filterBySearch.toLowerCase()) ||
+          item.type.toLowerCase().includes(filterBySearch.toLowerCase()),
       );
     }
 
