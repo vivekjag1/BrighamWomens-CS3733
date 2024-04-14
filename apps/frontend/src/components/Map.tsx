@@ -200,9 +200,6 @@ function getStringFromFloor(floor: number): string {
       return "L1";
     case -2:
       return "L2";
-    case 1:
-    case 2:
-    case 3:
     default:
       return floor.toString();
   }

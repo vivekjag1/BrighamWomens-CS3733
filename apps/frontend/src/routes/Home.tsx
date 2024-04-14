@@ -75,12 +75,10 @@ function Home() {
 
   return (
     <div>
-      <div className="relative flex justify-evenly bg-[#F1F1E6] ml-[5rem]">
-        <div className=" h-screen flex flex-col justify-center">
+      <div className="relative bg-offwhite">
+        <Map activeFloor={activeFloor} nodes={nodes} />
+        <div className="absolute left-[1%] top-[2%]">
           <NavigationPanel onSubmit={handleForm} />
-        </div>
-        <div className="h-screen flex flex-col justify-center">
-          <Map activeFloor={activeFloor} nodes={nodes} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle
