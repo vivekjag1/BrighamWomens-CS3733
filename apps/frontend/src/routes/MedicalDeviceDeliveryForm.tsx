@@ -8,8 +8,72 @@ import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
+import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
+import dayjs, { Dayjs } from "dayjs";
+import axios from "axios";
+import { APIEndpoints } from "common/src/APICommon.ts";
+
+const initialState: MedicalDeviceDelivery = {
+  deviceType: "",
+  quantity: 0,
+  serviceRequest: {
+    requestingUsername: "",
+    location: "",
+    priority: "",
+    status: "Unassigned",
+    description: "",
+    requestedTime: dayjs().toISOString(),
+  },
+};
+
 export function MedicalDeviceDeliveryForm() {
-  const [nodeHolder, setNodeHolder] = useState<string>("");
+  const [medicalDeviceDelivery, setMedicalDeviceDelivery] =
+    useState<MedicalDeviceDelivery>(initialState);
+  const [date, setDate] = useState<Dayjs>(dayjs());
+
+  function clear() {
+    setDate(dayjs());
+    setMedicalDeviceDelivery(initialState);
+  }
+
+  const validateForm = () => {
+    const isValid =
+      medicalDeviceDelivery.deviceType &&
+      medicalDeviceDelivery.quantity &&
+      medicalDeviceDelivery.serviceRequest.requestingUsername &&
+      medicalDeviceDelivery.serviceRequest.location &&
+      medicalDeviceDelivery.serviceRequest.priority;
+    return isValid;
+  };
+
+  async function submit() {
+    console.log(validateForm());
+    if (validateForm()) {
+      try {
+        const response = await axios.post(
+          APIEndpoints.medicalDeviceDelivery,
+          medicalDeviceDelivery,
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+
+        if (response.status === 200) {
+          console.log("Submission successful", response.data);
+          alert("Medical device delivery form sent!");
+          clear();
+        } else {
+          console.error("Submission failed with status: ", response.status);
+          alert("Medical Device Request failed!");
+        }
+      } catch (error) {
+        console.error("Error submitting the form: ", error);
+        alert("Medical Device Request failed!");
+      }
+    } else {
+      alert("You must fill out all the required information!");
+    }
+  }
 
   return (
     <FormContainer>
@@ -22,16 +86,52 @@ export function MedicalDeviceDeliveryForm() {
           autoComplete="off"
           className="space-y-4 flex flex-col justify-center items-center"
         >
-          <CustomTextField label="Requesting Username" required />
+          <CustomTextField
+            label="Requesting Username"
+            value={medicalDeviceDelivery.serviceRequest.requestingUsername}
+            onChange={(e) =>
+              setMedicalDeviceDelivery({
+                ...medicalDeviceDelivery,
+                serviceRequest: {
+                  ...medicalDeviceDelivery.serviceRequest,
+                  requestingUsername: e.target.value,
+                },
+              })
+            }
+            required
+          />
 
           <NodeDropdown
-            value={nodeHolder}
+            value={medicalDeviceDelivery.serviceRequest.location}
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             onChange={(newValue: string) => {
-              setNodeHolder(newValue);
+              setMedicalDeviceDelivery(
+                (currentMedicalDeviceDelivery: MedicalDeviceDelivery) => ({
+                  ...currentMedicalDeviceDelivery,
+                  serviceRequest: {
+                    ...currentMedicalDeviceDelivery.serviceRequest,
+                    location: newValue,
+                  },
+                }),
+              );
             }}
           />
 
-          <CustomDatePicker />
+          <CustomDatePicker
+            value={date}
+            onChange={(newValue) => {
+              setMedicalDeviceDelivery(
+                (currentMedicalDeviceDelivery: MedicalDeviceDelivery) => ({
+                  ...currentMedicalDeviceDelivery,
+                  serviceRequest: {
+                    ...currentMedicalDeviceDelivery.serviceRequest,
+                    requestedTime: newValue ? newValue.toISOString() : "",
+                  },
+                }),
+              );
+            }}
+          />
 
           <FormControl sx={{ width: "25rem" }} size="small">
             <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
@@ -42,6 +142,14 @@ export function MedicalDeviceDeliveryForm() {
               className="bg-gray-50"
               label="Device Type *"
               sx={{ fontSize: ".9rem" }}
+              value={medicalDeviceDelivery.deviceType}
+              onChange={(e) =>
+                setMedicalDeviceDelivery({
+                  ...medicalDeviceDelivery,
+                  deviceType: e.target.value,
+                })
+              }
+              required
             >
               <MenuItem value="stretcher">Stretcher</MenuItem>
               <MenuItem value="wheelchair">Wheelchair</MenuItem>
@@ -62,6 +170,12 @@ export function MedicalDeviceDeliveryForm() {
             InputProps={{
               inputProps: { min: 0 },
             }}
+            onChange={(e) =>
+              setMedicalDeviceDelivery({
+                ...medicalDeviceDelivery,
+                quantity: parseInt(e.target.value),
+              })
+            }
             required
           />
 
@@ -70,10 +184,30 @@ export function MedicalDeviceDeliveryForm() {
             multiline
             rows={3}
             size="small"
+            onChange={(e) =>
+              setMedicalDeviceDelivery({
+                ...medicalDeviceDelivery,
+                serviceRequest: {
+                  ...medicalDeviceDelivery.serviceRequest,
+                  description: e.target.value,
+                },
+              })
+            }
           />
 
           <FormControl sx={{ width: "25rem" }} size="small">
-            <CustomStatusDropdown />
+            <CustomStatusDropdown
+              value={medicalDeviceDelivery.serviceRequest.status}
+              onChange={(e) =>
+                setMedicalDeviceDelivery({
+                  ...medicalDeviceDelivery,
+                  serviceRequest: {
+                    ...medicalDeviceDelivery.serviceRequest,
+                    status: e.target.value ? e.target.value.toString() : "",
+                  },
+                })
+              }
+            />
           </FormControl>
 
           <FormControl
@@ -81,13 +215,24 @@ export function MedicalDeviceDeliveryForm() {
             margin="normal"
             sx={{ width: "25rem" }}
           >
-            <CustomPrioritySelector />
+            <CustomPrioritySelector
+              value={medicalDeviceDelivery.serviceRequest.priority}
+              onChange={(e) =>
+                setMedicalDeviceDelivery({
+                  ...medicalDeviceDelivery,
+                  serviceRequest: {
+                    ...medicalDeviceDelivery.serviceRequest,
+                    priority: e.target.value,
+                  },
+                })
+              }
+            />
           </FormControl>
 
           <div className="flex justify-between w-full mt-4">
-            <CustomClearButton>Clear</CustomClearButton>
+            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
 
-            <CustomSubmitButton>Submit</CustomSubmitButton>
+            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
           </div>
           <div className="text-center mt-4">
             <p>Made by Andy Truong and Francesco Di Mise</p>

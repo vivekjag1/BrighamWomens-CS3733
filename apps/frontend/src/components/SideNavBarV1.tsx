@@ -15,7 +15,7 @@ import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
 
 function SideNavBarV1() {
-  const { isAuthenticated } = useAuth0();
+  // const { isAuthenticated } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { logout } = useAuth0();
 
@@ -23,24 +23,39 @@ function SideNavBarV1() {
 
   const handleLogout = () => {
     // logout({returnTo: window.location.origin} );
-    logout().then().catch(console.error);
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  console.log(isAuthenticated);
+
   return (
     <div>
       <div className=" z-10">
         <div
           className={`shadow-lg h-screen bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 ${isCollapsed ? "w-[5rem]" : "w-[11rem]"}`}
         >
-          <div className=" flex flex-row self-center">
-            <Link to={paths.HOME}>
-              <div className="shadow-lg rounded-lg bg-white mb-10 mt-10 w-60px h-60px flex justify-center items-center">
-                <img className="h-40px" src={logo} alt="Logo" />
+          <div className="flex flex-row self-center">
+            <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
+              <div className="mb-5 mt-10 flex justify-center">
+                <img className="h-[60px]" src={logo} alt="Logo" />
               </div>
+              {/*<div className="mb-6">*/}
+              {/*  <h1*/}
+              {/*    className={*/}
+              {/*      isCollapsed*/}
+              {/*        ? "hidden"*/}
+              {/*        : "text-xl font-bold text-white text-md whitespace-nowrap"*/}
+              {/*    }*/}
+              {/*  >*/}
+              {/*    Hospital Kiosk*/}
+              {/*  </h1>*/}
+              {/*</div>*/}
             </Link>
           </div>
 
@@ -244,7 +259,10 @@ function SideNavBarV1() {
               </div>
             </div>
             {/*Logout button */}
-            <div className="m-[1.5rem]" onClick={handleLogout}>
+            <div
+              className="fixed bottom-1 to m-[1.5rem]"
+              onClick={handleLogout}
+            >
               <Link to={paths.LOGIN}>
                 {" "}
                 {/* enter link to button here to log out*/}
