@@ -129,37 +129,42 @@ const NodeTable = () => {
           </div>
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center gap-2">
-              <div className="flex flex-col items-center justify-center gap-2 pl-20">
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Node CSV:</p>
-
-                  <div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Node File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: nodeFile ? "green" : "#012D5A" }}
+                  >
+                    {nodeFile ? nodeFile.name : "Upload File"}
                     <input
-                      accept=".text/csv" // You can specify the accepted file types here
                       id="importNodeFile"
-                      name="Import node file"
                       type="file"
-                      multiple={false}
-                      style={{ display: "none" }}
+                      accept=".csv"
+                      name="Import Node File"
                       onChange={nodeFileChange}
+                      hidden
                     />
-                    <label htmlFor="file-upload">
-                      <Button variant="contained" component="span">
-                        Choose File
-                      </Button>
-                    </label>
-                  </div>
+                  </Button>
                 </div>
-
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Edge CSV:</p>
-                  <input
-                    id="importEdgeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Edge File"
-                    onChange={edgeFileChange}
-                  />
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Edge File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: edgeFile ? "green" : "#012D5A" }}
+                  >
+                    {edgeFile ? edgeFile.name : "Upload File"}
+                    <input
+                      id="importEdgeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Edge File"
+                      onChange={edgeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
               </div>
 
