@@ -205,7 +205,7 @@ function MapPage(props: {
                   r="10"
                   cx={node.xcoord}
                   cy={node.ycoord}
-                  fill="primary"
+                  fill="#012D5A"
                 />
               ))}
             </svg>

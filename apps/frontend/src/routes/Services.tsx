@@ -11,8 +11,13 @@ function Services() {
   return (
     <div className="">
       <div className="flex flex-col items-center gap-8 ">
-        <div className="flex flex-col items-center gap-6 mt-8">
-          <h2 className="w-full text-4xl font-bold text-center">Services</h2>
+        <div className="flex flex-col items-center gap-2 mt-8">
+          <h2 className="w-full text-3xl font-bold text-center">
+            Service Requests
+          </h2>
+          <h2 className="w-full text-md text-center">
+            Submit a service request
+          </h2>
           <hr className="pl-96 pr-96" />
         </div>
         <div className="flex justify-center gap-8">
