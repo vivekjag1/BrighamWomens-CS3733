@@ -51,7 +51,7 @@ function SideNavBar() {
     callback,
   }) => {
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center">
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center overflow-hidden">
         <Link
           to={to}
           className="inline-block"
@@ -97,7 +97,7 @@ function SideNavBar() {
         className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
       >
         {/* Header image */}
-        <div className="flex flex-col justify-center ">
+        <div className="flex flex-col justify-center overflow-hidden">
           <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
