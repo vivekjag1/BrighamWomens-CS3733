@@ -42,9 +42,6 @@ function Home() {
   }, []);
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
-    console.log("HELLO WORLD");
-    //const token = await getAccessTokenSilently();
-
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
@@ -75,12 +72,19 @@ function Home() {
       .catch(console.error);
   }
 
-  const [clickedNode, setclickedNode] = useState<GraphNode>();
+  // const [clickedNode, setclickedNode] = useState<GraphNode>();
+  const [startNode, setStart] = useState<GraphNode>();
+  const [endNode, setEnd] = useState<GraphNode>();
 
   const getClickedNode = (node: GraphNode) => {
-    //console.log(node);
-    setclickedNode(node);
-    //console.log(clickedNode);
+    //console.log("Hello world", startNode);
+    if (startNode) {
+      setEnd(node!);
+      //console.log("End node", endNode);
+    } else {
+      setStart(node!);
+      //console.log("Start node", startNode);
+    }
   };
 
   return (
@@ -94,7 +98,11 @@ function Home() {
           passClickedNode={getClickedNode}
         />
         <div className="absolute left-[1%] top-[2%]">
-          <NavigateCard onSubmit={handleForm} clickedNode={clickedNode!} />
+          <NavigateCard
+            onSubmit={handleForm}
+            clickedNodeStart={startNode!}
+            clickedNodeEnd={endNode!}
+          />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

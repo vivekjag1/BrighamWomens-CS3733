@@ -26,9 +26,10 @@ const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
 function NavigateCard(props: {
   onSubmit: FormEventHandler;
-  clickedNode: GraphNode;
+  clickedNodeStart: GraphNode;
+  clickedNodeEnd: GraphNode;
 }) {
-  console.log("Colin says", props.clickedNode);
+  //console.log("Colin says", props.clickedNode);
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathNodeObject, setPathNodeObject] =
@@ -62,12 +63,48 @@ function NavigateCard(props: {
     setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
   }
 
-  // if (props.clickedNode) {
-  //   setPathNodeObject((currentPathNode) => ({
-  //     ...currentPathNode,
-  //     startNode: props.clickedNode.longName,
-  //   }));
-  // }
+  // let startNode: GraphNode;
+  // let endNode: GraphNode;
+  // const decideStartOrEnd = () => {
+  //   const clickedNode: GraphNode = props.clickedNode;
+  //   if(startNode){
+  //     endNode = clickedNode;
+  //   }
+  //   else{
+  //     startNode = clickedNode;
+  //   }
+  // };
+
+  // let startSet = false;
+  function setStartNodeLabel() {
+    if (props.clickedNodeStart) {
+      return props.clickedNodeStart.longName;
+    } else {
+      return pathNodeObject.startNode;
+    }
+  }
+  function setStartNodeValue() {
+    if (props.clickedNodeStart) {
+      return props.clickedNodeStart.nodeID;
+    } else {
+      return getNodeID(pathNodeObject.startNode);
+    }
+  }
+
+  function setEndNodeLabel() {
+    if (props.clickedNodeEnd) {
+      return props.clickedNodeEnd.longName;
+    } else {
+      return pathNodeObject.startNode;
+    }
+  }
+  function setEndNodeValue() {
+    if (props.clickedNodeEnd) {
+      return props.clickedNodeEnd.nodeID;
+    } else {
+      return getNodeID(pathNodeObject.startNode);
+    }
+  }
 
   return (
     <div>
@@ -82,11 +119,7 @@ function NavigateCard(props: {
           <div className="flex flex-row gap-1 items-center mt-[1rem]">
             <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
-              value={
-                props.clickedNode
-                  ? props.clickedNode.longName
-                  : pathNodeObject.startNode
-              }
+              value={setStartNodeLabel()}
               sx={textFieldStyles}
               label="Start Location"
               onChange={(newValue: string) =>
@@ -99,18 +132,14 @@ function NavigateCard(props: {
             <input
               type="hidden"
               name={`${NavigateAttributes.startLocationKey}`}
-              value={
-                props.clickedNode
-                  ? props.clickedNode.nodeID
-                  : getNodeID(pathNodeObject.startNode)
-              }
+              value={setStartNodeValue()}
             />
           </div>
           <MoreVertIcon style={{ color: "#012D5A" }} />
           <div className="flex flex-row gap-1 items-center">
             <PlaceIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
-              value={pathNodeObject.endNode}
+              value={setEndNodeLabel()}
               sx={textFieldStyles}
               label="End Location"
               onChange={(newValue: string) =>
@@ -123,7 +152,7 @@ function NavigateCard(props: {
             <input
               type="hidden"
               name={`${NavigateAttributes.endLocationKey}`}
-              value={getNodeID(pathNodeObject.endNode)}
+              value={setEndNodeValue()}
             />
           </div>
           <div className="ml-[2rem] flex flex-row mt-4 justify-between">

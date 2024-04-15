@@ -14,6 +14,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 
+import { useToast } from "./useToast.tsx";
 // import { FormControl } from "react-bootstrap";
 // import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
@@ -27,6 +28,8 @@ export function ServiceRequestGetter() {
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
   const [filterByType, setFilterByType] = useState("Any");
   const { getAccessTokenSilently } = useAuth0();
+  const { showToast } = useToast();
+
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessTokenSilently();
@@ -144,10 +147,10 @@ export function ServiceRequestGetter() {
         },
       );
       console.log("Status updated successfully", response.data);
-      alert("Status updated successfully!");
+      showToast("Status updated successfully!", "success");
     } catch (error) {
       console.error("Error updating status", error);
-      alert("Failed to update status. Please try again.");
+      showToast("Status update failed!", "error");
     }
   }
 
