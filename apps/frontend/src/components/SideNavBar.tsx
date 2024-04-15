@@ -94,7 +94,7 @@ function SideNavBar() {
   return (
     <div className="z-10">
       <div
-        className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
+        className={`shadow-lg h-screen fixed bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
       >
         {/* Header image */}
         <div className="flex flex-col justify-center ">
