@@ -201,7 +201,6 @@ function SideNavBar() {
               >
                 <div className={isCollapsed ? "" : "hidden"}>
                   <StartRoundedIcon
-
                     sx={{
                       marginRight: "5px",
                       marginTop: "-3px",
