@@ -9,7 +9,7 @@ const router: Router = express.Router();
 router.get("/", async function (req: Request, res: Response): Promise<void> {
   const { [NavigateAttributes.floorKey]: requestedFloor } = req.query;
 
-  // no floor query in url
+  // floor query in url
   if (requestedFloor != undefined) {
     // get nodes on a specific floor
     const nodesInFloor: Node[] = await client.node.findMany({

@@ -5,12 +5,7 @@ import { createNodes } from "common/src/GraphCommon.ts";
 import { BFSPath } from "./BFSPath.ts";
 import { DFSPath } from "./DFSPath.ts";
 import { AStarPath } from "./AStarPath.ts";
-
-export enum PathAlgorithm {
-  AStar,
-  BFS,
-  DFS,
-}
+import { PathAlgorithm } from "common/src/Path.ts";
 
 export class Graph {
   private nodeArray: GraphNode[];
@@ -60,11 +55,10 @@ export class Graph {
     pathAlgorithm: PathAlgorithm,
   ): string[] {
     switch (pathAlgorithm) {
-      case PathAlgorithm.BFS:
+      case "BFS":
         return new BFSPath(startNodeID, endNodeID, this).getPath();
-      case PathAlgorithm.DFS:
+      case "DFS":
         return new DFSPath(startNodeID, endNodeID, this).getPath();
-      case PathAlgorithm.AStar:
       default:
         return new AStarPath(startNodeID, endNodeID, this).getPath();
     }

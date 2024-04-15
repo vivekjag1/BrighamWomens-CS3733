@@ -6,7 +6,14 @@ export class APIEndpoints {
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
   static readonly servicePutRequests: string = "/api/service/putRequests";
+  static readonly servicePostSecurityRequest: string =
+    "/api/service/post/security";
   static readonly navigationRequest: string = "/api/navigation/get";
+  static readonly sanitationPostRequests: string =
+    "/api/service/sanitationPostRequests";
+  static readonly roomReservation: string = "/api/service/room-reservation";
+  static readonly medicalDeviceDelivery: string =
+    "/api/service/postMedicalDevice";
 }
 
 export class FileAttributes {
@@ -15,7 +22,8 @@ export class FileAttributes {
 }
 
 export class NavigateAttributes {
-  static readonly startLocationKey: string = "currentLocation";
-  static readonly endLocationKey: string = "destination";
+  static readonly startLocationKey: string = "start";
+  static readonly endLocationKey: string = "end";
   static readonly floorKey: string = "floor";
+  static readonly algorithmKey: string = "algo";
 }

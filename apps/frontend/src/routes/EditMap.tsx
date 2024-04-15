@@ -48,7 +48,7 @@ function EditMap() {
     await axios
       .get(nodeURL.toString())
       .then((response) => {
-        // this won't update the image,
+        // this won't update the image
         setLocalNodes(response.data);
 
         return axios.get(edgeURL.toString());
@@ -67,21 +67,30 @@ function EditMap() {
       return;
     }
 
-    // get nodeIDs on this floor
-    const nodeIDs = localNodes.map((node) => node.nodeID);
-
     const edgeCoordsOnFloor: EdgeCoordinates[] = [];
     for (const edge of localEdges) {
-      const start = nodeIDs.indexOf(edge.startNodeID);
-      const end = nodeIDs.indexOf(edge.endNodeID);
+      // 2 character floor string
+      const correctedFloor =
+        localFloor.length == 1 ? "0" + localFloor : localFloor;
 
-      // if start and end nodes exist on this floor, add the edge
-      if (start != -1 && end != -1) {
+      // compare suffixes of start and end node
+      // if equal to floor, add the edge
+      if (
+        edge.startNodeID.endsWith(correctedFloor) &&
+        edge.endNodeID.endsWith(correctedFloor)
+      ) {
+        // we need the node objects with ID equal to our edge's start and end node IDs
+        // this is a linear search but could be faster with hash map in the future
+        const start = localNodes.find(
+          (node) => edge.startNodeID == node.nodeID,
+        );
+        const end = localNodes.find((node) => edge.endNodeID == node.nodeID);
+
         edgeCoordsOnFloor.push({
-          startX: parseInt(localNodes[start].xcoord),
-          startY: parseInt(localNodes[start].ycoord),
-          endX: parseInt(localNodes[end].xcoord),
-          endY: parseInt(localNodes[end].ycoord),
+          startX: parseInt(start!.xcoord),
+          startY: parseInt(start!.ycoord),
+          endX: parseInt(end!.xcoord),
+          endY: parseInt(end!.ycoord),
         });
       }
     }

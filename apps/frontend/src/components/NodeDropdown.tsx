@@ -1,33 +1,25 @@
-import { APIEndpoints } from "common/src/APICommon.ts";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
+import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
+import { MenuItem, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
-import { createNodes } from "common/src/GraphCommon.ts";
+import { useGraphNodes } from "./useGraphNodes.ts";
 
 interface NodeDropdownProps {
   value: string;
   onChange: (newValue: string) => void;
+  label?: string;
+  sx?: SxProps<Theme>;
+  className?: string;
 }
 
-const NodeDropdown = ({ value, onChange }: NodeDropdownProps) => {
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
-
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
-    }
-    getNodesFromDb().then();
-  }, []);
+const NodeDropdown = ({
+  value,
+  onChange,
+  label,
+  sx,
+  className,
+}: NodeDropdownProps) => {
+  const nodes = useGraphNodes();
 
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
@@ -45,19 +37,40 @@ const NodeDropdown = ({ value, onChange }: NodeDropdownProps) => {
       disablePortal
       id="combo-box-location"
       options={nodes.map((node) => ({ label: node.longName }))}
-      sx={{ width: "25rem", padding: 0 }}
+      sx={{
+        ...sx,
+        "& .MuiAutocomplete-input": {
+          fontSize: ".8rem",
+          whiteSpace: "pre-wrap",
+          fontFamily: "Poppins, sans-serif",
+        }, // smaller, wrap, poppins font
+      }}
+      className={className}
       value={selectedValue}
       onChange={handleChange}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Location *"
-          className="bg-gray-50"
+          label={label}
+          className={`bg-gray-50 ${className}`}
           size="small"
           InputLabelProps={{
             style: { color: "#a4aab5", fontSize: ".9rem" },
           }}
         />
+      )}
+      // smaller, wrap, poppins font
+      renderOption={(props, option) => (
+        <MenuItem
+          {...props}
+          style={{
+            fontSize: ".8rem",
+            whiteSpace: "pre-wrap",
+            fontFamily: "Poppins, sans-serif",
+          }}
+        >
+          {option.label}
+        </MenuItem>
       )}
     />
   );

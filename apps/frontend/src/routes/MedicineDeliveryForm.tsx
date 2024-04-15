@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { FormControl } from "@mui/material";
@@ -12,6 +11,9 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomDatePicker from "../components/CustomDatePicker.tsx";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -28,46 +30,52 @@ const initialState: MedicineDeliveryObject = {
 };
 
 export function MedicineDeliveryForm() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [medicineDelivery, setMedicineDelivery] =
     useState<MedicineDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   const validateForm = () => {
-    const isValid =
+    return (
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
       medicineDelivery.patientName &&
+      medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.requestingUsername &&
       medicineDelivery.serviceRequest.location &&
-      medicineDelivery.serviceRequest.priority;
-    return isValid;
+      medicineDelivery.serviceRequest.priority
+    );
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
+
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.servicePostRequests,
           medicineDelivery,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
-
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Medicine Request sent!");
+          // alert("Medicine Request sent!");
+          showToast("Medicine Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Medicine Request failed!");
+          //alert("Medicine Request failed!");
+          showToast("Medicine Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Medicine Request failed!");
+        showToast("Medicine Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      //alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
@@ -104,6 +112,8 @@ export function MedicineDeliveryForm() {
 
           <NodeDropdown
             value={medicineDelivery.serviceRequest.location}
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
             onChange={(newValue: string) =>
               setMedicineDelivery((medicineDelivery) => ({
                 ...medicineDelivery,
@@ -118,11 +128,12 @@ export function MedicineDeliveryForm() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setMedicineDelivery((currentMedicineDelivery) => ({
                 ...currentMedicineDelivery,
                 serviceRequest: {
                   ...currentMedicineDelivery.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               }));
             }}

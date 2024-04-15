@@ -10,9 +10,78 @@ import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
+import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import dayjs, { Dayjs } from "dayjs";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const initialState: SanitationRequestObject = {
+  sanitationType: "",
+  requiredEquipment: "",
+  serviceRequest: {
+    requestingUsername: "",
+    location: "",
+    priority: "",
+    status: "Unassigned",
+    description: "",
+    requestedTime: dayjs().toISOString(),
+  },
+};
 
 export function SanitationForm() {
-  const [nodeHolder, setNodeHolder] = useState<string>("");
+  const { getAccessTokenSilently } = useAuth0();
+
+  const [sanitationRequest, setSanitationRequest] =
+    useState<SanitationRequestObject>(initialState);
+  const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
+
+  const validateForm = () => {
+    return (
+      sanitationRequest.sanitationType &&
+      sanitationRequest.requiredEquipment &&
+      sanitationRequest.serviceRequest.requestingUsername &&
+      sanitationRequest.serviceRequest.location &&
+      sanitationRequest.serviceRequest.priority
+    );
+  };
+
+  async function submit() {
+    const token = await getAccessTokenSilently();
+    if (validateForm()) {
+      try {
+        const response = await MakeProtectedPostRequest(
+          APIEndpoints.sanitationPostRequests,
+          sanitationRequest,
+          token,
+        );
+        if (response.status === 200) {
+          console.log("Submission successful", response.data);
+          //alert("Sanitation Request sent!");
+          showToast("Sanitation Request sent!", "success");
+          clear();
+        } else {
+          console.error("Submission failed with status:", response.status);
+          //alert("Sanitation Request failed!");
+          showToast("Sanitation Request failed!", "error");
+        }
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+        //alert("Sanitation Request failed!");
+        showToast("Sanitation Request failed!", "error");
+      }
+    } else {
+      //alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
+    }
+  }
+
+  function clear() {
+    setDate(dayjs());
+    setSanitationRequest(initialState);
+  }
 
   return (
     <FormContainer>
@@ -25,16 +94,49 @@ export function SanitationForm() {
           autoComplete="off"
           className="space-y-4 flex flex-col justify-center items-center"
         >
-          <CustomTextField label="Requesting Username" required />
-
-          <NodeDropdown
-            value={nodeHolder}
-            onChange={(newValue: string) => {
-              setNodeHolder(newValue);
-            }}
+          <CustomTextField
+            label="Requesting Username"
+            value={sanitationRequest.serviceRequest.requestingUsername}
+            onChange={(e) =>
+              setSanitationRequest({
+                ...sanitationRequest,
+                serviceRequest: {
+                  ...sanitationRequest.serviceRequest,
+                  requestingUsername: e.target.value,
+                },
+              })
+            }
+            required
           />
 
-          <CustomDatePicker />
+          <NodeDropdown
+            sx={{ width: "25rem", padding: 0 }}
+            label="Location *"
+            value={sanitationRequest.serviceRequest.location}
+            onChange={(newValue: string) =>
+              setSanitationRequest(() => ({
+                ...sanitationRequest,
+                serviceRequest: {
+                  ...sanitationRequest.serviceRequest,
+                  location: newValue,
+                },
+              }))
+            }
+          />
+
+          <CustomDatePicker
+            value={date}
+            onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
+              setSanitationRequest((currentSanitationRequest) => ({
+                ...currentSanitationRequest,
+                serviceRequest: {
+                  ...currentSanitationRequest.serviceRequest,
+                  requestedTime: isValid ? newValue.toISOString() : "",
+                },
+              }));
+            }}
+          />
 
           <Autocomplete
             disablePortal
@@ -57,6 +159,20 @@ export function SanitationForm() {
                 }}
               />
             )}
+            value={
+              sanitationRequest.sanitationType
+                ? { label: sanitationRequest.sanitationType }
+                : null
+            }
+            onChange={(
+              event: React.SyntheticEvent<Element, Event>,
+              newValue: { label: string } | null,
+            ) =>
+              setSanitationRequest({
+                ...sanitationRequest,
+                sanitationType: newValue ? newValue.label : "",
+              })
+            }
           />
 
           <Autocomplete
@@ -65,7 +181,7 @@ export function SanitationForm() {
             options={[
               { label: "Mop" },
               { label: "Broom" },
-              { label: "Vacuum" },
+              { label: "Dust Pan" },
             ]}
             className="bg-gray-50"
             size="small"
@@ -79,17 +195,52 @@ export function SanitationForm() {
                 }}
               />
             )}
+            value={
+              sanitationRequest.requiredEquipment
+                ? { label: sanitationRequest.requiredEquipment }
+                : null
+            }
+            onChange={(
+              event: React.SyntheticEvent<Element, Event>,
+              newValue: { label: string } | null,
+            ) =>
+              setSanitationRequest({
+                ...sanitationRequest,
+                requiredEquipment: newValue ? newValue.label : "",
+              })
+            }
           />
 
           <CustomTextField
             label="Description (optional)"
             multiline
             rows={3}
+            value={sanitationRequest.serviceRequest.description}
+            onChange={(e) =>
+              setSanitationRequest({
+                ...sanitationRequest,
+                serviceRequest: {
+                  ...sanitationRequest.serviceRequest,
+                  description: e.target.value,
+                },
+              })
+            }
             size="small"
           />
 
           <FormControl sx={{ width: "25rem" }} size="small">
-            <CustomStatusDropdown />
+            <CustomStatusDropdown
+              value={sanitationRequest.serviceRequest.status}
+              onChange={(e) =>
+                setSanitationRequest({
+                  ...sanitationRequest,
+                  serviceRequest: {
+                    ...sanitationRequest.serviceRequest,
+                    status: e.target.value as string,
+                  },
+                })
+              }
+            />
           </FormControl>
 
           <FormControl
@@ -97,13 +248,24 @@ export function SanitationForm() {
             margin="normal"
             sx={{ width: "25rem" }}
           >
-            <CustomPrioritySelector />
+            <CustomPrioritySelector
+              value={sanitationRequest.serviceRequest.priority}
+              onChange={(e) =>
+                setSanitationRequest({
+                  ...sanitationRequest,
+                  serviceRequest: {
+                    ...sanitationRequest.serviceRequest,
+                    priority: e.target.value,
+                  },
+                })
+              }
+            />
           </FormControl>
 
           <div className="flex justify-between w-full mt-4">
-            <CustomClearButton>Clear</CustomClearButton>
+            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
 
-            <CustomSubmitButton>Submit</CustomSubmitButton>
+            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
           </div>
           <div className="text-center mt-4">
             <p>Made by Matthew Brown and Sulaiman Moukheiber</p>

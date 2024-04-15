@@ -1,17 +1,9 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-/*import PathTables from "./routes/PathTables.tsx";*/
 import Services from "./routes/Services.tsx";
-/*import MedicineDeliveryForm from "./routes/MedicineDeliveryForm.tsx";
-import MedicalDeviceDeliveryForm from "./routes/MedicalDeviceDeliveryForm.tsx";
-import RoomReservation from "./routes/RoomReservation.tsx";
-import SanitationForm from "./routes/SanitationForm.tsx";
-import SecurityRequest from "./routes/SecurityRequest.tsx";
-import ServicesTable from "./routes/ServicesTable.tsx";
-import EditMap from "./routes/EditMap.tsx";*/
-/*// import AuthComp from "./components/AuthenticationComponent.tsx";*/
+
 import Home from "./routes/Home.tsx";
-import Hero from "./routes/Login.tsx";
+//import Hero from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
@@ -22,20 +14,21 @@ import RoomReservation from "./routes/RoomReservation.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
 import EditMap from "./routes/EditMap.tsx";
-import PathTables from "./routes/PathTables.tsx";
+import PathTables from "./routes/MapData.tsx";
+import Login from "./routes/Login.tsx";
 function App() {
   const router = createBrowserRouter([
     {
       path: paths.LOGIN,
-      element: <Hero />,
+      element: <Login />,
     },
 
     {
-      path: paths.HOME,
+      path: paths.MAP,
       element: <Layout />,
       children: [
         {
-          path: paths.HOME,
+          path: paths.MAP,
           element: <Home />,
         },
         {
@@ -72,7 +65,7 @@ function App() {
         },
         {
           path: paths.MAP_EDITOR,
-          element: <EditMap />,
+          element: <AuthComp component={EditMap} />,
         },
       ],
     },
