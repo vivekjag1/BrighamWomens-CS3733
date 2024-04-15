@@ -12,6 +12,7 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlaceIcon from "@mui/icons-material/Place";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
+import NavigationClearButton from "./NavigationClearButton.tsx";
 
 const initialState: PathNodesObject = {
   startNode: "",
@@ -24,7 +25,10 @@ const textFieldStyles = {
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
-function NavigateCard(props: { onSubmit: FormEventHandler }) {
+function NavigateCard(props: {
+  onSubmit: FormEventHandler;
+  onReset: FormEventHandler;
+}) {
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathNodeObject, setPathNodeObject] =
@@ -57,6 +61,11 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
     setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
   }
 
+  function reset() {
+    setPathNodeObject(initialState);
+    setPathAlgorithm(defaultPathAlgorithm);
+  }
+
   return (
     <div>
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
@@ -64,9 +73,15 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
           className="flex flex-col"
           noValidate
           onSubmit={props.onSubmit}
-          onReset={props.onSubmit}
+          onReset={props.onReset}
         >
-          <h2 className="text-2xl font-extralight text-secondary">Navigate</h2>
+          <div className="flex flex-row gap-40">
+            <h2 className="text-2xl font-extralight text-secondary">
+              Navigate
+            </h2>
+            <NavigationClearButton onClick={reset} type="reset" />
+          </div>
+
           <div className="flex flex-row gap-1 items-center mt-[1rem]">
             <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
