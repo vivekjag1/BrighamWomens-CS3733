@@ -229,7 +229,7 @@ const NodeTable = () => {
             </ul>
 
             {activeTab === "node" && (
-              <div>
+              <div className="m-8">
                 {/*<h2 className="text-3xl font-bold">Node Table</h2>*/}
                 <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
