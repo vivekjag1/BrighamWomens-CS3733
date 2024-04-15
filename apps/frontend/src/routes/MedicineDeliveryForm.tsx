@@ -177,6 +177,8 @@ export function MedicineDeliveryForm() {
 
           <CustomTextField
             label="Description (Optional)"
+            multiline
+            rows={3}
             value={medicineDelivery.serviceRequest.description}
             onChange={(e) =>
               setMedicineDelivery({
