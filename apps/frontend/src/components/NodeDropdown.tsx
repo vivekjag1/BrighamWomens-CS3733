@@ -58,7 +58,7 @@ const NodeDropdown = ({
             style: {
               color: "#a4aab5",
               fontSize: ".9rem",
-              fontFamily: "Poppins",
+              fontFamily: "Poppins, sans-serif",
             },
           }}
         />

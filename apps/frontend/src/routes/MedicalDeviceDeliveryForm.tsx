@@ -139,8 +139,19 @@ export function MedicalDeviceDeliveryForm() {
             }}
           />
 
-          <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+          <FormControl
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+            size="small"
+          >
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
+            >
               Device Type *
             </InputLabel>
             <Select
@@ -157,16 +168,66 @@ export function MedicalDeviceDeliveryForm() {
               }
               required
             >
-              <MenuItem value="stretcher">Stretcher</MenuItem>
-              <MenuItem value="wheelchair">Wheelchair</MenuItem>
-              <MenuItem value="crutches">Crutches</MenuItem>
-              <MenuItem value="hospital bed">Hospital Bed</MenuItem>
-              <MenuItem value="iv pump">IV Pump</MenuItem>
-              <MenuItem value="patient monitor">Patient Monitor</MenuItem>
-              <MenuItem value="defibrillator">Defibrillator</MenuItem>
-              <MenuItem value="anesthesia machine">Anesthesia Machine</MenuItem>
-              <MenuItem value="ventilator">Ventilator</MenuItem>
-              <MenuItem value="catheter">Catheter</MenuItem>
+              <MenuItem
+                value="stretcher"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Stretcher
+              </MenuItem>
+              <MenuItem
+                value="wheelchair"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Wheelchair
+              </MenuItem>
+              <MenuItem
+                value="crutches"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Crutches
+              </MenuItem>
+              <MenuItem
+                value="hospital bed"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Hospital Bed
+              </MenuItem>
+              <MenuItem
+                value="iv pump"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                IV Pump
+              </MenuItem>
+              <MenuItem
+                value="patient monitor"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Patient Monitor
+              </MenuItem>
+              <MenuItem
+                value="defibrillator"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Defibrillator
+              </MenuItem>
+              <MenuItem
+                value="anesthesia machine"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Anesthesia Machine
+              </MenuItem>
+              <MenuItem
+                value="ventilator"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Ventilator
+              </MenuItem>
+              <MenuItem
+                value="catheter"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Catheter
+              </MenuItem>
             </Select>
           </FormControl>
 

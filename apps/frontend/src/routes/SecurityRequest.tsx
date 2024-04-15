@@ -135,7 +135,13 @@ export function SecurityRequest() {
           />
 
           <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
               Security Type *
             </InputLabel>
             <Select
@@ -143,7 +149,7 @@ export function SecurityRequest() {
               value={securityRequestForm.securityType}
               className="bg-gray-50"
               label="Security Type *"
-              sx={{ fontSize: ".9rem" }}
+              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
               onChange={(e) => {
                 setSecurityRequestForm({
                   ...securityRequestForm,
@@ -151,9 +157,24 @@ export function SecurityRequest() {
                 });
               }}
             >
-              <MenuItem value="Monitor">Monitor</MenuItem>
-              <MenuItem value="Monitor">Escort</MenuItem>
-              <MenuItem value="Monitor">Patrol</MenuItem>
+              <MenuItem
+                value="Monitor"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Monitor
+              </MenuItem>
+              <MenuItem
+                value="Escort"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Escort
+              </MenuItem>
+              <MenuItem
+                value="Patrol"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Patrol
+              </MenuItem>
             </Select>
           </FormControl>
 

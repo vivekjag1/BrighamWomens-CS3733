@@ -125,11 +125,17 @@ export function RoomReservation() {
             id="outlined-basic"
             label="Reservation Name"
             variant="outlined"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             className="bg-gray-50"
-            InputProps={{ style: { fontSize: ".9rem" } }}
+            InputProps={{
+              style: { fontSize: ".9rem", fontFamily: "Poppins, sans-serif" },
+            }}
             InputLabelProps={{
-              style: { color: "#a4aab5", fontSize: ".9rem" },
+              style: {
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              },
             }}
             size="small"
           />
@@ -149,7 +155,16 @@ export function RoomReservation() {
               }}
               label="Reservation Start Time"
               className="bg-gray-50"
-              sx={{ width: "25rem", padding: 0 }}
+              sx={{
+                width: "25rem",
+                padding: 0,
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
             />
             <DateTimePicker
               value={endDate}
@@ -165,7 +180,16 @@ export function RoomReservation() {
               }}
               label="Reservation End Time"
               className="bg-gray-50"
-              sx={{ width: "25rem", padding: 0, margin: 0 }}
+              sx={{
+                width: "25rem",
+                padding: 0,
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
             />
           </LocalizationProvider>
           <TextField
@@ -181,11 +205,17 @@ export function RoomReservation() {
             multiline
             maxRows={4}
             variant="outlined"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             className="bg-gray-50"
-            InputProps={{ style: { fontSize: ".9rem" } }}
+            InputProps={{
+              style: { fontSize: ".9rem", fontFamily: "Poppins, sans-serif" },
+            }}
             InputLabelProps={{
-              style: { color: "#a4aab5", fontSize: ".9rem" },
+              style: {
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              },
             }}
             size="small"
           />

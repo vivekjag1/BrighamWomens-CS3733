@@ -7,6 +7,7 @@ const SmallClearButton: React.FC<ButtonProps> = (props) => {
     <IconButton
       style={{
         color: "gray",
+        fontFamily: "Poppins, sans-serif",
       }}
       {...props}
     >

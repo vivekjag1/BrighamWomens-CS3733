@@ -9,6 +9,7 @@ const CustomClearButton: React.FC<ButtonProps> = (props) => {
         backgroundColor: "#EA422D",
         color: "white",
         width: "8rem",
+        fontFamily: "Poppins, sans-serif",
       }}
       endIcon={<ClearIcon />}
       {...props}

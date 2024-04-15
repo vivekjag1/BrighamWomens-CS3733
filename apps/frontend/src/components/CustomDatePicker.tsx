@@ -18,7 +18,14 @@ const CustomDatePicker: React.FC<DateTimePickerProps<Dayjs>> = (props) => {
           label="Service Time *"
           className="bg-gray-50"
           {...props}
-          sx={{ width: "25rem", padding: 0 }}
+          sx={{
+            width: "25rem",
+            padding: 0,
+            "& .MuiInputLabel-root.Mui-focused": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiOutlinedInput-root": { fontFamily: "Poppins, sans-serif" },
+          }}
         />
       </LocalizationProvider>
     </>

@@ -182,13 +182,19 @@ export function ServiceRequestGetter() {
         </div>
         <div>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
               Type
             </InputLabel>
             <Select
               name="Type"
               className="bg-gray-50"
-              sx={{ fontSize: ".9rem" }}
+              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
               label="Type"
               size="small"
               value={filterByType}
@@ -203,13 +209,19 @@ export function ServiceRequestGetter() {
             </Select>
           </FormControl>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
               Priority
             </InputLabel>
             <Select
               name="priority"
               className="bg-gray-50"
-              sx={{ fontSize: ".9rem" }}
+              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
               label="priority"
               size="small"
               value={filterByPriority}
@@ -223,13 +235,19 @@ export function ServiceRequestGetter() {
             </Select>
           </FormControl>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
               Status
             </InputLabel>
             <Select
               name="Status"
               className="bg-gray-50"
-              sx={{ fontSize: ".9rem" }}
+              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
               label="Status"
               size="small"
               value={filterByStatus}
