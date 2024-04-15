@@ -6,6 +6,7 @@ import sanitationIcon from "../../assets/sanitation-icon.svg";
 import deviceIcon from "../../assets/device-icon.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
 import paths from "../paths/paths.tsx";
+import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
   return (
@@ -33,6 +34,13 @@ function Services() {
               imgPath={deviceIcon}
               alt="device icon"
               label="Medical Device Delivery"
+            />
+          </Link>
+          <Link to={paths.GIFT_DELIVERY}>
+            <ServiceCard
+              imgPath={giftIcon}
+              alt="device icon"
+              label="Gift Delivery"
             />
           </Link>
         </div>

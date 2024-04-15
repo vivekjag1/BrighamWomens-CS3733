@@ -204,24 +204,51 @@ function MapImage(props: {
                   </text>
                 </>
               ))}
-              <svg
-                width="100px"
-                x={startNode.xCoordinate - 50}
-                y={startNode.yCoordinate - 1740}
-              >
-                {props.activeFloor == startNode.floor && (
-                  <LocationIcon sx={{ color: "green" }} />
-                )}
-              </svg>
-              <svg
-                width="100px"
-                x={endNode.xCoordinate - 50}
-                y={endNode.yCoordinate - 1740}
-              >
-                {props.activeFloor == endNode.floor && (
-                  <LocationIcon sx={{ color: "red" }} />
-                )}
-              </svg>
+
+              {props.activeFloor == startNode.floor && (
+                <svg
+                  width="80px"
+                  x={startNode.xCoordinate - 40}
+                  y={startNode.yCoordinate - 1740}
+                  viewBox="0 0 64 64"
+                  strokeWidth="1"
+                  className="w-2 h-2"
+                >
+                  <g>
+                    <LocationIcon sx={{ fontSize: "3rem", color: "green" }} />
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      begin="0s"
+                      dur="1s"
+                      values="0 0; 0 -10; 0 0"
+                      repeatCount="indefinite"
+                    />
+                  </g>
+                </svg>
+              )}
+              {props.activeFloor == endNode.floor && (
+                <svg
+                  width="80px"
+                  x={endNode.xCoordinate - 40}
+                  y={endNode.yCoordinate - 1740}
+                  viewBox="0 0 64 64"
+                  strokeWidth="1"
+                  className="w-2 h-2"
+                >
+                  <g>
+                    <LocationIcon sx={{ fontSize: "3rem", color: "red" }} />
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      begin="0s"
+                      dur="1s"
+                      values="0 0; 0 -10; 0 0"
+                      repeatCount="indefinite"
+                    />
+                  </g>
+                </svg>
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>

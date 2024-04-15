@@ -55,7 +55,11 @@ const NodeDropdown = ({
           className={`bg-gray-50 ${className}`}
           size="small"
           InputLabelProps={{
-            style: { color: "#a4aab5", fontSize: ".9rem" },
+            style: {
+              color: "#a4aab5",
+              fontSize: ".9rem",
+              fontFamily: "Poppins",
+            },
           }}
         />
       )}
