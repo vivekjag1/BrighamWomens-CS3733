@@ -195,7 +195,7 @@ function SideNavBar() {
         <div className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[-12px]">
           <img
             src={CollapseImg}
-            className={`cursor-pointer w-7 duration-500 ${isCollapsed ? "rotate-180" : ""}`}
+            className={`cursor-pointer w-7 duration-500 ${isCollapsed ? "" : "rotate-180"}`}
             onClick={() => setIsCollapsed(!isCollapsed)}
           />
         </div>
