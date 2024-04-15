@@ -14,6 +14,7 @@ function ZoomControls() {
   } as const;
 
   const { zoomIn, zoomOut } = useControls();
+
   return (
     <div className="fixed top-[5%] right-[2%] z-10">
       <ButtonGroup
