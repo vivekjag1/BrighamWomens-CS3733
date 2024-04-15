@@ -11,7 +11,7 @@ import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React from "react";
 import ZoomControls from "./ZoomControls";
-import { MapColors } from "../common/StylingCommon.ts";
+import { MapStyling } from "../common/StylingCommon.ts";
 
 function MapImage(props: {
   activeFloor: number;
@@ -109,10 +109,10 @@ function MapImage(props: {
               <image href={map} />
               {filteredNodes.map((node) => (
                 <circle
-                  r={MapColors.nodeRadius}
+                  r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
-                  fill={MapColors.nodeColor}
+                  fill={MapStyling.nodeColor}
                   onClick={() => props.passClickedNode(node)}
                 />
               ))}
@@ -120,8 +120,8 @@ function MapImage(props: {
                 <>
                   <motion.polyline
                     fill="none"
-                    stroke={MapColors.pathColor}
-                    strokeWidth={MapColors.pathWidth}
+                    stroke={MapStyling.pathColor}
+                    strokeWidth={MapStyling.pathWidth}
                     points={
                       listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                     }
@@ -145,7 +145,7 @@ function MapImage(props: {
                         : path[0][0]
                     }
                     cy={path[0][1]}
-                    fill="#012D5A"
+                    fill={MapStyling.nodeColor}
                   />
                   <text
                     x={
@@ -157,9 +157,9 @@ function MapImage(props: {
                     }
                     y={path[0][1]}
                     textAnchor="middle"
-                    stroke="white"
-                    strokeWidth="5"
+                    fill="white"
                     fontSize="2em"
+                    fontWeight="bold"
                     dy=".35em"
                   >
                     {getStringFromFloor(
@@ -179,7 +179,7 @@ function MapImage(props: {
                         : path[path.length - 1][0]
                     }
                     cy={path[path.length - 1][1]}
-                    fill="#012D5A"
+                    fill={MapStyling.nodeColor}
                   />
                   <text
                     x={
@@ -191,9 +191,9 @@ function MapImage(props: {
                     }
                     y={path[path.length - 1][1]}
                     textAnchor="middle"
-                    stroke="white"
-                    strokeWidth="5"
+                    fill="white"
                     fontSize="2em"
+                    fontWeight="bold"
                     dy=".35em"
                   >
                     {getStringFromFloor(
