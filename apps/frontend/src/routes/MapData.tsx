@@ -205,7 +205,7 @@ const NodeTable = () => {
 
             <hr className="m-1" />
             <ul
-              className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center mb-5"
+              className="flex flex-wrap text-sm font-medium text-center justify-center mb-5"
               id="default-tab"
             >
               <li className="mr-2" role="presentation">
