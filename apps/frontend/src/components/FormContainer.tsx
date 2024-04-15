@@ -7,8 +7,8 @@ interface FormContainerProps {
 
 export function FormContainer({ children }: FormContainerProps) {
   return (
-    <div className="w-full h-screen flex justify-center items-start pt-[3rem]">
-      <Card className="drop-shadow-2xl" sx={{ borderRadius: "10px" }}>
+    <div className="flex justify-center items-center w-full h-screen p-4">
+      <Card className="drop-shadow-2xl w-full max-w-lg rounded-lg overflow-auto">
         <CardContent>{children}</CardContent>
       </Card>
     </div>
