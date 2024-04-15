@@ -9,6 +9,8 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
+import React from "react";
+import ZoomControls from "./ZoomControls";
 
 function MapImage(props: {
   activeFloor: number;
@@ -105,6 +107,7 @@ function MapImage(props: {
     <div>
       <div>
         <TransformWrapper initialScale={1}>
+          <ZoomControls />
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
             contentStyle={{
