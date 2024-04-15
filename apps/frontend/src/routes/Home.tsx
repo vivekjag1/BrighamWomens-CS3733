@@ -6,12 +6,8 @@ import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
-// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-// import { useAuth0 } from "@auth0/auth0-react";
 
 function Home() {
-  // const { getAccessTokenSilently } = useAuth0();
-
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(-1);
   function handleMapSwitch(x: number) {
@@ -79,12 +75,26 @@ function Home() {
       .catch(console.error);
   }
 
+  const [clickedNode, setclickedNode] = useState<GraphNode>();
+
+  const getClickedNode = (node: GraphNode) => {
+    //console.log(node);
+    setclickedNode(node);
+    //console.log(clickedNode);
+  };
+
   return (
     <div>
       <div className="relative bg-offwhite">
-        <MapImage activeFloor={activeFloor} path={path} nodes={nodes} />
+        {/*//passClickedNode={getClickedNode}*/}
+        <MapImage
+          activeFloor={activeFloor}
+          path={path}
+          nodes={nodes}
+          passClickedNode={getClickedNode}
+        />
         <div className="absolute left-[1%] top-[2%]">
-          <NavigateCard onSubmit={handleForm} />
+          <NavigateCard onSubmit={handleForm} clickedNode={clickedNode!} />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

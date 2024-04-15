@@ -14,6 +14,7 @@ function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
+  passClickedNode: (node: GraphNode) => void;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -84,6 +85,9 @@ function MapImage(props: {
     listOfPolylineStrings.push(polylineString);
   }
 
+  // const handleClickedNode = (aNode: GraphNode) =>{
+  //   console.log(aNode);
+  // };
   return (
     <div>
       <div>
@@ -105,6 +109,7 @@ function MapImage(props: {
                   cx={node.xcoord}
                   cy={node.ycoord}
                   fill="#012D5A"
+                  onClick={() => props.passClickedNode(node)}
                 />
               ))}
               {filteredSplitPaths.map((path) => (

@@ -24,13 +24,18 @@ const textFieldStyles = {
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
-function NavigateCard(props: { onSubmit: FormEventHandler }) {
+function NavigateCard(props: {
+  onSubmit: FormEventHandler;
+  clickedNode: GraphNode;
+}) {
+  console.log("Colin says", props.clickedNode);
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
+  //const [clickedNode, setClickedNode] = useState<GraphNode>();
 
   function getNodeID(value: string): string {
     const foundNode = nodes.find((node) => node.longName === value);
@@ -57,6 +62,13 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
     setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
   }
 
+  // if (props.clickedNode) {
+  //   setPathNodeObject((currentPathNode) => ({
+  //     ...currentPathNode,
+  //     startNode: props.clickedNode.longName,
+  //   }));
+  // }
+
   return (
     <div>
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
@@ -70,7 +82,11 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
           <div className="flex flex-row gap-1 items-center mt-[1rem]">
             <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeDropdown
-              value={pathNodeObject.startNode}
+              value={
+                props.clickedNode
+                  ? props.clickedNode.longName
+                  : pathNodeObject.startNode
+              }
               sx={textFieldStyles}
               label="Start Location"
               onChange={(newValue: string) =>
@@ -83,7 +99,11 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
             <input
               type="hidden"
               name={`${NavigateAttributes.startLocationKey}`}
-              value={getNodeID(pathNodeObject.startNode)}
+              value={
+                props.clickedNode
+                  ? props.clickedNode.nodeID
+                  : getNodeID(pathNodeObject.startNode)
+              }
             />
           </div>
           <MoreVertIcon style={{ color: "#012D5A" }} />
