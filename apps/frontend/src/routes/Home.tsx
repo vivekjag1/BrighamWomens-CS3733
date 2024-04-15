@@ -46,9 +46,6 @@ function Home() {
   }, []);
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
-    console.log("HELLO WORLD");
-    //const token = await getAccessTokenSilently();
-
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
