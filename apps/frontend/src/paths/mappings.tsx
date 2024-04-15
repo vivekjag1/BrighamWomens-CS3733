@@ -10,6 +10,7 @@ import SanitationForm from "../routes/SanitationForm.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import PathTables from "../routes/MapData.tsx";
 import EditMap from "../routes/EditMap.tsx";
+import GiftDelivery from "../routes/GiftDelivery.tsx";
 
 const routes = [
   { path: paths.MAP, element: <Map /> },
@@ -22,6 +23,7 @@ const routes = [
   { path: paths.SANITATION_FORM, element: <SanitationForm /> },
   { path: paths.ROOM_RESERVATION, element: <RoomReservation /> },
   { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
+  { path: paths.GIFT_DELIVERY, element: <GiftDelivery /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
   { path: paths.MAP_EDITOR, element: <EditMap /> },
