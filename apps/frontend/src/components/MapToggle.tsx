@@ -8,7 +8,7 @@ const styles = {
   "&:hover": {
     backgroundColor: "#013B96",
   },
-  "&.Mui-selected": {
+  "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: "#013B96",
     color: "#FFFFFF",
   },
