@@ -100,7 +100,7 @@ function SideNavBar() {
         >
           <img
             src={ControlImage}
-            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple  ${isCollapsed ? "animate-spin left-[4rem]" : "left-[13rem]"}`}
+            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple ${isCollapsed ? "animate-spin left-[4rem]" : "left-[13rem]"}`}
             onClick={() => setIsCollapsed(!isCollapsed)}
           />
 
