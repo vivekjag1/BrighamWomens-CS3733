@@ -1,13 +1,16 @@
 import { Button } from "@mui/material";
-import { useRef, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useRef, useState, useEffect } from "react";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 
 const NodeTable = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
 
@@ -44,7 +47,12 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    const retFromAPI = await axios.post(APIEndpoints.mapDownload); //get info from route
+    const token = await getAccessTokenSilently();
+    const retFromAPI = await MakeProtectedGetRequest(
+      APIEndpoints.mapDownload,
+      token,
+    );
+
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",
     }); //create blob
@@ -67,11 +75,12 @@ const NodeTable = () => {
         const formData = new FormData();
         formData.append(FileAttributes.nodeKey, nodeFile, nodeFile.name);
         formData.append(FileAttributes.edgeKey, edgeFile, edgeFile.name);
-        const res = await axios.post(APIEndpoints.mapUpload, formData, {
-          headers: {
-            "Content-Type": `multipart/form-data`,
-          },
-        });
+        const token = await getAccessTokenSilently();
+        const res = await MakeProtectedPostRequest(
+          APIEndpoints.mapUpload,
+          formData,
+          token,
+        );
         if (res.status == 202) {
           console.log("bad file");
           alert("File(s) failed validation!");
@@ -129,27 +138,42 @@ const NodeTable = () => {
           </div>
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center gap-2">
-              <div className="flex flex-col items-center justify-center gap-2 pl-20">
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Node CSV:</p>
-                  <input
-                    id="importNodeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Node File"
-                    onChange={nodeFileChange}
-                  />
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Node File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: nodeFile ? "green" : "#012D5A" }}
+                  >
+                    {nodeFile ? nodeFile.name : "Upload File"}
+                    <input
+                      id="importNodeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Node File"
+                      onChange={nodeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
-
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Edge CSV:</p>
-                  <input
-                    id="importEdgeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Edge File"
-                    onChange={edgeFileChange}
-                  />
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Edge File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: edgeFile ? "green" : "#012D5A" }}
+                  >
+                    {edgeFile ? edgeFile.name : "Upload File"}
+                    <input
+                      id="importEdgeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Edge File"
+                      onChange={edgeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
               </div>
 

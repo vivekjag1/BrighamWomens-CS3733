@@ -1,7 +1,8 @@
 import express, { Router } from "express";
 import { PrismaClient } from "database";
-import { Graph, PathAlgorithm } from "../../pathfinding/Graph.ts";
+import { Graph } from "../../pathfinding/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
+import { PathAlgorithm } from "common/src/Path.ts";
 
 const router: Router = express.Router();
 const prisma = new PrismaClient();
@@ -12,6 +13,7 @@ router.get("/", async (req, res) => {
   const {
     [NavigateAttributes.startLocationKey]: startName,
     [NavigateAttributes.endLocationKey]: endName,
+    [NavigateAttributes.algorithmKey]: algorithm,
   } = req.query;
 
   const startNode = await prisma.node.findFirst({
@@ -35,7 +37,7 @@ router.get("/", async (req, res) => {
   const path = graph.getPath(
     startNode!.nodeID,
     endNode!.nodeID,
-    PathAlgorithm.AStar,
+    algorithm as PathAlgorithm,
   );
 
   const pathAsCoords: number[][] = [];

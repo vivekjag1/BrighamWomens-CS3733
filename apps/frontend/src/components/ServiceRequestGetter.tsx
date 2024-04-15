@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+
 // import { FormControl } from "react-bootstrap";
 // import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
@@ -22,11 +25,17 @@ export function ServiceRequestGetter() {
   const [filterByPriority, setFilterByPriority] = useState("Any");
   const [filterByStatus, setFilterByStatus] = useState("Any");
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
-
+  const [filterByType, setFilterByType] = useState("Any");
+  const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     async function fetchData() {
+      const token = await getAccessTokenSilently();
+
       try {
-        const res = await axios.get(APIEndpoints.serviceGetRequests);
+        const res = await MakeProtectedGetRequest(
+          APIEndpoints.serviceGetRequests,
+          token,
+        );
         const sortedData = res.data.sort(
           (a: ServiceRequest, b: ServiceRequest) => {
             return sortOrder === "asc"
@@ -42,7 +51,7 @@ export function ServiceRequestGetter() {
       }
     }
     fetchData();
-  }, [sortOrder]);
+  }, [getAccessTokenSilently, sortOrder]);
 
   useEffect(() => {
     let data = requestData;
@@ -57,7 +66,10 @@ export function ServiceRequestGetter() {
           item.requestingUsername
             .toLowerCase()
             .includes(filterBySearch.toLowerCase()) ||
-          item.assignedTo.toLowerCase().includes(filterBySearch.toLowerCase()),
+          item.assignedTo
+            .toLowerCase()
+            .includes(filterBySearch.toLowerCase()) ||
+          item.type.toLowerCase().includes(filterBySearch.toLowerCase()),
       );
     }
 
@@ -67,6 +79,10 @@ export function ServiceRequestGetter() {
 
     if (filterByStatus != "Any") {
       data = data.filter((item) => item.status.includes(filterByStatus));
+    }
+
+    if (filterByType != "Any") {
+      data = data.filter((item) => item.type.includes(filterByType));
     }
 
     const sortedData = data.sort((a, b) => {
@@ -81,6 +97,7 @@ export function ServiceRequestGetter() {
     filterBySearch,
     filterByPriority,
     filterByStatus,
+    filterByType,
     sortOrder,
   ]);
 
@@ -116,9 +133,15 @@ export function ServiceRequestGetter() {
     };
 
     try {
+      const token = await getAccessTokenSilently();
       const response = await axios.patch(
         APIEndpoints.servicePutRequests,
         updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       console.log("Status updated successfully", response.data);
       alert("Status updated successfully!");
@@ -143,11 +166,7 @@ export function ServiceRequestGetter() {
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                fill-rule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clip-rule="evenodd"
-              ></path>
+              <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
             </svg>
           </div>
           <input
@@ -159,6 +178,27 @@ export function ServiceRequestGetter() {
           />
         </div>
         <div>
+          <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
+            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+              Type
+            </InputLabel>
+            <Select
+              name="Type"
+              className="bg-gray-50"
+              sx={{ fontSize: ".9rem" }}
+              label="Type"
+              size="small"
+              value={filterByType}
+              onChange={(e) => setFilterByType(e.target.value)}
+            >
+              <MenuItem value="Any">Any</MenuItem>
+              <MenuItem value="MedicineDelivery">MedicineDelivery</MenuItem>
+              <MenuItem value="SecurityService">SecurityService</MenuItem>
+              <MenuItem value="SanitationService">SanitationService</MenuItem>
+              <MenuItem value="RoomScheduling">RoomScheduling</MenuItem>
+              <MenuItem value="DeviceDelivery">DeviceDelivery</MenuItem>
+            </Select>
+          </FormControl>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">
             <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
               Priority
@@ -199,6 +239,7 @@ export function ServiceRequestGetter() {
               <MenuItem value="Closed">Closed</MenuItem>
             </Select>
           </FormControl>
+
           <Button
             type="submit"
             variant="contained"

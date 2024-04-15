@@ -6,11 +6,12 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
+import ZoomControls from "./ZoomControls.tsx";
 
-function Map(props: { activeFloor: number; nodes: number[][] }) {
+function Map(props: { activefloor: number; nodes: number[][] }) {
   // Determines which map to load depending on floor prop.
   let map;
-  switch (props.activeFloor) {
+  switch (props.activefloor) {
     case -2:
       map = lowerLevel2;
       break;
@@ -56,7 +57,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
   splitPaths.push(props.nodes.slice(startFloor));
 
   const filteredSplitPaths = splitPaths.filter(
-    (splitPath) => splitPath[0][2] == props.activeFloor,
+    (splitPath) => splitPath[0][2] == props.activefloor,
   );
   const listOfPolylineStrings: string[] = [];
   for (let i = 0; i < filteredSplitPaths.length; i++) {
@@ -71,11 +72,8 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
   return (
     <div>
       <div>
-        <TransformWrapper
-          initialPositionX={-200}
-          initialPositionY={-100}
-          initialScale={1.2}
-        >
+        <TransformWrapper>
+          <ZoomControls />
           <TransformComponent>
             <svg
               viewBox="0 0 5000 3400"
@@ -85,94 +83,22 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
             >
               <image href={map} />
               {filteredSplitPaths.map((path) => (
-                <>
-                  <polyline
-                    key={path[0].toString()}
-                    stroke="#012D5A"
-                    strokeWidth="6"
-                    fill="none"
-                    points={
-                      listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
-                    }
-                  />
-                  <circle
-                    r="25"
-                    cx={
-                      path[0][0] == startNode.xCoordinate &&
-                      path[0][1] == startNode.yCoordinate &&
-                      path[0][2] == startNode.floor
-                        ? -100
-                        : path[0][0]
-                    }
-                    cy={path[0][1]}
-                    fill="#012D5A"
-                  />
-                  <text
-                    x={
-                      path[0][0] == startNode.xCoordinate &&
-                      path[0][1] == startNode.yCoordinate &&
-                      path[0][2] == startNode.floor
-                        ? -100
-                        : path[0][0]
-                    }
-                    y={path[0][1]}
-                    textAnchor="middle"
-                    stroke="white"
-                    strokeWidth="5"
-                    fontSize="2em"
-                    dy=".35em"
-                  >
-                    {getStringFromFloor(
-                      props.nodes[
-                        Math.max(props.nodes.indexOf(path[0]) - 1, 0)
-                      ][2],
-                    )}
-                  </text>
-
-                  <circle
-                    r="25"
-                    cx={
-                      path[path.length - 1][0] == endNode.xCoordinate &&
-                      path[path.length - 1][1] == endNode.yCoordinate &&
-                      path[path.length - 1][2] == endNode.floor
-                        ? -100
-                        : path[path.length - 1][0]
-                    }
-                    cy={path[path.length - 1][1]}
-                    fill="#012D5A"
-                  />
-                  <text
-                    x={
-                      path[path.length - 1][0] == endNode.xCoordinate &&
-                      path[path.length - 1][1] == endNode.yCoordinate &&
-                      path[path.length - 1][2] == endNode.floor
-                        ? -100
-                        : path[path.length - 1][0]
-                    }
-                    y={path[path.length - 1][1]}
-                    textAnchor="middle"
-                    stroke="white"
-                    strokeWidth="5"
-                    fontSize="2em"
-                    dy=".35em"
-                  >
-                    {getStringFromFloor(
-                      props.nodes[
-                        Math.min(
-                          props.nodes.indexOf(path[path.length - 1]) + 1,
-                          props.nodes.length - 1,
-                        )
-                      ][2],
-                    )}
-                  </text>
-                </>
+                <polyline
+                  key={path[0].toString()}
+                  stroke="#012D5A"
+                  strokeWidth="6"
+                  fill="none"
+                  points={
+                    listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
+                  }
+                />
               ))}
               <svg
                 width="100px"
                 x={startNode.xCoordinate - 50}
                 y={startNode.yCoordinate - 1740}
               >
-                {props.activeFloor == startNode.floor && (
+                {props.activefloor == startNode.floor && (
                   <LocationIcon sx={{ color: "green" }} />
                 )}
               </svg>
@@ -181,7 +107,7 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
                 x={endNode.xCoordinate - 50}
                 y={endNode.yCoordinate - 1740}
               >
-                {props.activeFloor == endNode.floor && (
+                {props.activefloor == endNode.floor && (
                   <LocationIcon sx={{ color: "red" }} />
                 )}
               </svg>
@@ -194,17 +120,3 @@ function Map(props: { activeFloor: number; nodes: number[][] }) {
 }
 
 export default Map;
-
-function getStringFromFloor(floor: number): string {
-  switch (floor) {
-    case -1:
-      return "L1";
-    case -2:
-      return "L2";
-    case 1:
-    case 2:
-    case 3:
-    default:
-      return floor.toString();
-  }
-}

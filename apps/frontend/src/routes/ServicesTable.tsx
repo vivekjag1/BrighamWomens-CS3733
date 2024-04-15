@@ -6,7 +6,7 @@ function ServiceTable() {
   return (
     <div className=" h-screen overflow-auto">
       <div className="w-full justify-items-center">
-        <div className="flex flex-col items-center gap-8 ">
+        <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center gap-2 mt-8">
             <h2 className="w-full text-3xl font-bold text-center">
               Service Request Data

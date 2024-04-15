@@ -17,6 +17,7 @@ function EditMap() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
   const [floor, setFloor] = useState<string>("1");
+
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   useEffect(() => {
@@ -72,6 +73,83 @@ function EditMap() {
         setEdges(edgeCoordsOnFloor);
       } catch (error) {
         console.error("Error fetching map data:", error);
+=======
+
+  // this is a hacky way to pass states between renderFloor and useEffect
+  // to make sure the map image, nodes and edges render at the exact same time
+  // once we get nodes, this calls useEffect to generate edges
+  // then both edges nodes and floor are pushed at once to the hooks above these.
+  const [localNodes, setLocalNodes] = useState<Node[]>([]);
+  const [localEdges, setLocalEdges] = useState<Edge[]>([]);
+  const [localFloor, setLocalFloor] = useState<string>("1");
+
+  const didMount = useRef(false);
+
+  async function renderFloor(floor: string) {
+    setLocalNodes([]); // clear
+    setLocalEdges([]); // clear
+    setLocalFloor(floor);
+
+    const queryParams: Record<string, string> = {
+      [NavigateAttributes.floorKey]: floor,
+    };
+
+    const params: URLSearchParams = new URLSearchParams(queryParams);
+
+    const nodeURL = new URL(APIEndpoints.mapGetNodes, window.location.origin); // window.location.origin: path relative to current url
+    const edgeURL = new URL(APIEndpoints.mapGetEdges, window.location.origin); // window.location.origin: path relative to current url
+
+    nodeURL.search = params.toString();
+    edgeURL.search = params.toString();
+
+    await axios
+      .get(nodeURL.toString())
+      .then((response) => {
+        // this won't update the image
+        setLocalNodes(response.data);
+
+        return axios.get(edgeURL.toString());
+      })
+      .then((response) => {
+        setLocalEdges(response.data);
+      })
+      .catch(console.error);
+  }
+
+  useEffect(() => {
+    // render first floor on initial page load
+    if (!didMount.current) {
+      renderFloor("1");
+      didMount.current = true;
+      return;
+    }
+
+    const edgeCoordsOnFloor: EdgeCoordinates[] = [];
+    for (const edge of localEdges) {
+      // 2 character floor string
+      const correctedFloor =
+        localFloor.length == 1 ? "0" + localFloor : localFloor;
+
+      // compare suffixes of start and end node
+      // if equal to floor, add the edge
+      if (
+        edge.startNodeID.endsWith(correctedFloor) &&
+        edge.endNodeID.endsWith(correctedFloor)
+      ) {
+        // we need the node objects with ID equal to our edge's start and end node IDs
+        // this is a linear search but could be faster with hash map in the future
+        const start = localNodes.find(
+          (node) => edge.startNodeID == node.nodeID,
+        );
+        const end = localNodes.find((node) => edge.endNodeID == node.nodeID);
+
+        edgeCoordsOnFloor.push({
+          startX: parseInt(start!.xcoord),
+          startY: parseInt(start!.ycoord),
+          endX: parseInt(end!.xcoord),
+          endY: parseInt(end!.ycoord),
+        });
+
       }
     };
 

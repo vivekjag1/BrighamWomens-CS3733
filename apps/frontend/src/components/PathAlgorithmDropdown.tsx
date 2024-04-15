@@ -1,10 +1,9 @@
-import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import { MenuItem, SxProps, Theme } from "@mui/material";
-import { TextField } from "@mui/material";
-import { useGraphNodes } from "./useGraphNodes.ts";
+import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
+import { SyntheticEvent } from "react";
+import { PathAlgorithm } from "common/src/Path.ts";
 
-interface NodeDropdownProps {
+interface DropdownProps {
   value: string;
   onChange: (newValue: string) => void;
   label?: string;
@@ -12,41 +11,39 @@ interface NodeDropdownProps {
   className?: string;
 }
 
-const NodeDropdown = ({
+const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS"];
+
+const PathAlgorithmDropdown = ({
   value,
   onChange,
   label,
   sx,
   className,
-}: NodeDropdownProps) => {
-  const nodes = useGraphNodes();
-
+}: DropdownProps) => {
   const handleChange = (
-    event: React.SyntheticEvent<Element, Event>,
-    newValue: { label: string } | null,
+    event: SyntheticEvent<Element, Event>,
+    newValue: string | null,
   ) => {
-    onChange(newValue ? newValue.label : "");
+    if (newValue !== null) {
+      onChange(newValue);
+    }
   };
-
-  const selectedValue = nodes.find((node) => node.longName === value)
-    ? { label: value }
-    : null;
 
   return (
     <Autocomplete
       disablePortal
       id="combo-box-location"
-      options={nodes.map((node) => ({ label: node.longName }))}
+      options={algorithms}
       sx={{
         ...sx,
         "& .MuiAutocomplete-input": {
-          fontSize: ".8rem",
+          fontSize: "0.8rem",
           whiteSpace: "pre-wrap",
           fontFamily: "Poppins, sans-serif",
         }, // smaller, wrap, poppins font
       }}
       className={className}
-      value={selectedValue}
+      value={value}
       onChange={handleChange}
       renderInput={(params) => (
         <TextField
@@ -69,11 +66,13 @@ const NodeDropdown = ({
             fontFamily: "Poppins, sans-serif",
           }}
         >
-          {option.label}
+          {option}
         </MenuItem>
       )}
+      // remove clear button (x)
+      clearIcon={null}
     />
   );
 };
 
-export default NodeDropdown;
+export default PathAlgorithmDropdown;
