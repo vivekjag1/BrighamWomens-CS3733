@@ -13,7 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
-import ControlImage from "../../assets/control1.png";
+import ControlImage from "../../assets/control.png";
 
 function SideNavBar() {
   // const { isAuthenticated } = useAuth0();
@@ -100,7 +100,7 @@ function SideNavBar() {
         >
           <img
             src={ControlImage}
-            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple ${isCollapsed ? "animate-spin left-[4rem]" : "left-[13rem]"}`}
+            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple ${isCollapsed ? " rotate-180 left-[4rem]" : "left-[13rem]"} `}
             onClick={() => setIsCollapsed(!isCollapsed)}
           />
 
