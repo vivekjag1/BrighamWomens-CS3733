@@ -17,11 +17,13 @@ const pathInitialState: number[][] = [
   [0, 0, 3],
 ];
 
-function Home() {
+const defaultFloor: number = 1;
+
+function Map() {
   // const { getAccessTokenSilently } = useAuth0();
 
   // Sets the floor number depending on which button user clicks
-  const [activeFloor, setActiveFloor] = useState<number>(-1);
+  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   function handleMapSwitch(x: number) {
     setActiveFloor(x);
   }
@@ -50,7 +52,7 @@ function Home() {
   function resetNavigation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPath(pathInitialState);
-    setActiveFloor(-1);
+    setActiveFloor(defaultFloor);
   }
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
@@ -105,4 +107,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Map;

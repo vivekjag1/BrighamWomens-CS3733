@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
 
-import Home from "./routes/Home.tsx";
+import Map from "./routes/Map.tsx";
 //import Hero from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
@@ -29,7 +29,7 @@ function App() {
       children: [
         {
           path: paths.MAP,
-          element: <Home />,
+          element: <Map />,
         },
         {
           path: paths.SERVICES,

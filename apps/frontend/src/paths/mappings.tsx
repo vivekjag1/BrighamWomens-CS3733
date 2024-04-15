@@ -1,5 +1,5 @@
 import paths from "./paths.tsx";
-import Home from "../routes/Home.tsx";
+import Map from "../routes/Map.tsx";
 import Services from "../routes/Services.tsx";
 import SecurityRequest from "../routes/SecurityRequest.tsx";
 import RoomReservation from "../routes/RoomReservation.tsx";
@@ -12,7 +12,7 @@ import PathTables from "../routes/MapData.tsx";
 import EditMap from "../routes/EditMap.tsx";
 
 const routes = [
-  { path: paths.MAP, element: <Home /> },
+  { path: paths.MAP, element: <Map /> },
   { path: paths.SERVICES, element: <Services /> },
   { path: paths.MEDICINE_REQUEST, element: <MedicineDeliveryForm /> },
   {
