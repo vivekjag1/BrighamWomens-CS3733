@@ -14,7 +14,7 @@ function ServiceTable() {
             <h2 className="w-full text-md text-center">
               View service request data
             </h2>
-            <hr className="pl-96 pr-96" />
+            <hr className="pl-96 pr-96 mb-7" />
           </div>
           <ServiceRequestGetter />
         </div>
