@@ -17,6 +17,7 @@ function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
+  passClickedNode: (node: GraphNode) => void;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -77,9 +78,6 @@ function MapImage(props: {
   const filteredSplitPaths = splitPaths.filter(
     (splitPath) => splitPath[0][2] == props.activeFloor,
   );
-  console.log("Filtered Split Paths");
-  console.log(filteredSplitPaths);
-
   const listOfPolylineStrings: string[] = [];
   for (let i = 0; i < filteredSplitPaths.length; i++) {
     let polylineString = "";
@@ -90,23 +88,12 @@ function MapImage(props: {
     listOfPolylineStrings.push(polylineString);
   }
 
-  // Determines whether map is in default state.
-  let isDefault = false;
-  console.log("Start Node");
-  console.log(startNode);
-  console.log("End Node");
-  console.log(endNode);
-  if (
-    startNode.xCoordinate === endNode.xCoordinate &&
-    startNode.yCoordinate === endNode.yCoordinate
-  ) {
-    console.log("TRUE");
-    isDefault = true;
-  }
-
+  // const handleClickedNode = (aNode: GraphNode) =>{
+  //   console.log(aNode);
+  // };
   return (
     <div>
-      <div style={{ position: "relative" }}>
+      <div>
         <TransformWrapper initialScale={1}>
           <ZoomControls />
           <TransformComponent
@@ -126,6 +113,7 @@ function MapImage(props: {
                   cx={node.xcoord}
                   cy={node.ycoord}
                   fill={MapColors.nodeColor}
+                  onClick={() => props.passClickedNode(node)}
                 />
               ))}
               {filteredSplitPaths.map((path) => (
@@ -147,51 +135,80 @@ function MapImage(props: {
                       ease: "linear",
                     }}
                   />
-                  {isDefault ? (
-                    <></>
-                  ) : (
-                    <>
-                      <circle
-                        r="25"
-                        cx={
-                          path[path.length - 1][0] == endNode.xCoordinate &&
-                          path[path.length - 1][1] == endNode.yCoordinate &&
-                          path[path.length - 1][2] == endNode.floor
-                            ? -100
-                            : path[path.length - 1][0]
-                        }
-                        cy={path[path.length - 1][1]}
-                        fill="#012D5A"
-                      />
-                      <text
-                        x={
-                          path[path.length - 1][0] == endNode.xCoordinate &&
-                          path[path.length - 1][1] == endNode.yCoordinate &&
-                          path[path.length - 1][2] == endNode.floor
-                            ? -100
-                            : path[path.length - 1][0]
-                        }
-                        y={path[path.length - 1][1]}
-                        textAnchor="middle"
-                        stroke="white"
-                        strokeWidth="5"
-                        fontSize="2em"
-                        dy=".35em"
-                      >
-                        {getStringFromFloor(
-                          props.path[
-                            Math.min(
-                              props.path.indexOf(path[path.length - 1]) + 1,
-                              props.path.length - 1,
-                              props.path.length - 1,
-                            )
-                          ][2],
-                        )}
-                      </text>
-                    </>
-                  )}
+                  <circle
+                    r="25"
+                    cx={
+                      path[0][0] == startNode.xCoordinate &&
+                      path[0][1] == startNode.yCoordinate &&
+                      path[0][2] == startNode.floor
+                        ? -100
+                        : path[0][0]
+                    }
+                    cy={path[0][1]}
+                    fill="#012D5A"
+                  />
+                  <text
+                    x={
+                      path[0][0] == startNode.xCoordinate &&
+                      path[0][1] == startNode.yCoordinate &&
+                      path[0][2] == startNode.floor
+                        ? -100
+                        : path[0][0]
+                    }
+                    y={path[0][1]}
+                    textAnchor="middle"
+                    stroke="white"
+                    strokeWidth="5"
+                    fontSize="2em"
+                    dy=".35em"
+                  >
+                    {getStringFromFloor(
+                      props.path[
+                        Math.max(props.path.indexOf(path[0]) - 1, 0)
+                      ][2],
+                    )}
+                  </text>
+
+                  <circle
+                    r="25"
+                    cx={
+                      path[path.length - 1][0] == endNode.xCoordinate &&
+                      path[path.length - 1][1] == endNode.yCoordinate &&
+                      path[path.length - 1][2] == endNode.floor
+                        ? -100
+                        : path[path.length - 1][0]
+                    }
+                    cy={path[path.length - 1][1]}
+                    fill="#012D5A"
+                  />
+                  <text
+                    x={
+                      path[path.length - 1][0] == endNode.xCoordinate &&
+                      path[path.length - 1][1] == endNode.yCoordinate &&
+                      path[path.length - 1][2] == endNode.floor
+                        ? -100
+                        : path[path.length - 1][0]
+                    }
+                    y={path[path.length - 1][1]}
+                    textAnchor="middle"
+                    stroke="white"
+                    strokeWidth="5"
+                    fontSize="2em"
+                    dy=".35em"
+                  >
+                    {getStringFromFloor(
+                      props.path[
+                        Math.min(
+                          props.path.indexOf(path[path.length - 1]) + 1,
+                          props.path.length - 1,
+                          props.path.length - 1,
+                        )
+                      ][2],
+                    )}
+                  </text>
                 </>
               ))}
+
               {props.activeFloor == startNode.floor && (
                 <svg
                   width="80px"
