@@ -40,6 +40,8 @@ app.use("/healthcheck", (req, res) => {
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
+app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+
 app.use(
   auth({
     audience: "/api",
@@ -52,7 +54,6 @@ app.use(APIEndpoints.mapDownload, mapDownload);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
-app.use(APIEndpoints.navigationRequest, pathfindingAPI);
 app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
 app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
 app.use(APIEndpoints.roomReservation, roomReservationAPI);

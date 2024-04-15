@@ -192,6 +192,7 @@ function MapImage(props: {
                         Math.min(
                           props.path.indexOf(path[path.length - 1]) + 1,
                           props.path.length - 1,
+                          props.path.length - 1,
                         )
                       ][2],
                     )}
