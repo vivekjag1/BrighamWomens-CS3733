@@ -21,5 +21,5 @@ export default paths;
 //   Services: paths.SERVICES,
 //   ServiceData: paths.SERVICES_DATA,
 //   MapData: paths.MAP_DATA,
-//   EditMap: paths.MAP_EDITOR,
+//   MapEdit: paths.MAP_EDITOR,
 // };

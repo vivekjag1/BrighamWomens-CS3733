@@ -6,7 +6,7 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import { Node } from "database";
-import { EdgeCoordinates } from "../routes/EditMap.tsx";
+import { EdgeCoordinates } from "../routes/MapEdit.tsx";
 
 function MapEditor(props: {
   floor: string;
@@ -51,7 +51,7 @@ function MapEditor(props: {
                 x2={edge.endX}
                 y1={edge.startY}
                 y2={edge.endY}
-                stroke="red"
+                stroke="#D4B547"
                 strokeWidth="6"
               />
             ))}
@@ -61,7 +61,7 @@ function MapEditor(props: {
                 r="15"
                 cx={node.xcoord}
                 cy={node.ycoord}
-                fill="blue"
+                fill="#012D5A"
                 onClick={() => props.onNodeClick(node)}
                 style={{ cursor: "pointer" }}
               />

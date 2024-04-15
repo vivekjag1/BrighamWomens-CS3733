@@ -11,6 +11,7 @@ import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React from "react";
 import ZoomControls from "./ZoomControls";
+import { MapColors } from "../common/StylingCommon.ts";
 
 function MapImage(props: {
   activeFloor: number;
@@ -121,18 +122,18 @@ function MapImage(props: {
               <image href={map} />
               {filteredNodes.map((node) => (
                 <circle
-                  r="10"
+                  r={MapColors.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
-                  fill="#012D5A"
+                  fill={MapColors.nodeColor}
                 />
               ))}
               {filteredSplitPaths.map((path) => (
                 <>
                   <motion.polyline
                     fill="none"
-                    stroke="#012D5A"
-                    strokeWidth="7"
+                    stroke={MapColors.pathColor}
+                    strokeWidth={MapColors.pathWidth}
                     points={
                       listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                     }
