@@ -11,11 +11,13 @@ import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React from "react";
 import ZoomControls from "./ZoomControls";
+import { MapStyling } from "../common/StylingCommon.ts";
 
 function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
+  passClickedNode: (node: GraphNode) => void;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -76,9 +78,6 @@ function MapImage(props: {
   const filteredSplitPaths = splitPaths.filter(
     (splitPath) => splitPath[0][2] == props.activeFloor,
   );
-  console.log("Filtered Split Paths");
-  console.log(filteredSplitPaths);
-
   const listOfPolylineStrings: string[] = [];
   for (let i = 0; i < filteredSplitPaths.length; i++) {
     let polylineString = "";
@@ -89,23 +88,12 @@ function MapImage(props: {
     listOfPolylineStrings.push(polylineString);
   }
 
-  // Determines whether map is in default state.
-  let isDefault = false;
-  console.log("Start Node");
-  console.log(startNode);
-  console.log("End Node");
-  console.log(endNode);
-  if (
-    startNode.xCoordinate === endNode.xCoordinate &&
-    startNode.yCoordinate === endNode.yCoordinate
-  ) {
-    console.log("TRUE");
-    isDefault = true;
-  }
-
+  // const handleClickedNode = (aNode: GraphNode) =>{
+  //   console.log(aNode);
+  // };
   return (
     <div>
-      <div style={{ position: "relative" }}>
+      <div>
         <TransformWrapper initialScale={1}>
           <ZoomControls />
           <TransformComponent
@@ -121,18 +109,20 @@ function MapImage(props: {
               <image href={map} />
               {filteredNodes.map((node) => (
                 <circle
-                  r="10"
+                  r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
-                  fill="#012D5A"
+                  fill={MapStyling.nodeColor}
+                  onClick={() => props.passClickedNode(node)}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
               {filteredSplitPaths.map((path) => (
                 <>
                   <motion.polyline
                     fill="none"
-                    stroke="#012D5A"
-                    strokeWidth="7"
+                    stroke={MapStyling.pathColor}
+                    strokeWidth={MapStyling.pathWidth}
                     points={
                       listOfPolylineStrings[filteredSplitPaths.indexOf(path)]
                     }
@@ -146,69 +136,91 @@ function MapImage(props: {
                       ease: "linear",
                     }}
                   />
-                  {isDefault ? (
-                    <></>
-                  ) : (
-                    <>
-                      <circle
-                        r="25"
-                        cx={
-                          path[path.length - 1][0] == endNode.xCoordinate &&
-                          path[path.length - 1][1] == endNode.yCoordinate &&
-                          path[path.length - 1][2] == endNode.floor
-                            ? -100
-                            : path[path.length - 1][0]
-                        }
-                        cy={path[path.length - 1][1]}
-                        fill="#012D5A"
-                      />
-                      <text
-                        x={
-                          path[path.length - 1][0] == endNode.xCoordinate &&
-                          path[path.length - 1][1] == endNode.yCoordinate &&
-                          path[path.length - 1][2] == endNode.floor
-                            ? -100
-                            : path[path.length - 1][0]
-                        }
-                        y={path[path.length - 1][1]}
-                        textAnchor="middle"
-                        stroke="white"
-                        strokeWidth="5"
-                        fontSize="2em"
-                        dy=".35em"
-                      >
-                        {getStringFromFloor(
-                          props.path[
-                            Math.min(
-                              props.path.indexOf(path[path.length - 1]) + 1,
-                              props.path.length - 1,
-                              props.path.length - 1,
-                            )
-                          ][2],
-                        )}
-                      </text>
-                    </>
-                  )}
+                  <circle
+                    r="25"
+                    cx={
+                      path[0][0] == startNode.xCoordinate &&
+                      path[0][1] == startNode.yCoordinate &&
+                      path[0][2] == startNode.floor
+                        ? -100
+                        : path[0][0]
+                    }
+                    cy={path[0][1]}
+                    fill={MapStyling.nodeColor}
+                  />
+                  <text
+                    x={
+                      path[0][0] == startNode.xCoordinate &&
+                      path[0][1] == startNode.yCoordinate &&
+                      path[0][2] == startNode.floor
+                        ? -100
+                        : path[0][0]
+                    }
+                    y={path[0][1]}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="2em"
+                    fontWeight="bold"
+                    dy=".35em"
+                  >
+                    {getStringFromFloor(
+                      props.path[
+                        Math.max(props.path.indexOf(path[0]) - 1, 0)
+                      ][2],
+                    )}
+                  </text>
+
+                  <circle
+                    r="25"
+                    cx={
+                      path[path.length - 1][0] == endNode.xCoordinate &&
+                      path[path.length - 1][1] == endNode.yCoordinate &&
+                      path[path.length - 1][2] == endNode.floor
+                        ? -100
+                        : path[path.length - 1][0]
+                    }
+                    cy={path[path.length - 1][1]}
+                    fill={MapStyling.nodeColor}
+                  />
+                  <text
+                    x={
+                      path[path.length - 1][0] == endNode.xCoordinate &&
+                      path[path.length - 1][1] == endNode.yCoordinate &&
+                      path[path.length - 1][2] == endNode.floor
+                        ? -100
+                        : path[path.length - 1][0]
+                    }
+                    y={path[path.length - 1][1]}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="2em"
+                    fontWeight="bold"
+                    dy=".35em"
+                  >
+                    {getStringFromFloor(
+                      props.path[
+                        Math.min(
+                          props.path.indexOf(path[path.length - 1]) + 1,
+                          props.path.length - 1,
+                          props.path.length - 1,
+                        )
+                      ][2],
+                    )}
+                  </text>
                 </>
               ))}
+
               {props.activeFloor == startNode.floor && (
                 <svg
                   width="80px"
                   x={startNode.xCoordinate - 40}
                   y={startNode.yCoordinate - 1740}
                   viewBox="0 0 64 64"
-                  fill="rgreen"
-                  stroke="green"
                   strokeWidth="1"
                   className="w-2 h-2"
                 >
                   <g>
-                    <path
-                      fill="green"
-                      d="M32,0C18.746,0,8,10.746,8,24c0,5.219,1.711,10.008,4.555,13.93c0.051,0.094,0.059,0.199,0.117,0.289l16,24
-	                                                        C29.414,63.332,30.664,64,32,64s2.586-0.668,3.328-1.781l16-24c0.059-0.09,0.066-0.195,0.117-0.289C54.289,34.008,56,29.219,56,24
-	                                                        C56,10.746,45.254,0,32,0z M32,32c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S36.418,32,32,32z"
-                    />
+                    <LocationIcon sx={{ fontSize: "3rem", color: "green" }} />
                     <animateTransform
                       attributeName="transform"
                       type="translate"
@@ -220,29 +232,17 @@ function MapImage(props: {
                   </g>
                 </svg>
               )}
-              {/*<svg*/}
-              {/*  width="100px"*/}
-              {/*  x={endNode.xCoordinate - 50}*/}
-              {/*  y={endNode.yCoordinate - 1740}*/}
-              {/*>*/}
               {props.activeFloor == endNode.floor && (
                 <svg
                   width="80px"
                   x={endNode.xCoordinate - 40}
                   y={endNode.yCoordinate - 1740}
                   viewBox="0 0 64 64"
-                  fill="red"
-                  stroke="red"
                   strokeWidth="1"
                   className="w-2 h-2"
                 >
                   <g>
-                    <path
-                      fill="red"
-                      d="M32,0C18.746,0,8,10.746,8,24c0,5.219,1.711,10.008,4.555,13.93c0.051,0.094,0.059,0.199,0.117,0.289l16,24
-	                                                        C29.414,63.332,30.664,64,32,64s2.586-0.668,3.328-1.781l16-24c0.059-0.09,0.066-0.195,0.117-0.289C54.289,34.008,56,29.219,56,24
-	                                                        C56,10.746,45.254,0,32,0z M32,32c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S36.418,32,32,32z"
-                    />
+                    <LocationIcon sx={{ fontSize: "3rem", color: "red" }} />
                     <animateTransform
                       attributeName="transform"
                       type="translate"
@@ -254,27 +254,9 @@ function MapImage(props: {
                   </g>
                 </svg>
               )}
-              {/*</svg>*/}
             </svg>
           </TransformComponent>
         </TransformWrapper>
-        <motion.div
-          style={{
-            position: "absolute",
-            left: `${endNode.xCoordinate - 50}px`,
-            top: `${endNode.yCoordinate - 1740}px`,
-            transform: "translate(-50%, -50%) scale(var(--scale-factor))",
-          }}
-          animate={{ y: ["0%", "-20%", "0%"] }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 1,
-            ease: "easeInOut",
-          }}
-        >
-          <LocationIcon sx={{ fontSize: "13rem", color: "red" }} />
-        </motion.div>
       </div>
     </div>
   );

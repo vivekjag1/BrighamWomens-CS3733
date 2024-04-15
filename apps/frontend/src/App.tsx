@@ -13,7 +13,8 @@ import SanitationForm from "./routes/SanitationForm.tsx";
 import RoomReservation from "./routes/RoomReservation.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
-import EditMap from "./routes/EditMap.tsx";
+import GiftDelivery from "./routes/GiftDelivery.tsx";
+import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Login from "./routes/Login.tsx";
 function App() {
@@ -56,6 +57,10 @@ function App() {
           element: <AuthComp component={SecurityRequest} />,
         },
         {
+          path: paths.GIFT_DELIVERY,
+          element: <AuthComp component={GiftDelivery} />,
+        },
+        {
           path: paths.SERVICES_DATA,
           element: <AuthComp component={ServicesTable} />,
         },
@@ -65,7 +70,7 @@ function App() {
         },
         {
           path: paths.MAP_EDITOR,
-          element: <AuthComp component={EditMap} />,
+          element: <AuthComp component={MapEdit} />,
         },
       ],
     },

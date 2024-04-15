@@ -206,6 +206,7 @@ export function ServiceRequestGetter() {
               <MenuItem value="SanitationService">SanitationService</MenuItem>
               <MenuItem value="RoomScheduling">RoomScheduling</MenuItem>
               <MenuItem value="DeviceDelivery">DeviceDelivery</MenuItem>
+              <MenuItem value="GiftDelivery">GiftDelivery</MenuItem>
             </Select>
           </FormControl>
           <FormControl sx={{ width: "8rem", marginRight: "1rem" }} size="small">

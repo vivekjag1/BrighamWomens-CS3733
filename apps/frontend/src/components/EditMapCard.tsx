@@ -25,10 +25,8 @@ const textFieldStyles = {
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
-function NavigateCard(props: {
+function EditMapCard(props: {
   onSubmit: FormEventHandler;
-  clickedNodeStart: GraphNode;
-  clickedNodeEnd: GraphNode;
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database
@@ -37,7 +35,6 @@ function NavigateCard(props: {
     useState<PathNodesObject>(initialState);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
-  //const [clickedNode, setClickedNode] = useState<GraphNode>();
 
   function getNodeID(value: string): string {
     const foundNode = nodes.find((node) => node.longName === value);
@@ -63,39 +60,10 @@ function NavigateCard(props: {
     const start = pathNodeObject.startNode;
     setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
   }
+
   function reset() {
     setPathNodeObject(initialState);
     setPathAlgorithm(defaultPathAlgorithm);
-  }
-
-  function setStartNodeLabel() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.longName;
-    } else {
-      return pathNodeObject.startNode;
-    }
-  }
-  function setStartNodeValue() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.startNode);
-    }
-  }
-
-  function setEndNodeLabel() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.longName;
-    } else {
-      return pathNodeObject.endNode;
-    }
-  }
-  function setEndNodeValue() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.endNode);
-    }
   }
 
   return (
@@ -113,10 +81,11 @@ function NavigateCard(props: {
                 Navigate
               </h2>
             </div>
+
             <div className="flex flex-row gap-1 items-center mt-[1rem]">
               <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
-                value={setStartNodeLabel()}
+                value={pathNodeObject.startNode}
                 sx={textFieldStyles}
                 label="Start Location"
                 onChange={(newValue: string) =>
@@ -129,14 +98,14 @@ function NavigateCard(props: {
               <input
                 type="hidden"
                 name={`${NavigateAttributes.startLocationKey}`}
-                value={setStartNodeValue()}
+                value={getNodeID(pathNodeObject.startNode)}
               />
             </div>
             <MoreVertIcon style={{ color: "#012D5A" }} />
             <div className="flex flex-row gap-1 items-center">
               <PlaceIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
-                value={setEndNodeLabel()}
+                value={pathNodeObject.endNode}
                 sx={textFieldStyles}
                 label="End Location"
                 onChange={(newValue: string) =>
@@ -149,7 +118,7 @@ function NavigateCard(props: {
               <input
                 type="hidden"
                 name={`${NavigateAttributes.endLocationKey}`}
-                value={setEndNodeValue()}
+                value={getNodeID(pathNodeObject.endNode)}
               />
             </div>
             <div className="ml-[2rem] flex flex-row mt-4 justify-between">
@@ -164,7 +133,7 @@ function NavigateCard(props: {
                 name={`${NavigateAttributes.algorithmKey}`}
                 value={pathAlgorithm}
               />
-              <NavigateButton type="submit" className={"flex"} />
+              <NavigateButton type="submit" className={"flex h-[2.2rem]"} />
             </div>
           </div>
 
@@ -184,4 +153,4 @@ function NavigateCard(props: {
   );
 }
 
-export default NavigateCard;
+export default EditMapCard;

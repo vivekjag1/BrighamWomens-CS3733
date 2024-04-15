@@ -6,10 +6,10 @@ const styles = {
   width: "3vw",
   height: "5vh",
   "&:hover": {
-    backgroundColor: "rgba(0,0,0,0.15)",
+    backgroundColor: "#013B96",
   },
-  "&.Mui-selected": {
-    backgroundColor: "#004ABE",
+  "&.Mui-selected, &.Mui-selected:hover": {
+    backgroundColor: "#013B96",
     color: "#FFFFFF",
   },
 } as const;
@@ -39,7 +39,7 @@ function MapToggle(props: {
       value={activeMap}
       exclusive
       onChange={handleChange}
-      sx={{ backgroundColor: "#013B96", height: "100%" }}
+      sx={{ backgroundColor: "#012D5A", height: "100%" }}
     >
       <ToggleButton
         onClick={() => props.onClick(3)}

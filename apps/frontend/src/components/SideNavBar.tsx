@@ -16,6 +16,20 @@ import CollapseImg from "../../assets/collapse.svg";
 function SideNavBar() {
   // const { isAuthenticated } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  //used for delaying the hide of the navBar links
+  const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
+  const handleSetIsCollapsed = () => {
+    if (isCollapsed) {
+      setIsCollapsed(false);
+      setIsHidingNavBarInfo(false);
+    } else {
+      setIsCollapsed(true);
+      setTimeout(() => {
+        setIsHidingNavBarInfo(true);
+      }, 350);
+    }
+  };
+
   const { logout } = useAuth0();
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
@@ -51,7 +65,7 @@ function SideNavBar() {
     callback,
   }) => {
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center">
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center overflow-hidden">
         <Link
           to={to}
           className="inline-block"
@@ -97,7 +111,7 @@ function SideNavBar() {
         className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
       >
         {/* Header image */}
-        <div className="flex flex-col justify-center ">
+        <div className="flex flex-col justify-center overflow-hidden">
           <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
@@ -106,7 +120,7 @@ function SideNavBar() {
                   fontWeight: 500,
                 }}
                 className={
-                  isCollapsed
+                  isHidingNavBarInfo
                     ? "hidden"
                     : "text-2xl whitespace-nowrap self-center"
                 }
@@ -119,7 +133,7 @@ function SideNavBar() {
                   fontWeight: 100,
                 }}
                 className={
-                  isCollapsed
+                  isHidingNavBarInfo
                     ? "hidden"
                     : "text-2xl whitespace-nowrap self-center"
                 }
@@ -138,7 +152,7 @@ function SideNavBar() {
             setActivePage={setActivePage}
             Icon={MapIcon}
             label="Map"
-            collapsed={isCollapsed}
+            collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
             to={paths.MAP_EDITOR}
@@ -147,7 +161,7 @@ function SideNavBar() {
             Icon={EditLocationAltIcon}
             label="Map"
             labelLight="Editor"
-            collapsed={isCollapsed}
+            collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
             to={paths.MAP_DATA}
@@ -156,7 +170,7 @@ function SideNavBar() {
             Icon={AddLocationAltIcon}
             label="Map"
             labelLight="Data"
-            collapsed={isCollapsed}
+            collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
             to={paths.SERVICES}
@@ -164,7 +178,7 @@ function SideNavBar() {
             setActivePage={setActivePage}
             Icon={VolunteerActivismIcon}
             label="Services"
-            collapsed={isCollapsed}
+            collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
             to={paths.SERVICES_DATA}
@@ -173,7 +187,7 @@ function SideNavBar() {
             Icon={TocIcon}
             label="Service"
             labelLight="Data"
-            collapsed={isCollapsed}
+            collapsed={isHidingNavBarInfo}
           />
         </div>
 
@@ -186,7 +200,7 @@ function SideNavBar() {
               setActivePage={setActivePage}
               Icon={LogoutIcon}
               label={"Sign out"}
-              collapsed={isCollapsed}
+              collapsed={isHidingNavBarInfo}
               callback={handleLogout}
             />
           </div>
@@ -195,8 +209,8 @@ function SideNavBar() {
         <div className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[-12px]">
           <img
             src={CollapseImg}
-            className={`cursor-pointer w-7 duration-500 ${isCollapsed ? "rotate-180" : ""}`}
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`cursor-pointer w-7 duration-500 ${isCollapsed ? "" : "rotate-180"}`}
+            onClick={handleSetIsCollapsed}
           />
         </div>
       </div>

@@ -6,8 +6,6 @@ import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
-// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-// import { useAuth0 } from "@auth0/auth0-react";
 
 const pathInitialState: number[][] = [
   [0, 0, -2],
@@ -52,6 +50,8 @@ function Map() {
   function resetNavigation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPath(pathInitialState);
+    setStart(undefined);
+    setEnd(undefined);
     setActiveFloor(defaultFloor);
   }
 
@@ -88,12 +88,38 @@ function Map() {
       .catch(console.error);
   }
 
+  // const [clickedNode, setclickedNode] = useState<GraphNode>();
+  const [startNode, setStart] = useState<GraphNode>();
+  const [endNode, setEnd] = useState<GraphNode>();
+
+  const getClickedNode = (node: GraphNode) => {
+    //console.log("Hello world", startNode);
+    if (startNode) {
+      setEnd(node!);
+      //console.log("End node", endNode);
+    } else {
+      setStart(node!);
+      //console.log("Start node", startNode);
+    }
+  };
+
   return (
     <div>
       <div className="relative bg-offwhite">
-        <MapImage activeFloor={activeFloor} path={path} nodes={nodes} />
+        {/*//passClickedNode={getClickedNode}*/}
+        <MapImage
+          activeFloor={activeFloor}
+          path={path}
+          nodes={nodes}
+          passClickedNode={getClickedNode}
+        />
         <div className="absolute left-[1%] top-[2%]">
-          <NavigateCard onSubmit={handleForm} onReset={resetNavigation} />
+          <NavigateCard
+            onSubmit={handleForm}
+            clickedNodeStart={startNode!}
+            clickedNodeEnd={endNode!}
+            onReset={resetNavigation}
+          />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle

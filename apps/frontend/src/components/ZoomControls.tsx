@@ -16,15 +16,15 @@ function ZoomControls() {
   const { zoomIn, zoomOut } = useControls();
 
   return (
-    <div className="fixed top-[5%] right-[2%] z-10">
+    <div className="fixed top-[2%] right-[2%] z-10">
       <ButtonGroup
         sx={{ backgroundColor: "#013B96" }}
-        orientation="vertical"
+        orientation="horizontal"
         variant="contained"
         aria-label="Basic button group"
       >
-        <Button sx={styles} variant="contained" onClick={() => zoomIn()}>
-          +
+        <Button sx={styles} variant="contained" onClick={() => zoomOut()}>
+          -
         </Button>
         {/*<Button*/}
         {/*  sx={styles}*/}
@@ -33,8 +33,8 @@ function ZoomControls() {
         {/*>*/}
         {/*  =*/}
         {/*</Button>*/}
-        <Button sx={styles} variant="contained" onClick={() => zoomOut()}>
-          -
+        <Button sx={styles} variant="contained" onClick={() => zoomIn()}>
+          +
         </Button>
       </ButtonGroup>
     </div>
