@@ -13,6 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
+import ControlImage from "../../assets/control1.png";
 
 function SideNavBar() {
   // const { isAuthenticated } = useAuth0();
@@ -95,11 +96,17 @@ function SideNavBar() {
     <div>
       <div className="z-10">
         <div
-          className={`shadow-lg h-screen bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 ${isCollapsed ? "w-[5rem]" : "w-[14rem]"}`}
+          className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
         >
-          <div className="flex flex-col justify-center">
+          <img
+            src={ControlImage}
+            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple  ${isCollapsed ? "animate-spin left-[4rem]" : "left-[13rem]"}`}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          />
+
+          <div className="flex flex-col justify-center ">
             <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
-              <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
+              <div className="flex mt-[2.5rem] ml-[0.93rem] text-white ">
                 <img className="h-[57px] pr-[1rem]" src={logo} alt="Logo" />
                 <h2
                   style={{
@@ -159,6 +166,7 @@ function SideNavBar() {
               labelLight="Editor"
               collapsed={isCollapsed}
             />
+
             <NavbarItem
               to={paths.MAP_DATA}
               activePage={activePage}
@@ -168,6 +176,7 @@ function SideNavBar() {
               labelLight="Data"
               collapsed={isCollapsed}
             />
+
             <NavbarItem
               to={paths.SERVICES}
               activePage={activePage}
