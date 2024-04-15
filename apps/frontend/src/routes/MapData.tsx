@@ -29,10 +29,10 @@ const NodeTable = () => {
   }, []);
 
   const getButtonClasses = (tabName: string): string => {
-    return `inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 ${
+    return `inline-block p-4 rounded-t-lg hover:text-blue-500 hover:border-blue-500 ${
       activeTab === tabName
-        ? "text-blue-500 border-blue-500" // Active tab styles
-        : "border-gray-300 focus:text-blue-500 focus:border-blue-500" // Inactive tab styles
+        ? "text-[#012D5A] border-[#012D5A] border-b-[3px]" // Active tab styles
+        : "border-gray-300 border-gray-300 focus:text-blue-500 focus:border-blue-500 border-b-2" // Inactive tab styles
     } focus:outline-none`;
   };
 
@@ -229,8 +229,7 @@ const NodeTable = () => {
             </ul>
 
             {activeTab === "node" && (
-              <div className="m-8">
-                {/*<h2 className="text-3xl font-bold">Node Table</h2>*/}
+              <div className="mx-8">
                 <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -267,7 +266,6 @@ const NodeTable = () => {
 
             {activeTab === "edge" && (
               <div>
-                {/*<h2 className="text-3xl font-bold">Edge Table</h2>*/}
                 <table className="text-sm text-gray-500 mt-3 shadow-md text-center">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
