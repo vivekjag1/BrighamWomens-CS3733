@@ -6,11 +6,11 @@ import axios from "axios";
 import MapToggle from "../components/MapToggle.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
-import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 function Home() {
-  const { getAccessTokenSilently } = useAuth0();
+  // const { getAccessTokenSilently } = useAuth0();
 
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(-1);
@@ -47,7 +47,7 @@ function Home() {
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
     console.log("HELLO WORLD");
-    const token = await getAccessTokenSilently();
+    //const token = await getAccessTokenSilently();
 
     event.preventDefault(); // prevent page refresh
 
@@ -70,7 +70,8 @@ function Home() {
     // window.location.origin: path relative to current url
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin);
     url.search = params.toString();
-    await MakeProtectedGetRequest(url.toString(), token)
+    await axios
+      .get(url.toString())
       .then(function (response) {
         setPath(response.data);
         setActiveFloor(response.data[0][2]);
