@@ -7,6 +7,14 @@ import MapToggle from "../components/MapToggle.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 
+const pathInitialState: number[][] = [
+  [0, 0, -2],
+  [0, 0, -1],
+  [0, 0, 1],
+  [0, 0, 2],
+  [0, 0, 3],
+];
+
 function Home() {
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(-1);
@@ -15,13 +23,7 @@ function Home() {
   }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
-  const [path, setPath] = useState<number[][]>([
-    [0, 0, -2],
-    [0, 0, -1],
-    [0, 0, 1],
-    [0, 0, 2],
-    [0, 0, 3],
-  ]);
+  const [path, setPath] = useState<number[][]>(pathInitialState);
 
   const [nodes, setNodes] = useState<GraphNode[]>([]);
 
@@ -41,11 +43,21 @@ function Home() {
     getNodesFromDb().then();
   }, []);
 
+  function resetNavigation(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPath(pathInitialState);
+    setActiveFloor(-1);
+    setStart(undefined);
+    setEnd(undefined);
+  }
+
   async function handleForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page refresh
 
     // Access the form data
     const formData = new FormData(event.target as HTMLFormElement);
+    console.log(formData);
+
     const queryParams: Record<string, string> = {
       [NavigateAttributes.startLocationKey]: formData
         .get(NavigateAttributes.startLocationKey)!
@@ -102,6 +114,7 @@ function Home() {
             onSubmit={handleForm}
             clickedNodeStart={startNode!}
             clickedNodeEnd={endNode!}
+            onReset={resetNavigation}
           />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
