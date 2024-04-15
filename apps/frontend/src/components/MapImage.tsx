@@ -114,6 +114,7 @@ function MapImage(props: {
                   cy={node.ycoord}
                   fill={MapColors.nodeColor}
                   onClick={() => props.passClickedNode(node)}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
               {filteredSplitPaths.map((path) => (
