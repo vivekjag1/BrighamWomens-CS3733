@@ -49,7 +49,7 @@ model ServiceRequest {
   SanitationService  SanitationService?
   RoomScheduling     RoomScheduling?
   DeviceDelivery     DeviceDelivery?
-
+  GiftDelivery       GiftDelivery?
   // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request
 }
 
@@ -59,6 +59,7 @@ enum ServiceType {
   SanitationService
   RoomScheduling
   DeviceDelivery
+  GiftDelivery
 }
 
 model MedicineDelivery {
@@ -95,4 +96,11 @@ model DeviceDelivery {
   deviceType     String
   quantity       Int
   serviceRequest ServiceRequest @relation(fields: [deliveryID], references: [serviceID])
+}
+
+model GiftDelivery {
+  giftID         Int            @id
+  giftType       String
+  senderNote     String
+  serviceRequest ServiceRequest @relation(fields: [giftID], references: [serviceID])
 }

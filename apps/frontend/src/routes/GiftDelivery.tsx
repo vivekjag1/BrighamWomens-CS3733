@@ -10,16 +10,16 @@ import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
 import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
-import { GiftDeliveryRequestObject } from "common/src/giftDeliveryRequest.ts";
+import { GiftDeliveryObject } from "common/src/GiftDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const initialState: GiftDeliveryRequestObject = {
-  sanitationTypeGift: "",
-  requiredEquipmentGift: "",
+const initialState: GiftDeliveryObject = {
+  giftType: "",
+  senderNote: "",
   serviceRequest: {
     requestingUsername: "",
     location: "",
@@ -33,14 +33,13 @@ const initialState: GiftDeliveryRequestObject = {
 export function GiftDelivery(): JSX.Element {
   const { getAccessTokenSilently } = useAuth0();
   const [giftDeliveryRequest, setGiftDeliveryRequest] =
-    useState<GiftDeliveryRequestObject>(initialState);
+    useState<GiftDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
 
   const validateForm = () => {
     return (
-      giftDeliveryRequest.sanitationTypeGift &&
-      giftDeliveryRequest.requiredEquipmentGift &&
+      giftDeliveryRequest.giftType &&
       giftDeliveryRequest.serviceRequest.requestingUsername &&
       giftDeliveryRequest.serviceRequest.location &&
       giftDeliveryRequest.serviceRequest.priority
@@ -52,7 +51,7 @@ export function GiftDelivery(): JSX.Element {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.sanitationPostRequests,
+          APIEndpoints.giftPostRequests,
           giftDeliveryRequest,
           token,
         );
@@ -142,10 +141,10 @@ export function GiftDelivery(): JSX.Element {
             disablePortal
             id="combo-box-service"
             options={[
-              { label: "Wrapped" },
-              { label: "Birthday" },
-              { label: "Mothersday" },
-              { label: "Fathersday" },
+              { label: "Flowers" },
+              { label: "Chocolate" },
+              { label: "Books and Magazines" },
+              { label: "Card" },
             ]}
             className="bg-gray-50"
             size="small"
@@ -160,8 +159,8 @@ export function GiftDelivery(): JSX.Element {
               />
             )}
             value={
-              giftDeliveryRequest.sanitationTypeGift
-                ? { label: giftDeliveryRequest.sanitationTypeGift }
+              giftDeliveryRequest.giftType
+                ? { label: giftDeliveryRequest.giftType }
                 : null
             }
             onChange={(
@@ -170,70 +169,16 @@ export function GiftDelivery(): JSX.Element {
             ) =>
               setGiftDeliveryRequest({
                 ...giftDeliveryRequest,
-                sanitationTypeGift: newValue ? newValue.label : "",
-              })
-            }
-          />
-
-          <Autocomplete
-            disablePortal
-            id="combo-box-equipment"
-            options={[
-              { label: "Delicate" },
-              { label: "Heavy" },
-              { label: "Hazardous" },
-            ]}
-            className="bg-gray-50"
-            size="small"
-            sx={{ width: "25rem" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Necessary Equipment *"
-                InputLabelProps={{
-                  style: { color: "#a4aab5", fontSize: ".9rem" },
-                }}
-              />
-            )}
-            value={
-              giftDeliveryRequest.requiredEquipmentGift
-                ? { label: giftDeliveryRequest.requiredEquipmentGift }
-                : null
-            }
-            onChange={(
-              event: React.SyntheticEvent<Element, Event>,
-              newValue: { label: string } | null,
-            ) =>
-              setGiftDeliveryRequest({
-                ...giftDeliveryRequest,
-                requiredEquipmentGift: newValue ? newValue.label : "",
+                giftType: newValue ? newValue.label : "",
               })
             }
           />
           <CustomTextField
-            label="Sender Name"
-            value={giftDeliveryRequest.serviceRequest.requestingUsername}
+            value={giftDeliveryRequest.senderNote}
             onChange={(e) =>
               setGiftDeliveryRequest({
                 ...giftDeliveryRequest,
-                serviceRequest: {
-                  ...giftDeliveryRequest.serviceRequest,
-                  requestingUsername: e.target.value,
-                },
-              })
-            }
-            required
-          />
-
-          <CustomTextField
-            value={giftDeliveryRequest.serviceRequest.description}
-            onChange={(e) =>
-              setGiftDeliveryRequest({
-                ...giftDeliveryRequest,
-                serviceRequest: {
-                  ...giftDeliveryRequest.serviceRequest,
-                  description: e.target.value,
-                },
+                senderNote: e.target.value,
               })
             }
             label="Note (optional)"
