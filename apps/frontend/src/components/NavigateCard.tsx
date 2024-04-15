@@ -122,11 +122,8 @@ function NavigateCard(props: { onSubmit: FormEventHandler }) {
           </div>
         </form>
         <div className="min-h-full flex flex-col justify-center align-start">
-          <IconButton>
-            <SwapVertIcon
-              style={{ alignSelf: "left" }}
-              onClick={swapLocations}
-            />
+          <IconButton onClick={swapLocations}>
+            <SwapVertIcon style={{ alignSelf: "left" }} />
           </IconButton>
         </div>
       </div>
