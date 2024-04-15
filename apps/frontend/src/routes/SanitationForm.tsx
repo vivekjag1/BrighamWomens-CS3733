@@ -13,8 +13,9 @@ import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
 import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -30,6 +31,8 @@ const initialState: SanitationRequestObject = {
 };
 
 export function SanitationForm() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [sanitationRequest, setSanitationRequest] =
     useState<SanitationRequestObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
@@ -46,16 +49,14 @@ export function SanitationForm() {
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.sanitationPostRequests,
           sanitationRequest,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
-
         if (response.status === 200) {
           console.log("Submission successful", response.data);
           //alert("Sanitation Request sent!");

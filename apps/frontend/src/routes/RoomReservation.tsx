@@ -12,10 +12,11 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import FormContainer from "../components/FormContainer.tsx";
 import { RoomReservationType } from "common/src/RoomReservationType.ts";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: RoomReservationType = {
   endTime: dayjs().toISOString(),
@@ -30,6 +31,8 @@ const initialState: RoomReservationType = {
   },
 };
 export function RoomReservation() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [roomReservation, setRoomReservation] =
     useState<RoomReservationType>(initialState);
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
@@ -49,14 +52,14 @@ export function RoomReservation() {
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
+
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.roomReservation,
           roomReservation,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
         if (response.status === 200) {
           console.log("Submission successful");
