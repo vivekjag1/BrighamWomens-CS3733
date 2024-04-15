@@ -12,8 +12,8 @@ function MapEditor(props: {
   floor: string;
   nodes: Node[];
   edges: EdgeCoordinates[];
+  onNodeClick: (node: Node) => void;
 }) {
-  // Determines which map to load depending on floor prop.
   let map;
   switch (props.floor) {
     case "L2":
@@ -35,33 +35,40 @@ function MapEditor(props: {
 
   return (
     <div>
-      <div>
-        <TransformWrapper>
-          <TransformComponent>
-            <svg
-              viewBox="0 0 5000 3400"
-              width="auto"
-              height="98vh"
-              className="rounded-xl"
-            >
-              <image href={map} />
-              {props.edges.map((edge) => (
-                <line
-                  x1={edge.startX}
-                  x2={edge.endX}
-                  y1={edge.startY}
-                  y2={edge.endY}
-                  stroke="red"
-                  strokeWidth="6"
-                />
-              ))}
-              {props.nodes.map((node) => (
-                <circle r="10" cx={node.xcoord} cy={node.ycoord} fill="blue" />
-              ))}
-            </svg>
-          </TransformComponent>
-        </TransformWrapper>
-      </div>
+      <TransformWrapper>
+        <TransformComponent>
+          <svg
+            viewBox="0 0 5000 3400"
+            width="auto"
+            height="98vh"
+            className="rounded-xl"
+          >
+            <image href={map} />
+            {props.edges.map((edge, index) => (
+              <line
+                key={index}
+                x1={edge.startX}
+                x2={edge.endX}
+                y1={edge.startY}
+                y2={edge.endY}
+                stroke="red"
+                strokeWidth="6"
+              />
+            ))}
+            {props.nodes.map((node, index) => (
+              <circle
+                key={index}
+                r="15"
+                cx={node.xcoord}
+                cy={node.ycoord}
+                fill="blue"
+                onClick={() => props.onNodeClick(node)}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
+          </svg>
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 }
