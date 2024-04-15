@@ -6,6 +6,7 @@ const paths = {
   MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",
   ROOM_RESERVATION: "/home/services/room-reservation",
   SANITATION_FORM: "/home/services/sanitation-form",
+  GIFT_DELIVERY: "/home/services/gift-delivery",
   SERVICES_DATA: "/home/services/data",
   MAP_DATA: "/home/data",
   FORM_STARTER: "/home/services/form",

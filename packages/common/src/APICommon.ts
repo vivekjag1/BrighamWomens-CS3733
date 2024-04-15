@@ -11,6 +11,8 @@ export class APIEndpoints {
   static readonly navigationRequest: string = "/api/navigation/get";
   static readonly sanitationPostRequests: string =
     "/api/service/sanitationPostRequests";
+  static readonly giftdeliveryPostRequests: string =
+    "/api/service/giftdeliveryPostRequests";
   static readonly roomReservation: string = "/api/service/room-reservation";
   static readonly medicalDeviceDelivery: string =
     "/api/service/postMedicalDevice";
