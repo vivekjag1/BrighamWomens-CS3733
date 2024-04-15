@@ -7,8 +7,6 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 //import IconButton from "@mui/material/IconButton";
-import KeyboardTabRoundedIcon from "@mui/icons-material/KeyboardTabRounded";
-import StartRoundedIcon from "@mui/icons-material/StartRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
@@ -29,10 +27,6 @@ function SideNavBar() {
         returnTo: window.location.origin,
       },
     });
-  };
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
   };
 
   interface NavbarItemProps {
@@ -192,43 +186,6 @@ function SideNavBar() {
               labelLight="Data"
               collapsed={isCollapsed}
             />
-
-            <div className="m-[1.5rem] mr-[1.5rem] flex">
-              <div
-                style={{ cursor: "pointer" }}
-                className="flex flex-row"
-                onClick={toggleCollapse}
-              >
-                <div className={isCollapsed ? "" : "hidden"}>
-                  <StartRoundedIcon
-                    sx={{
-                      marginRight: "5px",
-                      marginTop: "-3px",
-                      fontSize: "30px",
-                      color: "white",
-                    }}
-                  />
-                </div>
-                <div className={isCollapsed ? "hidden" : ""}>
-                  <KeyboardTabRoundedIcon
-                    sx={{
-                      marginRight: "5px",
-                      marginTop: "-3px",
-                      transform: "scaleX(-1)",
-                      fontSize: "30px",
-                      color: "white",
-                    }}
-                  />
-                </div>
-                <h2
-                  className={
-                    isCollapsed ? "hidden" : "font-bold text-white text-md"
-                  }
-                >
-                  Collapse
-                </h2>
-              </div>
-            </div>
             {/*Logout button */}
             <div
               className="fixed bottom-1 to m-[1.5rem]"
