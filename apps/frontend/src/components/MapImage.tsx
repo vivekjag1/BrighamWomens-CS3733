@@ -212,7 +212,6 @@ function MapImage(props: {
             </svg>
           </TransformComponent>
         </TransformWrapper>
-        {isDefault ? <div>TRUE</div> : <div>NOT TRUE</div>}
       </div>
     </div>
   );
