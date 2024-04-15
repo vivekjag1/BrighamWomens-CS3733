@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+
 // import { FormControl } from "react-bootstrap";
 // import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
@@ -23,11 +26,16 @@ export function ServiceRequestGetter() {
   const [filterByStatus, setFilterByStatus] = useState("Any");
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
   const [filterByType, setFilterByType] = useState("Any");
-
+  const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     async function fetchData() {
+      const token = await getAccessTokenSilently();
+
       try {
-        const res = await axios.get(APIEndpoints.serviceGetRequests);
+        const res = await MakeProtectedGetRequest(
+          APIEndpoints.serviceGetRequests,
+          token,
+        );
         const sortedData = res.data.sort(
           (a: ServiceRequest, b: ServiceRequest) => {
             return sortOrder === "asc"
@@ -43,7 +51,7 @@ export function ServiceRequestGetter() {
       }
     }
     fetchData();
-  }, [sortOrder]);
+  }, [getAccessTokenSilently, sortOrder]);
 
   useEffect(() => {
     let data = requestData;
@@ -125,9 +133,15 @@ export function ServiceRequestGetter() {
     };
 
     try {
+      const token = await getAccessTokenSilently();
       const response = await axios.patch(
         APIEndpoints.servicePutRequests,
         updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       console.log("Status updated successfully", response.data);
       alert("Status updated successfully!");

@@ -10,9 +10,10 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: MedicalDeviceDelivery = {
   deviceType: "",
@@ -28,6 +29,8 @@ const initialState: MedicalDeviceDelivery = {
 };
 
 export function MedicalDeviceDeliveryForm() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [medicalDeviceDelivery, setMedicalDeviceDelivery] =
     useState<MedicalDeviceDelivery>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
@@ -49,15 +52,15 @@ export function MedicalDeviceDeliveryForm() {
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
+
     console.log(validateForm());
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.medicalDeviceDelivery,
           medicalDeviceDelivery,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
 
         if (response.status === 200) {

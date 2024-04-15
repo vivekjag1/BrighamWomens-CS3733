@@ -1,13 +1,16 @@
 import { Button } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
-import axios from "axios";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 
 const NodeTable = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
 
@@ -44,7 +47,12 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    const retFromAPI = await axios.post(APIEndpoints.mapDownload); //get info from route
+    const token = await getAccessTokenSilently();
+    const retFromAPI = await MakeProtectedGetRequest(
+      APIEndpoints.mapDownload,
+      token,
+    );
+
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",
     }); //create blob
@@ -67,11 +75,12 @@ const NodeTable = () => {
         const formData = new FormData();
         formData.append(FileAttributes.nodeKey, nodeFile, nodeFile.name);
         formData.append(FileAttributes.edgeKey, edgeFile, edgeFile.name);
-        const res = await axios.post(APIEndpoints.mapUpload, formData, {
-          headers: {
-            "Content-Type": `multipart/form-data`,
-          },
-        });
+        const token = await getAccessTokenSilently();
+        const res = await MakeProtectedPostRequest(
+          APIEndpoints.mapUpload,
+          formData,
+          token,
+        );
         if (res.status == 202) {
           console.log("bad file");
           alert("File(s) failed validation!");
