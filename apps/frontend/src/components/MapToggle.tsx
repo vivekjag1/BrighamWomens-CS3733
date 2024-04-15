@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 const styles = {
   color: "#FFFFFF",
-  backgroundColor: "#012D5A",
   width: "3vw",
   height: "5vh",
   "&:hover": {
