@@ -11,11 +11,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
-import ControlImage from "../../assets/control.png";
+import CollapseImg from "../../assets/collapse.svg";
 
 function SideNavBar() {
   // const { isAuthenticated } = useAuth0();
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { logout } = useAuth0();
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
@@ -37,6 +37,7 @@ function SideNavBar() {
     label: string;
     labelLight?: string;
     collapsed: boolean;
+    callback?: () => void;
   }
 
   const NavbarItem: React.FC<NavbarItemProps> = ({
@@ -47,13 +48,17 @@ function SideNavBar() {
     label,
     labelLight,
     collapsed,
+    callback,
   }) => {
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center">
         <Link
           to={to}
           className="inline-block"
-          onClick={() => setActivePage(to)}
+          onClick={() => {
+            setActivePage(to);
+            if (callback != undefined) callback();
+          }}
         >
           <div className="flex flex-row text-white items-center justify-center">
             <Icon sx={{ marginRight: "0.4rem", fontSize: "32px" }} />
@@ -87,138 +92,112 @@ function SideNavBar() {
   };
 
   return (
-    <div>
-      <div className="z-10">
-        <div
-          className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-8 transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
-        >
+    <div className="z-10">
+      <div
+        className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
+      >
+        {/* Header image */}
+        <div className="flex flex-col justify-center ">
+          <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
+            <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
+              <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
+              <h2
+                style={{
+                  fontWeight: 500,
+                }}
+                className={
+                  isCollapsed
+                    ? "hidden"
+                    : "text-2xl whitespace-nowrap self-center"
+                }
+              >
+                Kiosk
+              </h2>
+              <span>&nbsp;</span> {/* Add space */}
+              <h2
+                style={{
+                  fontWeight: 100,
+                }}
+                className={
+                  isCollapsed
+                    ? "hidden"
+                    : "text-2xl whitespace-nowrap self-center"
+                }
+              >
+                Menu
+              </h2>
+            </div>
+          </Link>
+        </div>
+
+        {/* Navbar items */}
+        <div className="flex flex-col gap-[0.7rem]">
+          <NavbarItem
+            to={paths.MAP}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={MapIcon}
+            label="Map"
+            collapsed={isCollapsed}
+          />
+          <NavbarItem
+            to={paths.MAP_EDITOR}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={EditLocationAltIcon}
+            label="Map"
+            labelLight="Editor"
+            collapsed={isCollapsed}
+          />
+          <NavbarItem
+            to={paths.MAP_DATA}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={AddLocationAltIcon}
+            label="Map"
+            labelLight="Data"
+            collapsed={isCollapsed}
+          />
+          <NavbarItem
+            to={paths.SERVICES}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={VolunteerActivismIcon}
+            label="Services"
+            collapsed={isCollapsed}
+          />
+          <NavbarItem
+            to={paths.SERVICES_DATA}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={TocIcon}
+            label="Service"
+            labelLight="Data"
+            collapsed={isCollapsed}
+          />
+        </div>
+
+        {/* Sign out */}
+        <div className="relative flex flex-col flex-grow justify-end">
+          <div className="flex flex-col">
+            <NavbarItem
+              to={paths.LOGIN}
+              activePage={activePage}
+              setActivePage={setActivePage}
+              Icon={LogoutIcon}
+              label={"Sign out"}
+              collapsed={isCollapsed}
+              callback={handleLogout}
+            />
+          </div>
+        </div>
+        {/* Collapse Button */}
+        <div className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[-12px]">
           <img
-            src={ControlImage}
-            className={`absolute cursor-pointer rounded-full-right-3  w-7 top-4  duration-500  border-dark-purple ${isCollapsed ? " rotate-180 left-[4rem]" : "left-[13rem]"} `}
+            src={CollapseImg}
+            className={`cursor-pointer w-7 duration-500 ${isCollapsed ? "rotate-180" : ""}`}
             onClick={() => setIsCollapsed(!isCollapsed)}
           />
-
-          <div className="flex flex-col justify-center ">
-            <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
-              <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
-                <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
-                <h2
-                  style={{
-                    fontWeight: 500,
-                  }}
-                  className={
-                    isCollapsed
-                      ? "hidden"
-                      : "text-2xl whitespace-nowrap self-center"
-                  }
-                >
-                  Kiosk
-                </h2>
-                <span>&nbsp;</span> {/* Add space */}
-                <h2
-                  style={{
-                    fontWeight: 100,
-                  }}
-                  className={
-                    isCollapsed
-                      ? "hidden"
-                      : "text-2xl whitespace-nowrap self-center"
-                  }
-                >
-                  Menu
-                </h2>
-              </div>
-              {/*<div className="mb-6">*/}
-              {/*  <h1*/}
-              {/*    className={*/}
-              {/*      isCollapsed*/}
-              {/*        ? "hidden"*/}
-              {/*        : "text-xl font-bold text-white text-md whitespace-nowrap"*/}
-              {/*    }*/}
-              {/*  >*/}
-              {/*    Hospital Kiosk*/}
-              {/*  </h1>*/}
-              {/*</div>*/}
-            </Link>
-          </div>
-
-          <div className="">
-            <NavbarItem
-              to={paths.MAP}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={MapIcon}
-              label="Map"
-              collapsed={isCollapsed}
-            />
-            <NavbarItem
-              to={paths.MAP_EDITOR}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={EditLocationAltIcon}
-              label="Map"
-              labelLight="Editor"
-              collapsed={isCollapsed}
-            />
-            <NavbarItem
-              to={paths.MAP_DATA}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={AddLocationAltIcon}
-              label="Map"
-              labelLight="Data"
-              collapsed={isCollapsed}
-            />
-            <NavbarItem
-              to={paths.SERVICES}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={VolunteerActivismIcon}
-              label="Services"
-              collapsed={isCollapsed}
-            />
-            <NavbarItem
-              to={paths.SERVICES_DATA}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={TocIcon}
-              label="Service"
-              labelLight="Data"
-              collapsed={isCollapsed}
-            />
-            {/*Logout button */}
-            <div
-              className="fixed bottom-1 to m-[1.5rem]"
-              onClick={handleLogout}
-            >
-              <Link to={paths.LOGIN}>
-                {" "}
-                {/* enter link to button here to log out*/}
-                <div
-                  className="flex flex-row" /*onMouseEnter={toggleHover} onMouseLeave={toggleHover}*/
-                >
-                  <LogoutIcon
-                    sx={{
-                      marginRight: "5px",
-                      marginBottom: "10px",
-                      fontSize: "30px",
-                      color: "white",
-                      transform: "scaleX(-1)",
-                    }}
-                  />
-                  <h2
-                    className={
-                      isCollapsed
-                        ? "hidden"
-                        : "font-bold text-white text-md container whitespace-nowrap overflow-hidden pt-[3px]"
-                    }
-                  >
-                    Logout
-                  </h2>
-                </div>
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </div>
