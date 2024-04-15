@@ -8,6 +8,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useToast } from "../components/useToast.tsx";
 
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -16,6 +17,7 @@ const NodeTable = () => {
 
   const [activeTab, setActiveTab] = useState<string>("node");
   const nodeTableButtonRef = useRef<HTMLButtonElement>(null);
+  const { showToast } = useToast();
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
   };
@@ -83,18 +85,18 @@ const NodeTable = () => {
         );
         if (res.status == 202) {
           console.log("bad file");
-          alert("File(s) failed validation!");
+          showToast("File(s) failed validation!", "error");
         } else {
           console.log("success");
-          alert("Map data uploaded!");
+          showToast("Map data uploaded!", "success");
           location.reload();
         }
       } else {
-        alert("One or more map files missing!");
+        showToast("One or more map files are missing!", "error");
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Failed to upload map data!");
+      showToast("Failed to upload map data!", "error");
     }
   }
 
