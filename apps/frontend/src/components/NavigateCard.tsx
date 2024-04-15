@@ -75,7 +75,7 @@ function NavigateCard(props: {
           onSubmit={props.onSubmit}
           onReset={props.onReset}
         >
-          <div className="flex flex-row gap-40">
+          <div className="flex flex-row justify-between">
             <h2 className="text-2xl font-extralight text-secondary">
               Navigate
             </h2>

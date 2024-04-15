@@ -7,10 +7,8 @@ const NavigationClearButton: React.FC<ButtonProps> = (props) => {
     <IconButton
       onClick={props.onClick}
       style={{
-        border: "1px solid gray",
         color: "gray",
-        width: "2.6rem",
-        alignSelf: "left",
+        width: "2.5vw",
       }}
       {...props}
     >
