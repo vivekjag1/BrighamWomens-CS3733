@@ -9,15 +9,17 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
+import { PathNodesObject } from "common/src/Path.ts";
 
 function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
-  passClickedNode: (node: GraphNode) => void;
+  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
+  pathNodeObject: PathNodesObject;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -117,7 +119,19 @@ function MapImage(props: {
                   cx={node.xcoord}
                   cy={node.ycoord}
                   fill={MapStyling.nodeColor}
-                  onClick={() => props.passClickedNode(node)}
+                  onClick={() => {
+                    if (props.pathNodeObject.startNode === "") {
+                      props.setPathNodeObject({
+                        ...props.pathNodeObject,
+                        startNode: node.longName,
+                      });
+                    } else if (props.pathNodeObject.endNode === "") {
+                      props.setPathNodeObject({
+                        ...props.pathNodeObject,
+                        endNode: node.longName,
+                      });
+                    }
+                  }}
                   style={{ cursor: "pointer" }}
                 />
               ))}

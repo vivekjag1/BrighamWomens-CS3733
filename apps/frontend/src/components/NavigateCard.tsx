@@ -1,7 +1,13 @@
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import { GraphNode } from "common/src/GraphNode.ts";
-import React, { FormEventHandler, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FormEventHandler,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { createNodes } from "common/src/GraphCommon.ts";
 import NavigateButton from "./NavigateButton.tsx";
 import NodeDropdown from "./NodeDropdown.tsx";
@@ -27,14 +33,12 @@ const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
 function NavigateCard(props: {
   onSubmit: FormEventHandler;
-  clickedNodeStart: GraphNode;
-  clickedNodeEnd: GraphNode;
+  pathNodeObject: PathNodesObject;
+  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database
   const [nodes, setNodes] = useState<GraphNode[]>([]);
-  const [pathNodeObject, setPathNodeObject] =
-    useState<PathNodesObject>(initialState);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
   //const [clickedNode, setClickedNode] = useState<GraphNode>();
@@ -60,15 +64,18 @@ function NavigateCard(props: {
   }, []);
 
   function swapLocations() {
-    const start = pathNodeObject.startNode;
-    setPathNodeObject({ startNode: pathNodeObject.endNode, endNode: start });
+    const start = props.pathNodeObject.startNode;
+    props.setPathNodeObject({
+      startNode: props.pathNodeObject.endNode,
+      endNode: start,
+    });
   }
   function reset() {
-    setPathNodeObject(initialState);
+    props.setPathNodeObject(initialState);
     setPathAlgorithm(defaultPathAlgorithm);
   }
 
-  function setStartNodeLabel() {
+  /*function setStartNodeLabel(): string {
     if (props.clickedNodeStart) {
       return props.clickedNodeStart.longName;
     } else {
@@ -96,7 +103,7 @@ function NavigateCard(props: {
     } else {
       return getNodeID(pathNodeObject.endNode);
     }
-  }
+  }*/
 
   return (
     <div>
@@ -116,11 +123,11 @@ function NavigateCard(props: {
             <div className="flex flex-row gap-1 items-center mt-[1rem]">
               <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
-                value={setStartNodeLabel()}
+                value={props.pathNodeObject.startNode}
                 sx={textFieldStyles}
                 label="Start Location"
                 onChange={(newValue: string) =>
-                  setPathNodeObject((currentPathNode) => ({
+                  props.setPathNodeObject((currentPathNode) => ({
                     ...currentPathNode,
                     startNode: newValue,
                   }))
@@ -129,18 +136,18 @@ function NavigateCard(props: {
               <input
                 type="hidden"
                 name={`${NavigateAttributes.startLocationKey}`}
-                value={setStartNodeValue()}
+                value={getNodeID(props.pathNodeObject.startNode)}
               />
             </div>
             <MoreVertIcon style={{ color: "#012D5A" }} />
             <div className="flex flex-row gap-1 items-center">
               <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
-                value={setEndNodeLabel()}
+                value={props.pathNodeObject.endNode}
                 sx={textFieldStyles}
                 label="End Location"
                 onChange={(newValue: string) =>
-                  setPathNodeObject((currentPathNode) => ({
+                  props.setPathNodeObject((currentPathNode) => ({
                     ...currentPathNode,
                     endNode: newValue,
                   }))
@@ -149,7 +156,7 @@ function NavigateCard(props: {
               <input
                 type="hidden"
                 name={`${NavigateAttributes.endLocationKey}`}
-                value={setEndNodeValue()}
+                value={getNodeID(props.pathNodeObject.endNode)}
               />
             </div>
             <div className="ml-[2rem] flex flex-row mt-4 justify-between">
