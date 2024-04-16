@@ -1,10 +1,10 @@
-import MapEditButton from "../components/MapEditButton.tsx";
 import React, { useEffect, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
-import MapEditor from "../components/MapEditor.tsx";
+import MapEditImage from "../components/MapEditImage.tsx";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
+import MapEditCard from "../components/MapEditCard.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -19,7 +19,7 @@ function MapEdit() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const [selectedNode, setSelectedNode] = useState<Node | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +39,6 @@ function MapEdit() {
         );
 
         nodeURL.search = params.toString();
-        edgeURL.search = params.toString();
 
         const nodesResponse = await axios.get(nodeURL.toString());
         const edgesResponse = await axios.get(edgeURL.toString());
@@ -47,20 +46,17 @@ function MapEdit() {
         setNodes(nodesResponse.data);
 
         // Here, we map over the fetched edges to find the corresponding start and end nodes
+        // todo: rewrite this to nodeid suffix searching
         const edgeCoordsOnFloor = edgesResponse.data
           .map((edge: Edge) => {
             const startNode = nodesResponse.data.find(
-              (n: Node) => n.nodeID === edge.startNodeID,
+              (n: Node) => n.nodeID == edge.startNodeID,
             );
             const endNode = nodesResponse.data.find(
-              (n: Node) => n.nodeID === edge.endNodeID,
+              (n: Node) => n.nodeID == edge.endNodeID,
             );
 
             if (!startNode || !endNode) {
-              // Log an error if a start or end node was not found
-              console.error(
-                `Nodes with ID ${edge.startNodeID} or ${edge.endNodeID} not found.`,
-              );
               return null; // This will be filtered out below
             }
 
@@ -82,21 +78,32 @@ function MapEdit() {
     fetchData();
   }, [activeFloor]);
 
-  const handleNodeClick = (node: Node) => {
+  function handleNodeClick(node: Node) {
     setSelectedNode(node);
-  };
+  }
+
+  function handleMapClick() {
+    setSelectedNode(undefined);
+  }
+
+  function reset() {
+    setSelectedNode(undefined);
+  }
 
   return (
-    <div className="relative flex gap-4 bg-[#F1F1E6]">
-      <div className="h-screen ml-4 flex flex-col justify-center">
-        <MapEditButton selectedNode={selectedNode} />
-      </div>
-      <div className="h-screen flex flex-col justify-center">
-        <MapEditor
-          activeFloor={activeFloor}
-          nodes={nodes}
-          edges={edges}
-          onNodeClick={handleNodeClick}
+    <div className="relative bg-offwhite">
+      <MapEditImage
+        activeFloor={activeFloor}
+        nodes={nodes}
+        edges={edges}
+        onNodeClick={handleNodeClick}
+        onMapClick={handleMapClick}
+      />
+      <div className="absolute left-[1%] top-[2%]">
+        <MapEditCard
+          selectedNode={selectedNode}
+          setSelectedNode={setSelectedNode}
+          onReset={reset}
         />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">

@@ -10,9 +10,9 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PlaceIcon from "@mui/icons-material/Place";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
 import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
+import LocationIcon from "@mui/icons-material/LocationOn";
 
 const initialState: PathNodesObject = {
   startNode: "",
@@ -134,7 +134,7 @@ function NavigateCard(props: {
             </div>
             <MoreVertIcon style={{ color: "#012D5A" }} />
             <div className="flex flex-row gap-1 items-center">
-              <PlaceIcon style={{ color: "#012D5A", marginRight: "5" }} />
+              <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
                 value={setEndNodeLabel()}
                 sx={textFieldStyles}

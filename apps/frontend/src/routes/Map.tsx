@@ -101,30 +101,28 @@ function Map() {
   };
 
   return (
-    <div>
-      <div className="relative bg-offwhite">
-        {/*//passClickedNode={getClickedNode}*/}
-        <MapImage
-          activeFloor={activeFloor}
-          path={path}
-          nodes={nodes}
-          passClickedNode={getClickedNode}
+    <div className="relative bg-offwhite">
+      {/*//passClickedNode={getClickedNode}*/}
+      <MapImage
+        activeFloor={activeFloor}
+        path={path}
+        nodes={nodes}
+        passClickedNode={getClickedNode}
+      />
+      <div className="absolute left-[1%] top-[2%]">
+        <NavigateCard
+          onSubmit={handleForm}
+          clickedNodeStart={startNode!}
+          clickedNodeEnd={endNode!}
+          onReset={resetNavigation}
         />
-        <div className="absolute left-[1%] top-[2%]">
-          <NavigateCard
-            onSubmit={handleForm}
-            clickedNodeStart={startNode!}
-            clickedNodeEnd={endNode!}
-            onReset={resetNavigation}
-          />
-        </div>
-        <div className="fixed right-[2%] bottom-[2%]">
-          <MapFloorSelect
-            activeFloor={activeFloor}
-            onClick={setActiveFloor}
-            path={path}
-          />
-        </div>
+      </div>
+      <div className="fixed right-[2%] bottom-[2%]">
+        <MapFloorSelect
+          activeFloor={activeFloor}
+          onClick={setActiveFloor}
+          path={path}
+        />
       </div>
     </div>
   );
