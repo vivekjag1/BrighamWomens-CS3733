@@ -1,7 +1,7 @@
 import { useControls } from "react-zoom-pan-pinch";
 import { Button, ButtonGroup } from "@mui/material";
 
-function ZoomControls() {
+function MapZoomButtons() {
   const styles = {
     color: "#FFFFFF",
     backgroundColor: "#012D5A",
@@ -41,4 +41,4 @@ function ZoomControls() {
   );
 }
 
-export default ZoomControls;
+export default MapZoomButtons;

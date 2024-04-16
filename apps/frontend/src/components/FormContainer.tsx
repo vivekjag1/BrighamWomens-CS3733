@@ -7,10 +7,14 @@ interface FormContainerProps {
 
 export function FormContainer({ children }: FormContainerProps) {
   return (
-    <div className="flex justify-center items-center w-full min-h-screen py-8 px-4">
-      <Card className="drop-shadow-2xl w-full max-w-lg rounded-lg">
-        <CardContent>{children}</CardContent>
-      </Card>
+    <div className=" h-screen overflow-auto">
+      <div className="w-full justify-items-center">
+        <div className="flex flex-col items-center gap-2 mx-5">
+          <Card className="drop-shadow-2xl w-full max-w-lg rounded-lg my-8">
+            <CardContent>{children}</CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

@@ -49,11 +49,14 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
+    console.log("called  download files");
+
     const token = await getAccessTokenSilently();
     const retFromAPI = await MakeProtectedGetRequest(
       APIEndpoints.mapDownload,
       token,
     );
+    console.log("hello world");
 
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",

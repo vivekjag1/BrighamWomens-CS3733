@@ -3,9 +3,10 @@ import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-import MapToggle from "../components/MapToggle.tsx";
+import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
+import { PathNodesObject } from "common/src/Path.ts";
 
 const pathInitialState: number[][] = [
   [0, 0, -2],
@@ -17,14 +18,18 @@ const pathInitialState: number[][] = [
 
 const defaultFloor: number = 1;
 
+const initialState: PathNodesObject = {
+  startNode: "",
+  endNode: "",
+};
+
 function Map() {
+  const [pathNodeObject, setPathNodeObject] =
+    useState<PathNodesObject>(initialState);
   // const { getAccessTokenSilently } = useAuth0();
 
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-  function handleMapSwitch(x: number) {
-    setActiveFloor(x);
-  }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -50,8 +55,7 @@ function Map() {
   function resetNavigation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPath(pathInitialState);
-    setStart(undefined);
-    setEnd(undefined);
+    setPathNodeObject(initialState);
     setActiveFloor(defaultFloor);
   }
 
@@ -89,10 +93,10 @@ function Map() {
   }
 
   // const [clickedNode, setclickedNode] = useState<GraphNode>();
-  const [startNode, setStart] = useState<GraphNode>();
+  /*const [startNode, setStart] = useState<GraphNode>();
   const [endNode, setEnd] = useState<GraphNode>();
 
-  const getClickedNode = (node: GraphNode) => {
+  /!*const getClickedNode = (node: GraphNode) => {
     //console.log("Hello world", startNode);
     if (startNode) {
       setEnd(node!);
@@ -101,33 +105,32 @@ function Map() {
       setStart(node!);
       //console.log("Start node", startNode);
     }
-  };
+  };*!/*/
 
   return (
-    <div>
-      <div className="relative bg-offwhite">
-        {/*//passClickedNode={getClickedNode}*/}
-        <MapImage
-          activeFloor={activeFloor}
-          path={path}
-          nodes={nodes}
-          passClickedNode={getClickedNode}
+    <div className="relative bg-offwhite">
+      {/*//passClickedNode={getClickedNode}*/}
+      <MapImage
+        activeFloor={activeFloor}
+        path={path}
+        nodes={nodes}
+        setPathNodeObject={setPathNodeObject}
+        pathNodeObject={pathNodeObject}
+      />
+      <div className="absolute left-[1%] top-[2%]">
+        <NavigateCard
+          onSubmit={handleForm}
+          pathNodeObject={pathNodeObject}
+          setPathNodeObject={setPathNodeObject}
+          onReset={resetNavigation}
         />
-        <div className="absolute left-[1%] top-[2%]">
-          <NavigateCard
-            onSubmit={handleForm}
-            clickedNodeStart={startNode!}
-            clickedNodeEnd={endNode!}
-            onReset={resetNavigation}
-          />
-        </div>
-        <div className="fixed right-[2%] bottom-[2%]">
-          <MapToggle
-            activeFloor={activeFloor}
-            onClick={handleMapSwitch}
-            nodes={path}
-          />
-        </div>
+      </div>
+      <div className="fixed right-[2%] bottom-[2%]">
+        <MapFloorSelect
+          activeFloor={activeFloor}
+          onClick={setActiveFloor}
+          path={path}
+        />
       </div>
     </div>
   );

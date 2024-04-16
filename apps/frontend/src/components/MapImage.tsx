@@ -9,15 +9,17 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
-import React from "react";
-import ZoomControls from "./ZoomControls";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
+import { PathNodesObject } from "common/src/Path.ts";
 
 function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: GraphNode[];
-  passClickedNode: (node: GraphNode) => void;
+  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
+  pathNodeObject: PathNodesObject;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -88,14 +90,21 @@ function MapImage(props: {
     listOfPolylineStrings.push(polylineString);
   }
 
-  // const handleClickedNode = (aNode: GraphNode) =>{
-  //   console.log(aNode);
-  // };
+  let isDefault = false;
+  if (
+    startNode.xCoordinate === endNode.xCoordinate &&
+    startNode.yCoordinate === endNode.yCoordinate
+  ) {
+    isDefault = true;
+  }
+
+  const [field, setField] = useState(1);
+
   return (
     <div>
       <div>
         <TransformWrapper initialScale={1}>
-          <ZoomControls />
+          <MapZoomButtons />
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
             contentStyle={{
@@ -113,7 +122,21 @@ function MapImage(props: {
                   cx={node.xcoord}
                   cy={node.ycoord}
                   fill={MapStyling.nodeColor}
-                  onClick={() => props.passClickedNode(node)}
+                  onClick={() => {
+                    if (field === 1) {
+                      props.setPathNodeObject({
+                        ...props.pathNodeObject,
+                        startNode: node.longName,
+                      });
+                      setField(2);
+                    } else if (field === 2) {
+                      props.setPathNodeObject({
+                        ...props.pathNodeObject,
+                        endNode: node.longName,
+                      });
+                      setField(1);
+                    }
+                  }}
                   style={{ cursor: "pointer" }}
                 />
               ))}
@@ -136,77 +159,83 @@ function MapImage(props: {
                       ease: "linear",
                     }}
                   />
-                  <circle
-                    r="25"
-                    cx={
-                      path[0][0] == startNode.xCoordinate &&
-                      path[0][1] == startNode.yCoordinate &&
-                      path[0][2] == startNode.floor
-                        ? -100
-                        : path[0][0]
-                    }
-                    cy={path[0][1]}
-                    fill={MapStyling.nodeColor}
-                  />
-                  <text
-                    x={
-                      path[0][0] == startNode.xCoordinate &&
-                      path[0][1] == startNode.yCoordinate &&
-                      path[0][2] == startNode.floor
-                        ? -100
-                        : path[0][0]
-                    }
-                    y={path[0][1]}
-                    textAnchor="middle"
-                    fill="white"
-                    fontSize="2em"
-                    fontWeight="bold"
-                    dy=".35em"
-                  >
-                    {getStringFromFloor(
-                      props.path[
-                        Math.max(props.path.indexOf(path[0]) - 1, 0)
-                      ][2],
-                    )}
-                  </text>
+                  {isDefault ? (
+                    <></>
+                  ) : (
+                    <>
+                      <circle
+                        r="25"
+                        cx={
+                          path[0][0] == startNode.xCoordinate &&
+                          path[0][1] == startNode.yCoordinate &&
+                          path[0][2] == startNode.floor
+                            ? -100
+                            : path[0][0]
+                        }
+                        cy={path[0][1]}
+                        fill={MapStyling.nodeColor}
+                      />
+                      <text
+                        x={
+                          path[0][0] == startNode.xCoordinate &&
+                          path[0][1] == startNode.yCoordinate &&
+                          path[0][2] == startNode.floor
+                            ? -100
+                            : path[0][0]
+                        }
+                        y={path[0][1]}
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="2em"
+                        fontWeight="bold"
+                        dy=".35em"
+                      >
+                        {getStringFromFloor(
+                          props.path[
+                            Math.max(props.path.indexOf(path[0]) - 1, 0)
+                          ][2],
+                        )}
+                      </text>
 
-                  <circle
-                    r="25"
-                    cx={
-                      path[path.length - 1][0] == endNode.xCoordinate &&
-                      path[path.length - 1][1] == endNode.yCoordinate &&
-                      path[path.length - 1][2] == endNode.floor
-                        ? -100
-                        : path[path.length - 1][0]
-                    }
-                    cy={path[path.length - 1][1]}
-                    fill={MapStyling.nodeColor}
-                  />
-                  <text
-                    x={
-                      path[path.length - 1][0] == endNode.xCoordinate &&
-                      path[path.length - 1][1] == endNode.yCoordinate &&
-                      path[path.length - 1][2] == endNode.floor
-                        ? -100
-                        : path[path.length - 1][0]
-                    }
-                    y={path[path.length - 1][1]}
-                    textAnchor="middle"
-                    fill="white"
-                    fontSize="2em"
-                    fontWeight="bold"
-                    dy=".35em"
-                  >
-                    {getStringFromFloor(
-                      props.path[
-                        Math.min(
-                          props.path.indexOf(path[path.length - 1]) + 1,
-                          props.path.length - 1,
-                          props.path.length - 1,
-                        )
-                      ][2],
-                    )}
-                  </text>
+                      <circle
+                        r="25"
+                        cx={
+                          path[path.length - 1][0] == endNode.xCoordinate &&
+                          path[path.length - 1][1] == endNode.yCoordinate &&
+                          path[path.length - 1][2] == endNode.floor
+                            ? -100
+                            : path[path.length - 1][0]
+                        }
+                        cy={path[path.length - 1][1]}
+                        fill={MapStyling.nodeColor}
+                      />
+                      <text
+                        x={
+                          path[path.length - 1][0] == endNode.xCoordinate &&
+                          path[path.length - 1][1] == endNode.yCoordinate &&
+                          path[path.length - 1][2] == endNode.floor
+                            ? -100
+                            : path[path.length - 1][0]
+                        }
+                        y={path[path.length - 1][1]}
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="2em"
+                        fontWeight="bold"
+                        dy=".35em"
+                      >
+                        {getStringFromFloor(
+                          props.path[
+                            Math.min(
+                              props.path.indexOf(path[path.length - 1]) + 1,
+                              props.path.length - 1,
+                              props.path.length - 1,
+                            )
+                          ][2],
+                        )}
+                      </text>
+                    </>
+                  )}
                 </>
               ))}
 

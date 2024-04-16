@@ -1,13 +1,10 @@
 // import { Auth0Provider } from "@auth0/auth0-react";
 import { Outlet } from "react-router-dom";
-import SideNavBar from "./SideNavBar.tsx";
+import NavBar from "./NavBar.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
-/*import SideNavBar from "../archive/SideNavBar.tsx";*/
-import { useNavigate } from "react-router-dom";
+/*import NavBar from "../archive/NavBar.tsx";*/
 
 function Layout() {
-  const navigate = useNavigate();
-
   return (
     <Auth0Provider
       useRefreshTokens
@@ -19,12 +16,9 @@ function Layout() {
         audience: "/api",
         scope: "openid profile email offline_access",
       }}
-      onRedirectCallback={(appState) => {
-        navigate(appState?.returnTo || window.location.origin);
-      }}
     >
       <div className="w-screen h-screen flex">
-        <SideNavBar />
+        <NavBar />
         <main className="grow">
           <Outlet />
         </main>
