@@ -7,7 +7,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import { Node } from "database";
 import { EdgeCoordinates } from "../routes/MapEdit.tsx";
-import ZoomControls from "./ZoomControls.tsx";
+import MapZoomButtons from "./MapZoomButtons.tsx";
 
 function MapEditor(props: {
   activeFloor: number;
@@ -38,7 +38,7 @@ function MapEditor(props: {
   return (
     <div>
       <TransformWrapper>
-        <ZoomControls />
+        <MapZoomButtons />
         <TransformComponent>
           <svg
             viewBox="0 0 5000 3400"

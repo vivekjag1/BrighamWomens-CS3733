@@ -14,7 +14,7 @@ const styles = {
   },
 } as const;
 
-function MapToggle(props: {
+function MapFloorSelect(props: {
   activeFloor: number;
   onClick: (x: number) => void;
   path?: number[][];
@@ -94,4 +94,4 @@ function MapToggle(props: {
   );
 }
 
-export default MapToggle;
+export default MapFloorSelect;

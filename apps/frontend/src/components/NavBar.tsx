@@ -13,7 +13,7 @@ import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 
-function SideNavBar() {
+function NavBar() {
   // const { isAuthenticated } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
@@ -218,4 +218,4 @@ function SideNavBar() {
   );
 }
 
-export default SideNavBar;
+export default NavBar;

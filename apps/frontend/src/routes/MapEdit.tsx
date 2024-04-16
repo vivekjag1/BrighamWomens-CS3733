@@ -4,7 +4,7 @@ import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
 import MapEditor from "../components/MapEditor.tsx";
-import MapToggle from "../components/MapToggle.tsx";
+import MapFloorSelect from "../components/MapFloorSelect.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -100,7 +100,7 @@ function MapEdit() {
         />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
-        <MapToggle activeFloor={activeFloor} onClick={setActiveFloor} />
+        <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
     </div>
   );

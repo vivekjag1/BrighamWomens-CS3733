@@ -3,7 +3,7 @@ import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-import MapToggle from "../components/MapToggle.tsx";
+import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 
@@ -119,7 +119,7 @@ function Map() {
           />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
-          <MapToggle
+          <MapFloorSelect
             activeFloor={activeFloor}
             onClick={setActiveFloor}
             path={path}

@@ -2,7 +2,7 @@ import { ButtonProps } from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 
-const SmallClearButton: React.FC<ButtonProps> = (props) => {
+const CustomClearButtonSmall: React.FC<ButtonProps> = (props) => {
   return (
     <IconButton
       style={{
@@ -16,4 +16,4 @@ const SmallClearButton: React.FC<ButtonProps> = (props) => {
   );
 };
 
-export default SmallClearButton;
+export default CustomClearButtonSmall;
