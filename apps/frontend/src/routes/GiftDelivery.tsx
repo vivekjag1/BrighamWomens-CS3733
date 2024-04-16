@@ -85,10 +85,10 @@ export function GiftDelivery(): JSX.Element {
   }
 
   return (
-    <div className="flex justify-center space-x-4 row">
-      <div className="flex justify-content-end">
-        <FormContainer>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
+    <FormContainer>
+      <div className="flex">
+        <div className="py-8">
+          <h1 className="text-center font-bold text-3xl text-secondary pb-4">
             Gift Delivery Request
           </h1>
           <div className="h-auto flex justify-center items-center w-[30rem]">
@@ -235,12 +235,12 @@ export function GiftDelivery(): JSX.Element {
               </div>
             </form>
           </div>
-        </FormContainer>
+        </div>
+        <div>
+          <ServiceImages imgPath={presentPic} alt="present picture" />
+        </div>
       </div>
-      <div className="flex justify-items-center w-[35rem]">
-        <ServiceImages imgPath={presentPic} alt="present picture" />
-      </div>
-    </div>
+    </FormContainer>
   );
 }
 
