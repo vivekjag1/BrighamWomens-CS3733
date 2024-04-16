@@ -3,12 +3,8 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 /*import NavBar from "../archive/NavBar.tsx";*/
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function Layout() {
-  const navigate = useNavigate();
-  const [nextPage, setNextPage] = useState("");
   return (
     <Auth0Provider
       useRefreshTokens
@@ -20,14 +16,12 @@ function Layout() {
         audience: "/api",
         scope: "openid profile email offline_access",
       }}
-      onRedirectCallback={(appState) => {
-        const nextPage = appState?.returnTo || window.location.origin;
-        navigate(appState?.returnTo || window.location.origin);
-        setNextPage(nextPage);
-      }}
+      // onRedirectCallback={(appState) => {
+      //   navigate(appState?.returnTo || window.location.origin);
+      // }}
     >
       <div className="w-screen h-screen flex">
-        <NavBar currentPage={nextPage} />
+        <NavBar />
         <main className="grow">
           <Outlet />
         </main>
