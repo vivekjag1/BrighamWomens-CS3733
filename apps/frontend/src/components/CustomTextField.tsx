@@ -17,11 +17,17 @@ const CustomTextField: React.FC<TextFieldProps> = (props) => {
     <TextField
       variant="outlined"
       fullWidth
-      sx={{ width: "25rem" }}
+      sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
       className="bg-gray-50"
-      InputProps={{ style: { fontSize: ".9rem" } }}
+      InputProps={{
+        style: { fontSize: ".9rem", fontFamily: "Poppins, sans-serif" },
+      }}
       InputLabelProps={{
-        style: { color: "#a4aab5", fontSize: ".9rem" },
+        style: {
+          color: "#a4aab5",
+          fontSize: ".9rem",
+          fontFamily: "Poppins, sans-serif",
+        },
       }}
       size="small"
       {...props}

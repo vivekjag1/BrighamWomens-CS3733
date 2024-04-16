@@ -3,7 +3,7 @@ import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-import MapToggle from "../components/MapToggle.tsx";
+import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 
@@ -22,9 +22,6 @@ function Map() {
 
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-  function handleMapSwitch(x: number) {
-    setActiveFloor(x);
-  }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -122,10 +119,10 @@ function Map() {
           />
         </div>
         <div className="fixed right-[2%] bottom-[2%]">
-          <MapToggle
+          <MapFloorSelect
             activeFloor={activeFloor}
-            onClick={handleMapSwitch}
-            nodes={path}
+            onClick={setActiveFloor}
+            path={path}
           />
         </div>
       </div>

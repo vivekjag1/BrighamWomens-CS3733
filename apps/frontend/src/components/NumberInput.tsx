@@ -103,7 +103,7 @@ const StyledInputRoot: React.ElementType = styled("div")(
 const StyledInputElement = styled("input")(
   ({ theme }) => `
   font-size: 0.875rem;
-  font-family: inherit;
+  fontFamily: "Poppins, sans-serif",
   font-weight: 400;
   line-height: 1.5;
   grid-column: 1/2;
@@ -127,7 +127,7 @@ const StyledStepperButton = styled("button")(
   padding: 0;
   width: 19px;
   height: 19px;
-  font-family: system-ui, sans-serif;
+  fontFamily: "Poppins, sans-serif",
   font-size: 0.875rem;
   line-height: 1;
   box-sizing: border-box;

@@ -12,7 +12,7 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlaceIcon from "@mui/icons-material/Place";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import SmallClearButton from "./SmallClearButton.tsx";
+import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
 
 const initialState: PathNodesObject = {
   startNode: "",
@@ -175,7 +175,7 @@ function NavigateCard(props: {
               </IconButton>
             </div>
             <div className="flex justify-end mb-[-0.1rem]">
-              <SmallClearButton onClick={reset} type="reset" />
+              <CustomClearButtonSmall onClick={reset} type="reset" />
             </div>
           </div>
         </form>

@@ -4,7 +4,7 @@ import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
 import MapEditor from "../components/MapEditor.tsx";
-import { Button, ButtonGroup } from "@mui/material";
+import MapFloorSelect from "../components/MapFloorSelect.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -13,16 +13,20 @@ export type EdgeCoordinates = {
   endY: number;
 };
 
+const defaultFloor: number = 1;
+
 function MapEdit() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
-  const [floor, setFloor] = useState<string>("1");
+  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const queryParams = { [NavigateAttributes.floorKey]: floor };
+        const queryParams = {
+          [NavigateAttributes.floorKey]: activeFloor.toString(),
+        };
         const params = new URLSearchParams(queryParams);
 
         const nodeURL = new URL(
@@ -76,7 +80,7 @@ function MapEdit() {
     };
 
     fetchData();
-  }, [floor]);
+  }, [activeFloor]);
 
   const handleNodeClick = (node: Node) => {
     setSelectedNode(node);
@@ -89,24 +93,14 @@ function MapEdit() {
       </div>
       <div className="h-screen flex flex-col justify-center">
         <MapEditor
-          floor={floor}
+          activeFloor={activeFloor}
           nodes={nodes}
           edges={edges}
           onNodeClick={handleNodeClick}
         />
       </div>
-      <div className="absolute left-[95%] top-[74%]">
-        <ButtonGroup orientation="vertical" variant="contained">
-          {["3", "2", "1", "L1", "L2"].map((f) => (
-            <Button
-              key={f}
-              onClick={() => setFloor(f)}
-              sx={{ backgroundColor: "rgb(1,70,177)" }}
-            >
-              {f}
-            </Button>
-          ))}
-        </ButtonGroup>
+      <div className="fixed right-[2%] bottom-[2%]">
+        <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
     </div>
   );

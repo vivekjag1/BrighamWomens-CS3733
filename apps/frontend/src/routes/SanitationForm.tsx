@@ -126,6 +126,7 @@ export function SanitationForm() {
 
           <CustomDatePicker
             value={date}
+            sx={{ fontFamily: "Poppins, sans-serif" }}
             onChange={(newValue) => {
               const isValid = newValue && dayjs(newValue).isValid();
               setSanitationRequest((currentSanitationRequest) => ({
@@ -149,13 +150,17 @@ export function SanitationForm() {
             ]}
             className="bg-gray-50"
             size="small"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Service Type *"
                 InputLabelProps={{
-                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                  style: {
+                    color: "#a4aab5",
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  },
                 }}
               />
             )}
@@ -185,13 +190,17 @@ export function SanitationForm() {
             ]}
             className="bg-gray-50"
             size="small"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Necessary Equipment *"
                 InputLabelProps={{
-                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                  style: {
+                    color: "#a4aab5",
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  },
                 }}
               />
             )}
@@ -228,7 +237,10 @@ export function SanitationForm() {
             size="small"
           />
 
-          <FormControl sx={{ width: "25rem" }} size="small">
+          <FormControl
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+            size="small"
+          >
             <CustomStatusDropdown
               value={sanitationRequest.serviceRequest.status}
               onChange={(e) =>
@@ -246,7 +258,7 @@ export function SanitationForm() {
           <FormControl
             component="fieldset"
             margin="normal"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
           >
             <CustomPrioritySelector
               value={sanitationRequest.serviceRequest.priority}

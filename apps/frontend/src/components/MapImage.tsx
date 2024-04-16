@@ -10,7 +10,7 @@ import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React from "react";
-import ZoomControls from "./ZoomControls";
+import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
 
 function MapImage(props: {
@@ -95,7 +95,7 @@ function MapImage(props: {
     <div>
       <div>
         <TransformWrapper initialScale={1}>
-          <ZoomControls />
+          <MapZoomButtons />
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
             contentStyle={{

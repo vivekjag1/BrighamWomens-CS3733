@@ -1,8 +1,8 @@
 // import { Auth0Provider } from "@auth0/auth0-react";
 import { Outlet } from "react-router-dom";
-import SideNavBar from "./SideNavBar.tsx";
+import NavBar from "./NavBar.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
-/*import SideNavBar from "../archive/SideNavBar.tsx";*/
+/*import NavBar from "../archive/NavBar.tsx";*/
 import { useNavigate } from "react-router-dom";
 
 function Layout() {
@@ -24,7 +24,7 @@ function Layout() {
       }}
     >
       <div className="w-screen h-screen flex">
-        <SideNavBar />
+        <NavBar />
         <main className="grow">
           <Outlet />
         </main>
