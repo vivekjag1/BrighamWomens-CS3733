@@ -16,9 +16,6 @@ function Layout() {
         audience: "/api",
         scope: "openid profile email offline_access",
       }}
-      // onRedirectCallback={(appState) => {
-      //   navigate(appState?.returnTo || window.location.origin);
-      // }}
     >
       <div className="w-screen h-screen flex">
         <NavBar />
