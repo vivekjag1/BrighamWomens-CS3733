@@ -190,7 +190,7 @@ function ServiceFilterDropdown({
           <Button
             fullWidth
             onClick={handleResetFilters}
-            style={{ color: "red" }}
+            style={{ color: "red", padding: 0 }}
             sx={{ "&:hover": { bgcolor: "unset" } }}
           >
             Reset

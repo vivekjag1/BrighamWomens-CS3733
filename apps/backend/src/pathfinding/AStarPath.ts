@@ -100,10 +100,10 @@ export class AStarPath implements Path {
     const nodeA: GraphNode = this.parentGraph.getNodeWithNodeID(a);
     const nodeB: GraphNode = this.parentGraph.getNodeWithNodeID(b);
     if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
-      return 100;
+      return 1000;
     }
     if (nodeA.nodeType == "STAI" && nodeB.nodeType == "STAI") {
-      return 200;
+      return 2000;
     }
     return Math.sqrt(
       Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
