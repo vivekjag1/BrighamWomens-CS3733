@@ -17,7 +17,7 @@ const styles = {
 function MapToggle(props: {
   activeFloor: number;
   onClick: (x: number) => void;
-  nodes: number[][];
+  path?: number[][];
 }) {
   const [activeMap, setActiveMap] = useState(0);
 
@@ -25,14 +25,18 @@ function MapToggle(props: {
     setActiveMap(nextMap);
   }
 
-  // Determines which buttons to gray out
-  const relevantFloors: number[] = [];
-  for (let i = 0; i < props.nodes.length; i++) {
-    if (!relevantFloors.includes(props.nodes[i][2])) {
-      relevantFloors.push(props.nodes[i][2]);
+  // Stores all floors found in path
+  // If no path is supplied (for example MapEdit page, then contains all floors)
+  let relevantFloors: number[] = [];
+  if (props.path != undefined) {
+    for (let i = 0; i < props.path.length; i++) {
+      if (!relevantFloors.includes(props.path[i][2])) {
+        relevantFloors.push(props.path[i][2]);
+      }
     }
+  } else {
+    relevantFloors = [-2, -1, 1, 2, 3];
   }
-
   return (
     <ToggleButtonGroup
       orientation="vertical"

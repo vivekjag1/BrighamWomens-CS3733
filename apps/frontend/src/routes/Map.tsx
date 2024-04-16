@@ -22,9 +22,6 @@ function Map() {
 
   // Sets the floor number depending on which button user clicks
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-  function handleMapSwitch(x: number) {
-    setActiveFloor(x);
-  }
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -124,8 +121,8 @@ function Map() {
         <div className="fixed right-[2%] bottom-[2%]">
           <MapToggle
             activeFloor={activeFloor}
-            onClick={handleMapSwitch}
-            nodes={path}
+            onClick={setActiveFloor}
+            path={path}
           />
         </div>
       </div>

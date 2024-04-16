@@ -7,28 +7,30 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import { Node } from "database";
 import { EdgeCoordinates } from "../routes/MapEdit.tsx";
+import ZoomControls from "./ZoomControls.tsx";
 
 function MapEditor(props: {
-  floor: string;
+  activeFloor: number;
   nodes: Node[];
   edges: EdgeCoordinates[];
   onNodeClick: (node: Node) => void;
 }) {
+  // Determines which map to load depending on floor prop.
   let map;
-  switch (props.floor) {
-    case "L2":
+  switch (props.activeFloor) {
+    case -2:
       map = lowerLevel2;
       break;
-    case "L1":
+    case -1:
       map = lowerLevel1;
       break;
-    case "1":
+    case 1:
       map = firstFloor;
       break;
-    case "2":
+    case 2:
       map = secondFloor;
       break;
-    case "3":
+    case 3:
       map = thirdFloor;
       break;
   }
@@ -36,6 +38,7 @@ function MapEditor(props: {
   return (
     <div>
       <TransformWrapper>
+        <ZoomControls />
         <TransformComponent>
           <svg
             viewBox="0 0 5000 3400"
