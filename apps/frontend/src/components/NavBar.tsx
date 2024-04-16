@@ -1,20 +1,20 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/bwh-logo-shield.png";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
-//import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
 import paths from "../paths/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
-
-function NavBar() {
-  // const { isAuthenticated } = useAuth0();
+interface navBarProps {
+  currentPage: string;
+}
+function NavBar(props: navBarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
@@ -34,13 +34,23 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
+  useEffect(() => {
+    setActivePage(location.pathname);
+    console.log("inside use effect");
+    console.log(props.currentPage);
+    // if(props.currentPage && props.currentPage != activePage){
+    //  // setActivePage(props.currentPage);
+    //
+    // }
+  }, [activePage, props.currentPage]);
+
   const handleLogout = () => {
-    // logout({returnTo: window.location.origin} );
     logout({
       logoutParams: {
         returnTo: window.location.origin,
       },
     });
+    setActivePage(window.location.origin);
   };
 
   interface NavbarItemProps {
