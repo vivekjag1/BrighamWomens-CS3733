@@ -6,6 +6,7 @@ import axios from "axios";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
+import { PathNodesObject } from "common/src/Path.ts";
 
 const pathInitialState: number[][] = [
   [0, 0, -2],
@@ -17,7 +18,14 @@ const pathInitialState: number[][] = [
 
 const defaultFloor: number = 1;
 
+const initialState: PathNodesObject = {
+  startNode: "",
+  endNode: "",
+};
+
 function Map() {
+  const [pathNodeObject, setPathNodeObject] =
+    useState<PathNodesObject>(initialState);
   // const { getAccessTokenSilently } = useAuth0();
 
   // Sets the floor number depending on which button user clicks
@@ -47,8 +55,7 @@ function Map() {
   function resetNavigation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPath(pathInitialState);
-    setStart(undefined);
-    setEnd(undefined);
+    setPathNodeObject(initialState);
     setActiveFloor(defaultFloor);
   }
 
@@ -86,10 +93,10 @@ function Map() {
   }
 
   // const [clickedNode, setclickedNode] = useState<GraphNode>();
-  const [startNode, setStart] = useState<GraphNode>();
+  /*const [startNode, setStart] = useState<GraphNode>();
   const [endNode, setEnd] = useState<GraphNode>();
 
-  const getClickedNode = (node: GraphNode) => {
+  /!*const getClickedNode = (node: GraphNode) => {
     //console.log("Hello world", startNode);
     if (startNode) {
       setEnd(node!);
@@ -98,7 +105,7 @@ function Map() {
       setStart(node!);
       //console.log("Start node", startNode);
     }
-  };
+  };*!/*/
 
   return (
     <div className="relative bg-offwhite">
@@ -107,13 +114,14 @@ function Map() {
         activeFloor={activeFloor}
         path={path}
         nodes={nodes}
-        passClickedNode={getClickedNode}
+        setPathNodeObject={setPathNodeObject}
+        pathNodeObject={pathNodeObject}
       />
       <div className="absolute left-[1%] top-[2%]">
         <NavigateCard
           onSubmit={handleForm}
-          clickedNodeStart={startNode!}
-          clickedNodeEnd={endNode!}
+          pathNodeObject={pathNodeObject}
+          setPathNodeObject={setPathNodeObject}
           onReset={resetNavigation}
         />
       </div>
