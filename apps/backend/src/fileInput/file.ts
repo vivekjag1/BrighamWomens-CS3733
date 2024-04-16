@@ -90,8 +90,7 @@ export async function getEdgesFromDB() {
   let edgesString = "";
 
   edgesFromDb.forEach(
-    (edge) => (edgesString += edge.startNodeID + "," + edge.endNodeID + "\r\n"),
+    (edge) => (edgesString += Object.values(edge).join(",") + "\r\n"),
   );
-
   return edgesString;
 }
