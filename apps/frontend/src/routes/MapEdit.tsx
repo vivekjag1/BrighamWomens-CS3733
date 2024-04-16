@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
@@ -20,8 +20,10 @@ function MapEdit() {
   const [edges, setEdges] = useState<EdgeCoordinates[]>([]);
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [selectedNode, setSelectedNode] = useState<Node | undefined>(undefined);
+  const [nodeIndex, setNodeIndex] = useState<number | undefined>(undefined);
 
   useEffect(() => {
+    console.log("rerendered");
     const fetchData = async () => {
       try {
         const queryParams = {
@@ -80,15 +82,22 @@ function MapEdit() {
 
   function handleNodeClick(node: Node) {
     setSelectedNode(node);
+    setNodeIndex(nodes.indexOf(node));
   }
 
   function handleMapClick() {
     setSelectedNode(undefined);
+    setNodeIndex(undefined);
   }
 
-  function reset() {
-    setSelectedNode(undefined);
-  }
+  const updateNode: Dispatch<SetStateAction<Node | undefined>> = (node) => {
+    setSelectedNode(node);
+    if (selectedNode && nodeIndex) {
+      const nodesCopy = nodes;
+      nodesCopy[nodeIndex] = selectedNode;
+      setNodes(nodesCopy);
+    }
+  };
 
   return (
     <div className="relative bg-offwhite">
@@ -100,11 +109,7 @@ function MapEdit() {
         onMapClick={handleMapClick}
       />
       <div className="absolute left-[1%] top-[2%]">
-        <MapEditCard
-          selectedNode={selectedNode}
-          setSelectedNode={setSelectedNode}
-          onReset={reset}
-        />
+        <MapEditCard selectedNode={selectedNode} setSelectedNode={updateNode} />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
