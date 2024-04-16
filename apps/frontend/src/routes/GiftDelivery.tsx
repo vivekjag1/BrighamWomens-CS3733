@@ -16,7 +16,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import presentPic from "../../assets/present.png";
+import presentPic from "../../assets/presents.jpg";
 import ServiceImages from "../components/ServiceImages.tsx";
 
 const initialState: GiftDeliveryObject = {
@@ -85,7 +85,7 @@ export function GiftDelivery(): JSX.Element {
   }
 
   return (
-    <div className="flex justify-center space-x-4">
+    <div className="flex justify-center space-x-4 row">
       <div className="flex justify-content-end">
         <FormContainer>
           <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
@@ -237,10 +237,8 @@ export function GiftDelivery(): JSX.Element {
           </div>
         </FormContainer>
       </div>
-      <div className="flex justify-items-center w-[30rem]">
-        <FormContainer>
-          <ServiceImages imgPath={presentPic} alt="present picture" />
-        </FormContainer>
+      <div className="flex justify-items-center w-[35rem]">
+        <ServiceImages imgPath={presentPic} alt="present picture" />
       </div>
     </div>
   );
