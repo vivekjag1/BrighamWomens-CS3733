@@ -9,7 +9,7 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
@@ -97,6 +97,9 @@ function MapImage(props: {
   ) {
     isDefault = true;
   }
+
+  const [field, setField] = useState(1);
+
   return (
     <div>
       <div>
@@ -120,16 +123,18 @@ function MapImage(props: {
                   cy={node.ycoord}
                   fill={MapStyling.nodeColor}
                   onClick={() => {
-                    if (props.pathNodeObject.startNode === "") {
+                    if (field === 1) {
                       props.setPathNodeObject({
                         ...props.pathNodeObject,
                         startNode: node.longName,
                       });
-                    } else if (props.pathNodeObject.endNode === "") {
+                      setField(2);
+                    } else if (field === 2) {
                       props.setPathNodeObject({
                         ...props.pathNodeObject,
                         endNode: node.longName,
                       });
+                      setField(1);
                     }
                   }}
                   style={{ cursor: "pointer" }}
