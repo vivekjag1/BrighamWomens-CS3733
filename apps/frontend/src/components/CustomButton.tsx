@@ -8,9 +8,9 @@ const styles = {
   },
 } as const;
 
-function CustomButton(props: { text: string }) {
+function CustomButton(props: { text: string; onClick: () => void }) {
   return (
-    <Button variant="contained" sx={styles}>
+    <Button variant="contained" sx={styles} onClick={props.onClick}>
       {props.text}
     </Button>
   );

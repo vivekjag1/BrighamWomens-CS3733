@@ -99,6 +99,15 @@ function MapEdit() {
     }
   };
 
+  function handleSave() {
+    const node = {
+      nodeID: selectedNode?.nodeID,
+      xCoord: selectedNode?.xcoord,
+      yCoord: selectedNode?.ycoord,
+    };
+    console.log(node);
+  }
+
   return (
     <div className="relative bg-offwhite">
       <MapEditImage
@@ -109,7 +118,11 @@ function MapEdit() {
         onMapClick={handleMapClick}
       />
       <div className="absolute left-[1%] top-[2%]">
-        <MapEditCard selectedNode={selectedNode} setSelectedNode={updateNode} />
+        <MapEditCard
+          selectedNode={selectedNode}
+          setSelectedNode={updateNode}
+          onSave={handleSave}
+        />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
