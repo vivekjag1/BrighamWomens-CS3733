@@ -5,9 +5,14 @@ import TextFieldsIcon from "@mui/icons-material/TextFields";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "./NodeParam.tsx";
+import CustomButton from "./CustomButton.tsx";
 
-const textFieldStyles = {
-  width: "17vw",
+const textFieldStyles_large = {
+  width: "16vw",
+};
+
+const textFieldStyles_small = {
+  width: "8vw",
 };
 
 function MapEditCard(props: {
@@ -36,7 +41,7 @@ function MapEditCard(props: {
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
               value={props.selectedNode?.shortName}
-              sx={textFieldStyles}
+              sx={textFieldStyles_large}
               label="Short Name"
               editable={false}
             />
@@ -45,7 +50,7 @@ function MapEditCard(props: {
             <TextFieldsIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
               value={props.selectedNode?.longName}
-              sx={textFieldStyles}
+              sx={textFieldStyles_large}
               label="Long Name"
               editable={false}
               props={{ multiline: true }}
@@ -53,45 +58,40 @@ function MapEditCard(props: {
           </div>
           <div className="flex gap-1 items-center">
             <InfoIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <div className="flex flex-grow">
-              <NodeParam
-                value={props.selectedNode?.nodeType}
-                sx={textFieldStyles}
-                label="Type"
-                editable={false}
-              />
-            </div>
-            <div className="flex flex-grow">
-              <NodeParam
-                value={props.selectedNode?.floor}
-                sx={textFieldStyles}
-                label="Floor"
-                editable={false}
-              />
-            </div>
+            <NodeParam
+              value={props.selectedNode?.nodeType}
+              sx={textFieldStyles_small}
+              label="Type"
+              editable={false}
+            />
+            <NodeParam
+              value={props.selectedNode?.floor}
+              sx={textFieldStyles_small}
+              label="Floor"
+              editable={false}
+            />
           </div>
-          <div className="flex flex-row gap-1 items-center">
+          <form className="flex flex-row gap-1 items-center">
             <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <div className="flex flex-grow-1">
-              <NodeParam
-                value={props.selectedNode?.xcoord}
-                onChange={setNodeX(props.selectedNode)}
-                sx={{ width: "min-width" }}
-                label="X"
-                editable={true}
-                props={{ type: "number" }}
-              />
-            </div>
-            <div className="flex flex-grow-1">
-              <NodeParam
-                value={props.selectedNode?.ycoord}
-                onChange={setNodeY(props.selectedNode)}
-                sx={{ width: "min-width" }}
-                label="Y"
-                editable={true}
-                props={{ type: "number" }}
-              />
-            </div>
+            <NodeParam
+              value={props.selectedNode?.xcoord}
+              onChange={setNodeX(props.selectedNode)}
+              sx={textFieldStyles_small}
+              label="X"
+              editable={true}
+              props={{ type: "number" }}
+            />
+            <NodeParam
+              value={props.selectedNode?.ycoord}
+              onChange={setNodeY(props.selectedNode)}
+              sx={textFieldStyles_small}
+              label="Y"
+              editable={true}
+              props={{ type: "number" }}
+            />
+          </form>
+          <div className="flex justify-end">
+            <CustomButton text="SAVE" />
           </div>
         </div>
       </div>
