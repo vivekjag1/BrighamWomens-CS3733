@@ -1,4 +1,4 @@
-import React, { FormEventHandler } from "react";
+import React from "react";
 import { Node } from "database";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
@@ -13,7 +13,6 @@ const textFieldStyles = {
 function MapEditCard(props: {
   selectedNode?: Node;
   setSelectedNode: React.Dispatch<React.SetStateAction<Node | undefined>>;
-  onReset: FormEventHandler;
 }) {
   const setNodeX = (node: Node | undefined) => (x: string) => {
     if (node) props.setSelectedNode({ ...node, xcoord: x });
