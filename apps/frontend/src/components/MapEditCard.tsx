@@ -5,7 +5,7 @@ import TextFieldsIcon from "@mui/icons-material/TextFields";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "./NodeParam.tsx";
-import CustomButton from "./CustomButton.tsx";
+import CustomSaveButton from "./CustomSaveButton.tsx";
 
 const textFieldStyles_large = {
   width: "16vw",
@@ -91,7 +91,7 @@ function MapEditCard(props: {
             />
           </form>
           <div className="flex justify-end">
-            <CustomButton text="SAVE" onClick={props.onSave} />
+            <CustomSaveButton text="SAVE" onClick={props.onSave} />
           </div>
         </div>
       </div>
