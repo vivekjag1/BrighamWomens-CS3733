@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { ServiceRequest } from "database";
-// import { InputLabel, MenuItem, Select, FormControl } from "@mui/material";
 import dayjs from "dayjs";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
@@ -399,6 +398,7 @@ export function ServiceRequestGetter() {
                 <select
                   value={request.status}
                   onChange={(e) => handleStatusChange(e, request.serviceID)}
+                  onClick={(e) => e.stopPropagation()}
                   className="border border-gray-300 rounded px-3 py-1 text-center"
                 >
                   {statusOptions.map((option) => (
@@ -475,12 +475,7 @@ export function ServiceRequestGetter() {
                   className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                   onClick={() => setSelectedRow(null)}
                 >
-                  <svg
-                    className="w-6 h-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
                       fill="currentColor"
