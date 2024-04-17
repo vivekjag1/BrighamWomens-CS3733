@@ -21,7 +21,7 @@ function Login() {
           <label className="font-normal text-[2vw] text-white">
             Navigation made simple
           </label>
-          <label className="font-light text-[2vw] text-white">
+          <label className="font-light text-[2vw] text-white animate-pulse">
             Touch the screen to begin.
           </label>
           <label className="absolute bottom-[3vh] font-light text-[1vw] text-white">
