@@ -18,6 +18,7 @@ const textFieldStyles_small = {
 function MapEditCard(props: {
   selectedNode?: Node;
   setSelectedNode: React.Dispatch<React.SetStateAction<Node | undefined>>;
+  onSave: () => void;
 }) {
   const setNodeX = (node: Node | undefined) => (x: string) => {
     if (node) props.setSelectedNode({ ...node, xcoord: x });
@@ -90,7 +91,7 @@ function MapEditCard(props: {
             />
           </form>
           <div className="flex justify-end">
-            <CustomButton text="SAVE" />
+            <CustomButton text="SAVE" onClick={props.onSave} />
           </div>
         </div>
       </div>

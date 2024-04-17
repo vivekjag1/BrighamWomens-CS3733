@@ -4,15 +4,12 @@ import { PrismaClient } from "database";
 const prisma = new PrismaClient();
 
 router.patch("/", async (req, res) => {
-  const { nodeID, ShortName, LongName, Type, Floor, xCoord, yCoord } = req.body;
+  const { nodeID, xCoord, yCoord } = req.body;
+  console.log(req.body);
   try {
     const updatedNodes = await prisma.node.update({
       where: { nodeID: nodeID },
       data: {
-        shortName: ShortName,
-        longName: LongName,
-        nodeType: Type,
-        floor: Floor,
         xcoord: xCoord,
         ycoord: yCoord,
       },
