@@ -37,18 +37,24 @@ function MapEditCard(props: {
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
               value={nodes?.get(props.selectedNodeID ?? "")?.shortName}
+              onChange={(value) => {
+                props.updateNode("shortName", value);
+              }}
               sx={textFieldStyles_large}
               label="Short Name"
-              editable={false}
+              editable={true}
             />
           </div>
           <div className="flex gap-1 items-center">
             <TextFieldsIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
               value={nodes?.get(props.selectedNodeID ?? "")?.longName}
+              onChange={(value) => {
+                props.updateNode("longName", value);
+              }}
               sx={textFieldStyles_large}
               label="Long Name"
-              editable={false}
+              editable={true}
               props={{ multiline: true }}
             />
           </div>
