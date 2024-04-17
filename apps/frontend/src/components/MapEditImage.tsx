@@ -78,7 +78,11 @@ const MapEditImage = (props: {
   return (
     <div className="map-container" onClick={props.onMapClick}>
       <div>
-        <TransformWrapper>
+        <TransformWrapper
+          initialScale={1}
+          doubleClick={{ disabled: true }}
+          panning={{ velocityDisabled: true }}
+        >
           <MapZoomButtons />
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}

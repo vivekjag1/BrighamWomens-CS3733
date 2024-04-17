@@ -7,8 +7,10 @@ import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useToast } from "../components/useToast.tsx";
 
 const defaultFloor: number = 1;
+
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
@@ -30,12 +32,17 @@ function MapEdit() {
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
 
-  const value = { nodes, setNodes, edges, setEdges };
+  const contextValue = { nodes, setNodes, edges, setEdges };
 
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
   );
+
+  const { showToast } = useToast();
+
+  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
+  const [nodeSaved, setNodeSaved] = useState<boolean>(false);
 
   const { getAccessTokenSilently } = useAuth0();
   let token = "";
@@ -96,55 +103,66 @@ function MapEdit() {
     fetchData();
   }, [activeFloor]);
 
-  function setNodeX(x: string) {
-    if (selectedNodeID) {
-      const tempNodes = new Map(nodes);
-      const nodeToChange = tempNodes.get(selectedNodeID);
-      if (nodeToChange) {
-        tempNodes.set(selectedNodeID, { ...nodeToChange, xcoord: x });
-        setNodes(tempNodes);
-      }
+  function updateNodeField(field: keyof Node, value: string) {
+    const node = nodes.get(selectedNodeID!);
+    if (node) {
+      updateNode({ ...node, [field]: value });
     }
   }
-  function setNodeY(y: string) {
+
+  function updateNode(node: Node) {
+    const tempNodes = new Map(nodes);
     if (selectedNodeID) {
-      const tempNodes = new Map(nodes);
-      const nodeToChange = tempNodes.get(selectedNodeID);
-      if (nodeToChange) {
-        tempNodes.set(selectedNodeID, { ...nodeToChange, ycoord: y });
-        setNodes(tempNodes);
-      }
+      tempNodes.set(selectedNodeID, node);
+      setNodes(tempNodes);
     }
   }
 
   function handleNodeClick(nodeID: string) {
+    if (cachedNode) {
+      if (cachedNode.nodeID == nodeID)
+        return; // same node pressed
+      else {
+        // different node pressed
+        if (!nodeSaved) updateNode(cachedNode);
+      }
+    }
+
     setSelectedNodeID(nodeID);
+    setCachedNode(nodes.get(nodeID));
+    setNodeSaved(false);
   }
 
   function handleMapClick() {
+    // if node wasn't saved, revert node to cached version
+    if (cachedNode && !nodeSaved) {
+      updateNode(cachedNode);
+    }
+
     setSelectedNodeID(undefined);
-    // savedNode = undefined;
+    setCachedNode(undefined);
+    setNodeSaved(false);
   }
 
   async function handleSave() {
     token = await getAccessTokenSilently();
     if (!selectedNodeID) return;
-    const node = {
-      nodeID: nodes.get(selectedNodeID)?.nodeID,
-      xCoord: nodes.get(selectedNodeID)?.xcoord,
-      yCoord: nodes.get(selectedNodeID)?.ycoord,
-    };
-    await axios.patch(APIEndpoints.updateNodes, node, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(node);
+    await axios
+      .patch(APIEndpoints.updateNodes, nodes.get(selectedNodeID), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        setNodeSaved(true);
+        showToast("Node updated successfully!", "success");
+      })
+      .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
   return (
     <div className="relative bg-offwhite">
-      <MapContext.Provider value={value}>
+      <MapContext.Provider value={contextValue}>
         <MapEditImage
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
@@ -152,12 +170,11 @@ function MapEdit() {
         />
       </MapContext.Provider>
       <div className="absolute left-[1%] top-[2%]">
-        <MapContext.Provider value={value}>
+        <MapContext.Provider value={contextValue}>
           <MapEditCard
             selectedNodeID={selectedNodeID}
             onSave={handleSave}
-            setNodeX={setNodeX}
-            setNodeY={setNodeY}
+            updateNode={updateNodeField}
           />
         </MapContext.Provider>
       </div>
