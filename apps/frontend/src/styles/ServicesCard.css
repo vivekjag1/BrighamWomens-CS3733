@@ -1,0 +1,30 @@
+.serviceCard {
+  transform: scale(0);
+  animation: abracadabra 0.5s forwards;
+}
+
+.medicalDelivery {
+  animation-delay: 0.5s;
+}
+
+.giftDelivery {
+  animation-delay: 1s;
+}
+.sanitationRequest {
+  animation-delay: 1.5s;
+}
+
+.reserveRoom {
+  animation-delay: 2s;
+}
+.securityRequest {
+  animation-delay: 2.5s;
+}
+@keyframes abracadabra {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
