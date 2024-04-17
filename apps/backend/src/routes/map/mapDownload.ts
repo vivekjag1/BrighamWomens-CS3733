@@ -4,7 +4,7 @@ import { getEdgesFromDB, getNodesFromDB } from "../../fileInput/file.ts";
 //const prisma = new PrismaClient();
 
 // Handles incoming map data files
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   const nodeString = await getNodesFromDB(); //get nodes string from db
   const edgeString = await getEdgesFromDB(); //get edges string from db
   const sendToFrontEnd: string[] = [edgeString, nodeString]; //send as 2d string array

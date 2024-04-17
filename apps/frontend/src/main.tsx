@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { ToastProvider } from "./components/ToastProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       //   navigate(appState?.returnTo || window.location.pathname);
       // }}
     >
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </Auth0Provider>
   </React.StrictMode>,
 );

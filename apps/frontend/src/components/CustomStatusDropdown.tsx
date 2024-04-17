@@ -4,20 +4,43 @@ import { MenuItem, InputLabel } from "@mui/material";
 const CustomStatusDropdown: React.FC<SelectProps> = (props) => {
   return (
     <>
-      <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+      <InputLabel
+        sx={{
+          color: "#a4aab5",
+          fontSize: ".9rem",
+          fontFamily: "Poppins, sans-serif",
+        }}
+      >
         Status *
       </InputLabel>
       <Select
         name="status"
         className="bg-gray-50"
-        sx={{ fontSize: ".9rem" }}
+        sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
         label="Status *"
         {...props}
       >
-        <MenuItem value="Unassigned">Unassigned</MenuItem>
-        <MenuItem value="Assigned">Assigned</MenuItem>
-        <MenuItem value="InProgress">InProgress</MenuItem>
-        <MenuItem value="Closed">Closed</MenuItem>
+        <MenuItem
+          value="Unassigned"
+          style={{ fontFamily: "Poppins, sans-serif" }}
+        >
+          Unassigned
+        </MenuItem>
+        <MenuItem
+          value="Assigned"
+          style={{ fontFamily: "Poppins, sans-serif" }}
+        >
+          Assigned
+        </MenuItem>
+        <MenuItem
+          value="InProgress"
+          style={{ fontFamily: "Poppins, sans-serif" }}
+        >
+          InProgress
+        </MenuItem>
+        <MenuItem value="Closed" style={{ fontFamily: "Poppins, sans-serif" }}>
+          Closed
+        </MenuItem>
       </Select>
     </>
   );

@@ -11,9 +11,11 @@ export class APIEndpoints {
   static readonly navigationRequest: string = "/api/navigation/get";
   static readonly sanitationPostRequests: string =
     "/api/service/sanitationPostRequests";
+  static readonly giftPostRequests: string = "/api/service/giftPostRequests";
   static readonly roomReservation: string = "/api/service/room-reservation";
   static readonly medicalDeviceDelivery: string =
     "/api/service/postMedicalDevice";
+  static readonly updateNodes: string = "/api/map/updateNodes";
 }
 
 export class FileAttributes {
@@ -22,7 +24,8 @@ export class FileAttributes {
 }
 
 export class NavigateAttributes {
-  static readonly startLocationKey: string = "currentLocation";
-  static readonly endLocationKey: string = "destination";
+  static readonly startLocationKey: string = "start";
+  static readonly endLocationKey: string = "end";
   static readonly floorKey: string = "floor";
+  static readonly algorithmKey: string = "algo";
 }

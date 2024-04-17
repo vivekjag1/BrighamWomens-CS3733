@@ -2,8 +2,8 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
 
-import Home from "./routes/Home.tsx";
-import Hero from "./routes/Login.tsx";
+import Map from "./routes/Map.tsx";
+//import Hero from "./routes/Login.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
@@ -13,22 +13,24 @@ import SanitationForm from "./routes/SanitationForm.tsx";
 import RoomReservation from "./routes/RoomReservation.tsx";
 import SecurityRequest from "./routes/SecurityRequest.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
-import EditMap from "./routes/EditMap.tsx";
+import GiftDelivery from "./routes/GiftDelivery.tsx";
+import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
+import Login from "./routes/Login.tsx";
 function App() {
   const router = createBrowserRouter([
     {
       path: paths.LOGIN,
-      element: <Hero />,
+      element: <Login />,
     },
 
     {
-      path: paths.HOME,
+      path: paths.MAP,
       element: <Layout />,
       children: [
         {
-          path: paths.HOME,
-          element: <Home />,
+          path: paths.MAP,
+          element: <Map />,
         },
         {
           path: paths.SERVICES,
@@ -55,6 +57,10 @@ function App() {
           element: <AuthComp component={SecurityRequest} />,
         },
         {
+          path: paths.GIFT_DELIVERY,
+          element: <AuthComp component={GiftDelivery} />,
+        },
+        {
           path: paths.SERVICES_DATA,
           element: <AuthComp component={ServicesTable} />,
         },
@@ -64,7 +70,7 @@ function App() {
         },
         {
           path: paths.MAP_EDITOR,
-          element: <EditMap />,
+          element: <AuthComp component={MapEdit} />,
         },
       ],
     },

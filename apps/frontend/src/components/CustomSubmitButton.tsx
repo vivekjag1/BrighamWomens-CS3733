@@ -6,7 +6,11 @@ const CustomSubmitButton: React.FC<ButtonProps> = (props) => {
     <Button
       variant="contained"
       className="justify-end"
-      style={{ backgroundColor: "#012D5A", width: "8rem" }}
+      style={{
+        backgroundColor: "#012D5A",
+        width: "8rem",
+        fontFamily: "Poppins, sans-serif",
+      }}
       {...props}
       endIcon={<CheckIcon />}
     >

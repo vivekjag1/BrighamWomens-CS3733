@@ -7,12 +7,17 @@ import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
+import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
 import handleEdges from "./routes/handleEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
 import handleNodes from "./routes/handleNodes.ts";
-import RoomReservationAPI from "./routes/RoomReservationAPI.ts";
-
+import roomReservationAPI from "./routes/RoomReservationAPI.ts";
+import handleMedicalDeviceDelivery from "./routes/handleMedicalDeviceDelivery.ts";
+import securityRequest from "./routes/securityRequest.ts";
+import { auth } from "express-oauth2-jwt-bearer";
+import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
+import updateNodes from "./routes/map/updateNodes.ts";
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear
@@ -34,15 +39,28 @@ app.use("/healthcheck", (req, res) => {
   res.status(200).send();
 });
 
+app.use(APIEndpoints.mapGetEdges, handleEdges);
+app.use(APIEndpoints.mapGetNodes, handleNodes);
+app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+
+app.use(
+  auth({
+    audience: "/api",
+    issuerBaseURL: "https://dev-7eoh0ojk0tkfhypo.us.auth0.com",
+    tokenSigningAlg: "RS256",
+  }),
+);
 app.use(APIEndpoints.mapUpload, mapUpload);
 app.use(APIEndpoints.mapDownload, mapDownload);
 app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
 app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
-app.use(APIEndpoints.navigationRequest, pathfindingAPI);
-app.use(APIEndpoints.roomReservation, RoomReservationAPI);
-app.use(APIEndpoints.mapGetEdges, handleEdges);
-app.use(APIEndpoints.mapGetNodes, handleNodes);
+app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
+app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
+app.use(APIEndpoints.roomReservation, roomReservationAPI);
+app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
+app.use(APIEndpoints.giftPostRequests, handleGiftDeliveryRequest);
+app.use(APIEndpoints.updateNodes, updateNodes);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

@@ -13,7 +13,9 @@ import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import { SecurityRequestType } from "common/src/SecurityRequestType.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import axios from "axios";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: SecurityRequestType = {
   numberPeople: "",
@@ -32,6 +34,8 @@ export function SecurityRequest() {
   const [securityRequestForm, setSecurityRequestForm] =
     useState<SecurityRequestType>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
+  const { getAccessTokenSilently } = useAuth0();
 
   const validateForm = () => {
     return (
@@ -45,30 +49,28 @@ export function SecurityRequest() {
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.servicePostSecurityRequest,
           securityRequestForm,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
-
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Security request sent!");
+          showToast("Security Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Security Request failed!");
+          showToast("Security Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Security Request failed!");
+        showToast("Security Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
@@ -121,18 +123,25 @@ export function SecurityRequest() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setSecurityRequestForm({
                 ...securityRequestForm,
                 serviceRequest: {
                   ...securityRequestForm.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               });
             }}
           />
 
           <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
               Security Type *
             </InputLabel>
             <Select
@@ -140,7 +149,7 @@ export function SecurityRequest() {
               value={securityRequestForm.securityType}
               className="bg-gray-50"
               label="Security Type *"
-              sx={{ fontSize: ".9rem" }}
+              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
               onChange={(e) => {
                 setSecurityRequestForm({
                   ...securityRequestForm,
@@ -148,9 +157,24 @@ export function SecurityRequest() {
                 });
               }}
             >
-              <MenuItem value="Monitor">Monitor</MenuItem>
-              <MenuItem value="Monitor">Escort</MenuItem>
-              <MenuItem value="Monitor">Patrol</MenuItem>
+              <MenuItem
+                value="Monitor"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Monitor
+              </MenuItem>
+              <MenuItem
+                value="Escort"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Escort
+              </MenuItem>
+              <MenuItem
+                value="Patrol"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Patrol
+              </MenuItem>
             </Select>
           </FormControl>
 

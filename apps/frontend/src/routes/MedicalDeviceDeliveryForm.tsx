@@ -10,8 +10,10 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: MedicalDeviceDelivery = {
   deviceType: "",
@@ -27,9 +29,12 @@ const initialState: MedicalDeviceDelivery = {
 };
 
 export function MedicalDeviceDeliveryForm() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [medicalDeviceDelivery, setMedicalDeviceDelivery] =
     useState<MedicalDeviceDelivery>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   function clear() {
     setDate(dayjs());
@@ -37,41 +42,41 @@ export function MedicalDeviceDeliveryForm() {
   }
 
   const validateForm = () => {
-    const isValid =
+    return (
       medicalDeviceDelivery.deviceType &&
       medicalDeviceDelivery.quantity &&
       medicalDeviceDelivery.serviceRequest.requestingUsername &&
       medicalDeviceDelivery.serviceRequest.location &&
-      medicalDeviceDelivery.serviceRequest.priority;
-    return isValid;
+      medicalDeviceDelivery.serviceRequest.priority
+    );
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
+
     console.log(validateForm());
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.medicalDeviceDelivery,
           medicalDeviceDelivery,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
 
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Medical device delivery form sent!");
+          showToast("Medical Device Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status: ", response.status);
-          alert("Medical Device Request failed!");
+          showToast("Medical Device Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form: ", error);
-        alert("Medical Device Request failed!");
+        showToast("Medical Device Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
@@ -121,20 +126,32 @@ export function MedicalDeviceDeliveryForm() {
           <CustomDatePicker
             value={date}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setMedicalDeviceDelivery(
                 (currentMedicalDeviceDelivery: MedicalDeviceDelivery) => ({
                   ...currentMedicalDeviceDelivery,
                   serviceRequest: {
                     ...currentMedicalDeviceDelivery.serviceRequest,
-                    requestedTime: newValue ? newValue.toISOString() : "",
+                    requestedTime: isValid ? newValue.toISOString() : "",
                   },
                 }),
               );
             }}
           />
 
-          <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel sx={{ color: "#a4aab5", fontSize: ".9rem" }}>
+          <FormControl
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+            size="small"
+          >
+            <InputLabel
+              sx={{
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
+            >
               Device Type *
             </InputLabel>
             <Select
@@ -151,16 +168,66 @@ export function MedicalDeviceDeliveryForm() {
               }
               required
             >
-              <MenuItem value="stretcher">Stretcher</MenuItem>
-              <MenuItem value="wheelchair">Wheelchair</MenuItem>
-              <MenuItem value="crutches">Crutches</MenuItem>
-              <MenuItem value="hospital bed">Hospital Bed</MenuItem>
-              <MenuItem value="iv pump">IV Pump</MenuItem>
-              <MenuItem value="patient monitor">Patient Monitor</MenuItem>
-              <MenuItem value="defibrillator">Defibrillator</MenuItem>
-              <MenuItem value="anesthesia machine">Anesthesia Machine</MenuItem>
-              <MenuItem value="ventilator">Ventilator</MenuItem>
-              <MenuItem value="catheter">Catheter</MenuItem>
+              <MenuItem
+                value="stretcher"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Stretcher
+              </MenuItem>
+              <MenuItem
+                value="wheelchair"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Wheelchair
+              </MenuItem>
+              <MenuItem
+                value="crutches"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Crutches
+              </MenuItem>
+              <MenuItem
+                value="hospital bed"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Hospital Bed
+              </MenuItem>
+              <MenuItem
+                value="iv pump"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                IV Pump
+              </MenuItem>
+              <MenuItem
+                value="patient monitor"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Patient Monitor
+              </MenuItem>
+              <MenuItem
+                value="defibrillator"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Defibrillator
+              </MenuItem>
+              <MenuItem
+                value="anesthesia machine"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Anesthesia Machine
+              </MenuItem>
+              <MenuItem
+                value="ventilator"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Ventilator
+              </MenuItem>
+              <MenuItem
+                value="catheter"
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                Catheter
+              </MenuItem>
             </Select>
           </FormControl>
 

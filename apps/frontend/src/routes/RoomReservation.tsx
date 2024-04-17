@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -13,9 +12,11 @@ import CustomClearButton from "../components/CustomClearButton.tsx";
 import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import FormContainer from "../components/FormContainer.tsx";
 import { RoomReservationType } from "common/src/RoomReservationType.ts";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: RoomReservationType = {
   endTime: dayjs().toISOString(),
@@ -30,10 +31,13 @@ const initialState: RoomReservationType = {
   },
 };
 export function RoomReservation() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [roomReservation, setRoomReservation] =
     useState<RoomReservationType>(initialState);
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
   const validateForm = () => {
     const isValid =
       roomReservation.reservationReason &&
@@ -48,30 +52,32 @@ export function RoomReservation() {
   };
 
   async function submit() {
-    console.log("called submit function!");
+    const token = await getAccessTokenSilently();
+
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.roomReservation,
           roomReservation,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
         if (response.status === 200) {
           console.log("Submission successful");
-          alert("Room Reservation sent!");
+          //alert("Room Reservation sent!");
+          showToast("Room Reservation sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Room Reservation failed!");
+          //alert("Room Reservation failed!");
         }
       } catch (error) {
         console.error("Error submitting the form!: ", error);
-        alert("Room Reservation Failed!");
+        //alert("Room Reservation Failed!");
+        showToast("Room Reservation failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information");
+      //alert("You must fill out all the required information");
+      showToast("Fill out all the required information!", "warning");
     }
   }
   function clear() {
@@ -119,51 +125,72 @@ export function RoomReservation() {
             id="outlined-basic"
             label="Reservation Name"
             variant="outlined"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             className="bg-gray-50"
-            InputProps={{ style: { fontSize: ".9rem" } }}
+            InputProps={{
+              style: { fontSize: ".9rem", fontFamily: "Poppins, sans-serif" },
+            }}
             InputLabelProps={{
-              style: { color: "#a4aab5", fontSize: ".9rem" },
+              style: {
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              },
             }}
             size="small"
           />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer
-              components={["DateTimePicker"]}
-              sx={{ width: "25rem", padding: 0, margin: 0 }}
-            >
-              <DateTimePicker
-                value={startDate}
-                onChange={(newValue) => {
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
-                    serviceRequest: {
-                      ...currentReservation.serviceRequest,
-                      requestedTime: newValue ? newValue.toISOString() : "",
-                    },
-                  }));
-                }}
-                label="Reservation Start Time"
-                className="bg-gray-50"
-                sx={{ width: "25rem", padding: 0 }}
-              />
-              <DateTimePicker
-                value={endDate}
-                onChange={(newValue) => {
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
-                    serviceRequest: {
-                      ...currentReservation.serviceRequest,
-                      endTime: newValue ? newValue.toISOString() : "",
-                    },
-                  }));
-                }}
-                label="Reservation End Time"
-                className="bg-gray-50"
-                sx={{ width: "25rem", padding: 0, margin: 0 }}
-              />
-            </DemoContainer>
+            <DateTimePicker
+              value={startDate}
+              onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
+                setRoomReservation((currentReservation) => ({
+                  ...currentReservation,
+                  serviceRequest: {
+                    ...currentReservation.serviceRequest,
+                    requestedTime: isValid ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+              label="Reservation Start Time"
+              className="bg-gray-50"
+              sx={{
+                width: "25rem",
+                padding: 0,
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
+            />
+            <DateTimePicker
+              value={endDate}
+              onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
+                setRoomReservation((currentReservation) => ({
+                  ...currentReservation,
+                  serviceRequest: {
+                    ...currentReservation.serviceRequest,
+                    endTime: isValid ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+              label="Reservation End Time"
+              className="bg-gray-50"
+              sx={{
+                width: "25rem",
+                padding: 0,
+                "& .MuiInputLabel-root.Mui-focused": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: "Poppins, sans-serif",
+                },
+              }}
+            />
           </LocalizationProvider>
           <TextField
             value={roomReservation.reservationReason}
@@ -178,11 +205,17 @@ export function RoomReservation() {
             multiline
             maxRows={4}
             variant="outlined"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             className="bg-gray-50"
-            InputProps={{ style: { fontSize: ".9rem" } }}
+            InputProps={{
+              style: { fontSize: ".9rem", fontFamily: "Poppins, sans-serif" },
+            }}
             InputLabelProps={{
-              style: { color: "#a4aab5", fontSize: ".9rem" },
+              style: {
+                color: "#a4aab5",
+                fontSize: ".9rem",
+                fontFamily: "Poppins, sans-serif",
+              },
             }}
             size="small"
           />

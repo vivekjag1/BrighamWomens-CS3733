@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/Login.css";
-/*import { useAuth0 } from "@auth0/auth0-react";*/
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -15,16 +14,16 @@ function Login() {
         onClick={handlePathfind}
         className="landing-page w-screen h-screen bg-no-repeat bg-cover bg-center"
       >
-        <div className="opening-remarks w-screen h-screen flex flex-col justify-center items-center gap-12">
-          <h2 className="text-7xl font-semibold text-white">
+        <div className="opening-remarks w-screen h-screen flex flex-col justify-center items-center gap-8">
+          <label className="text-[3vw] font-semibold text-white">
             Welcome to Brigham and Women's Hospital
-          </h2>
-          <p className="font-normal text-5xl text-white">
+          </label>
+          <label className="font-normal text-[2vw] text-white">
             Navigation made simple
-          </p>
-          <p className="font-light text-3xl text-white">
+          </label>
+          <label className="font-light text-[2vw] text-white">
             Touch the screen to begin.
-          </p>
+          </label>
         </div>
       </div>
     </div>

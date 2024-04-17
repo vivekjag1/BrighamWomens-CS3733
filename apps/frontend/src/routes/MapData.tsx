@@ -1,18 +1,23 @@
 import { Button } from "@mui/material";
-import { useRef, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useRef, useState, useEffect } from "react";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useToast } from "../components/useToast.tsx";
 
 const NodeTable = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
 
   const [activeTab, setActiveTab] = useState<string>("node");
   const nodeTableButtonRef = useRef<HTMLButtonElement>(null);
+  const { showToast } = useToast();
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
   };
@@ -24,10 +29,10 @@ const NodeTable = () => {
   }, []);
 
   const getButtonClasses = (tabName: string): string => {
-    return `inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 ${
+    return `inline-block p-4 rounded-t-lg hover:text-blue-500 hover:border-blue-500 ${
       activeTab === tabName
-        ? "text-blue-500 border-blue-500" // Active tab styles
-        : "border-gray-300 focus:text-blue-500 focus:border-blue-500" // Inactive tab styles
+        ? "text-[#012D5A] border-[#012D5A] border-b-[3px]" // Active tab styles
+        : "border-gray-300 border-gray-300 focus:text-blue-500 focus:border-blue-500 border-b-2" // Inactive tab styles
     } focus:outline-none`;
   };
 
@@ -44,7 +49,15 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    const retFromAPI = await axios.post(APIEndpoints.mapDownload); //get info from route
+    console.log("called  download files");
+
+    const token = await getAccessTokenSilently();
+    const retFromAPI = await MakeProtectedGetRequest(
+      APIEndpoints.mapDownload,
+      token,
+    );
+    console.log("hello world");
+
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",
     }); //create blob
@@ -67,25 +80,26 @@ const NodeTable = () => {
         const formData = new FormData();
         formData.append(FileAttributes.nodeKey, nodeFile, nodeFile.name);
         formData.append(FileAttributes.edgeKey, edgeFile, edgeFile.name);
-        const res = await axios.post(APIEndpoints.mapUpload, formData, {
-          headers: {
-            "Content-Type": `multipart/form-data`,
-          },
-        });
+        const token = await getAccessTokenSilently();
+        const res = await MakeProtectedPostRequest(
+          APIEndpoints.mapUpload,
+          formData,
+          token,
+        );
         if (res.status == 202) {
           console.log("bad file");
-          alert("File(s) failed validation!");
+          showToast("File(s) failed validation!", "error");
         } else {
           console.log("success");
-          alert("Map data uploaded!");
+          showToast("Map data uploaded!", "success");
           location.reload();
         }
       } else {
-        alert("One or more map files missing!");
+        showToast("One or more map files are missing!", "error");
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Failed to upload map data!");
+      showToast("Failed to upload map data!", "error");
     }
   }
 
@@ -129,27 +143,42 @@ const NodeTable = () => {
           </div>
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center gap-2">
-              <div className="flex flex-col items-center justify-center gap-2 pl-20">
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Node CSV:</p>
-                  <input
-                    id="importNodeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Node File"
-                    onChange={nodeFileChange}
-                  />
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Node File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: nodeFile ? "green" : "#012D5A" }}
+                  >
+                    {nodeFile ? nodeFile.name : "Upload File"}
+                    <input
+                      id="importNodeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Node File"
+                      onChange={nodeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
-
-                <div className="flex flex-row items-center pl-4">
-                  <p className="mr-2">Import Edge CSV:</p>
-                  <input
-                    id="importEdgeFile"
-                    type="file"
-                    accept=".csv"
-                    name="Import Edge File"
-                    onChange={edgeFileChange}
-                  />
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Edge File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{ backgroundColor: edgeFile ? "green" : "#012D5A" }}
+                  >
+                    {edgeFile ? edgeFile.name : "Upload File"}
+                    <input
+                      id="importEdgeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Edge File"
+                      onChange={edgeFileChange}
+                      hidden
+                    />
+                  </Button>
                 </div>
               </div>
 
@@ -179,7 +208,7 @@ const NodeTable = () => {
 
             <hr className="m-1" />
             <ul
-              className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center mb-5"
+              className="flex flex-wrap text-sm font-medium text-center justify-center mb-5"
               id="default-tab"
             >
               <li className="mr-2" role="presentation">
@@ -203,8 +232,7 @@ const NodeTable = () => {
             </ul>
 
             {activeTab === "node" && (
-              <div>
-                {/*<h2 className="text-3xl font-bold">Node Table</h2>*/}
+              <div className="mx-8">
                 <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -241,7 +269,6 @@ const NodeTable = () => {
 
             {activeTab === "edge" && (
               <div>
-                {/*<h2 className="text-3xl font-bold">Edge Table</h2>*/}
                 <table className="text-sm text-gray-500 mt-3 shadow-md text-center">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>

@@ -13,7 +13,9 @@ import CustomSubmitButton from "../components/CustomSubmitButton.tsx";
 import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -29,45 +31,50 @@ const initialState: SanitationRequestObject = {
 };
 
 export function SanitationForm() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const [sanitationRequest, setSanitationRequest] =
     useState<SanitationRequestObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
+  const { showToast } = useToast();
 
   const validateForm = () => {
-    const isValid =
+    return (
       sanitationRequest.sanitationType &&
       sanitationRequest.requiredEquipment &&
       sanitationRequest.serviceRequest.requestingUsername &&
       sanitationRequest.serviceRequest.location &&
-      sanitationRequest.serviceRequest.priority;
-    return isValid;
+      sanitationRequest.serviceRequest.priority
+    );
   };
 
   async function submit() {
+    const token = await getAccessTokenSilently();
     if (validateForm()) {
       try {
-        const response = await axios.post(
+        const response = await MakeProtectedPostRequest(
           APIEndpoints.sanitationPostRequests,
           sanitationRequest,
-          {
-            headers: { "Content-Type": "application/json" },
-          },
+          token,
         );
-
         if (response.status === 200) {
           console.log("Submission successful", response.data);
-          alert("Sanitation Request sent!");
+          //alert("Sanitation Request sent!");
+          showToast("Sanitation Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          alert("Sanitation Request failed!");
+          //alert("Sanitation Request failed!");
+          showToast("Sanitation Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
-        alert("Sanitation Request failed!");
+        //alert("Sanitation Request failed!");
+        showToast("Sanitation Request failed!", "error");
       }
     } else {
-      alert("You must fill out all the required information!");
+      //alert("You must fill out all the required information!");
+      showToast("Fill out all the required information!", "warning");
     }
   }
 
@@ -119,12 +126,14 @@ export function SanitationForm() {
 
           <CustomDatePicker
             value={date}
+            sx={{ fontFamily: "Poppins, sans-serif" }}
             onChange={(newValue) => {
+              const isValid = newValue && dayjs(newValue).isValid();
               setSanitationRequest((currentSanitationRequest) => ({
                 ...currentSanitationRequest,
                 serviceRequest: {
                   ...currentSanitationRequest.serviceRequest,
-                  requestedTime: newValue ? newValue.toISOString() : "",
+                  requestedTime: isValid ? newValue.toISOString() : "",
                 },
               }));
             }}
@@ -141,13 +150,17 @@ export function SanitationForm() {
             ]}
             className="bg-gray-50"
             size="small"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Service Type *"
                 InputLabelProps={{
-                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                  style: {
+                    color: "#a4aab5",
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  },
                 }}
               />
             )}
@@ -177,13 +190,17 @@ export function SanitationForm() {
             ]}
             className="bg-gray-50"
             size="small"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Necessary Equipment *"
                 InputLabelProps={{
-                  style: { color: "#a4aab5", fontSize: ".9rem" },
+                  style: {
+                    color: "#a4aab5",
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  },
                 }}
               />
             )}
@@ -220,7 +237,10 @@ export function SanitationForm() {
             size="small"
           />
 
-          <FormControl sx={{ width: "25rem" }} size="small">
+          <FormControl
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+            size="small"
+          >
             <CustomStatusDropdown
               value={sanitationRequest.serviceRequest.status}
               onChange={(e) =>
@@ -238,7 +258,7 @@ export function SanitationForm() {
           <FormControl
             component="fieldset"
             margin="normal"
-            sx={{ width: "25rem" }}
+            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
           >
             <CustomPrioritySelector
               value={sanitationRequest.serviceRequest.priority}

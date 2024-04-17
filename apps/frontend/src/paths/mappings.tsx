@@ -1,5 +1,5 @@
 import paths from "./paths.tsx";
-import Home from "../routes/Home.tsx";
+import Map from "../routes/Map.tsx";
 import Services from "../routes/Services.tsx";
 import SecurityRequest from "../routes/SecurityRequest.tsx";
 import RoomReservation from "../routes/RoomReservation.tsx";
@@ -9,10 +9,11 @@ import SanitationForm from "../routes/SanitationForm.tsx";
 //import MedicineRequest from "../routes/MedicineRequest-styled.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import PathTables from "../routes/MapData.tsx";
-import EditMap from "../routes/EditMap.tsx";
+import MapEdit from "../routes/MapEdit.tsx";
+import GiftDelivery from "../routes/GiftDelivery.tsx";
 
 const routes = [
-  { path: paths.HOME, element: <Home /> },
+  { path: paths.MAP, element: <Map /> },
   { path: paths.SERVICES, element: <Services /> },
   { path: paths.MEDICINE_REQUEST, element: <MedicineDeliveryForm /> },
   {
@@ -22,9 +23,10 @@ const routes = [
   { path: paths.SANITATION_FORM, element: <SanitationForm /> },
   { path: paths.ROOM_RESERVATION, element: <RoomReservation /> },
   { path: paths.SECURITY_REQUEST, element: <SecurityRequest /> },
+  { path: paths.GIFT_DELIVERY, element: <GiftDelivery /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
-  { path: paths.MAP_EDITOR, element: <EditMap /> },
+  { path: paths.MAP_EDITOR, element: <MapEdit /> },
 ];
 
 export default routes;

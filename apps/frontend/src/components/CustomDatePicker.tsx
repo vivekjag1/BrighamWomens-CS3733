@@ -1,5 +1,4 @@
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -15,16 +14,19 @@ const CustomDatePicker: React.FC<DateTimePickerProps<Dayjs>> = (props) => {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer
-          components={["DateTimePicker"]}
-          sx={{ width: "25rem", paddingBottom: ".3rem" }}
-        >
-          <DateTimePicker
-            label="Service Time *"
-            className="bg-gray-50"
-            {...props}
-          />
-        </DemoContainer>
+        <DateTimePicker
+          label="Service Time *"
+          className="bg-gray-50"
+          {...props}
+          sx={{
+            width: "25rem",
+            padding: 0,
+            "& .MuiInputLabel-root.Mui-focused": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiOutlinedInput-root": { fontFamily: "Poppins, sans-serif" },
+          }}
+        />
       </LocalizationProvider>
     </>
   );

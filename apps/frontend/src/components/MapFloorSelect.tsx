@@ -6,18 +6,18 @@ const styles = {
   width: "3vw",
   height: "5vh",
   "&:hover": {
-    backgroundColor: "rgba(0,0,0,0.15)",
+    backgroundColor: "#013B96",
   },
-  "&.Mui-selected": {
-    backgroundColor: "#004ABE",
+  "&.Mui-selected, &.Mui-selected:hover": {
+    backgroundColor: "#013B96",
     color: "#FFFFFF",
   },
 } as const;
 
-function MapToggle(props: {
+function MapFloorSelect(props: {
   activeFloor: number;
   onClick: (x: number) => void;
-  nodes: number[][];
+  path?: number[][];
 }) {
   const [activeMap, setActiveMap] = useState(0);
 
@@ -25,21 +25,25 @@ function MapToggle(props: {
     setActiveMap(nextMap);
   }
 
-  // Determines which buttons to gray out
-  const relevantFloors: number[] = [];
-  for (let i = 0; i < props.nodes.length; i++) {
-    if (!relevantFloors.includes(props.nodes[i][2])) {
-      relevantFloors.push(props.nodes[i][2]);
+  // Stores all floors found in path
+  // If no path is supplied (for example MapEdit page, then contains all floors)
+  let relevantFloors: number[] = [];
+  if (props.path != undefined) {
+    for (let i = 0; i < props.path.length; i++) {
+      if (!relevantFloors.includes(props.path[i][2])) {
+        relevantFloors.push(props.path[i][2]);
+      }
     }
+  } else {
+    relevantFloors = [-2, -1, 1, 2, 3];
   }
-
   return (
     <ToggleButtonGroup
       orientation="vertical"
       value={activeMap}
       exclusive
       onChange={handleChange}
-      sx={{ backgroundColor: "#013B96", height: "100%" }}
+      sx={{ backgroundColor: "#012D5A", height: "100%" }}
     >
       <ToggleButton
         onClick={() => props.onClick(3)}
@@ -90,4 +94,4 @@ function MapToggle(props: {
   );
 }
 
-export default MapToggle;
+export default MapFloorSelect;
