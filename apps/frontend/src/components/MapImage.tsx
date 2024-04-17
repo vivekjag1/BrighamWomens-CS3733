@@ -103,7 +103,11 @@ function MapImage(props: {
   return (
     <div>
       <div>
-        <TransformWrapper initialScale={1}>
+        <TransformWrapper
+          initialScale={1}
+          doubleClick={{ disabled: true }}
+          panning={{ velocityDisabled: true }}
+        >
           <MapZoomButtons />
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
