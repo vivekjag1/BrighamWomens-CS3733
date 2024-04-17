@@ -22,21 +22,27 @@ function Services() {
           <hr className="pl-96 pr-96" />
         </div>
         <div className="flex justify-center gap-8">
-          <Link to={paths.MEDICINE_REQUEST}>
+          <Link
+            to={paths.MEDICINE_REQUEST}
+            className="serviceCard medicineDelivery"
+          >
             <ServiceCard
               imgPath={medicineIcon}
               alt="pill icon"
               label="Medicine Delivery"
             />
           </Link>
-          <Link to={paths.MEDICAL_DEVICE_DELIVERY}>
+          <Link
+            to={paths.MEDICAL_DEVICE_DELIVERY}
+            className="serviceCard medicalDelivery"
+          >
             <ServiceCard
               imgPath={deviceIcon}
               alt="device icon"
               label="Medical Device Delivery"
             />
           </Link>
-          <Link to={paths.GIFT_DELIVERY}>
+          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
             <ServiceCard
               imgPath={giftIcon}
               alt="device icon"
@@ -45,21 +51,27 @@ function Services() {
           </Link>
         </div>
         <div className="flex justify-center gap-8">
-          <Link to={paths.SANITATION_FORM}>
+          <Link
+            to={paths.SANITATION_FORM}
+            className="serviceCard sanitationRequest"
+          >
             <ServiceCard
               imgPath={sanitationIcon}
               alt="sanitation icon"
               label="Sanitation Request"
             />
           </Link>
-          <Link to={paths.ROOM_RESERVATION}>
+          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
             <ServiceCard
               imgPath={roomIcon}
               alt="room icon"
               label="Reserve a Room"
             />
           </Link>
-          <Link to={paths.SECURITY_REQUEST}>
+          <Link
+            to={paths.SECURITY_REQUEST}
+            className="serviceCard securityRequest"
+          >
             <ServiceCard
               imgPath={securityIcon}
               alt="security icon"
