@@ -9,6 +9,7 @@ import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const defaultFloor: number = 1;
+
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
@@ -96,24 +97,14 @@ function MapEdit() {
     fetchData();
   }, [activeFloor]);
 
-  function setNodeX(x: string) {
-    if (selectedNodeID) {
+  function updateNode(field: keyof Node, value: string) {
+    let node = nodes.get(selectedNodeID!);
+    if (node && selectedNodeID) {
+      node = { ...node, [field]: value };
       const tempNodes = new Map(nodes);
-      const nodeToChange = tempNodes.get(selectedNodeID);
-      if (nodeToChange) {
-        tempNodes.set(selectedNodeID, { ...nodeToChange, xcoord: x });
-        setNodes(tempNodes);
-      }
-    }
-  }
-  function setNodeY(y: string) {
-    if (selectedNodeID) {
-      const tempNodes = new Map(nodes);
-      const nodeToChange = tempNodes.get(selectedNodeID);
-      if (nodeToChange) {
-        tempNodes.set(selectedNodeID, { ...nodeToChange, ycoord: y });
-        setNodes(tempNodes);
-      }
+      tempNodes.set(selectedNodeID, node);
+
+      setNodes(tempNodes);
     }
   }
 
@@ -156,8 +147,7 @@ function MapEdit() {
           <MapEditCard
             selectedNodeID={selectedNodeID}
             onSave={handleSave}
-            setNodeX={setNodeX}
-            setNodeY={setNodeY}
+            updateNode={updateNode}
           />
         </MapContext.Provider>
       </div>

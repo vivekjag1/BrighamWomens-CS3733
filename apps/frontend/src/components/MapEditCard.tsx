@@ -6,6 +6,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "./NodeParam.tsx";
 import { MapContext } from "../routes/MapEdit.tsx";
 import CustomSaveButton from "./CustomSaveButton.tsx";
+import { Node } from "database";
 
 const textFieldStyles_large = {
   width: "16vw",
@@ -18,8 +19,7 @@ const textFieldStyles_small = {
 function MapEditCard(props: {
   selectedNodeID?: string | undefined;
   onSave: () => void;
-  setNodeX: (x: string) => void;
-  setNodeY: (y: string) => void;
+  updateNode: (field: keyof Node, value: string) => void;
 }) {
   const nodes = useContext(MapContext).nodes;
 
@@ -71,7 +71,9 @@ function MapEditCard(props: {
             <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
               value={nodes?.get(props.selectedNodeID ?? "")?.xcoord}
-              onChange={props.setNodeX}
+              onChange={(value) => {
+                props.updateNode("xcoord", value);
+              }}
               sx={textFieldStyles_small}
               label="X"
               editable={true}
@@ -79,7 +81,9 @@ function MapEditCard(props: {
             />
             <NodeParam
               value={nodes?.get(props.selectedNodeID ?? "")?.ycoord}
-              onChange={props.setNodeY}
+              onChange={(value) => {
+                props.updateNode("ycoord", value);
+              }}
               sx={textFieldStyles_small}
               label="Y"
               editable={true}
