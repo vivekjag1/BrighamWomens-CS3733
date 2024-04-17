@@ -147,13 +147,8 @@ function MapEdit() {
   async function handleSave() {
     token = await getAccessTokenSilently();
     if (!selectedNodeID) return;
-    const node = {
-      nodeID: nodes.get(selectedNodeID)?.nodeID,
-      xCoord: nodes.get(selectedNodeID)?.xcoord,
-      yCoord: nodes.get(selectedNodeID)?.ycoord,
-    };
     await axios
-      .patch(APIEndpoints.updateNodes, node, {
+      .patch(APIEndpoints.updateNodes, nodes.get(selectedNodeID), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -161,7 +156,8 @@ function MapEdit() {
       .then(() => {
         setNodeSaved(true);
         showToast("Node updated successfully!", "success");
-      });
+      })
+      .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
   return (

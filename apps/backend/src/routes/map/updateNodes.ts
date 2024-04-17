@@ -2,16 +2,19 @@ import express, { Router } from "express";
 const router: Router = express.Router();
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
+import { Node } from "database";
 
 router.patch("/", async (req, res) => {
-  const { nodeID, xCoord, yCoord } = req.body;
+  const node: Node = req.body;
   console.log(req.body);
   try {
     const updatedNodes = await prisma.node.update({
-      where: { nodeID: nodeID },
+      where: { nodeID: node.nodeID },
       data: {
-        xcoord: xCoord,
-        ycoord: yCoord,
+        xcoord: node.xcoord,
+        ycoord: node.ycoord,
+        shortName: node.shortName,
+        longName: node.longName,
       },
     });
     res.json({
