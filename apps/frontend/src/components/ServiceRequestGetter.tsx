@@ -8,8 +8,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { useToast } from "./useToast.tsx";
 import ServiceFilterDropdown from "./ServiceFilterDropdown.tsx";
+import { Card, CardContent } from "@mui/material";
+import CustomTextField from "./CustomTextField.tsx";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
+
 export function ServiceRequestGetter() {
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -18,6 +21,8 @@ export function ServiceRequestGetter() {
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByType, setFilterByType] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
+  const [priorityOrder, setPriorityOrder] = useState<"desc" | "asc" | "">("");
+  const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
   const { getAccessTokenSilently } = useAuth0();
   const { showToast } = useToast();
 
@@ -106,8 +111,6 @@ export function ServiceRequestGetter() {
       );
     }
 
-    console.log(filterByType);
-
     if (filterByType.length) {
       data = data.filter((item) => filterByType.includes(item.type));
     }
@@ -117,11 +120,31 @@ export function ServiceRequestGetter() {
     if (filterByStatus.length) {
       data = data.filter((item) => filterByStatus.includes(item.status));
     }
-    const sortedData = data.sort((a, b) => {
+    let sortedData = data.sort((a, b) => {
       return sortOrder === "asc"
         ? a.serviceID - b.serviceID
         : b.serviceID - a.serviceID;
     });
+
+    if (priorityOrder !== "") {
+      sortedData = sortedData.sort((a: ServiceRequest, b: ServiceRequest) => {
+        const priorityOrderMap: Record<string, number> = {
+          Low: 0,
+          Medium: 1,
+          High: 2,
+          Emergency: 3,
+        };
+
+        const priorityA = priorityOrderMap[a.priority];
+        const priorityB = priorityOrderMap[b.priority];
+
+        if (priorityOrder === "asc") {
+          return priorityA - priorityB;
+        } else {
+          return priorityB - priorityA;
+        }
+      });
+    }
 
     setFilteredData(sortedData);
   }, [
@@ -131,6 +154,7 @@ export function ServiceRequestGetter() {
     filterByStatus,
     filterBySearch,
     sortOrder,
+    priorityOrder,
   ]);
 
   function truncateString(str: string, num: number) {
@@ -162,6 +186,29 @@ export function ServiceRequestGetter() {
       </span>
     );
   }
+
+  const handleRowClick = (request: ServiceRequest) => {
+    setSelectedRow(request);
+    console.log(request);
+  };
+
+  const sortPriorityOrder = () => {
+    if (priorityOrder == "" || priorityOrder == "desc") {
+      setPriorityOrder("asc");
+    } else if (priorityOrder == "asc") {
+      setPriorityOrder("desc");
+    }
+  };
+
+  const SortOrder = () => {
+    if (sortOrder == "asc") {
+      setSortOrder("desc");
+      setPriorityOrder("");
+    } else if (sortOrder == "desc") {
+      setSortOrder("asc");
+      setPriorityOrder("");
+    }
+  };
 
   return (
     <div className="relative">
@@ -278,18 +325,6 @@ export function ServiceRequestGetter() {
               </li>
             </ul>
           </div>
-
-          {/*<Button*/}
-          {/*  type="submit"*/}
-          {/*  variant="contained"*/}
-          {/*  sx={{*/}
-          {/*    backgroundColor: "#012D5A",*/}
-          {/*  }}*/}
-          {/*  onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}*/}
-          {/*  endIcon={<SwapVertIcon />}*/}
-          {/*>*/}
-          {/*  Toggle ID Sort*/}
-          {/*</Button>*/}
         </div>
       </div>
       <table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md">
@@ -298,15 +333,12 @@ export function ServiceRequestGetter() {
             <th scope="col" className="px-6 py-3 w-[17ch]">
               Service ID
               <button
-                onClick={() =>
-                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-                }
+                onClick={() => SortOrder()}
                 className="hover:text-blue-700"
               >
                 <svg
                   className="w-3 h-3 ml-1"
                   aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
                   viewBox="0 0 24 20"
                 >
@@ -322,6 +354,19 @@ export function ServiceRequestGetter() {
             </th>
             <th scope="col" className="px-6 py-3">
               Priority
+              <button
+                onClick={sortPriorityOrder}
+                className="hover:text-blue-700"
+              >
+                <svg
+                  className="w-3 h-3 ml-1"
+                  aria-hidden="true"
+                  fill="currentColor"
+                  viewBox="0 0 24 20"
+                >
+                  <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                </svg>
+              </button>
             </th>
             <th scope="col" className="px-6 py-3">
               Requesting Username
@@ -343,14 +388,13 @@ export function ServiceRequestGetter() {
         </thead>
         <tbody>
           {filteredData.map((request) => (
-            <tr className="bg-white border-b h-16" key={request.serviceID}>
+            <tr
+              className="bg-white border-b h-16 hover:bg-gray-100"
+              key={request.serviceID}
+              onClick={() => handleRowClick(request)}
+            >
               <td className="px-6 py-4">{request.serviceID}</td>
-              <td>
-                {highlightSearchTerm(
-                  truncateString(request.type, 20),
-                  filterBySearch,
-                )}
-              </td>
+              <td>{highlightSearchTerm(request.type, filterBySearch)}</td>
               <td className="px-6 py-4">
                 <select
                   value={request.status}
@@ -408,13 +452,84 @@ export function ServiceRequestGetter() {
                   dayjs
                     .tz(request.requestedTime.toString(), "America/New_York")
                     .toString(),
-                  14,
+                  16,
                 )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {selectedRow && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-[1px]"
+          onClick={() => setSelectedRow(null)}
+        >
+          <div className="relative">
+            <Card
+              sx={{ borderRadius: 2 }}
+              className="drop-shadow-2xl w-full max-w-lg ml-[9%] pl-4 pb-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CardContent>
+                <button
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                  onClick={() => setSelectedRow(null)}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+                <h1
+                  className={`text-2xl font-semibold mb-4 text-secondary text-center`}
+                >
+                  {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
+                </h1>
+                <div className="grid grid-cols-2 gap-4">
+                  {Object.entries(selectedRow).map(
+                    ([key, value]) =>
+                      key !== "type" && (
+                        <div key={key}>
+                          <label className="font-medium mb-2">{key}:</label>
+                          <CustomTextField
+                            value={
+                              key.toLowerCase().includes("time") && value
+                                ? (() => {
+                                    console.log("Original value:", value);
+                                    const estTime = dayjs
+                                      .utc(value)
+                                      .tz("America/New_York")
+                                      .format(
+                                        "ddd, DD MMM YYYY HH:mm:ss [GMT]",
+                                      );
+                                    console.log("EST Time:", estTime);
+                                    return estTime;
+                                  })()
+                                : key === "description" &&
+                                    (!value || String(value).trim() === "")
+                                  ? "N/A"
+                                  : key === "status" && value === "InProgress"
+                                    ? "In Progress"
+                                    : value
+                            }
+                            sx={{ width: "13rem" }}
+                          />
+                        </div>
+                      ),
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

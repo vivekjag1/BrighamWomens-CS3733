@@ -6,6 +6,7 @@ import MapEditImage from "../components/MapEditImage.tsx";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const defaultFloor: number = 1;
 type MapData = {
@@ -36,7 +37,8 @@ function MapEdit() {
     undefined,
   );
 
-  // let savedNode: Node | undefined = undefined;
+  const { getAccessTokenSilently } = useAuth0();
+  let token = "";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,15 +126,20 @@ function MapEdit() {
     // savedNode = undefined;
   }
 
-  function handleSave() {
-    if (selectedNodeID) {
-      const node = {
-        nodeID: nodes.get(selectedNodeID)?.nodeID,
-        xCoord: nodes.get(selectedNodeID)?.xcoord,
-        yCoord: nodes.get(selectedNodeID)?.ycoord,
-      };
-      console.log(node);
-    }
+  async function handleSave() {
+    token = await getAccessTokenSilently();
+    if (!selectedNodeID) return;
+    const node = {
+      nodeID: nodes.get(selectedNodeID)?.nodeID,
+      xCoord: nodes.get(selectedNodeID)?.xcoord,
+      yCoord: nodes.get(selectedNodeID)?.ycoord,
+    };
+    await axios.patch(APIEndpoints.updateNodes, node, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(node);
   }
 
   return (
