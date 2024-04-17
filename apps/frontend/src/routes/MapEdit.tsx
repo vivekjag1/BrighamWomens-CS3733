@@ -5,6 +5,7 @@ import axios from "axios";
 import MapEditImage from "../components/MapEditImage.tsx";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import MapEditCard from "../components/MapEditCard.tsx";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -21,6 +22,8 @@ function MapEdit() {
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [selectedNode, setSelectedNode] = useState<Node | undefined>(undefined);
   const [nodeIndex, setNodeIndex] = useState<number | undefined>(undefined);
+  const { getAccessTokenSilently } = useAuth0();
+  let token = "";
 
   useEffect(() => {
     console.log("rerendered");
@@ -99,12 +102,18 @@ function MapEdit() {
     }
   };
 
-  function handleSave() {
+  async function handleSave() {
+    token = await getAccessTokenSilently();
     const node = {
       nodeID: selectedNode?.nodeID,
       xCoord: selectedNode?.xcoord,
       yCoord: selectedNode?.ycoord,
     };
+    await axios.patch(APIEndpoints.updateNodes, node, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log(node);
   }
 
