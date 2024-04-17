@@ -1,11 +1,11 @@
-import React from "react";
-import { Node } from "database";
+import React, { useContext } from "react";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "./NodeParam.tsx";
 import CustomButton from "./CustomButton.tsx";
+import { MapContext } from "../routes/MapEdit.tsx";
 
 const textFieldStyles_large = {
   width: "16vw",
@@ -16,16 +16,12 @@ const textFieldStyles_small = {
 };
 
 function MapEditCard(props: {
-  selectedNode?: Node;
-  setSelectedNode: React.Dispatch<React.SetStateAction<Node | undefined>>;
+  selectedNodeID?: string | undefined;
   onSave: () => void;
+  setNodeX: (x: string) => void;
+  setNodeY: (y: string) => void;
 }) {
-  const setNodeX = (node: Node | undefined) => (x: string) => {
-    if (node) props.setSelectedNode({ ...node, xcoord: x });
-  };
-  const setNodeY = (node: Node | undefined) => (y: string) => {
-    if (node) props.setSelectedNode({ ...node, ycoord: y });
-  };
+  const nodes = useContext(MapContext).nodes;
 
   return (
     <div>
@@ -40,7 +36,7 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.shortName}
+              value={nodes?.get(props.selectedNodeID ?? "")?.shortName}
               sx={textFieldStyles_large}
               label="Short Name"
               editable={false}
@@ -49,7 +45,7 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <TextFieldsIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.longName}
+              value={nodes?.get(props.selectedNodeID ?? "")?.longName}
               sx={textFieldStyles_large}
               label="Long Name"
               editable={false}
@@ -59,13 +55,13 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <InfoIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.nodeType}
+              value={nodes?.get(props.selectedNodeID ?? "")?.nodeType}
               sx={textFieldStyles_small}
               label="Type"
               editable={false}
             />
             <NodeParam
-              value={props.selectedNode?.floor}
+              value={nodes?.get(props.selectedNodeID ?? "")?.floor}
               sx={textFieldStyles_small}
               label="Floor"
               editable={false}
@@ -74,16 +70,16 @@ function MapEditCard(props: {
           <form className="flex flex-row gap-1 items-center">
             <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.xcoord}
-              onChange={setNodeX(props.selectedNode)}
+              value={nodes?.get(props.selectedNodeID ?? "")?.xcoord}
+              onChange={props.setNodeX}
               sx={textFieldStyles_small}
               label="X"
               editable={true}
               props={{ type: "number" }}
             />
             <NodeParam
-              value={props.selectedNode?.ycoord}
-              onChange={setNodeY(props.selectedNode)}
+              value={nodes?.get(props.selectedNodeID ?? "")?.ycoord}
+              onChange={props.setNodeY}
               sx={textFieldStyles_small}
               label="Y"
               editable={true}
