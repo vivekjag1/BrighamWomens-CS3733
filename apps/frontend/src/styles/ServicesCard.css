@@ -1,0 +1,12 @@
+.servicesCard {
+  animation: abracadabra 5s 1;
+}
+
+@keyframes abracadabra {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
