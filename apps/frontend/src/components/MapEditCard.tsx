@@ -91,7 +91,10 @@ function MapEditCard(props: {
             />
           </form>
           <div className="flex justify-end">
-            <CustomSaveButton text="SAVE" onClick={props.onSave} />
+            <CustomSaveButton
+              onClick={props.onSave}
+              disabled={!props.selectedNodeID}
+            />
           </div>
         </div>
       </div>
