@@ -43,11 +43,9 @@ function ServiceFilterDropdown({
   const priorities = ["Low", "Medium", "High", "Emergency"];
   const statuses = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
-  const [openSubMenu, setOpenSubMenu] = React.useState({
-    type: false,
-    priority: false,
-    status: false,
-  });
+  const [openSubMenu, setOpenSubMenu] = React.useState<
+    "type" | "priority" | "status" | null
+  >(null);
 
   const handleFilterChange = (
     value: string,
@@ -67,11 +65,7 @@ function ServiceFilterDropdown({
   };
 
   const toggleSubMenu = (category: "type" | "priority" | "status"): void => {
-    setOpenSubMenu((prev) => ({
-      type: category === "type" ? !prev.type : prev.type,
-      priority: category === "priority" ? !prev.priority : prev.priority,
-      status: category === "status" ? !prev.status : prev.status,
-    }));
+    setOpenSubMenu((prev) => (prev === category ? null : category));
   };
 
   const handleResetFilters = () => {
@@ -90,21 +84,24 @@ function ServiceFilterDropdown({
         value={[...filterByType, ...filterByPriority, ...filterByStatus]}
         input={<OutlinedInput />}
         renderValue={() => (
-          <>
-            <FilterListIcon /> Filter
-          </>
+          <div className="text-gray-500">
+            <FilterListIcon className="text-gray-500" /> Filter
+          </div>
         )}
         displayEmpty
         className="bg-gray-50"
-        sx={{ fontFamily: "Poppins, sans-serif" }}
+        sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
         <MenuItem onClick={() => toggleSubMenu("type")}>
           <ListItemIcon>
-            {openSubMenu.type ? <ExpandLess /> : <ExpandMore />}
+            {openSubMenu === "type" ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
-          <ListItemText primary="Types" />
+          <ListItemText
+            primary="Types"
+            primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+          />
         </MenuItem>
-        {openSubMenu.type &&
+        {openSubMenu === "type" &&
           types.map((type) => (
             <MenuItem
               key={type}
@@ -121,17 +118,23 @@ function ServiceFilterDropdown({
                   handleFilterChange(type, filterByType, setFilterByType)
                 }
               />
-              <ListItemText primary={type.replace(/([A-Z])/g, " $1").trim()} />
+              <ListItemText
+                primary={type.replace(/([A-Z])/g, " $1").trim()}
+                primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+              />
             </MenuItem>
           ))}
 
         <MenuItem onClick={() => toggleSubMenu("priority")}>
           <ListItemIcon>
-            {openSubMenu.priority ? <ExpandLess /> : <ExpandMore />}
+            {openSubMenu === "priority" ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
-          <ListItemText primary="Priorities" />
+          <ListItemText
+            primary="Priorities"
+            primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+          />
         </MenuItem>
-        {openSubMenu.priority &&
+        {openSubMenu === "priority" &&
           priorities.map((priority) => (
             <MenuItem
               key={priority}
@@ -156,17 +159,23 @@ function ServiceFilterDropdown({
                   )
                 }
               />
-              <ListItemText primary={priority} />
+              <ListItemText
+                primary={priority}
+                primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+              />
             </MenuItem>
           ))}
 
         <MenuItem onClick={() => toggleSubMenu("status")}>
           <ListItemIcon>
-            {openSubMenu.status ? <ExpandLess /> : <ExpandMore />}
+            {openSubMenu === "status" ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
-          <ListItemText primary="Statuses" />
+          <ListItemText
+            primary="Statuses"
+            primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+          />
         </MenuItem>
-        {openSubMenu.status &&
+        {openSubMenu === "status" &&
           statuses.map((status) => (
             <MenuItem
               key={status}
@@ -183,7 +192,10 @@ function ServiceFilterDropdown({
                   handleFilterChange(status, filterByStatus, setFilterByStatus)
                 }
               />
-              <ListItemText primary={status} />
+              <ListItemText
+                primary={status}
+                primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+              />
             </MenuItem>
           ))}
         <MenuItem>
@@ -191,7 +203,10 @@ function ServiceFilterDropdown({
             fullWidth
             onClick={handleResetFilters}
             style={{ color: "red", padding: 0 }}
-            sx={{ "&:hover": { bgcolor: "unset" } }}
+            sx={{
+              "&:hover": { bgcolor: "unset" },
+              fontFamily: "Poppins, sans-serif",
+            }}
           >
             Reset
           </Button>
