@@ -40,7 +40,7 @@ export class BFSPath implements Path {
           if (
             this.parentGraph.getNodeWithNodeID(nextNode!).nodeType == "ELEV"
           ) {
-            console.log("Test");
+            path.unshift(nextNode!);
             nextNode = this.getEndOfElevators(nextNode!, parentNodes);
           }
           path.unshift(<string>nextNode);
@@ -49,6 +49,7 @@ export class BFSPath implements Path {
         //add starting node to path
         path.unshift(startNodeID);
         console.log("BFS Path (" + startNodeID + " -> " + endNodeID + "):");
+        console.log(path);
         searching = false;
       } else {
         //add this node to visited
@@ -81,7 +82,6 @@ export class BFSPath implements Path {
     nextNode: string,
     parentsMap: Map<string, string>,
   ): string {
-    console.log(nextNode);
     const nextNodeParent = parentsMap.get(nextNode)!;
     if (this.parentGraph.getNodeWithNodeID(nextNodeParent).nodeType != "ELEV") {
       return nextNode;
