@@ -5,18 +5,46 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
-import { Node } from "database";
-import { EdgeCoordinates } from "../routes/MapEdit.tsx";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
+import { useContext, useEffect, useState } from "react";
+import { MapContext } from "../routes/MapEdit.tsx";
 
-function MapEditImage(props: {
+export type EdgeCoordinates = {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+};
+
+const MapEditImage = (props: {
   activeFloor: number;
-  nodes: Node[];
-  edges: EdgeCoordinates[];
-  onNodeClick: (node: Node) => void;
+  onNodeClick: (nodeID: string) => void;
   onMapClick: () => void;
-}) {
+}) => {
+  const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
+  const nodes = useContext(MapContext).nodes;
+  const edges = useContext(MapContext).edges;
+
+  useEffect(() => {
+    const tempCoords: EdgeCoordinates[] = [];
+    for (let i = 0; i < edges.length; i++) {
+      const startNode = nodes.get(edges[i].startNodeID);
+      const endNode = nodes.get(edges[i].endNodeID);
+
+      if (startNode && endNode) {
+        tempCoords.push({
+          startX: parseInt(startNode.xcoord),
+          startY: parseInt(startNode.ycoord),
+          endX: parseInt(endNode.xcoord),
+          endY: parseInt(endNode.ycoord),
+        });
+      }
+    }
+
+    setEdgeCoords(tempCoords);
+  }, [edges, nodes]);
+
   // Determines which map to load depending on floor prop.
   let map;
   switch (props.activeFloor) {
@@ -39,12 +67,12 @@ function MapEditImage(props: {
 
   // This stops the map event handler from being called
   // Separates node clicks from map clicks
-  function handleNodeClick(
+  function nodeClicked(
     event: React.MouseEvent<SVGCircleElement, MouseEvent>,
-    node: Node,
+    nodeID: string,
   ) {
     event.stopPropagation();
-    props.onNodeClick(node);
+    props.onNodeClick(nodeID);
   }
 
   return (
@@ -63,7 +91,7 @@ function MapEditImage(props: {
           >
             <svg viewBox="0 0 5000 3400" height="100vh">
               <image href={map} />
-              {props.edges.map((edge, index) => (
+              {edgeCoords.map((edge, index) => (
                 <line
                   key={index}
                   className="edge"
@@ -75,15 +103,15 @@ function MapEditImage(props: {
                   strokeWidth={MapStyling.edgeWidth}
                 />
               ))}
-              {props.nodes.map((node, index) => (
+              {Array.from(nodes.values()).map((node) => (
                 <circle
-                  key={index}
+                  key={node.nodeID}
                   className="node"
                   r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
                   fill={MapStyling.nodeColor}
-                  onClick={(e) => handleNodeClick(e, node)}
+                  onClick={(e) => nodeClicked(e, node.nodeID)}
                   style={{ cursor: "pointer" }}
                 />
               ))}
@@ -93,6 +121,6 @@ function MapEditImage(props: {
       </div>
     </div>
   );
-}
+};
 
 export default MapEditImage;
