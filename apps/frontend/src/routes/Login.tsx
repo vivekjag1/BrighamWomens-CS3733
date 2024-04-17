@@ -25,7 +25,7 @@ function Login() {
             Touch the screen to begin.
           </label>
           <label className="absolute bottom-[3vh] font-light text-[1vw] text-white">
-            Disclaimer: this website is a WPI project, and not the Brigham and
+            *Disclaimer: this website is a WPI project, and not the Brigham and
             Women's website. Please visit brighamandwomens.org for the actual
             hospital.
           </label>
