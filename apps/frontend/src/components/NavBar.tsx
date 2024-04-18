@@ -114,7 +114,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
+          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -149,7 +149,7 @@ function NavBar() {
         {/* Navbar items */}
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
-            to={paths.MAP}
+            to={paths.HOME}
             activePage={activePage}
             setActivePage={setActivePage}
             Icon={MapIcon}
