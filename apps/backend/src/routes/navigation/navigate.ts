@@ -42,15 +42,10 @@ router.get("/", async (req, res) => {
 
   const pathAsCoords: number[][] = [];
   for (let i = 0; i < path.length; i++) {
-    const node = await prisma.node.findFirst({
-      where: {
-        nodeID: path[i],
-      },
-    });
     pathAsCoords.push([
-      +node!.xcoord,
-      +node!.ycoord,
-      Graph.getNumFromFloor(node!.floor),
+      +path[i].xcoord,
+      +path[i].ycoord,
+      Graph.getNumFromFloor(path[i].floor),
     ]);
   }
   console.log(pathAsCoords);
