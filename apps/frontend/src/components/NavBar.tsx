@@ -7,6 +7,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 //import IconButton from "@mui/material/IconButton";
+import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
@@ -14,7 +15,8 @@ import paths from "../paths/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 
 function NavBar() {
-  // const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
@@ -112,7 +114,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link to={paths.MAP} onClick={() => setActivePage(paths.MAP)}>
+          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -147,7 +149,7 @@ function NavBar() {
         {/* Navbar items */}
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
-            to={paths.MAP}
+            to={paths.HOME}
             activePage={activePage}
             setActivePage={setActivePage}
             Icon={MapIcon}
@@ -192,19 +194,35 @@ function NavBar() {
         </div>
 
         {/* Sign out */}
-        <div className="relative flex flex-col flex-grow justify-end">
-          <div className="flex flex-col">
-            <NavbarItem
-              to={paths.LOGIN}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              Icon={LogoutIcon}
-              label={"Sign out"}
-              collapsed={isHidingNavBarInfo}
-              callback={handleLogout}
-            />
+        {isAuthenticated ? (
+          <div className="relative flex flex-col flex-grow justify-end">
+            <div className="flex flex-col">
+              <NavbarItem
+                to={paths.LOGIN}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={LogoutIcon}
+                label={"Sign out"}
+                collapsed={isHidingNavBarInfo}
+                callback={handleLogout}
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="relative flex flex-col flex-grow justify-end">
+            <div className="flex flex-col">
+              <NavbarItem
+                to={paths.MAP_DATA}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={LoginIcon}
+                label={"Sign in"}
+                collapsed={isHidingNavBarInfo}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Collapse Button */}
         <div className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[-12px]">
           <img

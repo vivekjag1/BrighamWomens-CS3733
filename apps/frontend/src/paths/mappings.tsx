@@ -13,7 +13,7 @@ import MapEdit from "../routes/MapEdit.tsx";
 import GiftDelivery from "../routes/GiftDelivery.tsx";
 
 const routes = [
-  { path: paths.MAP, element: <Map /> },
+  { path: paths.HOME, element: <Map /> },
   { path: paths.SERVICES, element: <Services /> },
   { path: paths.MEDICINE_REQUEST, element: <MedicineDeliveryForm /> },
   {

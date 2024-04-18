@@ -1,26 +1,27 @@
-import React, { FormEventHandler } from "react";
-import { Node } from "database";
+import React, { useContext } from "react";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "./NodeParam.tsx";
+import { MapContext } from "../routes/MapEdit.tsx";
+import CustomSaveButton from "./CustomSaveButton.tsx";
+import { Node } from "database";
 
-const textFieldStyles = {
-  width: "17vw",
+const textFieldStyles_large = {
+  width: "16vw",
+};
+
+const textFieldStyles_small = {
+  width: "8vw",
 };
 
 function MapEditCard(props: {
-  selectedNode?: Node;
-  setSelectedNode: React.Dispatch<React.SetStateAction<Node | undefined>>;
-  onReset: FormEventHandler;
+  selectedNodeID?: string | undefined;
+  onSave: () => void;
+  updateNode: (field: keyof Node, value: string) => void;
 }) {
-  const setNodeX = (node: Node | undefined) => (x: string) => {
-    if (node) props.setSelectedNode({ ...node, xcoord: x });
-  };
-  const setNodeY = (node: Node | undefined) => (y: string) => {
-    if (node) props.setSelectedNode({ ...node, ycoord: y });
-  };
+  const nodes = useContext(MapContext).nodes;
 
   return (
     <div>
@@ -35,63 +36,71 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.shortName}
-              sx={textFieldStyles}
+              value={nodes?.get(props.selectedNodeID ?? "")?.shortName}
+              onChange={(value) => {
+                props.updateNode("shortName", value);
+              }}
+              sx={textFieldStyles_large}
               label="Short Name"
-              editable={false}
+              editable={true}
             />
           </div>
           <div className="flex gap-1 items-center">
             <TextFieldsIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={props.selectedNode?.longName}
-              sx={textFieldStyles}
+              value={nodes?.get(props.selectedNodeID ?? "")?.longName}
+              onChange={(value) => {
+                props.updateNode("longName", value);
+              }}
+              sx={textFieldStyles_large}
               label="Long Name"
-              editable={false}
+              editable={true}
               props={{ multiline: true }}
             />
           </div>
           <div className="flex gap-1 items-center">
             <InfoIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <div className="flex flex-grow">
-              <NodeParam
-                value={props.selectedNode?.nodeType}
-                sx={textFieldStyles}
-                label="Type"
-                editable={false}
-              />
-            </div>
-            <div className="flex flex-grow">
-              <NodeParam
-                value={props.selectedNode?.floor}
-                sx={textFieldStyles}
-                label="Floor"
-                editable={false}
-              />
-            </div>
+            <NodeParam
+              value={nodes?.get(props.selectedNodeID ?? "")?.nodeType}
+              sx={textFieldStyles_small}
+              label="Type"
+              editable={false}
+            />
+            <NodeParam
+              value={nodes?.get(props.selectedNodeID ?? "")?.floor}
+              sx={textFieldStyles_small}
+              label="Floor"
+              editable={false}
+            />
           </div>
-          <div className="flex flex-row gap-1 items-center">
+          <form className="flex flex-row gap-1 items-center">
             <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <div className="flex flex-grow-1">
-              <NodeParam
-                value={props.selectedNode?.xcoord}
-                onChange={setNodeX(props.selectedNode)}
-                sx={{ width: "min-width" }}
-                label="X"
-                editable={true}
-                props={{ type: "number" }}
-              />
-            </div>
-            <div className="flex flex-grow-1">
-              <NodeParam
-                value={props.selectedNode?.ycoord}
-                onChange={setNodeY(props.selectedNode)}
-                sx={{ width: "min-width" }}
-                label="Y"
-                editable={true}
-                props={{ type: "number" }}
-              />
-            </div>
+            <NodeParam
+              value={nodes?.get(props.selectedNodeID ?? "")?.xcoord}
+              onChange={(value) => {
+                props.updateNode("xcoord", value);
+              }}
+              sx={textFieldStyles_small}
+              label="X"
+              editable={true}
+              props={{ type: "number" }}
+            />
+            <NodeParam
+              value={nodes?.get(props.selectedNodeID ?? "")?.ycoord}
+              onChange={(value) => {
+                props.updateNode("ycoord", value);
+              }}
+              sx={textFieldStyles_small}
+              label="Y"
+              editable={true}
+              props={{ type: "number" }}
+            />
+          </form>
+          <div className="flex justify-end">
+            <CustomSaveButton
+              onClick={props.onSave}
+              disabled={!props.selectedNodeID}
+            />
           </div>
         </div>
       </div>

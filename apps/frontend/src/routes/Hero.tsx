@@ -1,27 +1,34 @@
 import React from "react";
-import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
+import paths from "../paths/paths.tsx";
+import "../styles/Hero.css";
 
-function Login() {
+function Hero() {
   const navigate = useNavigate();
-  function handlePathfind() {
-    navigate("/home");
+  function handleClick() {
+    navigate(paths.HOME);
   }
 
   return (
     <div>
       <div
-        onClick={handlePathfind}
+        onClick={handleClick}
         className="landing-page w-screen h-screen bg-no-repeat bg-cover bg-center"
       >
         <div className="opening-remarks w-screen h-screen flex flex-col justify-center items-center gap-8">
+          <label className="absolute top-[2vh] font-light text-[1vw] text-white">
+            *<span className="underline">Disclaimer</span>: This website is a
+            term project exercise for WPI CS 3733 Software Engineering (Prof.
+            Wong) and is to not be confused with the actual Brigham & Women's
+            Hospital Website.
+          </label>
           <label className="text-[3vw] font-semibold text-white">
             Welcome to Brigham and Women's Hospital
           </label>
           <label className="font-normal text-[2vw] text-white">
             Navigation made simple
           </label>
-          <label className="font-light text-[2vw] text-white">
+          <label className="font-light text-[2vw] text-white animate-pulse">
             Touch the screen to begin.
           </label>
         </div>
@@ -30,4 +37,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Hero;

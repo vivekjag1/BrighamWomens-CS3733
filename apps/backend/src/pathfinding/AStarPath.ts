@@ -6,7 +6,7 @@ export class AStarPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: string[];
+  path: GraphNode[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
     this.startNodeID = startNodeID;
@@ -15,19 +15,22 @@ export class AStarPath implements Path {
     this.path = this.createPath(startNodeID, endNodeID);
   }
 
-  getPath(): string[] {
+  getPath(): GraphNode[] {
     return this.path;
   }
 
   //Returns the shortest path between startNode and endNode using the A* algorithm
-  public createPath(startNodeID: string, endNodeID: string): string[] {
-    const path: string[] = [];
+  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
+    const path: GraphNode[] = [];
     const searchList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
     let numOfOpenNodes: number = 1;
     let searching: boolean = true;
 
     if (startNodeID == endNodeID) {
-      return ["startNodeID", "startNodeID"];
+      return [
+        this.parentGraph.getNodeWithNodeID(startNodeID),
+        this.parentGraph.getNodeWithNodeID(startNodeID),
+      ];
     }
 
     while (searching && numOfOpenNodes > 0) {
@@ -47,11 +50,13 @@ export class AStarPath implements Path {
           //exit loop
           searching = false;
           //add this child to path
-          path.unshift(nextToCheck);
+          path.unshift(this.parentGraph.getNodeWithNodeID(nextToCheck));
           //Create loop to move back to start of path
           let steppingPath = true;
           while (steppingPath) {
-            path.unshift(currentNode.nodeID);
+            path.unshift(
+              this.parentGraph.getNodeWithNodeID(currentNode.nodeID),
+            );
             //if parentNode == null then we have returned to the start node so break out of the loop
             if (currentNode.parentNode == null) {
               steppingPath = false;
@@ -61,6 +66,7 @@ export class AStarPath implements Path {
           }
 
           console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
+          console.log(path);
         } else {
           //get G, H, and F values of the child node
           const g: number =
@@ -100,10 +106,10 @@ export class AStarPath implements Path {
     const nodeA: GraphNode = this.parentGraph.getNodeWithNodeID(a);
     const nodeB: GraphNode = this.parentGraph.getNodeWithNodeID(b);
     if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
-      return 100;
+      return 1000;
     }
     if (nodeA.nodeType == "STAI" && nodeB.nodeType == "STAI") {
-      return 200;
+      return 2000;
     }
     return Math.sqrt(
       Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +

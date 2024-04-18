@@ -1,11 +1,12 @@
 import { Path } from "./Path.ts";
 import { Graph } from "./Graph.ts";
+import { GraphNode } from "common/src/GraphNode.ts";
 
 export class DFSPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: string[];
+  path: GraphNode[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
     this.startNodeID = startNodeID;
@@ -14,12 +15,12 @@ export class DFSPath implements Path {
     this.path = this.createPath(startNodeID, endNodeID);
   }
 
-  getPath(): string[] {
+  getPath(): GraphNode[] {
     return this.path;
   }
 
   //Returns the shortest path between startNode and endNode using a Breadth First Search
-  public createPath(startNodeID: string, endNodeID: string): string[] {
+  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
     //the queue of nodes that still need to be searched
     const searchStack: string[] = [startNodeID];
     //nodes already searched
@@ -27,7 +28,7 @@ export class DFSPath implements Path {
     //organized as (node, parent node)
     const parentNodes: Map<string, string> = new Map();
     let searching: boolean = true;
-    const path: string[] = [];
+    const path: GraphNode[] = [];
 
     //As long as there are nodes left to search and we haven't found the end node continue searching
     while (searchStack.length > 0 && searching) {
@@ -40,15 +41,16 @@ export class DFSPath implements Path {
           if (
             this.parentGraph.getNodeWithNodeID(nextNode!).nodeType == "ELEV"
           ) {
-            console.log("Test");
+            path.unshift(this.parentGraph.getNodeWithNodeID(nextNode!));
             nextNode = this.getEndOfElevators(nextNode!, parentNodes);
           }
-          path.unshift(<string>nextNode);
+          path.unshift(this.parentGraph.getNodeWithNodeID(nextNode!));
           nextNode = parentNodes.get(<string>nextNode);
         }
         //add starting node to path
-        path.unshift(startNodeID);
+        path.unshift(this.parentGraph.getNodeWithNodeID(startNodeID!));
         console.log("DFS Path (" + startNodeID + " -> " + endNodeID + "):");
+        console.log(path);
         searching = false;
       } else {
         //add this node to visited
@@ -81,7 +83,6 @@ export class DFSPath implements Path {
     nextNode: string,
     parentsMap: Map<string, string>,
   ): string {
-    console.log(nextNode);
     const nextNodeParent = parentsMap.get(nextNode)!;
     if (this.parentGraph.getNodeWithNodeID(nextNodeParent).nodeType != "ELEV") {
       return nextNode;

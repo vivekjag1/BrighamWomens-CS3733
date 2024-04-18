@@ -53,7 +53,7 @@ export class Graph {
     startNodeID: string,
     endNodeID: string,
     pathAlgorithm: PathAlgorithm,
-  ): string[] {
+  ): GraphNode[] {
     switch (pathAlgorithm) {
       case "BFS":
         return new BFSPath(startNodeID, endNodeID, this).getPath();
