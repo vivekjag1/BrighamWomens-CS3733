@@ -233,7 +233,7 @@ const NodeTable = () => {
 
             {activeTab === "node" && (
               <div className="mx-8">
-                <table className="text-sm text-center text-gray-500 mt-3 shadow-md">
+                <table className="text-sm text-center text-gray-500 mt-3 shadow-md mb-10">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                       <th scope="col" className="px-6 py-3">
@@ -269,7 +269,7 @@ const NodeTable = () => {
 
             {activeTab === "edge" && (
               <div>
-                <table className="text-sm text-gray-500 mt-3 shadow-md text-center">
+                <table className="text-sm text-gray-500 mt-3 shadow-md text-center mb-10">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                       <th scope="col" className="px-6 py-3">

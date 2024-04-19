@@ -329,7 +329,7 @@ export function ServiceRequestGetter() {
           </div>
         </div>
       </div>
-      <table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md">
+      <table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3 w-[17ch]">
