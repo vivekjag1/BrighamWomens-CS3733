@@ -1,10 +1,11 @@
 import express, { Router, Request, Response } from "express";
 import multer from "multer";
 //import { FileAttributes } from "common/src/APICommon.ts";
-import { PrismaClient } from "database";
+import { PrismaClient, Employee } from "database";
 const prisma = new PrismaClient();
-// import { readCSVFile } from "../fileInput/file.ts";
-import { EmployeeType } from "common/src/EmployeeType.ts";
+import { readEmployeeFile } from "../fileInput/file.ts";
+import client from "../bin/database-connection.ts";
+// import { EmployeeType } from "common/src/EmployeeType.ts";
 
 const router: Router = express.Router();
 
@@ -14,6 +15,11 @@ const upload = multer();
 interface UploadedFiles {
   [fileKey: string]: Express.Multer.File[];
 }
+
+router.get("/", async function (req: Request, res: Response): Promise<void> {
+  const requests: Employee[] = await client.employee.findMany();
+  res.json(requests);
+});
 
 // Handles incoming map data files
 router.post(
@@ -51,20 +57,32 @@ function validateInput(
 }
 
 async function populateDatabases(employeeFile: Express.Multer.File) {
-  console.log(employeeFile.buffer.toString());
-  // await populateEmployeeDB(readCSVFile(employeeFile.buffer.toString()));
+  await populateEmployeeDB(readEmployeeFile(employeeFile.buffer.toString()));
   console.log("employees populated");
 }
 
 export async function checkDBStatus() {
-  await prisma.employee.deleteMany();
-  console.log("deleted employees");
+  try {
+    await prisma.employee.deleteMany();
+    console.log("deleted employees");
+  } catch {
+    console.log("employee database empty");
+  }
 }
 
-export async function populateEmployeeDB(employeeData: EmployeeType[]) {
+export async function populateEmployeeDB(employeeData: string[][]) {
+  const employees = employeeData.map((data) => ({
+    name: data[0],
+    userName: data[1],
+    password: data[2],
+    position: data[3],
+    role: data[4],
+    profilePicture: data[5],
+  }));
+
   await prisma.employee.createMany({
-    data: employeeData,
-    skipDuplicates: false,
+    data: employees,
+    skipDuplicates: true,
   });
   return employeeData;
 }

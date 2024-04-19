@@ -30,6 +30,13 @@ export function readCSVFile(contents: string) {
     .map((row) => row.split(","));
   return rows;
 }
+
+export function readEmployeeFile(csvData: string) {
+  const rows = csvData.split("\r\n");
+  const result = rows.map((row) => row.split(","));
+  return result;
+}
+
 export async function populateNodeDB(nodeData: string[][]) {
   const nodeArray: GraphNode[] = [];
   for (const node of nodeData) {
@@ -93,4 +100,16 @@ export async function getEdgesFromDB() {
     (edge) => (edgesString += Object.values(edge).join(",") + "\r\n"),
   );
   return edgesString;
+}
+
+export async function getEmployeesFromDB() {
+  const employeesFromDb = await prisma.employee.findMany();
+  let employeesString = "";
+
+  employeesFromDb.forEach(
+    (employee) =>
+      (employeesString += Object.values(employee).join(",") + "\r\n"),
+  );
+  console.log(employeesString);
+  return employeesString;
 }
