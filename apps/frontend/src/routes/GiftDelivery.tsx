@@ -29,6 +29,7 @@ const initialState: GiftDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 

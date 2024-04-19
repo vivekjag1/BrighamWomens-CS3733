@@ -27,6 +27,7 @@ const initialState: MedicalDeviceDelivery = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 

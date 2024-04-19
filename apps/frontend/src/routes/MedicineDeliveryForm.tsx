@@ -3,6 +3,7 @@ import { MedicineDeliveryObject } from "common/src/MedicineDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { FormControl } from "@mui/material";
 import NodeDropdown from "../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../components/EmployeeDropdown.tsx";
 import dayjs, { Dayjs } from "dayjs";
 import FormContainer from "../components/FormContainer.tsx";
 import CustomTextField from "../components/CustomTextField.tsx";
@@ -28,6 +29,7 @@ const initialState: MedicineDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 
@@ -47,7 +49,8 @@ export function MedicineDeliveryForm() {
       medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.requestingUsername &&
       medicineDelivery.serviceRequest.location &&
-      medicineDelivery.serviceRequest.priority
+      medicineDelivery.serviceRequest.priority &&
+      medicineDelivery.serviceRequest.assignedTo
     );
   };
 
@@ -142,6 +145,8 @@ export function MedicineDeliveryForm() {
               }}
             />
 
+            {/*<EmployeeDropdown value={} onChange={} />*/}
+
             <CustomTextField
               label="Medicine Name"
               value={medicineDelivery.medicineName}
@@ -208,6 +213,21 @@ export function MedicineDeliveryForm() {
                 }
               />
             </FormControl>
+
+            <EmployeeDropdown
+              value={medicineDelivery.serviceRequest.assignedTo}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Employee *"
+              onChange={(newValue: string) =>
+                setMedicineDelivery((medicineDelivery) => ({
+                  ...medicineDelivery,
+                  serviceRequest: {
+                    ...medicineDelivery.serviceRequest,
+                    assignedTo: newValue,
+                  },
+                }))
+              }
+            />
 
             <FormControl
               component="fieldset"
