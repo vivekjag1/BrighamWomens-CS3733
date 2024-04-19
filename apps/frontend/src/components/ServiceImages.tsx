@@ -1,10 +1,19 @@
 function ServiceImages(props: { imgPath: string; alt: string }) {
   return (
-    <div className="w-full h-full">
+    <div>
+      <div
+        style={{
+          background:
+            "linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%)",
+          position: "absolute",
+          width: "20%",
+          height: "100%",
+        }}
+      ></div>
       <img
         src={props.imgPath}
         alt={props.alt}
-        className="w-full h-full object-cover"
+        className="w-[40rem] h-[700px] object-cover"
       />
     </div>
   );

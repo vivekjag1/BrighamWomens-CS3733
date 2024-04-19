@@ -16,6 +16,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
+import ServiceImages from "../components/ServiceImages.tsx";
+import giftPlaceholder from "../../assets/gift-placeholder.jpg";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -85,204 +87,209 @@ export function SanitationForm() {
 
   return (
     <FormContainer>
-      <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
-        Sanitation Request
-      </h1>
-      <div className="h-auto flex justify-center items-center w-[30rem]">
-        <form
-          noValidate
-          autoComplete="off"
-          className="space-y-4 flex flex-col justify-center items-center"
-        >
-          <CustomTextField
-            label="Requesting Username"
-            value={sanitationRequest.serviceRequest.requestingUsername}
-            onChange={(e) =>
-              setSanitationRequest({
-                ...sanitationRequest,
-                serviceRequest: {
-                  ...sanitationRequest.serviceRequest,
-                  requestingUsername: e.target.value,
-                },
-              })
-            }
-            required
-          />
-
-          <NodeDropdown
-            sx={{ width: "25rem", padding: 0 }}
-            label="Location *"
-            value={sanitationRequest.serviceRequest.location}
-            onChange={(newValue: string) =>
-              setSanitationRequest(() => ({
-                ...sanitationRequest,
-                serviceRequest: {
-                  ...sanitationRequest.serviceRequest,
-                  location: newValue,
-                },
-              }))
-            }
-          />
-
-          <CustomDatePicker
-            value={date}
-            sx={{ fontFamily: "Poppins, sans-serif" }}
-            onChange={(newValue) => {
-              const isValid = newValue && dayjs(newValue).isValid();
-              setSanitationRequest((currentSanitationRequest) => ({
-                ...currentSanitationRequest,
-                serviceRequest: {
-                  ...currentSanitationRequest.serviceRequest,
-                  requestedTime: isValid ? newValue.toISOString() : "",
-                },
-              }));
-            }}
-          />
-
-          <Autocomplete
-            disablePortal
-            id="combo-box-service"
-            options={[
-              { label: "Clean" },
-              { label: "Deep Clean" },
-              { label: "Hazardous" },
-              { label: "Toxic" },
-            ]}
-            className="bg-gray-50"
-            size="small"
-            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Service Type *"
-                InputLabelProps={{
-                  style: {
-                    color: "#a4aab5",
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-              />
-            )}
-            value={
-              sanitationRequest.sanitationType
-                ? { label: sanitationRequest.sanitationType }
-                : null
-            }
-            onChange={(
-              event: React.SyntheticEvent<Element, Event>,
-              newValue: { label: string } | null,
-            ) =>
-              setSanitationRequest({
-                ...sanitationRequest,
-                sanitationType: newValue ? newValue.label : "",
-              })
-            }
-          />
-
-          <Autocomplete
-            disablePortal
-            id="combo-box-equipment"
-            options={[
-              { label: "Mop" },
-              { label: "Broom" },
-              { label: "Dust Pan" },
-            ]}
-            className="bg-gray-50"
-            size="small"
-            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Necessary Equipment *"
-                InputLabelProps={{
-                  style: {
-                    color: "#a4aab5",
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-              />
-            )}
-            value={
-              sanitationRequest.requiredEquipment
-                ? { label: sanitationRequest.requiredEquipment }
-                : null
-            }
-            onChange={(
-              event: React.SyntheticEvent<Element, Event>,
-              newValue: { label: string } | null,
-            ) =>
-              setSanitationRequest({
-                ...sanitationRequest,
-                requiredEquipment: newValue ? newValue.label : "",
-              })
-            }
-          />
-
-          <CustomTextField
-            label="Description (optional)"
-            multiline
-            rows={3}
-            value={sanitationRequest.serviceRequest.description}
-            onChange={(e) =>
-              setSanitationRequest({
-                ...sanitationRequest,
-                serviceRequest: {
-                  ...sanitationRequest.serviceRequest,
-                  description: e.target.value,
-                },
-              })
-            }
-            size="small"
-          />
-
-          <FormControl
-            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-            size="small"
+      <div>
+        <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          Sanitation Request
+        </h1>
+        <div className="h-auto flex justify-center items-center w-[30rem]">
+          <form
+            noValidate
+            autoComplete="off"
+            className="space-y-4 flex flex-col justify-center items-center"
           >
-            <CustomStatusDropdown
-              value={sanitationRequest.serviceRequest.status}
+            <CustomTextField
+              label="Requesting Username"
+              value={sanitationRequest.serviceRequest.requestingUsername}
               onChange={(e) =>
                 setSanitationRequest({
                   ...sanitationRequest,
                   serviceRequest: {
                     ...sanitationRequest.serviceRequest,
-                    status: e.target.value as string,
+                    requestingUsername: e.target.value,
                   },
                 })
               }
+              required
             />
-          </FormControl>
 
-          <FormControl
-            component="fieldset"
-            margin="normal"
-            sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-          >
-            <CustomPrioritySelector
-              value={sanitationRequest.serviceRequest.priority}
+            <NodeDropdown
+              sx={{ width: "25rem", padding: 0 }}
+              label="Location *"
+              value={sanitationRequest.serviceRequest.location}
+              onChange={(newValue: string) =>
+                setSanitationRequest(() => ({
+                  ...sanitationRequest,
+                  serviceRequest: {
+                    ...sanitationRequest.serviceRequest,
+                    location: newValue,
+                  },
+                }))
+              }
+            />
+
+            <CustomDatePicker
+              value={date}
+              sx={{ fontFamily: "Poppins, sans-serif" }}
+              onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
+                setSanitationRequest((currentSanitationRequest) => ({
+                  ...currentSanitationRequest,
+                  serviceRequest: {
+                    ...currentSanitationRequest.serviceRequest,
+                    requestedTime: isValid ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+            />
+
+            <Autocomplete
+              disablePortal
+              id="combo-box-service"
+              options={[
+                { label: "Clean" },
+                { label: "Deep Clean" },
+                { label: "Hazardous" },
+                { label: "Toxic" },
+              ]}
+              className="bg-gray-50"
+              size="small"
+              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Service Type *"
+                  InputLabelProps={{
+                    style: {
+                      color: "#a4aab5",
+                      fontSize: ".9rem",
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                  }}
+                />
+              )}
+              value={
+                sanitationRequest.sanitationType
+                  ? { label: sanitationRequest.sanitationType }
+                  : null
+              }
+              onChange={(
+                event: React.SyntheticEvent<Element, Event>,
+                newValue: { label: string } | null,
+              ) =>
+                setSanitationRequest({
+                  ...sanitationRequest,
+                  sanitationType: newValue ? newValue.label : "",
+                })
+              }
+            />
+
+            <Autocomplete
+              disablePortal
+              id="combo-box-equipment"
+              options={[
+                { label: "Mop" },
+                { label: "Broom" },
+                { label: "Dust Pan" },
+              ]}
+              className="bg-gray-50"
+              size="small"
+              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Necessary Equipment *"
+                  InputLabelProps={{
+                    style: {
+                      color: "#a4aab5",
+                      fontSize: ".9rem",
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                  }}
+                />
+              )}
+              value={
+                sanitationRequest.requiredEquipment
+                  ? { label: sanitationRequest.requiredEquipment }
+                  : null
+              }
+              onChange={(
+                event: React.SyntheticEvent<Element, Event>,
+                newValue: { label: string } | null,
+              ) =>
+                setSanitationRequest({
+                  ...sanitationRequest,
+                  requiredEquipment: newValue ? newValue.label : "",
+                })
+              }
+            />
+
+            <CustomTextField
+              label="Description (optional)"
+              multiline
+              rows={3}
+              value={sanitationRequest.serviceRequest.description}
               onChange={(e) =>
                 setSanitationRequest({
                   ...sanitationRequest,
                   serviceRequest: {
                     ...sanitationRequest.serviceRequest,
-                    priority: e.target.value,
+                    description: e.target.value,
                   },
                 })
               }
+              size="small"
             />
-          </FormControl>
 
-          <div className="flex justify-between w-full mt-4">
-            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
+            <FormControl
+              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+              size="small"
+            >
+              <CustomStatusDropdown
+                value={sanitationRequest.serviceRequest.status}
+                onChange={(e) =>
+                  setSanitationRequest({
+                    ...sanitationRequest,
+                    serviceRequest: {
+                      ...sanitationRequest.serviceRequest,
+                      status: e.target.value as string,
+                    },
+                  })
+                }
+              />
+            </FormControl>
 
-            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
-          </div>
-          <div className="text-center mt-4">
-            <p>Made by Matthew Brown and Sulaiman Moukheiber</p>
-          </div>
-        </form>
+            <FormControl
+              component="fieldset"
+              margin="normal"
+              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+            >
+              <CustomPrioritySelector
+                value={sanitationRequest.serviceRequest.priority}
+                onChange={(e) =>
+                  setSanitationRequest({
+                    ...sanitationRequest,
+                    serviceRequest: {
+                      ...sanitationRequest.serviceRequest,
+                      priority: e.target.value,
+                    },
+                  })
+                }
+              />
+            </FormControl>
+
+            <div className="flex justify-between w-full mt-4">
+              <CustomClearButton onClick={clear}>Clear</CustomClearButton>
+
+              <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+            </div>
+            <div className="text-center mt-4">
+              <p>Made by Matthew Brown and Sulaiman Moukheiber</p>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="w-[40rem]">
+        <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
       </div>
     </FormContainer>
   );
