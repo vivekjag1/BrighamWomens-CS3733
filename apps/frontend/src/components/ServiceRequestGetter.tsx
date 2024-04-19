@@ -9,6 +9,9 @@ import { useToast } from "./useToast.tsx";
 import ServiceFilterDropdown from "./ServiceFilterDropdown.tsx";
 import { Card, CardContent } from "@mui/material";
 import CustomTextField from "./CustomTextField.tsx";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
@@ -467,7 +470,7 @@ export function ServiceRequestGetter() {
           <div className="relative">
             <Card
               sx={{ borderRadius: 2 }}
-              className="drop-shadow-2xl w-full max-w-lg ml-[9%] pl-4 pb-2"
+              className="drop-shadow-2xl w-full max-w-lg ml-[9%] px-4 pb-2"
               onClick={(e) => e.stopPropagation()}
             >
               <CardContent>
@@ -487,11 +490,11 @@ export function ServiceRequestGetter() {
                 >
                   {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
                 </h1>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                   {Object.entries(selectedRow).map(
                     ([key, value]) =>
                       key !== "type" && (
-                        <div key={key}>
+                        <div key={key} className="flex flex-col">
                           <label className="font-medium mb-2">{key}:</label>
                           <CustomTextField
                             value={
@@ -514,11 +517,39 @@ export function ServiceRequestGetter() {
                                     ? "In Progress"
                                     : value
                             }
-                            sx={{ width: "13rem" }}
+                            sx={{ width: "12rem" }}
                           />
                         </div>
                       ),
                   )}
+                  <div className="col-span-2 flex justify-between items-end px-0">
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#EA422D",
+                        color: "white",
+                        width: "100%",
+                        maxWidth: "8rem",
+                        fontFamily: "Poppins, sans-serif",
+                      }}
+                      endIcon={<DeleteIcon />}
+                    >
+                      DELETE
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#012D5A",
+                        color: "white",
+                        width: "100%",
+                        maxWidth: "8rem",
+                        fontFamily: "Poppins, sans-serif",
+                      }}
+                      endIcon={<SaveIcon />}
+                    >
+                      SAVE
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

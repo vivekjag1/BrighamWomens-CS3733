@@ -131,7 +131,7 @@ const NodeTable = () => {
   // }
 
   return (
-    <div className=" h-screen overflow-y-scroll">
+    <div className=" h-screen overflow-y-scroll bg-gray-50">
       <div className="w-full items-center">
         <div className="flex flex-col items-center gap-8 ">
           <div className="flex flex-col items-center gap-2 mt-8">

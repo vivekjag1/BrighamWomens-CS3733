@@ -31,7 +31,7 @@ const textFieldStyles = {
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
-function NavigateCard(props: {
+function DirectionsCard(props: {
   onSubmit: FormEventHandler;
   pathNodeObject: PathNodesObject;
   setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
@@ -108,87 +108,75 @@ function NavigateCard(props: {
   return (
     <div>
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
-        <form
-          className="flex flex-row"
-          noValidate
-          onSubmit={props.onSubmit}
-          onReset={props.onReset}
-        >
-          <div className="flex flex-col">
-            {/*<div className="flex flex-row justify-between">*/}
-            {/*  <h2 className="text-2xl font-extralight text-secondary">*/}
-            {/*    Navigate*/}
-            {/*  </h2>*/}
-            {/*</div>*/}
-            <div className="flex flex-row gap-1 items-center">
-              <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-              <NodeDropdown
-                value={props.pathNodeObject.startNode}
-                sx={textFieldStyles}
-                label="Start Location"
-                onChange={(newValue: string) =>
-                  props.setPathNodeObject((currentPathNode) => ({
-                    ...currentPathNode,
-                    startNode: newValue,
-                  }))
-                }
-              />
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.startLocationKey}`}
-                value={getNodeID(props.pathNodeObject.startNode)}
-              />
-            </div>
-            <MoreVertIcon style={{ color: "#012D5A" }} />
-            <div className="flex flex-row gap-1 items-center">
-              <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-              <NodeDropdown
-                value={props.pathNodeObject.endNode}
-                sx={textFieldStyles}
-                label="End Location"
-                onChange={(newValue: string) =>
-                  props.setPathNodeObject((currentPathNode) => ({
-                    ...currentPathNode,
-                    endNode: newValue,
-                  }))
-                }
-              />
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.endLocationKey}`}
-                value={getNodeID(props.pathNodeObject.endNode)}
-              />
-            </div>
-            <div className="ml-[2rem] flex flex-row mt-4 justify-between">
-              <PathAlgorithmDropdown
-                value={pathAlgorithm}
-                sx={{ width: "10vw" }}
-                label="Algorithm"
-                onChange={setPathAlgorithm}
-              ></PathAlgorithmDropdown>
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.algorithmKey}`}
-                value={pathAlgorithm}
-              />
-              <NavigateButton type="submit" className={"flex"} />
-            </div>
+        <div className="flex flex-col">
+          <div className="flex flex-row gap-1 items-center">
+            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
+            <NodeDropdown
+              value={props.pathNodeObject.startNode}
+              sx={textFieldStyles}
+              label="Start Location"
+              onChange={(newValue: string) =>
+                props.setPathNodeObject((currentPathNode) => ({
+                  ...currentPathNode,
+                  startNode: newValue,
+                }))
+              }
+            />
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.startLocationKey}`}
+              value={getNodeID(props.pathNodeObject.startNode)}
+            />
           </div>
+          <MoreVertIcon style={{ color: "#012D5A" }} />
+          <div className="flex flex-row gap-1 items-center">
+            <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
+            <NodeDropdown
+              value={props.pathNodeObject.endNode}
+              sx={textFieldStyles}
+              label="End Location"
+              onChange={(newValue: string) =>
+                props.setPathNodeObject((currentPathNode) => ({
+                  ...currentPathNode,
+                  endNode: newValue,
+                }))
+              }
+            />
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.endLocationKey}`}
+              value={getNodeID(props.pathNodeObject.endNode)}
+            />
+          </div>
+          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
+            <PathAlgorithmDropdown
+              value={pathAlgorithm}
+              sx={{ width: "10vw" }}
+              label="Algorithm"
+              onChange={setPathAlgorithm}
+            ></PathAlgorithmDropdown>
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.algorithmKey}`}
+              value={pathAlgorithm}
+            />
+            <NavigateButton type="submit" className={"flex"} />
+          </div>
+        </div>
 
-          <div className="flex flex-col ml-[0.2rem] items-center">
-            <div className="flex-grow flex justify-center items-center">
-              <IconButton onClick={swapLocations}>
-                <SwapVertIcon />
-              </IconButton>
-            </div>
-            <div className="flex justify-end mb-[-0.1rem]">
-              <CustomClearButtonSmall onClick={reset} type="reset" />
-            </div>
+        <div className="flex flex-col ml-[0.2rem] items-center">
+          <div className="flex-grow flex justify-center items-center">
+            <IconButton onClick={swapLocations}>
+              <SwapVertIcon />
+            </IconButton>
           </div>
-        </form>
+          <div className="flex justify-end mb-[-0.1rem]">
+            <CustomClearButtonSmall onClick={reset} type="reset" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default NavigateCard;
+export default DirectionsCard;

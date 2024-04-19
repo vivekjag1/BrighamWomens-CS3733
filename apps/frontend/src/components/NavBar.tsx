@@ -6,6 +6,7 @@ import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 //import IconButton from "@mui/material/IconButton";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -108,9 +109,13 @@ function NavBar() {
   };
 
   return (
-    <div className="z-10">
+    <div className="z-10 bg-offwhite">
       <div
         className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
+        style={{
+          borderTopRightRadius: "10px", // Adjust the value as needed
+          borderBottomRightRadius: "10px", // Adjust the value as needed
+        }}
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
@@ -188,6 +193,15 @@ function NavBar() {
             setActivePage={setActivePage}
             Icon={TocIcon}
             label="Service"
+            labelLight="Data"
+            collapsed={isHidingNavBarInfo}
+          />
+          <NavbarItem
+            to={paths.EMPLOYEE_TABLE}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={AssignmentIndIcon}
+            label="Employee"
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
