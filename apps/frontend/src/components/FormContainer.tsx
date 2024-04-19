@@ -7,7 +7,7 @@ interface FormContainerProps {
 
 export function FormContainer({ children }: FormContainerProps) {
   return (
-    <div className=" h-screen overflow-auto bg-offwhite">
+    <div className=" h-screen overflow-auto bg-gray-50">
       <div className="w-full justify-items-center">
         <div className="flex flex-col items-center gap-2 mx-5 my-8">
           <Card className="drop-shadow-2xl w-full max-w-lg rounded-lg">
