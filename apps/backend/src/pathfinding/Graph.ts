@@ -5,15 +5,18 @@ import { createNodes } from "common/src/GraphCommon.ts";
 import { BFSPath } from "./BFSPath.ts";
 import { DFSPath } from "./DFSPath.ts";
 import { AStarPath } from "./AStarPath.ts";
+import { DijkstraPath } from "./DijkstraPath.ts";
 import { PathAlgorithm } from "common/src/Path.ts";
 
 export class Graph {
   private nodeArray: GraphNode[];
   private edgeArray: GraphEdge[];
+  private path: GraphNode[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
     this.nodeArray = createNodes(nodeInput);
     this.edgeArray = this.createEdges(edgeInput);
+    this.path = [];
   }
 
   //Converts the Edge objects given from the prisma database
@@ -56,12 +59,28 @@ export class Graph {
   ): GraphNode[] {
     switch (pathAlgorithm) {
       case "BFS":
-        return new BFSPath(startNodeID, endNodeID, this).getPath();
+        this.path = new BFSPath(startNodeID, endNodeID, this).getPath();
+        break;
       case "DFS":
-        return new DFSPath(startNodeID, endNodeID, this).getPath();
+        this.path = new DFSPath(startNodeID, endNodeID, this).getPath();
+        break;
+      case "Dijkstra":
+        this.path = new DijkstraPath(startNodeID, endNodeID, this).getPath();
+        break;
       default:
-        return new AStarPath(startNodeID, endNodeID, this).getPath();
+        this.path = new AStarPath(startNodeID, endNodeID, this).getPath();
+        break;
     }
+    return this.path;
+  }
+
+  public getTextualPath() {
+    if (this.path.length == 0) {
+      return ["No Path Set"];
+    }
+    const textualPath: string[] = [];
+
+    return textualPath;
   }
 
   static getNumFromFloor(floor: string): number {
