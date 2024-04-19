@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
 
 import Map from "./routes/Map.tsx";
-//import Hero from "./routes/Hero.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
@@ -17,6 +16,7 @@ import GiftDelivery from "./routes/GiftDelivery.tsx";
 import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Hero from "./routes/Hero.tsx";
+import EmployeeTable from "./routes/EmployeeTable.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -71,6 +71,10 @@ function App() {
         {
           path: paths.MAP_EDITOR,
           element: <AuthComp component={MapEdit} />,
+        },
+        {
+          path: paths.EMPLOYEE_TABLE,
+          element: <AuthComp component={EmployeeTable} />,
         },
       ],
     },

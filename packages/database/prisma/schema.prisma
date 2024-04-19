@@ -106,7 +106,7 @@ model GiftDelivery {
 }
 
 model Employee {
-  employeeID     Int    @id
+  employeeID     Int    @id @default(autoincrement())
   name           String
   userName       String
   password       String
