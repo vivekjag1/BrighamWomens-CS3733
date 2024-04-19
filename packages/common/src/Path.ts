@@ -3,4 +3,4 @@ export type PathNodesObject = {
   endNode: string;
 };
 
-export type PathAlgorithm = "A-Star" | "BFS" | "DFS";
+export type PathAlgorithm = "A-Star" | "BFS" | "DFS" | "Dijkstra";
