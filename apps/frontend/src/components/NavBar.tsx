@@ -6,6 +6,7 @@ import MapIcon from "@mui/icons-material/Map";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 //import IconButton from "@mui/material/IconButton";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -192,6 +193,15 @@ function NavBar() {
             setActivePage={setActivePage}
             Icon={TocIcon}
             label="Service"
+            labelLight="Data"
+            collapsed={isHidingNavBarInfo}
+          />
+          <NavbarItem
+            to={paths.EMPLOYEE_TABLE}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={AssignmentIndIcon}
+            label="Employee"
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
