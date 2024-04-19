@@ -17,6 +17,7 @@ import GiftDelivery from "./routes/GiftDelivery.tsx";
 import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Hero from "./routes/Hero.tsx";
+import { AboutUs } from "./routes/AboutUs.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ function App() {
         {
           path: paths.MAP_EDITOR,
           element: <AuthComp component={MapEdit} />,
+        },
+        {
+          path: paths.ABOUT,
+          element: <AboutUs />,
         },
       ],
     },
