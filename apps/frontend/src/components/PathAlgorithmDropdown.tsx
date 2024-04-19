@@ -11,7 +11,7 @@ interface DropdownProps {
   className?: string;
 }
 
-const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS"];
+const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS", "Dijkstra"];
 
 const PathAlgorithmDropdown = ({
   value,
