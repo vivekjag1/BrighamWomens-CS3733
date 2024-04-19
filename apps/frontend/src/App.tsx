@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Services from "./routes/Services.tsx";
 
 import Map from "./routes/Map.tsx";
-//import Hero from "./routes/Login.tsx";
+//import Hero from "./routes/Hero.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
@@ -16,20 +16,20 @@ import ServicesTable from "./routes/ServicesTable.tsx";
 import GiftDelivery from "./routes/GiftDelivery.tsx";
 import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
-import Login from "./routes/Login.tsx";
+import Hero from "./routes/Hero.tsx";
 function App() {
   const router = createBrowserRouter([
     {
       path: paths.LOGIN,
-      element: <Login />,
+      element: <Hero />,
     },
 
     {
-      path: paths.MAP,
+      path: paths.HOME,
       element: <Layout />,
       children: [
         {
-          path: paths.MAP,
+          path: paths.HOME,
           element: <Map />,
         },
         {
