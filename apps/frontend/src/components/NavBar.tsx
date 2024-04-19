@@ -108,9 +108,13 @@ function NavBar() {
   };
 
   return (
-    <div className="z-10">
+    <div className="z-10 bg-offwhite">
       <div
         className={`shadow-lg h-screen relative bg-secondary flex flex-col space-y-[2rem] transition-width ease-in-out duration-500 z-10 ${isCollapsed ? " w-[5rem]" : "w-[14rem]"}`}
+        style={{
+          borderTopRightRadius: "10px", // Adjust the value as needed
+          borderBottomRightRadius: "10px", // Adjust the value as needed
+        }}
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
