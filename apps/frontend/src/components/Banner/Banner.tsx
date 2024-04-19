@@ -9,9 +9,9 @@ interface BannerProps {
 function Banner(props: BannerProps) {
   return (
     <motion.div
-      className="w-[80vw] h-[5.5vh] flex justify-center items-center gap-8 border-2 border-gray-200 rounded-lg shadow-md bg-gray-100"
+      className="w-[80vw] h-[5.5vh] flex justify-center items-center gap-8 border-2 border-gray-200 rounded-md shadow-md bg-gray-100"
       initial={{ y: "-10vh" }}
-      animate={{ y: 0, transition: { delay: 1, duration: 1 } }}
+      animate={{ y: 0, transition: { delay: 1.5, duration: 1 } }}
       exit={{ y: "-10vh", transition: { duration: 1 } }}
     >
       {props.children}

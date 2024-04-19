@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Banner from "../components/Banner.tsx";
+import { AnimatePresence } from "framer-motion";
+import Banner from "../components/Banner/Banner.tsx";
 import paths from "../paths/paths.tsx";
 import "../styles/Hero.css";
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
 
 const bannerChildren: JSX.Element = (
   <p>
