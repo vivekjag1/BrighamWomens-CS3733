@@ -12,6 +12,7 @@ const paths = {
   FORM_STARTER: "/home/services/form",
   MAP_EDITOR: "/home/edit",
   SECURITY_REQUEST: "/home/services/security",
+  EMPLOYEE_TABLE: "/home/employee/data",
 };
 
 export default paths;
