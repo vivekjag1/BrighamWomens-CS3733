@@ -87,7 +87,7 @@ export function GiftDelivery(): JSX.Element {
       <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
         Gift Delivery Request
       </h1>
-      <div className="h-auto flex justify-center items-center w-[30rem]">
+      <div className="h-auto flex justify-center items-center w-[30rem] ">
         <form
           noValidate
           autoComplete="off"
