@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { ButtonProps } from "@mui/material/Button";
 
 const styles = {
   backgroundColor: "#012D5A",
@@ -10,17 +11,12 @@ const styles = {
   },
 } as const;
 
-function CustomButton(props: { text: string; onClick: () => void }) {
+const CustomButton: React.FC<ButtonProps> = (props) => {
   return (
-    <Button
-      variant="contained"
-      sx={styles}
-      onClick={props.onClick}
-      endIcon={<CheckIcon />}
-    >
-      {props.text}
+    <Button variant="contained" sx={styles} endIcon={<CheckIcon />} {...props}>
+      SAVE
     </Button>
   );
-}
+};
 
 export default CustomButton;

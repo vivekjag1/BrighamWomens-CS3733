@@ -1,6 +1,6 @@
 const paths = {
   LOGIN: "/",
-  MAP: "/home",
+  HOME: "/home",
   SERVICES: "/home/services",
   MEDICINE_REQUEST: "/home/services/medicine",
   MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",
