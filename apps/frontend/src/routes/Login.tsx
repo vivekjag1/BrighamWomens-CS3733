@@ -1,18 +1,25 @@
 import React from "react";
 import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
+// import { useFingerEvents } from "react-finger";
 
 function Login() {
   const navigate = useNavigate();
+
   function handlePathfind() {
     navigate("/home");
   }
 
+  // function gesture() {
+  //     const events = useFingerEvents({
+  //         onTap: event => console.log('onTap', event),
+  //         onSwipe: event => console.log('onSwipe', event.direction),
+  //     });
   return (
     <div>
       <div
         onClick={handlePathfind}
-        className="landing-page w-screen h-screen bg-no-repeat bg-cover bg-center"
+        className="landing-page w-screen h-screen bg-no-repeat bg-cover bg-center "
       >
         <div className="opening-remarks w-screen h-screen flex flex-col justify-center items-center gap-8">
           <label className="text-[3vw] font-semibold text-white">
@@ -21,7 +28,7 @@ function Login() {
           <label className="font-normal text-[2vw] text-white">
             Navigation made simple
           </label>
-          <label className="font-light text-[2vw] text-white animate-pulse">
+          <label className="font-light text-[2vw] text-white animate-pulse ">
             Touch the screen to begin.
           </label>
           <label className="absolute bottom-[3vh] font-light text-[1vw] text-white">

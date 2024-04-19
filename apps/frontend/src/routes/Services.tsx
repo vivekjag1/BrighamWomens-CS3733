@@ -19,12 +19,13 @@ function Services() {
           <h2 className="w-full text-md text-center">
             Submit a service request
           </h2>
-          <hr className="pl-96 pr-96" />
+          <hr className="pl-96 pr-96 " />
         </div>
-        <div className="flex justify-center gap-8">
+
+        <div className="flex justify-center gap-8 ">
           <Link
             to={paths.MEDICINE_REQUEST}
-            className="serviceCard medicineDelivery"
+            className=" serviceCard medicineDelivery ]  "
           >
             <ServiceCard
               imgPath={medicineIcon}
