@@ -10,7 +10,7 @@ import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
   return (
-    <div className="bg-gray-50 h-screen">
+    <div className="bg-offwhite h-screen">
       <div className="flex flex-col items-center gap-8 ">
         <div className="flex flex-col items-center gap-2 mt-8">
           <h2 className="w-full text-3xl font-bold text-center">
@@ -29,7 +29,7 @@ function Services() {
             <ServiceCard
               imgPath={medicineIcon}
               alt="pill icon"
-              label="Medicine Delivery"
+              label="Medicine"
             />
           </Link>
           <Link
@@ -39,15 +39,11 @@ function Services() {
             <ServiceCard
               imgPath={deviceIcon}
               alt="device icon"
-              label="Medical Device Delivery"
+              label="Medical Devices"
             />
           </Link>
-          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
-            <ServiceCard
-              imgPath={giftIcon}
-              alt="device icon"
-              label="Gift Delivery"
-            />
+          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
+            <ServiceCard imgPath={roomIcon} alt="room icon" label="Rooms" />
           </Link>
         </div>
         <div className="flex justify-center gap-8">
@@ -58,14 +54,7 @@ function Services() {
             <ServiceCard
               imgPath={sanitationIcon}
               alt="sanitation icon"
-              label="Sanitation Request"
-            />
-          </Link>
-          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
-            <ServiceCard
-              imgPath={roomIcon}
-              alt="room icon"
-              label="Reserve a Room"
+              label="Sanitation"
             />
           </Link>
           <Link
@@ -75,8 +64,11 @@ function Services() {
             <ServiceCard
               imgPath={securityIcon}
               alt="security icon"
-              label="Security Request"
+              label="Security"
             />
+          </Link>
+          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
+            <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
           </Link>
         </div>
       </div>

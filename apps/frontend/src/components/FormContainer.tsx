@@ -18,7 +18,10 @@ export function FormContainer({ children }: FormContainerProps) {
     <div className="h-screen overflow-auto">
       <div className="flex justify-center w-full">
         <div className="flex flex-col items-center gap-2 mx-5 my-8">
-          <Card className="drop-shadow-2xl w-full max-w-5xl rounded-lg my-8 overflow-hidden">
+          <Card
+            className="shadow-xl drop-shadow w-full max-w-5xl my-8 p-5 overflow-hidden"
+            sx={{ borderRadius: "20px" }}
+          >
             <CustomCardContent>{children}</CustomCardContent>
           </Card>
         </div>
