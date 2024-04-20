@@ -35,11 +35,11 @@ function MapEditCard(props: {
     <div>
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
         <div className="flex flex-col gap-[1rem]">
-          <div className="flex flex-row justify-between">
-            {/*<h2 className="text-2xl font-extralight text-secondary">*/}
-            {/*  Modify Nodes*/}
-            {/*</h2>*/}
-          </div>
+          {/*<div className="flex flex-row justify-between">*/}
+          {/*  /!*<h2 className="text-2xl font-extralight text-secondary">*!/*/}
+          {/*  /!*  Modify Nodes*!/*/}
+          {/*  /!*</h2>*!/*/}
+          {/*</div>*/}
 
           <div className="flex gap-1 items-center">
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
