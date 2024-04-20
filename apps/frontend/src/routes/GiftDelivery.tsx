@@ -19,7 +19,6 @@ import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../components/ServiceImages.tsx";
 import giftPlaceholder from "../../assets/gift-placeholder.jpg";
-// import {useEmployees} from "../components/useEmployees.ts";
 
 const initialState: GiftDeliveryObject = {
   giftType: "",
@@ -42,20 +41,12 @@ export function GiftDelivery(): JSX.Element {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
 
-  // const employees = useEmployees();
-
   const validateForm = () => {
-    const { status, assignedTo } = giftDeliveryRequest.serviceRequest;
-    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
-      status,
-    );
-
     return (
       giftDeliveryRequest.giftType &&
       giftDeliveryRequest.serviceRequest.requestingUsername &&
       giftDeliveryRequest.serviceRequest.location &&
-      giftDeliveryRequest.serviceRequest.priority &&
-      (!requiresEmployee || (requiresEmployee && assignedTo))
+      giftDeliveryRequest.serviceRequest.priority
     );
   };
 
@@ -204,26 +195,15 @@ export function GiftDelivery(): JSX.Element {
             <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={giftDeliveryRequest.serviceRequest.status}
-                onChange={(e) => {
-                  const newStatus = e.target.value
-                    ? e.target.value.toString()
-                    : "";
-                  let newAssignedTo =
-                    giftDeliveryRequest.serviceRequest.assignedTo;
-
-                  if (newStatus === "Unassigned") {
-                    newAssignedTo = "Unassigned";
-                  }
-
+                onChange={(e) =>
                   setGiftDeliveryRequest({
                     ...giftDeliveryRequest,
                     serviceRequest: {
                       ...giftDeliveryRequest.serviceRequest,
-                      status: newStatus,
-                      assignedTo: newAssignedTo,
+                      status: e.target.value as string,
                     },
-                  });
-                }}
+                  })
+                }
               />
             </FormControl>
 
@@ -231,22 +211,15 @@ export function GiftDelivery(): JSX.Element {
               value={giftDeliveryRequest.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
               label="Employee *"
-              onChange={(newValue: string) => {
-                let newStatus = giftDeliveryRequest.serviceRequest.status;
-
-                if (newValue && newStatus === "Unassigned") {
-                  newStatus = "Assigned";
-                }
-
+              onChange={(newValue: string) =>
                 setGiftDeliveryRequest((giftDeliveryRequest) => ({
                   ...giftDeliveryRequest,
                   serviceRequest: {
                     ...giftDeliveryRequest.serviceRequest,
                     assignedTo: newValue,
-                    status: newStatus,
                   },
-                }));
-              }}
+                }))
+              }
             />
 
             <FormControl

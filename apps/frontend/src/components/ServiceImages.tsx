@@ -13,7 +13,7 @@ function ServiceImages(props: { imgPath: string; alt: string }) {
       <img
         src={props.imgPath}
         alt={props.alt}
-        className="w-[40rem] h-[750px] object-cover"
+        className="w-[40rem] h-[700px] object-cover"
       />
     </div>
   );
