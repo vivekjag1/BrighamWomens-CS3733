@@ -4,6 +4,7 @@ import { Employee } from "database";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import EmployeeFilterDropdown from "./EmployeeFilterDropdown.tsx";
+import { checkAuth } from "../checkAdminStatus.ts";
 
 export function EmployeeGetter() {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
@@ -13,8 +14,18 @@ export function EmployeeGetter() {
   const [filterByRole, setFilterByRole] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<Employee[]>([]);
   const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
-  const { getAccessTokenSilently } = useAuth0();
 
+  const { getAccessTokenSilently } = useAuth0();
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const token = await getAccessTokenSilently();
+      const result = await checkAuth(token, "employeetable");
+      setStatus(result!);
+    };
+    checkRole().then();
+  }, [getAccessTokenSilently]);
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessTokenSilently();
@@ -251,18 +262,24 @@ export function EmployeeGetter() {
             <th scope="col" className="px-6 py-3">
               Name
             </th>
+
             <th scope="col" className="px-6 py-3 w-[18ch]">
               Username
-            </th>
-            <th scope="col" className="px-6 py-3 w-[18ch]">
-              Password
             </th>
             <th scope="col" className="px-6 py-3 w-[15ch]">
               Position
             </th>
-            <th scope="col" className="px-6 py-3 w-[15ch]">
-              Role
-            </th>
+            {authorizedStatus && (
+              <>
+                <th scope="col" className="px-6 py-3 w-[18ch]">
+                  Password
+                </th>
+
+                <th scope="col" className="px-6 py-3 w-[15ch]">
+                  Role
+                </th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -286,9 +303,13 @@ export function EmployeeGetter() {
                 </div>
               </td>
               <td>{highlightSearchTerm(employee.userName, filterBySearch)}</td>
-              <td>{employee.password}</td>
               <td>{highlightSearchTerm(employee.position, filterBySearch)}</td>
-              <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>
+              {authorizedStatus && (
+                <>
+                  <td>{employee.password}</td>
+                  <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
