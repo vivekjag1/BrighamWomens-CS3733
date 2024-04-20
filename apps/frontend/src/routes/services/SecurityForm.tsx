@@ -2,6 +2,7 @@
 import { Select, MenuItem, InputLabel } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import { useState } from "react";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
@@ -29,6 +30,7 @@ const initialState: SecurityRequestType = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 
@@ -38,15 +40,24 @@ export function SecurityForm() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    securityRequestForm.serviceRequest.status,
+  );
 
   const validateForm = () => {
+    const { status, assignedTo } = securityRequestForm.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       securityRequestForm.numberPeople &&
       !isNaN(Number(securityRequestForm.numberPeople)) && // check if it can be converted to number
       securityRequestForm.securityType &&
       securityRequestForm.serviceRequest.requestingUsername &&
       securityRequestForm.serviceRequest.location &&
-      securityRequestForm.serviceRequest.priority
+      securityRequestForm.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -218,17 +229,52 @@ export function SecurityForm() {
               <FormControl sx={{ width: "25rem" }} size="small">
                 <CustomStatusDropdown
                   value={securityRequestForm.serviceRequest.status}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      securityRequestForm.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    }
+
                     setSecurityRequestForm({
                       ...securityRequestForm,
                       serviceRequest: {
                         ...securityRequestForm.serviceRequest,
-                        status: e.target.value ? e.target.value.toString() : "",
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
                       },
-                    })
-                  }
+                    });
+                  }}
                 />
               </FormControl>
+
+              <EmployeeDropdown
+                value={securityRequestForm.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Employee *"
+                // employees={employees}
+                onChange={(newValue: string) => {
+                  let newStatus = securityRequestForm.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setSecurityRequestForm((securityRequestForm) => ({
+                    ...securityRequestForm,
+                    serviceRequest: {
+                      ...securityRequestForm.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
 
               <FormControl
                 component="fieldset"

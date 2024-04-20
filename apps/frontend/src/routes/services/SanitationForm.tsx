@@ -3,6 +3,7 @@ import { FormControl } from "@mui/material";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import FormContainer from "../../components/FormContainer.tsx";
@@ -29,6 +30,7 @@ const initialState: SanitationRequestObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 
@@ -39,14 +41,23 @@ export function SanitationForm() {
     useState<SanitationRequestObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    sanitationRequest.serviceRequest.status,
+  );
 
   const validateForm = () => {
+    const { status, assignedTo } = sanitationRequest.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       sanitationRequest.sanitationType &&
       sanitationRequest.requiredEquipment &&
       sanitationRequest.serviceRequest.requestingUsername &&
       sanitationRequest.serviceRequest.location &&
-      sanitationRequest.serviceRequest.priority
+      sanitationRequest.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -99,7 +110,7 @@ export function SanitationForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={sanitationRequest.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setSanitationRequest({
@@ -241,23 +252,55 @@ export function SanitationForm() {
                 size="small"
               />
 
-              <FormControl
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-                size="small"
-              >
+              <FormControl sx={{ width: "25rem" }} size="small">
                 <CustomStatusDropdown
                   value={sanitationRequest.serviceRequest.status}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      sanitationRequest.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    }
+
                     setSanitationRequest({
                       ...sanitationRequest,
                       serviceRequest: {
                         ...sanitationRequest.serviceRequest,
-                        status: e.target.value as string,
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
                       },
-                    })
-                  }
+                    });
+                  }}
                 />
               </FormControl>
+
+              <EmployeeDropdown
+                value={sanitationRequest.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Assigned Employee *"
+                // employees={employees}
+                onChange={(newValue: string) => {
+                  let newStatus = sanitationRequest.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setSanitationRequest((sanitationRequest) => ({
+                    ...sanitationRequest,
+                    serviceRequest: {
+                      ...sanitationRequest.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
 
               <FormControl
                 component="fieldset"

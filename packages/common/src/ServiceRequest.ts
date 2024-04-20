@@ -5,4 +5,5 @@ export type ServiceRequest = {
   status: string;
   description: string;
   requestedTime: string;
+  assignedTo: string;
 };

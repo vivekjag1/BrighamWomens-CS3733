@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import FormContainer from "../../components/FormContainer.tsx";
@@ -27,6 +28,7 @@ const initialState: MedicalDeviceDelivery = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 
@@ -37,6 +39,9 @@ export function MedicalDeviceForm() {
     useState<MedicalDeviceDelivery>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    medicalDeviceDelivery.serviceRequest.status,
+  );
 
   function clear() {
     setDate(dayjs());
@@ -44,12 +49,18 @@ export function MedicalDeviceForm() {
   }
 
   const validateForm = () => {
+    const { status, assignedTo } = medicalDeviceDelivery.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       medicalDeviceDelivery.deviceType &&
       medicalDeviceDelivery.quantity &&
       medicalDeviceDelivery.serviceRequest.requestingUsername &&
       medicalDeviceDelivery.serviceRequest.location &&
-      medicalDeviceDelivery.serviceRequest.priority
+      medicalDeviceDelivery.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -96,7 +107,7 @@ export function MedicalDeviceForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={medicalDeviceDelivery.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setMedicalDeviceDelivery({
@@ -269,17 +280,52 @@ export function MedicalDeviceForm() {
               <FormControl sx={{ width: "25rem" }} size="small">
                 <CustomStatusDropdown
                   value={medicalDeviceDelivery.serviceRequest.status}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      medicalDeviceDelivery.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    }
+
                     setMedicalDeviceDelivery({
                       ...medicalDeviceDelivery,
                       serviceRequest: {
                         ...medicalDeviceDelivery.serviceRequest,
-                        status: e.target.value ? e.target.value.toString() : "",
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
                       },
-                    })
-                  }
+                    });
+                  }}
                 />
               </FormControl>
+
+              <EmployeeDropdown
+                value={medicalDeviceDelivery.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Assigned Employee *"
+                // employees={employees}
+                onChange={(newValue: string) => {
+                  let newStatus = medicalDeviceDelivery.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setMedicalDeviceDelivery((medicalDeviceDelivery) => ({
+                    ...medicalDeviceDelivery,
+                    serviceRequest: {
+                      ...medicalDeviceDelivery.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
 
               <FormControl
                 component="fieldset"
