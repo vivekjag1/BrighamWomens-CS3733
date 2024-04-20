@@ -8254,6 +8254,7 @@ __metadata:
     happy-dom: "npm:^10.6.3"
     husky: "npm:^8.0.0"
     jsonwebtoken: "npm:^9.0.2"
+    jwt-decode: "npm:^4.0.0"
     material-ui: "npm:^0.20.2"
     multer: "npm:^1.4.5-lts.1"
     prettier: "npm:2.8.8"
