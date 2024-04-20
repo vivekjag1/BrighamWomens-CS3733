@@ -8,7 +8,7 @@ import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
-import MapEditSpeedDial from "../components/MapEditSpeedDial.tsx";
+import AddNodeToolTip from "../components/AddNodeToolTip.tsx";
 
 const defaultFloor: number = 1;
 
@@ -32,6 +32,8 @@ function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
+
+  const [addingNode, setAddingNode] = useState<boolean>(false);
 
   const contextValue = { nodes, setNodes, edges, setEdges };
 
@@ -148,15 +150,23 @@ function MapEdit() {
     setNodeSaved(false);
   }
 
-  function handleMapClick() {
-    // if node wasn't saved, revert node to cached version
-    if (cachedNode && !nodeSaved) {
-      updateNode(cachedNode);
-    }
+  function handleAddNodeButtonClicked() {
+    setAddingNode(!addingNode);
+  }
 
-    setSelectedNodeID(undefined);
-    setCachedNode(undefined);
-    setNodeSaved(false);
+  function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
+    if (addingNode) {
+      handleCreateNode(event);
+    } else {
+      // if node wasn't saved, revert node to cached version
+      if (cachedNode && !nodeSaved) {
+        updateNode(cachedNode);
+      }
+
+      setSelectedNodeID(undefined);
+      setCachedNode(undefined);
+      setNodeSaved(false);
+    }
   }
 
   async function handleSave() {
@@ -175,28 +185,57 @@ function MapEdit() {
       .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
-  // export const Action = {
-  //   CREATE: "RED",
-  //   DELETE: "BLUE",
-  //   EDIT: "GREEN",
-  // };
-  // function getEditAction(action) {
-  //   switch (action) {
-  //     case Action.CREATE:
-  //       return "red";
-  //     case Action.DELETE:
-  //       return "blue";
-  //     case Action.EDIT:
-  //       return "green";
-  //     default:
-  //       return "black";
-  //   }
-  // }
+  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
+    //console.log("place node");
+    // Get coordinates of the click relative to the SVG element
+    const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
+    if (!svg) {
+      // Handle the case where svg is null
+      return;
+    }
+    const point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+
+    const matrix = svg.getScreenCTM();
+    if (!matrix) {
+      // Handle the case where matrix is null
+      return;
+    }
+    const { x, y } = point.matrixTransform(matrix.inverse());
+
+    const xVal = x.toString();
+    const yVal = y.toString();
+    const nodeID = "";
+    const floor = activeFloor;
+    const building = "";
+    const nodeType = "";
+    const longName = "";
+    const shortName = "";
+
+    // Add new node to the nodes array
+    const newNode = {
+      nodeID: nodeID,
+      xcoord: xVal,
+      ycoord: yVal,
+      floor: floor.toString(),
+      building: building,
+      nodeType: nodeType,
+      longName: longName,
+      shortName: shortName,
+    };
+
+    const tempNodes = new Map(nodes);
+    tempNodes.set(newNode.nodeID, newNode);
+    setNodes(tempNodes);
+    console.log("Nodes Start", nodes, "Nodes End");
+  };
 
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
         <MapEditImage
+          addingNode={addingNode}
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
@@ -215,8 +254,8 @@ function MapEdit() {
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[6%] bottom-[2%] z-50">
-        <MapEditSpeedDial />
+      <div className="absolute left-[2%] bottom-[2%] z-50">
+        <AddNodeToolTip onClicked={handleAddNodeButtonClicked} />
       </div>
     </div>
   );
