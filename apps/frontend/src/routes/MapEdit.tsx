@@ -161,6 +161,24 @@ function MapEdit() {
       .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
+  // export const Action = {
+  //   CREATE: "RED",
+  //   DELETE: "BLUE",
+  //   EDIT: "GREEN",
+  // };
+  // function getEditAction(action) {
+  //   switch (action) {
+  //     case Action.CREATE:
+  //       return "red";
+  //     case Action.DELETE:
+  //       return "blue";
+  //     case Action.EDIT:
+  //       return "green";
+  //     default:
+  //       return "black";
+  //   }
+  // }
+
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
@@ -182,7 +200,7 @@ function MapEdit() {
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[6%] bottom-[2%]">
+      <div className="absolute left-[6%] bottom-[2%] z-50">
         <MapEditSpeedDial />
       </div>
     </div>
