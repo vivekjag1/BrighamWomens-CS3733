@@ -1,5 +1,5 @@
 import "../styles/ServicesCard.css";
-import FormContainer from "../components/FormContainer.tsx";
+// import FormContainer from "../components/FormContainer.tsx";
 import * as React from "react";
 // import ImageList from '@mui/material/ImageList';
 // import ImageListItem from '@mui/material/ImageListItem';
@@ -7,73 +7,201 @@ import * as React from "react";
 // import ListSubheader from '@mui/material/ListSubheader';
 // import IconButton from '@mui/material/IconButton';
 // import InfoIcon from '@mui/icons-material/Info';
+import josephImage from "../../assets/people/joseph.png";
 import danielImage from "../../assets/people/Daniel.png";
-// import mattImage from '../../assets/people/Matt.png';
+import FormContainer from "../components/FormContainer.tsx";
+import mattImage from "../../assets/people/Matt.png";
 // import taehaImage from '../../assets/people/Taeha.png';
-
-// import ademImage from '../../assets/people/Adem.png';
+import andyImage from "../../assets/people/Andy.png";
+import vivekImage from "../../assets/people/Vivek.png";
+import ademImage from "../../assets/people/Adem.png";
+import suliImage from "../../assets/people/Suli.png";
+import frankyImage from "../../assets/people/Franky.png";
+import colinImage from "../../assets/people/Colin.png";
+import griffinImage from "../../assets/people/Griffin.png";
+import taehaImage from "../../assets/people/Taeha.png";
 export function AboutUs() {
   return (
-    <FormContainer>
-      <div className="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
-        <div className="-m-1 flex flex-wrap md:-m-2">
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="Danielle Image"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src={danielImage}
-              />
-            </div>
-          </div>
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="gallery"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(74).webp"
-              />
-            </div>
-          </div>
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="gallery"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(75).webp"
-              />
-            </div>
-          </div>
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="gallery"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-              />
-            </div>
-          </div>
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="gallery"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(76).webp"
-              />
-            </div>
-          </div>
-          <div className="flex w-1/3 flex-wrap">
-            <div className="w-full p-1 md:p-2">
-              <img
-                alt="gallery"
-                className="block h-full w-full rounded-lg object-cover object-center"
-                src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(72).webp"
-              />
-            </div>
-          </div>
-        </div>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h1 className=" text-4xl"> About Us </h1>
+      <p style={{ color: "grey" }}> WPI Computer Science Department</p>
+      <hr className="pl-96 pr-96" />
+      <br />
+      <p style={{ color: "grey" }}> CS3733-D24 (Software Engineering)</p>
+      <p style={{ color: "grey" }}> Professor. Wilson Wong🐻</p>
+      <div
+        style={{
+          width: "100%",
+          height: "25%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={josephImage}
+          />
+          <label>
+            {" "}
+            Joseph cardsasd
+            <br /> Team Coach
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={danielImage}
+          />
+          <label>
+            {" "}
+            Danielle Godlfioew
+            <br /> Lead SWE
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={andyImage}
+          />
+          <label>
+            {" "}
+            Andy Troug
+            <br /> Assistant Lead
+          </label>
+        </FormContainer>
       </div>
-    </FormContainer>
+
+      <div
+        style={{
+          width: "100%",
+          height: "25%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={vivekImage}
+          />
+          <label>
+            {" "}
+            Vivek jadfasd
+            <br /> Assistant Lead
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={mattImage}
+          />
+          <label>
+            {" "}
+            MAttherg bowewoe
+            <br /> Project Manager
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={ademImage}
+          />
+          <label>
+            {" "}
+            Mohalkgnla adem
+            <br /> Scrum Master
+          </label>
+        </FormContainer>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          height: "20%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={suliImage}
+          />
+          <label>
+            {" "}
+            Sulimanf masdgsdg
+            <br /> Product Owner
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={frankyImage}
+          />
+          <label>
+            {" "}
+            Frank dmi meiwf
+            <br /> Documentation
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={colinImage}
+          />
+          <label>
+            {" "}
+            colin masgucci
+            <br /> Front-End
+          </label>
+        </FormContainer>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          height: "20%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={griffinImage}
+          />
+          <label>
+            {" "}
+            Grifif brown
+            <br /> Algorithm
+          </label>
+        </FormContainer>
+        <FormContainer>
+          <img
+            className="block h-full w-20 rounded-lg object-cover object-center"
+            src={taehaImage}
+          />
+          <label>
+            {" "}
+            Taeha Song
+            <br /> Front-End
+          </label>
+        </FormContainer>
+      </div>
+    </div>
   );
 }
 
