@@ -10,7 +10,7 @@ import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useToast } from "../components/useToast.tsx";
 
-const AdminMapData = () => {
+const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
@@ -294,4 +294,4 @@ const AdminMapData = () => {
   );
 };
 
-export default AdminMapData;
+export default NodeTable;
