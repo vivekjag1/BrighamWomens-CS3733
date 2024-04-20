@@ -1,8 +1,9 @@
-import React from "react";
+// import React, { useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { MenuItem, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
+// import {EmployeeType} from "common/src/EmployeeType.ts";
 
 interface EmployeeDropdownProps {
   value: string;
@@ -10,6 +11,8 @@ interface EmployeeDropdownProps {
   label?: string;
   sx?: SxProps<Theme>;
   className?: string;
+  // disabled: boolean;
+  // employees: EmployeeType[];
 }
 
 const EmployeeDropdown = ({
@@ -18,8 +21,13 @@ const EmployeeDropdown = ({
   label,
   sx,
   className,
+  // disabled,
+  // employees,
 }: EmployeeDropdownProps) => {
+  // const [employees, setEmployees] = useState<EmployeeType[]>([]);
+  // setEmployees(useEmployees);
   const employees = useEmployees();
+
   console.log("employee list: ", employees);
 
   const handleChange = (
@@ -49,6 +57,7 @@ const EmployeeDropdown = ({
       className={className}
       value={selectedValue}
       onChange={handleChange}
+      // hidden={disabled}
       renderInput={(params) => (
         <TextField
           {...params}

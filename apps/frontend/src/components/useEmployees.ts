@@ -29,8 +29,7 @@ export const useEmployees = () => {
     }
 
     fetchEmployees();
-    console.log("sorted employees", employees);
-  }, [getAccessTokenSilently, employees]);
+  }, [getAccessTokenSilently]);
 
   return employees;
 };

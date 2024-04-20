@@ -19,6 +19,7 @@ import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../components/ServiceImages.tsx";
 import giftPlaceholder from "../../assets/gift-placeholder.jpg";
+// import {useEmployees} from "../components/useEmployees.ts";
 
 const initialState: SecurityRequestType = {
   numberPeople: "",
@@ -41,14 +42,22 @@ export function SecurityRequest() {
   const { showToast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
 
+  // const employees = useEmployees();
+
   const validateForm = () => {
+    const { status, assignedTo } = securityRequestForm.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       securityRequestForm.numberPeople &&
       !isNaN(Number(securityRequestForm.numberPeople)) && // check if it can be converted to number
       securityRequestForm.securityType &&
       securityRequestForm.serviceRequest.requestingUsername &&
       securityRequestForm.serviceRequest.location &&
-      securityRequestForm.serviceRequest.priority
+      securityRequestForm.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -219,15 +228,26 @@ export function SecurityRequest() {
             <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={securityRequestForm.serviceRequest.status}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const newStatus = e.target.value
+                    ? e.target.value.toString()
+                    : "";
+                  let newAssignedTo =
+                    securityRequestForm.serviceRequest.assignedTo;
+
+                  if (newStatus === "Unassigned") {
+                    newAssignedTo = "Unassigned";
+                  }
+
                   setSecurityRequestForm({
                     ...securityRequestForm,
                     serviceRequest: {
                       ...securityRequestForm.serviceRequest,
-                      status: e.target.value ? e.target.value.toString() : "",
+                      status: newStatus,
+                      assignedTo: newAssignedTo,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </FormControl>
 
@@ -235,15 +255,23 @@ export function SecurityRequest() {
               value={securityRequestForm.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
               label="Employee *"
-              onChange={(newValue: string) =>
+              // employees={employees}
+              onChange={(newValue: string) => {
+                let newStatus = securityRequestForm.serviceRequest.status;
+
+                if (newValue && newStatus === "Unassigned") {
+                  newStatus = "Assigned";
+                }
+
                 setSecurityRequestForm((securityRequestForm) => ({
                   ...securityRequestForm,
                   serviceRequest: {
                     ...securityRequestForm.serviceRequest,
                     assignedTo: newValue,
+                    status: newStatus,
                   },
-                }))
-              }
+                }));
+              }}
             />
 
             <FormControl

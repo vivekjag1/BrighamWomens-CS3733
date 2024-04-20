@@ -20,6 +20,7 @@ import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../components/ServiceImages.tsx";
 import giftPlaceholder from "../../assets/gift-placeholder.jpg";
+// import {useEmployees} from "../components/useEmployees.ts";
 
 const initialState: RoomReservationType = {
   endTime: dayjs().toISOString(),
@@ -42,14 +43,23 @@ export function RoomReservation() {
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+
+  // const employees = useEmployees();
+
   const validateForm = () => {
+    const { status, assignedTo } = roomReservation.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     const isValid =
       roomReservation.reservationReason &&
       roomReservation.endTime &&
       roomReservation.serviceRequest.location &&
       roomReservation.serviceRequest.requestingUsername &&
       roomReservation.serviceRequest.requestedTime &&
-      roomReservation.serviceRequest.priority;
+      roomReservation.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo));
 
     console.log(roomReservation);
     return isValid;
@@ -245,15 +255,25 @@ export function RoomReservation() {
             <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={roomReservation.serviceRequest.status}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const newStatus = e.target.value
+                    ? e.target.value.toString()
+                    : "";
+                  let newAssignedTo = roomReservation.serviceRequest.assignedTo;
+
+                  if (newStatus === "Unassigned") {
+                    newAssignedTo = "Unassigned";
+                  }
+
                   setRoomReservation({
                     ...roomReservation,
                     serviceRequest: {
                       ...roomReservation.serviceRequest,
-                      status: e.target.value ? e.target.value.toString() : "",
+                      status: newStatus,
+                      assignedTo: newAssignedTo,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </FormControl>
 
@@ -261,15 +281,23 @@ export function RoomReservation() {
               value={roomReservation.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
               label="Employee *"
-              onChange={(newValue: string) =>
+              // employees={employees}
+              onChange={(newValue: string) => {
+                let newStatus = roomReservation.serviceRequest.status;
+
+                if (newValue && newStatus === "Unassigned") {
+                  newStatus = "Assigned";
+                }
+
                 setRoomReservation((currentReservation) => ({
                   ...currentReservation,
                   serviceRequest: {
                     ...currentReservation.serviceRequest,
                     assignedTo: newValue,
+                    status: newStatus,
                   },
-                }))
-              }
+                }));
+              }}
             />
 
             <FormControl

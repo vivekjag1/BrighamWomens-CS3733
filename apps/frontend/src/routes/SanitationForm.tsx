@@ -19,6 +19,7 @@ import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../components/ServiceImages.tsx";
 import giftPlaceholder from "../../assets/gift-placeholder.jpg";
+// import {useEmployees} from "../components/useEmployees.ts";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -42,13 +43,21 @@ export function SanitationForm() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
 
+  // const employees = useEmployees();
+
   const validateForm = () => {
+    const { status, assignedTo } = sanitationRequest.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       sanitationRequest.sanitationType &&
       sanitationRequest.requiredEquipment &&
       sanitationRequest.serviceRequest.requestingUsername &&
       sanitationRequest.serviceRequest.location &&
-      sanitationRequest.serviceRequest.priority
+      sanitationRequest.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -242,21 +251,29 @@ export function SanitationForm() {
               size="small"
             />
 
-            <FormControl
-              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-              size="small"
-            >
+            <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={sanitationRequest.serviceRequest.status}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const newStatus = e.target.value
+                    ? e.target.value.toString()
+                    : "";
+                  let newAssignedTo =
+                    sanitationRequest.serviceRequest.assignedTo;
+
+                  if (newStatus === "Unassigned") {
+                    newAssignedTo = "Unassigned";
+                  }
+
                   setSanitationRequest({
                     ...sanitationRequest,
                     serviceRequest: {
                       ...sanitationRequest.serviceRequest,
-                      status: e.target.value as string,
+                      status: newStatus,
+                      assignedTo: newAssignedTo,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </FormControl>
 
@@ -264,15 +281,23 @@ export function SanitationForm() {
               value={sanitationRequest.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
               label="Employee *"
-              onChange={(newValue: string) =>
+              // employees={employees}
+              onChange={(newValue: string) => {
+                let newStatus = sanitationRequest.serviceRequest.status;
+
+                if (newValue && newStatus === "Unassigned") {
+                  newStatus = "Assigned";
+                }
+
                 setSanitationRequest((sanitationRequest) => ({
                   ...sanitationRequest,
                   serviceRequest: {
                     ...sanitationRequest.serviceRequest,
                     assignedTo: newValue,
+                    status: newStatus,
                   },
-                }))
-              }
+                }));
+              }}
             />
 
             <FormControl

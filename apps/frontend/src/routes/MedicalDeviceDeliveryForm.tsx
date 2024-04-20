@@ -17,6 +17,7 @@ import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../components/ServiceImages.tsx";
 import giftPlaceholder from "../../assets/gift-placeholder.jpg";
+// import {useEmployees} from "../components/useEmployees.ts";
 
 const initialState: MedicalDeviceDelivery = {
   deviceType: "",
@@ -40,18 +41,26 @@ export function MedicalDeviceDeliveryForm() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
 
+  // const employees = useEmployees();
+
   function clear() {
     setDate(dayjs());
     setMedicalDeviceDelivery(initialState);
   }
 
   const validateForm = () => {
+    const { status, assignedTo } = medicalDeviceDelivery.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       medicalDeviceDelivery.deviceType &&
       medicalDeviceDelivery.quantity &&
       medicalDeviceDelivery.serviceRequest.requestingUsername &&
       medicalDeviceDelivery.serviceRequest.location &&
-      medicalDeviceDelivery.serviceRequest.priority
+      medicalDeviceDelivery.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -238,6 +247,7 @@ export function MedicalDeviceDeliveryForm() {
 
             <CustomTextField
               label="Quantity"
+              value={medicalDeviceDelivery.quantity}
               type="number"
               InputProps={{
                 inputProps: { min: 0 },
@@ -270,15 +280,26 @@ export function MedicalDeviceDeliveryForm() {
             <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={medicalDeviceDelivery.serviceRequest.status}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const newStatus = e.target.value
+                    ? e.target.value.toString()
+                    : "";
+                  let newAssignedTo =
+                    medicalDeviceDelivery.serviceRequest.assignedTo;
+
+                  if (newStatus === "Unassigned") {
+                    newAssignedTo = "Unassigned";
+                  }
+
                   setMedicalDeviceDelivery({
                     ...medicalDeviceDelivery,
                     serviceRequest: {
                       ...medicalDeviceDelivery.serviceRequest,
-                      status: e.target.value ? e.target.value.toString() : "",
+                      status: newStatus,
+                      assignedTo: newAssignedTo,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </FormControl>
 
@@ -286,15 +307,23 @@ export function MedicalDeviceDeliveryForm() {
               value={medicalDeviceDelivery.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
               label="Employee *"
-              onChange={(newValue: string) =>
+              // employees={employees}
+              onChange={(newValue: string) => {
+                let newStatus = medicalDeviceDelivery.serviceRequest.status;
+
+                if (newValue && newStatus === "Unassigned") {
+                  newStatus = "Assigned";
+                }
+
                 setMedicalDeviceDelivery((medicalDeviceDelivery) => ({
                   ...medicalDeviceDelivery,
                   serviceRequest: {
                     ...medicalDeviceDelivery.serviceRequest,
                     assignedTo: newValue,
+                    status: newStatus,
                   },
-                }))
-              }
+                }));
+              }}
             />
 
             <FormControl
