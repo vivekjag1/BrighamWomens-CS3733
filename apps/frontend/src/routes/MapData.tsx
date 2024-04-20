@@ -1,23 +1,25 @@
+import { checkAuth } from "../checkAdminStatus.ts";
 import { Button } from "@mui/material";
-import React, { useRef, useState, useEffect } from "react";
-import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
-import { EdgeGetter } from "../components/EdgeGetter.tsx";
-import { NodeGetter } from "../components/NodeGetter.tsx";
+import React, { useEffect, useRef, useState } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAuth0 } from "@auth0/auth0-react";
-import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useToast } from "../components/useToast.tsx";
-
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { NodeGetter } from "../components/NodeGetter.tsx";
+import { EdgeGetter } from "../components/EdgeGetter.tsx";
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [edgeFile, setEdgeFile] = useState<File | null>(null);
   const [nodeFile, setNodeFile] = useState<File | null>(null);
 
   const [activeTab, setActiveTab] = useState<string>("node");
   const nodeTableButtonRef = useRef<HTMLButtonElement>(null);
   const { showToast } = useToast();
+
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
   };
@@ -27,7 +29,14 @@ const NodeTable = () => {
       nodeTableButtonRef.current.focus();
     }
   }, []);
-
+  useEffect(() => {
+    const checkRole = async () => {
+      const token = await getAccessTokenSilently();
+      const result = await checkAuth(token, "mapdata");
+      setStatus(result!);
+    };
+    checkRole().then();
+  }, [getAccessTokenSilently]);
   const getButtonClasses = (tabName: string): string => {
     return `inline-block p-4 rounded-t-lg hover:text-blue-500 hover:border-blue-500 ${
       activeTab === tabName
@@ -103,33 +112,6 @@ const NodeTable = () => {
     }
   }
 
-  // File Validation
-
-  //   if (edgeFile != null && nodeFile != null) {
-  //
-  //       const formData = new FormData();
-  //     formData.append(mapAttributes.nodeMulterKey, nodeFile, nodeFile.name);
-  //     formData.append(mapAttributes.edgeMulterKey, edgeFile, edgeFile.name);
-  //
-  //       await  axios
-  //       .post(APIEndpoints.mapUpload, formData, {
-  //         headers: {
-  //           "Content-Type": `multipart/form-data`,
-  //         },
-  //       })
-  //       .then(() => {
-  //         console.log("success!");
-  //         alert("Map data uploaded!");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Upload failed:", error);
-  //         alert("Failed to upload map data!");
-  //       });
-  //   } else {
-  //     alert("One or more files are missing!");
-  //   }
-  // }
-
   return (
     <div className=" h-screen overflow-y-scroll bg-gray-50">
       <div className="w-full items-center">
@@ -141,71 +123,79 @@ const NodeTable = () => {
             </h2>
             <hr className="pl-96 pr-96" />
           </div>
+
           <div className="flex flex-col items-center">
-            <div className="flex flex-col items-center gap-2">
-              <div className="flex flex-col items-center justify-center gap-2">
-                <div className="flex flex-row items-center">
-                  <p className="mr-2 font-bold">Node File:</p>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    style={{ backgroundColor: nodeFile ? "green" : "#012D5A" }}
-                  >
-                    {nodeFile ? nodeFile.name : "Upload File"}
-                    <input
-                      id="importNodeFile"
-                      type="file"
-                      accept=".csv"
-                      name="Import Node File"
-                      onChange={nodeFileChange}
-                      hidden
-                    />
-                  </Button>
-                </div>
-                <div className="flex flex-row items-center">
-                  <p className="mr-2 font-bold">Edge File:</p>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    style={{ backgroundColor: edgeFile ? "green" : "#012D5A" }}
-                  >
-                    {edgeFile ? edgeFile.name : "Upload File"}
-                    <input
-                      id="importEdgeFile"
-                      type="file"
-                      accept=".csv"
-                      name="Import Edge File"
-                      onChange={edgeFileChange}
-                      hidden
-                    />
-                  </Button>
-                </div>
-              </div>
+            {authorizedStatus && (
+              <>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="flex flex-row items-center">
+                      <p className="mr-2 font-bold">Node File:</p>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        style={{
+                          backgroundColor: nodeFile ? "green" : "#012D5A",
+                        }}
+                      >
+                        {nodeFile ? nodeFile.name : "Upload File"}
+                        <input
+                          id="importNodeFile"
+                          type="file"
+                          accept=".csv"
+                          name="Import Node File"
+                          onChange={nodeFileChange}
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      <p className="mr-2 font-bold">Edge File:</p>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        style={{
+                          backgroundColor: edgeFile ? "green" : "#012D5A",
+                        }}
+                      >
+                        {edgeFile ? edgeFile.name : "Upload File"}
+                        <input
+                          id="importEdgeFile"
+                          type="file"
+                          accept=".csv"
+                          name="Import Edge File"
+                          onChange={edgeFileChange}
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                  </div>
 
-              <div className="flex flex-row items-center gap-2 mb-5 mt-2">
-                <div>
-                  <Button
-                    variant="contained"
-                    onClick={uploadFiles}
-                    sx={{ backgroundColor: "#012D5A" }}
-                    endIcon={<UploadIcon />}
-                  >
-                    Upload Map Data
-                  </Button>
+                  <div className="flex flex-row items-center gap-2 mb-5 mt-2">
+                    <div>
+                      <Button
+                        variant="contained"
+                        onClick={uploadFiles}
+                        sx={{ backgroundColor: "#012D5A" }}
+                        endIcon={<UploadIcon />}
+                      >
+                        Upload Map Data
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        variant="contained"
+                        onClick={downloadFiles}
+                        sx={{ backgroundColor: "#012D5A" }}
+                        endIcon={<DownloadIcon />}
+                      >
+                        Download Map Data
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <Button
-                    variant="contained"
-                    onClick={downloadFiles}
-                    sx={{ backgroundColor: "#012D5A" }}
-                    endIcon={<DownloadIcon />}
-                  >
-                    Download Map Data
-                  </Button>
-                </div>
-              </div>
-            </div>
-
+              </>
+            )}
             <hr className="m-1" />
             <ul
               className="flex flex-wrap text-sm font-medium text-center justify-center mb-5"
@@ -293,5 +283,4 @@ const NodeTable = () => {
     </div>
   );
 };
-
 export default NodeTable;

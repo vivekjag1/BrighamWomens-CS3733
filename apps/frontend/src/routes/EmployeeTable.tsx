@@ -1,16 +1,31 @@
-import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useAuth0 } from "@auth0/auth0-react";
+import { checkAuth } from "../checkAdminStatus.ts";
+// import AdminEmployeeTable from "../components/AdminEmployeeTable.tsx";
+// import NonAdminEmployeeTable from "../components/NonAdminEmployeeTable.tsx";
+import { useToast } from "../components/useToast.tsx";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { EmployeeGetter } from "../components/EmployeeGetter.tsx";
+import Button from "@mui/material/Button";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
-import { useAuth0 } from "@auth0/auth0-react";
-import { EmployeeGetter } from "../components/EmployeeGetter.tsx";
-import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
-import { useToast } from "../components/useToast.tsx";
 
 const EmployeeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const token = await getAccessTokenSilently();
+      const result = await checkAuth(token, "employeetable");
+      setStatus(result!);
+    };
+    checkRole().then();
+  }, [getAccessTokenSilently]);
+
   const [employeesFile, setEmployeesFile] = useState<File | null>(null);
   const { showToast } = useToast();
 
@@ -77,49 +92,54 @@ const EmployeeTable = () => {
             </h2>
             <hr className="pl-96 pr-96" />
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <div className="flex flex-row items-center">
-              <p className="mr-2 font-bold">Employees File:</p>
-              <Button
-                variant="contained"
-                component="label"
-                style={{ backgroundColor: employeesFile ? "green" : "#012D5A" }}
-              >
-                {employeesFile ? employeesFile.name : "Upload File"}
-                <input
-                  id="importNodeFile"
-                  type="file"
-                  accept=".csv"
-                  name="Import Node File"
-                  onChange={employeeFileChange}
-                  hidden
-                />
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex flex-row items-center gap-x-2">
-            <div>
-              <Button
-                variant="contained"
-                onClick={uploadFiles}
-                sx={{ backgroundColor: "#012D5A" }}
-                endIcon={<UploadIcon />}
-              >
-                Upload Employee Data
-              </Button>
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                onClick={downloadFiles}
-                sx={{ backgroundColor: "#012D5A" }}
-                endIcon={<DownloadIcon />}
-              >
-                Download Employee Data
-              </Button>
-            </div>
-          </div>
+          {authorizedStatus && (
+            <>
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-row items-center">
+                  <p className="mr-2 font-bold">Employees File:</p>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    style={{
+                      backgroundColor: employeesFile ? "green" : "#012D5A",
+                    }}
+                  >
+                    {employeesFile ? employeesFile.name : "Upload File"}
+                    <input
+                      id="importNodeFile"
+                      type="file"
+                      accept=".csv"
+                      name="Import Node File"
+                      onChange={employeeFileChange}
+                      hidden
+                    />
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-row items-center gap-x-2">
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={uploadFiles}
+                    sx={{ backgroundColor: "#012D5A" }}
+                    endIcon={<UploadIcon />}
+                  >
+                    Upload Employee Data
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={downloadFiles}
+                    sx={{ backgroundColor: "#012D5A" }}
+                    endIcon={<DownloadIcon />}
+                  >
+                    Download Employee Data
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
 
           <hr className="m-1" />
 
@@ -130,6 +150,8 @@ const EmployeeTable = () => {
       </div>
     </div>
   );
+
+  // return authorizedStatus ? <AdminEmployeeTable /> : <NonAdminEmployeeTable />;
 };
 
 export default EmployeeTable;
