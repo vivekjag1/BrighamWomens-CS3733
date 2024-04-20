@@ -3,6 +3,7 @@ import { FormControl } from "@mui/material";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import NodeDropdown from "../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../components/EmployeeDropdown.tsx";
 import CustomTextField from "../components/CustomTextField.tsx";
 import CustomDatePicker from "../components/CustomDatePicker.tsx";
 import FormContainer from "../components/FormContainer.tsx";
@@ -258,6 +259,21 @@ export function SanitationForm() {
                 }
               />
             </FormControl>
+
+            <EmployeeDropdown
+              value={sanitationRequest.serviceRequest.assignedTo}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Employee *"
+              onChange={(newValue: string) =>
+                setSanitationRequest((sanitationRequest) => ({
+                  ...sanitationRequest,
+                  serviceRequest: {
+                    ...sanitationRequest.serviceRequest,
+                    assignedTo: newValue,
+                  },
+                }))
+              }
+            />
 
             <FormControl
               component="fieldset"

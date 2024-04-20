@@ -2,6 +2,7 @@
 import { Select, MenuItem, InputLabel } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import NodeDropdown from "../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../components/EmployeeDropdown.tsx";
 import { useState } from "react";
 import CustomTextField from "../components/CustomTextField.tsx";
 import CustomDatePicker from "../components/CustomDatePicker.tsx";
@@ -229,6 +230,21 @@ export function SecurityRequest() {
                 }
               />
             </FormControl>
+
+            <EmployeeDropdown
+              value={securityRequestForm.serviceRequest.assignedTo}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Employee *"
+              onChange={(newValue: string) =>
+                setSecurityRequestForm((securityRequestForm) => ({
+                  ...securityRequestForm,
+                  serviceRequest: {
+                    ...securityRequestForm.serviceRequest,
+                    assignedTo: newValue,
+                  },
+                }))
+              }
+            />
 
             <FormControl
               component="fieldset"

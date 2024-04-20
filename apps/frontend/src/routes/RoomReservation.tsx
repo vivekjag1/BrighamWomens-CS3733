@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import FormControl from "@mui/material/FormControl";
 import NodeDropdown from "../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../components/EmployeeDropdown.tsx";
 import CustomTextField from "../components/CustomTextField.tsx";
 import CustomStatusDropdown from "../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../components/CustomPrioritySelector.tsx";
@@ -242,8 +243,34 @@ export function RoomReservation() {
             />
 
             <FormControl sx={{ width: "25rem" }} size="small">
-              <CustomStatusDropdown />
+              <CustomStatusDropdown
+                value={roomReservation.serviceRequest.status}
+                onChange={(e) =>
+                  setRoomReservation({
+                    ...roomReservation,
+                    serviceRequest: {
+                      ...roomReservation.serviceRequest,
+                      status: e.target.value ? e.target.value.toString() : "",
+                    },
+                  })
+                }
+              />
             </FormControl>
+
+            <EmployeeDropdown
+              value={roomReservation.serviceRequest.assignedTo}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Employee *"
+              onChange={(newValue: string) =>
+                setRoomReservation((currentReservation) => ({
+                  ...currentReservation,
+                  serviceRequest: {
+                    ...currentReservation.serviceRequest,
+                    assignedTo: newValue,
+                  },
+                }))
+              }
+            />
 
             <FormControl
               component="fieldset"

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import NodeDropdown from "../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../components/EmployeeDropdown.tsx";
 import CustomTextField from "../components/CustomTextField.tsx";
 import CustomDatePicker from "../components/CustomDatePicker.tsx";
 import FormContainer from "../components/FormContainer.tsx";
@@ -280,6 +281,21 @@ export function MedicalDeviceDeliveryForm() {
                 }
               />
             </FormControl>
+
+            <EmployeeDropdown
+              value={medicalDeviceDelivery.serviceRequest.assignedTo}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Employee *"
+              onChange={(newValue: string) =>
+                setMedicalDeviceDelivery((medicalDeviceDelivery) => ({
+                  ...medicalDeviceDelivery,
+                  serviceRequest: {
+                    ...medicalDeviceDelivery.serviceRequest,
+                    assignedTo: newValue,
+                  },
+                }))
+              }
+            />
 
             <FormControl
               component="fieldset"
