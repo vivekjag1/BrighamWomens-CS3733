@@ -7,19 +7,19 @@ import * as React from "react";
 // import ListSubheader from '@mui/material/ListSubheader';
 // import IconButton from '@mui/material/IconButton';
 // import InfoIcon from '@mui/icons-material/Info';
-import josephImage from "../../assets/people/joseph.png";
-import danielImage from "../../assets/people/Daniel.png";
+import josephImage from "../../assets/temp-employees/joe-cardarelli.jpeg";
+import danielImage from "../../assets/temp-employees/dan-gorbunov.jpeg";
 import FormContainer from "../components/FormContainer.tsx";
-import mattImage from "../../assets/people/Matt.png";
+import mattImage from "../../assets/temp-employees/matt-brown.jpeg";
 // import taehaImage from '../../assets/people/Taeha.png';
-import andyImage from "../../assets/people/Andy.png";
-import vivekImage from "../../assets/people/Vivek.png";
-import ademImage from "../../assets/people/Adem.png";
-import suliImage from "../../assets/people/Suli.png";
-import frankyImage from "../../assets/people/Franky.png";
-import colinImage from "../../assets/people/Colin.png";
-import griffinImage from "../../assets/people/Griffin.png";
-import taehaImage from "../../assets/people/Taeha.png";
+import andyImage from "../../assets/temp-employees/andy-truong.jpeg";
+import vivekImage from "../../assets/temp-employees/vivek-jagadeesh.jpeg";
+import ademImage from "../../assets/temp-employees/adem.jpeg";
+import suliImage from "../../assets/temp-employees/sulaiman.jpeg";
+import frankyImage from "../../assets/temp-employees/franky.jpeg";
+import colinImage from "../../assets/temp-employees/colin.jpeg";
+import griffinImage from "../../assets/temp-employees/griffin-brown.jpeg";
+import taehaImage from "../../assets/temp-employees/taeha-song.jpeg";
 export function AboutUs() {
   return (
     <div
