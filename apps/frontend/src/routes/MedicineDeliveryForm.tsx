@@ -41,7 +41,14 @@ export function MedicineDeliveryForm() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
 
+  // const employees = useEmployees();
+
   const validateForm = () => {
+    const { status, assignedTo } = medicineDelivery.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       medicineDelivery.medicineName &&
       medicineDelivery.dosage &&
@@ -50,7 +57,7 @@ export function MedicineDeliveryForm() {
       medicineDelivery.serviceRequest.requestingUsername &&
       medicineDelivery.serviceRequest.location &&
       medicineDelivery.serviceRequest.priority &&
-      medicineDelivery.serviceRequest.assignedTo
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -102,7 +109,7 @@ export function MedicineDeliveryForm() {
             className="space-y-4 flex flex-col justify-center items-center"
           >
             <CustomTextField
-              label="Requesting Username"
+              label="Requesting Employee"
               value={medicineDelivery.serviceRequest.requestingUsername}
               onChange={(e) =>
                 setMedicineDelivery({
@@ -202,31 +209,49 @@ export function MedicineDeliveryForm() {
             <FormControl sx={{ width: "25rem" }} size="small">
               <CustomStatusDropdown
                 value={medicineDelivery.serviceRequest.status}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const newStatus = e.target.value
+                    ? e.target.value.toString()
+                    : "";
+                  let newAssignedTo =
+                    medicineDelivery.serviceRequest.assignedTo;
+
+                  if (newStatus === "Unassigned") {
+                    newAssignedTo = "Unassigned";
+                  }
+
                   setMedicineDelivery({
                     ...medicineDelivery,
                     serviceRequest: {
                       ...medicineDelivery.serviceRequest,
-                      status: e.target.value ? e.target.value.toString() : "",
+                      status: newStatus,
+                      assignedTo: newAssignedTo,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </FormControl>
 
             <EmployeeDropdown
               value={medicineDelivery.serviceRequest.assignedTo}
               sx={{ width: "25rem", padding: 0 }}
-              label="Employee *"
-              onChange={(newValue: string) =>
+              label="Assigned Employee"
+              onChange={(newValue: string) => {
+                let newStatus = medicineDelivery.serviceRequest.status;
+
+                if (newValue && newStatus === "Unassigned") {
+                  newStatus = "Assigned";
+                }
+
                 setMedicineDelivery((medicineDelivery) => ({
                   ...medicineDelivery,
                   serviceRequest: {
                     ...medicineDelivery.serviceRequest,
                     assignedTo: newValue,
+                    status: newStatus,
                   },
-                }))
-              }
+                }));
+              }}
             />
 
             <FormControl
