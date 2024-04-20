@@ -40,6 +40,9 @@ export function MedicineForm() {
     useState<MedicineDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    medicineDelivery.serviceRequest.status,
+  );
 
   const validateForm = () => {
     const { status, assignedTo } = medicineDelivery.serviceRequest;
@@ -108,7 +111,7 @@ export function MedicineForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={medicineDelivery.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setMedicineDelivery({
@@ -232,7 +235,7 @@ export function MedicineForm() {
               <EmployeeDropdown
                 value={medicineDelivery.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
-                label="Assigned Employee"
+                label="Assigned Employee *"
                 onChange={(newValue: string) => {
                   let newStatus = medicineDelivery.serviceRequest.status;
 
@@ -249,6 +252,7 @@ export function MedicineForm() {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl

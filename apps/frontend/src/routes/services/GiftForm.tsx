@@ -40,6 +40,9 @@ export function GiftForm(): JSX.Element {
     useState<GiftDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    giftDeliveryRequest.serviceRequest.status,
+  );
 
   const validateForm = () => {
     const { status, assignedTo } = giftDeliveryRequest.serviceRequest;
@@ -106,7 +109,7 @@ export function GiftForm(): JSX.Element {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={giftDeliveryRequest.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setGiftDeliveryRequest({
@@ -228,7 +231,7 @@ export function GiftForm(): JSX.Element {
               <EmployeeDropdown
                 value={giftDeliveryRequest.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
-                label="Employee *"
+                label="Assigned Employee *"
                 onChange={(newValue: string) => {
                   let newStatus = giftDeliveryRequest.serviceRequest.status;
 
@@ -245,6 +248,7 @@ export function GiftForm(): JSX.Element {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl

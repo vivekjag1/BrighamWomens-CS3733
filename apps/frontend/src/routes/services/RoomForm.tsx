@@ -42,6 +42,10 @@ export function RoomForm() {
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    roomReservation.serviceRequest.status,
+  );
+
   const validateForm = () => {
     const { status, assignedTo } = roomReservation.serviceRequest;
     const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
@@ -284,7 +288,7 @@ export function RoomForm() {
               <EmployeeDropdown
                 value={roomReservation.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
-                label="Employee *"
+                label="Assigned Employee *"
                 // employees={employees}
                 onChange={(newValue: string) => {
                   let newStatus = roomReservation.serviceRequest.status;
@@ -302,6 +306,7 @@ export function RoomForm() {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl

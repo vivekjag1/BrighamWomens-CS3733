@@ -40,6 +40,9 @@ export function SecurityForm() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    securityRequestForm.serviceRequest.status,
+  );
 
   const validateForm = () => {
     const { status, assignedTo } = securityRequestForm.serviceRequest;
@@ -270,6 +273,7 @@ export function SecurityForm() {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl

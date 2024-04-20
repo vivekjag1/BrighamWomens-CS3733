@@ -11,7 +11,7 @@ interface EmployeeDropdownProps {
   label?: string;
   sx?: SxProps<Theme>;
   className?: string;
-  // disabled: boolean;
+  disabled: boolean;
   // employees: EmployeeType[];
 }
 
@@ -21,7 +21,7 @@ const EmployeeDropdown = ({
   label,
   sx,
   className,
-  // disabled,
+  disabled,
   // employees,
 }: EmployeeDropdownProps) => {
   // const [employees, setEmployees] = useState<EmployeeType[]>([]);
@@ -57,7 +57,7 @@ const EmployeeDropdown = ({
       className={className}
       value={selectedValue}
       onChange={handleChange}
-      // hidden={disabled}
+      hidden={disabled}
       renderInput={(params) => (
         <TextField
           {...params}

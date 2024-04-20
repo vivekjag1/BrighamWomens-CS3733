@@ -39,6 +39,9 @@ export function MedicalDeviceForm() {
     useState<MedicalDeviceDelivery>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    medicalDeviceDelivery.serviceRequest.status,
+  );
 
   function clear() {
     setDate(dayjs());
@@ -104,7 +107,7 @@ export function MedicalDeviceForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={medicalDeviceDelivery.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setMedicalDeviceDelivery({
@@ -303,7 +306,7 @@ export function MedicalDeviceForm() {
               <EmployeeDropdown
                 value={medicalDeviceDelivery.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
-                label="Employee *"
+                label="Assigned Employee *"
                 // employees={employees}
                 onChange={(newValue: string) => {
                   let newStatus = medicalDeviceDelivery.serviceRequest.status;
@@ -321,6 +324,7 @@ export function MedicalDeviceForm() {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl

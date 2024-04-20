@@ -41,6 +41,9 @@ export function SanitationForm() {
     useState<SanitationRequestObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    sanitationRequest.serviceRequest.status,
+  );
 
   const validateForm = () => {
     const { status, assignedTo } = sanitationRequest.serviceRequest;
@@ -107,7 +110,7 @@ export function SanitationForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={sanitationRequest.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setSanitationRequest({
@@ -278,7 +281,7 @@ export function SanitationForm() {
               <EmployeeDropdown
                 value={sanitationRequest.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
-                label="Employee *"
+                label="Assigned Employee *"
                 // employees={employees}
                 onChange={(newValue: string) => {
                   let newStatus = sanitationRequest.serviceRequest.status;
@@ -296,6 +299,7 @@ export function SanitationForm() {
                     },
                   }));
                 }}
+                disabled={isEmployeeDisabled}
               />
 
               <FormControl
