@@ -104,3 +104,13 @@ model GiftDelivery {
   senderNote     String
   serviceRequest ServiceRequest @relation(fields: [giftID], references: [serviceID])
 }
+
+model Employee {
+  employeeID     Int    @id @default(autoincrement())
+  name           String
+  userName       String
+  password       String
+  position       String
+  role           String
+  profilePicture String
+}

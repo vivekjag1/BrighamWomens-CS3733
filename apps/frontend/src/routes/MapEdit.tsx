@@ -8,6 +8,7 @@ import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
+import MapEditSpeedDial from "../components/MapEditSpeedDial.tsx";
 
 const defaultFloor: number = 1;
 
@@ -180,6 +181,9 @@ function MapEdit() {
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
+      </div>
+      <div className="absolute left-[6%] bottom-[2%]">
+        <MapEditSpeedDial />
       </div>
     </div>
   );

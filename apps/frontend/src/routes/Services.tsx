@@ -10,7 +10,7 @@ import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
   return (
-    <div className="">
+    <div className="bg-gray-50 h-screen">
       <div className="flex flex-col items-center gap-8 ">
         <div className="flex flex-col items-center gap-2 mt-8">
           <h2 className="w-full text-3xl font-bold text-center">

@@ -9,6 +9,7 @@ import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
 import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
+import { Node } from "database";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -23,8 +24,21 @@ const MapEditImage = (props: {
   onMapClick: () => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
-  const nodes = useContext(MapContext).nodes;
+  const tempNodes = useContext(MapContext).nodes;
+  console.log(tempNodes);
+  // eslint-disable-next-line prefer-const
+  let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+    active: false,
+    offset: { x: 0, y: 0 },
+  });
+
+  useEffect(() => {
+    setNodes(tempNodes);
+  }, [tempNodes]);
 
   useEffect(() => {
     const tempCoords: EdgeCoordinates[] = [];
@@ -75,13 +89,55 @@ const MapEditImage = (props: {
     props.onNodeClick(nodeID);
   }
 
+  function handlePointerDown(
+    e: React.PointerEvent<SVGCircleElement>,
+    nodeID: string,
+  ) {
+    const el = e.currentTarget;
+    const bbox = e.currentTarget.getBoundingClientRect();
+    const xOffset = e.clientX - bbox.left;
+    const yOffset = e.clientY - bbox.top;
+    setPosition({
+      ...position,
+      x: parseInt(nodes.get(nodeID)!.xcoord),
+      y: parseInt(nodes.get(nodeID)!.ycoord),
+      active: true,
+      offset: {
+        x: xOffset,
+        y: yOffset,
+      },
+    });
+    el.setPointerCapture(e.pointerId);
+  }
+
+  function handlePointerMove(
+    e: React.PointerEvent<SVGCircleElement>,
+    nodeID: string,
+  ) {
+    const bbox = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - bbox.left;
+    const y = e.clientY - bbox.top;
+    if (position.active) {
+      const updatedNode: Node = nodes.get(nodeID)!;
+      updatedNode.xcoord = (
+        parseFloat(updatedNode.xcoord) +
+        (x - position.offset.x)
+      ).toString();
+      updatedNode.ycoord = (
+        parseFloat(updatedNode.ycoord) +
+        (y - position.offset.y)
+      ).toString();
+      setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
+    }
+  }
+
   return (
     <div className="map-container" onClick={props.onMapClick}>
       <div>
         <TransformWrapper
           initialScale={1}
           doubleClick={{ disabled: true }}
-          panning={{ velocityDisabled: true }}
+          panning={{ velocityDisabled: true, disabled: position.active }}
         >
           <MapZoomButtons />
           <TransformComponent
@@ -93,7 +149,13 @@ const MapEditImage = (props: {
               justifyContent: "center",
             }}
           >
-            <svg viewBox="0 0 5000 3400" height="100vh">
+            <svg
+              viewBox="0 0 5000 3400"
+              height="100vh"
+              onPointerUp={() => {
+                setPosition({ ...position, active: false });
+              }}
+            >
               <image href={map} />
               {edgeCoords.map((edge, index) => (
                 <line
@@ -114,6 +176,8 @@ const MapEditImage = (props: {
                   r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
+                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
                   fill={MapStyling.nodeColor}
                   onClick={(e) => nodeClicked(e, node.nodeID)}
                   style={{ cursor: "pointer" }}

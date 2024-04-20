@@ -18,6 +18,8 @@ import securityRequest from "./routes/securityRequest.ts";
 import { auth } from "express-oauth2-jwt-bearer";
 import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
 import updateNodes from "./routes/map/updateNodes.ts";
+import handleEmployees from "./routes/handleEmployees.ts";
+import employeeDownload from "./routes/employeeDownload.ts";
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear
@@ -61,6 +63,9 @@ app.use(APIEndpoints.roomReservation, roomReservationAPI);
 app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
 app.use(APIEndpoints.giftPostRequests, handleGiftDeliveryRequest);
 app.use(APIEndpoints.updateNodes, updateNodes);
+app.use(APIEndpoints.employeePostRequest, handleEmployees);
+app.use(APIEndpoints.employeeGetRequest, handleEmployees);
+app.use(APIEndpoints.employeeDownload, employeeDownload);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

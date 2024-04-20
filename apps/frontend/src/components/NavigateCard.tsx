@@ -115,12 +115,12 @@ function NavigateCard(props: {
           onReset={props.onReset}
         >
           <div className="flex flex-col">
-            <div className="flex flex-row justify-between">
-              <h2 className="text-2xl font-extralight text-secondary">
-                Navigate
-              </h2>
-            </div>
-            <div className="flex flex-row gap-1 items-center mt-[1rem]">
+            {/*<div className="flex flex-row justify-between">*/}
+            {/*  <h2 className="text-2xl font-extralight text-secondary">*/}
+            {/*    Navigate*/}
+            {/*  </h2>*/}
+            {/*</div>*/}
+            <div className="flex flex-row gap-1 items-center">
               <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
               <NodeDropdown
                 value={props.pathNodeObject.startNode}
@@ -162,7 +162,7 @@ function NavigateCard(props: {
             <div className="ml-[2rem] flex flex-row mt-4 justify-between">
               <PathAlgorithmDropdown
                 value={pathAlgorithm}
-                sx={{ width: "9vw" }}
+                sx={{ width: "10vw" }}
                 label="Algorithm"
                 onChange={setPathAlgorithm}
               ></PathAlgorithmDropdown>
@@ -176,7 +176,7 @@ function NavigateCard(props: {
           </div>
 
           <div className="flex flex-col ml-[0.2rem] items-center">
-            <div className="flex-grow flex justify-center items-center mt-[2.1rem]">
+            <div className="flex-grow flex justify-center items-center">
               <IconButton onClick={swapLocations}>
                 <SwapVertIcon />
               </IconButton>

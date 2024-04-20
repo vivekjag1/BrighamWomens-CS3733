@@ -11,6 +11,5 @@ export default function AuthComp(props: AuthGuardProps): JSX.Element {
       return <div>Loading!</div>;
     },
   });
-
   return <Component />;
 }

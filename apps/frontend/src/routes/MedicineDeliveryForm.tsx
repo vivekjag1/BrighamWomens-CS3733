@@ -14,6 +14,8 @@ import CustomDatePicker from "../components/CustomDatePicker.tsx";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
+import ServiceImages from "../components/ServiceImages.tsx";
+import giftPlaceholder from "../../assets/gift-placeholder.jpg";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -86,150 +88,155 @@ export function MedicineDeliveryForm() {
 
   return (
     <FormContainer>
-      <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
-        Medicine Service Request
-      </h1>
-      <div className="h-auto flex justify-center items-center w-[30rem]">
-        <form
-          noValidate
-          autoComplete="off"
-          className="space-y-4 flex flex-col justify-center items-center"
-        >
-          <CustomTextField
-            label="Requesting Username"
-            value={medicineDelivery.serviceRequest.requestingUsername}
-            onChange={(e) =>
-              setMedicineDelivery({
-                ...medicineDelivery,
-                serviceRequest: {
-                  ...medicineDelivery.serviceRequest,
-                  requestingUsername: e.target.value,
-                },
-              })
-            }
-            required
-          />
-
-          <NodeDropdown
-            value={medicineDelivery.serviceRequest.location}
-            sx={{ width: "25rem", padding: 0 }}
-            label="Location *"
-            onChange={(newValue: string) =>
-              setMedicineDelivery((medicineDelivery) => ({
-                ...medicineDelivery,
-                serviceRequest: {
-                  ...medicineDelivery.serviceRequest,
-                  location: newValue,
-                },
-              }))
-            }
-          />
-
-          <CustomDatePicker
-            value={date}
-            onChange={(newValue) => {
-              const isValid = newValue && dayjs(newValue).isValid();
-              setMedicineDelivery((currentMedicineDelivery) => ({
-                ...currentMedicineDelivery,
-                serviceRequest: {
-                  ...currentMedicineDelivery.serviceRequest,
-                  requestedTime: isValid ? newValue.toISOString() : "",
-                },
-              }));
-            }}
-          />
-
-          <CustomTextField
-            label="Medicine Name"
-            value={medicineDelivery.medicineName}
-            onChange={(e) =>
-              setMedicineDelivery({
-                ...medicineDelivery,
-                medicineName: e.target.value,
-              })
-            }
-            required
-          />
-
-          <CustomTextField
-            label="Dosage"
-            value={medicineDelivery.dosage}
-            onChange={(e) =>
-              setMedicineDelivery({
-                ...medicineDelivery,
-                dosage: e.target.value,
-              })
-            }
-            required
-          />
-
-          <CustomTextField
-            label="Patient Name"
-            value={medicineDelivery.patientName}
-            onChange={(e) =>
-              setMedicineDelivery({
-                ...medicineDelivery,
-                patientName: e.target.value,
-              })
-            }
-            required
-          />
-
-          <CustomTextField
-            label="Description (Optional)"
-            multiline
-            rows={3}
-            value={medicineDelivery.serviceRequest.description}
-            onChange={(e) =>
-              setMedicineDelivery({
-                ...medicineDelivery,
-                serviceRequest: {
-                  ...medicineDelivery.serviceRequest,
-                  description: e.target.value,
-                },
-              })
-            }
-          />
-
-          <FormControl sx={{ width: "25rem" }} size="small">
-            <CustomStatusDropdown
-              value={medicineDelivery.serviceRequest.status}
-              onChange={(e) =>
-                setMedicineDelivery({
-                  ...medicineDelivery,
-                  serviceRequest: {
-                    ...medicineDelivery.serviceRequest,
-                    status: e.target.value ? e.target.value.toString() : "",
-                  },
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl
-            component="fieldset"
-            margin="normal"
-            sx={{ width: "25rem" }}
+      <div>
+        <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          Medicine Service Request
+        </h1>
+        <div className="h-auto flex justify-center items-center w-[30rem]">
+          <form
+            noValidate
+            autoComplete="off"
+            className="space-y-4 flex flex-col justify-center items-center"
           >
-            <CustomPrioritySelector
-              value={medicineDelivery.serviceRequest.priority}
+            <CustomTextField
+              label="Requesting Username"
+              value={medicineDelivery.serviceRequest.requestingUsername}
               onChange={(e) =>
                 setMedicineDelivery({
                   ...medicineDelivery,
                   serviceRequest: {
                     ...medicineDelivery.serviceRequest,
-                    priority: e.target.value,
+                    requestingUsername: e.target.value,
+                  },
+                })
+              }
+              required
+            />
+
+            <NodeDropdown
+              value={medicineDelivery.serviceRequest.location}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Location *"
+              onChange={(newValue: string) =>
+                setMedicineDelivery((medicineDelivery) => ({
+                  ...medicineDelivery,
+                  serviceRequest: {
+                    ...medicineDelivery.serviceRequest,
+                    location: newValue,
+                  },
+                }))
+              }
+            />
+
+            <CustomDatePicker
+              value={date}
+              onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
+                setMedicineDelivery((currentMedicineDelivery) => ({
+                  ...currentMedicineDelivery,
+                  serviceRequest: {
+                    ...currentMedicineDelivery.serviceRequest,
+                    requestedTime: isValid ? newValue.toISOString() : "",
+                  },
+                }));
+              }}
+            />
+
+            <CustomTextField
+              label="Medicine Name"
+              value={medicineDelivery.medicineName}
+              onChange={(e) =>
+                setMedicineDelivery({
+                  ...medicineDelivery,
+                  medicineName: e.target.value,
+                })
+              }
+              required
+            />
+
+            <CustomTextField
+              label="Dosage"
+              value={medicineDelivery.dosage}
+              onChange={(e) =>
+                setMedicineDelivery({
+                  ...medicineDelivery,
+                  dosage: e.target.value,
+                })
+              }
+              required
+            />
+
+            <CustomTextField
+              label="Patient Name"
+              value={medicineDelivery.patientName}
+              onChange={(e) =>
+                setMedicineDelivery({
+                  ...medicineDelivery,
+                  patientName: e.target.value,
+                })
+              }
+              required
+            />
+
+            <CustomTextField
+              label="Description (Optional)"
+              multiline
+              rows={3}
+              value={medicineDelivery.serviceRequest.description}
+              onChange={(e) =>
+                setMedicineDelivery({
+                  ...medicineDelivery,
+                  serviceRequest: {
+                    ...medicineDelivery.serviceRequest,
+                    description: e.target.value,
                   },
                 })
               }
             />
-          </FormControl>
-          <div className="flex justify-between w-full mt-4">
-            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
 
-            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
-          </div>
-        </form>
+            <FormControl sx={{ width: "25rem" }} size="small">
+              <CustomStatusDropdown
+                value={medicineDelivery.serviceRequest.status}
+                onChange={(e) =>
+                  setMedicineDelivery({
+                    ...medicineDelivery,
+                    serviceRequest: {
+                      ...medicineDelivery.serviceRequest,
+                      status: e.target.value ? e.target.value.toString() : "",
+                    },
+                  })
+                }
+              />
+            </FormControl>
+
+            <FormControl
+              component="fieldset"
+              margin="normal"
+              sx={{ width: "25rem" }}
+            >
+              <CustomPrioritySelector
+                value={medicineDelivery.serviceRequest.priority}
+                onChange={(e) =>
+                  setMedicineDelivery({
+                    ...medicineDelivery,
+                    serviceRequest: {
+                      ...medicineDelivery.serviceRequest,
+                      priority: e.target.value,
+                    },
+                  })
+                }
+              />
+            </FormControl>
+            <div className="flex justify-between w-full mt-4">
+              <CustomClearButton onClick={clear}>Clear</CustomClearButton>
+
+              <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="w-[40rem]">
+        <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
       </div>
     </FormContainer>
   );

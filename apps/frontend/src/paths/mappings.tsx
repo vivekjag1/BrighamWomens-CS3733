@@ -8,7 +8,9 @@ import MedicalDeviceDeliveryForm from "../routes/MedicalDeviceDeliveryForm.tsx";
 import SanitationForm from "../routes/SanitationForm.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import PathTables from "../routes/MapData.tsx";
+import MapEdit from "../routes/MapEdit.tsx";
 import GiftDelivery from "../routes/GiftDelivery.tsx";
+import EmployeeTable from "../routes/EmployeeTable.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Map /> },
@@ -24,6 +26,8 @@ const routes = [
   { path: paths.GIFT_DELIVERY, element: <GiftDelivery /> },
   { path: paths.SERVICES_DATA, element: <ServicesTable /> },
   { path: paths.MAP_DATA, element: <PathTables /> },
+  { path: paths.MAP_EDITOR, element: <MapEdit /> },
+  { path: paths.EMPLOYEE_TABLE, element: <EmployeeTable /> },
 ];
 
 export default routes;

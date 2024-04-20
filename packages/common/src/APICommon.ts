@@ -16,6 +16,9 @@ export class APIEndpoints {
   static readonly medicalDeviceDelivery: string =
     "/api/service/postMedicalDevice";
   static readonly updateNodes: string = "/api/map/updateNodes";
+  static readonly employeePostRequest: string = "/api/employee/postRequests";
+  static readonly employeeGetRequest: string = "/api/employee/getRequests";
+  static readonly employeeDownload: string = "/api/employee/download";
 }
 
 export class FileAttributes {
