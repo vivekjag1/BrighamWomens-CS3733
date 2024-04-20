@@ -82,7 +82,7 @@ const EmployeeTable = () => {
   }
 
   return (
-    <div className="h-screen overflow-y-auto">
+    <div className="h-screen overflow-y-auto bg-gray-50">
       <div className="w-full items-center">
         <div className="flex flex-col items-center gap-5 ">
           <div className="flex flex-col items-center gap-2 mt-8">
@@ -141,7 +141,7 @@ const EmployeeTable = () => {
             </>
           )}
 
-          <hr className="m-1" />
+          <hr />
 
           <div className="flex flex-col items-center">
             <EmployeeGetter />
