@@ -16,6 +16,8 @@ import { APIEndpoints } from "common/src/APICommon.ts";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
+import ServiceImages from "../components/ServiceImages.tsx";
+import giftPlaceholder from "../../assets/gift-placeholder.jpg";
 
 const initialState: SecurityRequestType = {
   numberPeople: "",
@@ -81,179 +83,184 @@ export function SecurityRequest() {
 
   return (
     <FormContainer>
-      <h1 className="text-center font-bold text-3xl text-secondary pt-2 pb-4">
-        Security Request
-      </h1>
-      <div className="h-auto flex justify-center items-center w-[30rem]">
-        <form
-          noValidate
-          autoComplete="off"
-          className="space-y-4 flex flex-col justify-center items-center"
-        >
-          <CustomTextField
-            label="Requesting Username"
-            value={securityRequestForm.serviceRequest.requestingUsername}
-            onChange={(e) =>
-              setSecurityRequestForm({
-                ...securityRequestForm,
-                serviceRequest: {
-                  ...securityRequestForm.serviceRequest,
-                  requestingUsername: e.target.value,
-                },
-              })
-            }
-            required
-          />
+      <div>
+        <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          Security Request
+        </h1>
+        <div className="h-auto flex justify-center items-center w-[30rem]">
+          <form
+            noValidate
+            autoComplete="off"
+            className="space-y-4 flex flex-col justify-center items-center"
+          >
+            <CustomTextField
+              label="Requesting Username"
+              value={securityRequestForm.serviceRequest.requestingUsername}
+              onChange={(e) =>
+                setSecurityRequestForm({
+                  ...securityRequestForm,
+                  serviceRequest: {
+                    ...securityRequestForm.serviceRequest,
+                    requestingUsername: e.target.value,
+                  },
+                })
+              }
+              required
+            />
 
-          <NodeDropdown
-            value={securityRequestForm.serviceRequest.location}
-            sx={{ width: "25rem", padding: 0 }}
-            label="Location *"
-            onChange={(newValue: string) =>
-              setSecurityRequestForm({
-                ...securityRequestForm,
-                serviceRequest: {
-                  ...securityRequestForm.serviceRequest,
-                  location: newValue,
-                },
-              })
-            }
-          />
+            <NodeDropdown
+              value={securityRequestForm.serviceRequest.location}
+              sx={{ width: "25rem", padding: 0 }}
+              label="Location *"
+              onChange={(newValue: string) =>
+                setSecurityRequestForm({
+                  ...securityRequestForm,
+                  serviceRequest: {
+                    ...securityRequestForm.serviceRequest,
+                    location: newValue,
+                  },
+                })
+              }
+            />
 
-          <CustomDatePicker
-            value={date}
-            onChange={(newValue) => {
-              const isValid = newValue && dayjs(newValue).isValid();
-              setSecurityRequestForm({
-                ...securityRequestForm,
-                serviceRequest: {
-                  ...securityRequestForm.serviceRequest,
-                  requestedTime: isValid ? newValue.toISOString() : "",
-                },
-              });
-            }}
-          />
-
-          <FormControl sx={{ width: "25rem" }} size="small">
-            <InputLabel
-              sx={{
-                color: "#a4aab5",
-                fontSize: ".9rem",
-                fontFamily: "Poppins, sans-serif",
+            <CustomDatePicker
+              value={date}
+              onChange={(newValue) => {
+                const isValid = newValue && dayjs(newValue).isValid();
+                setSecurityRequestForm({
+                  ...securityRequestForm,
+                  serviceRequest: {
+                    ...securityRequestForm.serviceRequest,
+                    requestedTime: isValid ? newValue.toISOString() : "",
+                  },
+                });
               }}
-            >
-              Security Type *
-            </InputLabel>
-            <Select
-              name="security-type"
-              value={securityRequestForm.securityType}
-              className="bg-gray-50"
-              label="Security Type *"
-              sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
+            />
+
+            <FormControl sx={{ width: "25rem" }} size="small">
+              <InputLabel
+                sx={{
+                  color: "#a4aab5",
+                  fontSize: ".9rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
+                Security Type *
+              </InputLabel>
+              <Select
+                name="security-type"
+                value={securityRequestForm.securityType}
+                className="bg-gray-50"
+                label="Security Type *"
+                sx={{ fontSize: ".9rem", fontFamily: "Poppins, sans-serif" }}
+                onChange={(e) => {
+                  setSecurityRequestForm({
+                    ...securityRequestForm,
+                    securityType: e.target.value as string,
+                  });
+                }}
+              >
+                <MenuItem
+                  value="Monitor"
+                  sx={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  Monitor
+                </MenuItem>
+                <MenuItem
+                  value="Escort"
+                  sx={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  Escort
+                </MenuItem>
+                <MenuItem
+                  value="Patrol"
+                  sx={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  Patrol
+                </MenuItem>
+              </Select>
+            </FormControl>
+
+            <CustomTextField
+              label="Number of Personnel"
+              value={securityRequestForm.numberPeople}
+              type="number"
+              InputProps={{
+                inputProps: { min: 0 },
+              }}
               onChange={(e) => {
                 setSecurityRequestForm({
                   ...securityRequestForm,
-                  securityType: e.target.value as string,
+                  numberPeople: e.target.value,
                 });
               }}
+              required
+            />
+
+            <CustomTextField
+              label="Description (optional)"
+              value={securityRequestForm.serviceRequest.description}
+              multiline
+              rows={3}
+              size="small"
+              onChange={(e) => {
+                setSecurityRequestForm({
+                  ...securityRequestForm,
+                  serviceRequest: {
+                    ...securityRequestForm.serviceRequest,
+                    description: e.target.value,
+                  },
+                });
+              }}
+            />
+
+            <FormControl sx={{ width: "25rem" }} size="small">
+              <CustomStatusDropdown
+                value={securityRequestForm.serviceRequest.status}
+                onChange={(e) =>
+                  setSecurityRequestForm({
+                    ...securityRequestForm,
+                    serviceRequest: {
+                      ...securityRequestForm.serviceRequest,
+                      status: e.target.value ? e.target.value.toString() : "",
+                    },
+                  })
+                }
+              />
+            </FormControl>
+
+            <FormControl
+              component="fieldset"
+              margin="normal"
+              sx={{ width: "25rem" }}
             >
-              <MenuItem
-                value="Monitor"
-                sx={{ fontFamily: "Poppins, sans-serif" }}
-              >
-                Monitor
-              </MenuItem>
-              <MenuItem
-                value="Escort"
-                sx={{ fontFamily: "Poppins, sans-serif" }}
-              >
-                Escort
-              </MenuItem>
-              <MenuItem
-                value="Patrol"
-                sx={{ fontFamily: "Poppins, sans-serif" }}
-              >
-                Patrol
-              </MenuItem>
-            </Select>
-          </FormControl>
+              <CustomPrioritySelector
+                value={securityRequestForm.serviceRequest.priority}
+                onChange={(e) =>
+                  setSecurityRequestForm({
+                    ...securityRequestForm,
+                    serviceRequest: {
+                      ...securityRequestForm.serviceRequest,
+                      priority: e.target.value,
+                    },
+                  })
+                }
+              />
+            </FormControl>
 
-          <CustomTextField
-            label="Number of Personnel"
-            value={securityRequestForm.numberPeople}
-            type="number"
-            InputProps={{
-              inputProps: { min: 0 },
-            }}
-            onChange={(e) => {
-              setSecurityRequestForm({
-                ...securityRequestForm,
-                numberPeople: e.target.value,
-              });
-            }}
-            required
-          />
+            <div className="flex justify-between w-full mt-4">
+              <CustomClearButton onClick={clear}>Clear</CustomClearButton>
 
-          <CustomTextField
-            label="Description (optional)"
-            value={securityRequestForm.serviceRequest.description}
-            multiline
-            rows={3}
-            size="small"
-            onChange={(e) => {
-              setSecurityRequestForm({
-                ...securityRequestForm,
-                serviceRequest: {
-                  ...securityRequestForm.serviceRequest,
-                  description: e.target.value,
-                },
-              });
-            }}
-          />
-
-          <FormControl sx={{ width: "25rem" }} size="small">
-            <CustomStatusDropdown
-              value={securityRequestForm.serviceRequest.status}
-              onChange={(e) =>
-                setSecurityRequestForm({
-                  ...securityRequestForm,
-                  serviceRequest: {
-                    ...securityRequestForm.serviceRequest,
-                    status: e.target.value ? e.target.value.toString() : "",
-                  },
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl
-            component="fieldset"
-            margin="normal"
-            sx={{ width: "25rem" }}
-          >
-            <CustomPrioritySelector
-              value={securityRequestForm.serviceRequest.priority}
-              onChange={(e) =>
-                setSecurityRequestForm({
-                  ...securityRequestForm,
-                  serviceRequest: {
-                    ...securityRequestForm.serviceRequest,
-                    priority: e.target.value,
-                  },
-                })
-              }
-            />
-          </FormControl>
-
-          <div className="flex justify-between w-full mt-4">
-            <CustomClearButton onClick={clear}>Clear</CustomClearButton>
-
-            <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
-          </div>
-          <div className="text-center mt-4">
-            <p>Made by Daniel Gorbunov and Colin Masucci</p>
-          </div>
-        </form>
+              <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+            </div>
+            <div className="text-center mt-4">
+              <p>Made by Daniel Gorbunov and Colin Masucci</p>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="w-[40rem]">
+        <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
       </div>
     </FormContainer>
   );
