@@ -74,15 +74,6 @@ export class Graph {
     return this.path;
   }
 
-  public getTextualPath() {
-    if (this.path.length == 0) {
-      return ["No Path Set"];
-    }
-    const textualPath: string[] = [];
-
-    return textualPath;
-  }
-
   static getNumFromFloor(floor: string): number {
     switch (floor) {
       case "L1":
