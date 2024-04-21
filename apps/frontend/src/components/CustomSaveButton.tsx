@@ -1,22 +1,19 @@
 import { Button } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
 import { ButtonProps } from "@mui/material/Button";
+import { FormStyling } from "../common/StylingCommon.ts";
 
 const styles = {
-  backgroundColor: "#012D5A",
-  width: "4vw",
+  color: "white",
+  backgroundColor: FormStyling.submitColor,
   padding: ".5rem 3rem",
   "&:hover": {
-    backgroundColor: "#013B96",
+    backgroundColor: FormStyling.submitHoverColor,
   },
+  fontFamily: "Poppins, sans-serif",
 } as const;
 
 const CustomButton: React.FC<ButtonProps> = (props) => {
-  return (
-    <Button variant="contained" sx={styles} endIcon={<CheckIcon />} {...props}>
-      SAVE
-    </Button>
-  );
+  return <Button variant="contained" sx={styles} {...props}></Button>;
 };
 
 export default CustomButton;

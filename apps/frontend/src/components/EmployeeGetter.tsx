@@ -5,8 +5,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import EmployeeFilterDropdown from "./EmployeeFilterDropdown.tsx";
 import { checkAuth } from "../checkAdminStatus.ts";
-import ExitButton from "./Banner/ExitButton.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Avatar,
+  Typography,
+  TableContainer,
+  TableFooter,
+} from "@mui/material";
+import { Paper } from "@mui/material";
+import TablePagination from "@mui/material/TablePagination";
+import ExitButton from "./Banner/ExitButton.tsx";
 
 export function EmployeeGetter() {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
@@ -15,11 +28,28 @@ export function EmployeeGetter() {
   const [filterByPosition, setFilterByPosition] = useState<string[]>([]);
   const [filterByRole, setFilterByRole] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<Employee[]>([]);
-  // const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
+  const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
 
   const { getAccessTokenSilently } = useAuth0();
-
   const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const handleRowClick = (employee: Employee) => {
+    setSelectedRow(employee);
+    console.log(selectedRow);
+  };
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   const handleDeleteEmployee = async (email: string) => {
     const token = await getAccessTokenSilently();
     const send = {
@@ -97,13 +127,6 @@ export function EmployeeGetter() {
     setFilteredData(sortedData);
   }, [employeeData, filterByPosition, filterByRole, filterBySearch, sortOrder]);
 
-  // function truncateString(str: string, num: number) {
-  //     if (str.length <= num) {
-  //         return str;
-  //     }
-  //     return str.slice(0, num) + "...";
-  // }
-
   function highlightSearchTerm(text: string, searchTerm: string) {
     if (!searchTerm.trim()) {
       return text;
@@ -140,6 +163,9 @@ export function EmployeeGetter() {
       setSortOrder("asc");
     }
   };
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   return (
     <div className="relative">
@@ -256,84 +282,218 @@ export function EmployeeGetter() {
           </div>
         </div>
       </div>
-      <table className="mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" className="px-6 py-3 w-[18ch]">
-              Employee ID
-              <button
-                onClick={() => SortOrder()}
-                className="hover:text-blue-700"
-              >
-                <svg
-                  className="w-3 h-3 ml-1"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewBox="0 0 24 20"
-                >
-                  <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                </svg>
-              </button>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Name
-            </th>
-
-            <th scope="col" className="px-6 py-3 w-[18ch]">
-              Username
-            </th>
-            <th scope="col" className="px-6 py-3 w-[15ch]">
-              Position
-            </th>
-            {authorizedStatus && (
-              <>
-                <th scope="col" className="px-6 py-3 w-[18ch]">
-                  Password
-                </th>
-
-                <th scope="col" className="px-6 py-3 w-[15ch]">
-                  Role
-                </th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((employee) => (
-            <tr
-              className="bg-white border-b h-16 hover:bg-gray-100"
-              key={employee.employeeID}
-            >
-              <td className="px-6 py-4">{employee.employeeID}</td>
-              <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
-                  alt={`${employee.name} image`}
-                />
-                <div className="ps-3">
-                  <div className="text-base font-semibold">
-                    {highlightSearchTerm(employee.name, filterBySearch)}
-                  </div>
-                </div>
-              </td>
-              <td>{highlightSearchTerm(employee.userName, filterBySearch)}</td>
-              <td>{highlightSearchTerm(employee.position, filterBySearch)}</td>
-              {authorizedStatus && (
-                <>
-                  <td>{employee.password}</td>
-                  <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>
-                </>
-              )}
-              <ExitButton
-                onClick={() => {
-                  makeDeleteRequest(employee.email);
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer className="shadow-md">
+          <Table className="text-center text-gray-50e">
+            <TableHead className="text-xs text-gray-50 uppercase bg-secondary">
+              <TableRow
+                sx={{
+                  "& > th": {
+                    backgroundColor: "#012D5A",
+                    color: "white",
+                    padding: "8px 16px",
+                    textAlign: "center",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: "0.76rem",
+                    fontWeight: "bold",
+                  },
                 }}
-              />
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              >
+                <TableCell>
+                  Employee ID
+                  <button
+                    onClick={() => SortOrder()}
+                    className="hover:text-blue-700"
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1"
+                      aria-hidden="true"
+                      fill="currentColor"
+                      viewBox="0 0 24 20"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Username</TableCell>
+                <TableCell>Position</TableCell>
+                {authorizedStatus && (
+                  <>
+                    <TableCell>Role</TableCell>
+                  </>
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((employee) => (
+                  <TableRow
+                    key={employee.employeeID}
+                    onClick={() => handleRowClick(employee)}
+                    hover
+                    style={{ cursor: "pointer" }}
+                    sx={{
+                      "& > td": {
+                        color: "#6B7280",
+                        textAlign: "center",
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "0.875rem",
+                      },
+                    }}
+                  >
+                    <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
+                      {employee.employeeID}
+                    </TableCell>
+                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
+                      <div className="flex items-center whitespace-nowrap">
+                        <Avatar
+                          src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
+                          alt={`${employee.name} image`}
+                        />
+                        <Typography variant="body2" style={{ marginLeft: 2 }}>
+                          <div className="ps-3">
+                            <div className="text-base font-semibold text-black">
+                              {highlightSearchTerm(
+                                employee.name,
+                                filterBySearch,
+                              )}
+                            </div>
+                          </div>
+                        </Typography>
+                      </div>
+                    </TableCell>
+                    <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
+                      {highlightSearchTerm(employee.userName, filterBySearch)}
+                    </TableCell>
+                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                      {highlightSearchTerm(employee.position, filterBySearch)}
+                    </TableCell>
+                    {authorizedStatus && (
+                      <>
+                        <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                          {highlightSearchTerm(employee.role, filterBySearch)}
+                        </TableCell>
+                      </>
+                    )}
+                    <ExitButton
+                      onClick={() => {
+                        makeDeleteRequest(employee.email);
+                      }}
+                    />
+                  </TableRow>
+                ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 73 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={6}
+                  count={filteredData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  sx={{
+                    ".MuiTablePagination-selectLabel": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiTablePagination-select": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiButtonBase-root": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiTablePagination-selectRoot": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                  }}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </Paper>
+      {/*<table className="mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">*/}
+      {/*  <thead className="text-xs text-gray-50 uppercase bg-secondary">*/}
+      {/*    <tr>*/}
+      {/*      <th scope="col" className="px-6 py-3 w-[18ch]">*/}
+      {/*        Employee ID*/}
+      {/*        <button*/}
+      {/*          onClick={() => SortOrder()}*/}
+      {/*          className="hover:text-blue-700"*/}
+      {/*        >*/}
+      {/*          <svg*/}
+      {/*            className="w-3 h-3 ml-1"*/}
+      {/*            aria-hidden="true"*/}
+      {/*            fill="currentColor"*/}
+      {/*            viewBox="0 0 24 20"*/}
+      {/*          >*/}
+      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
+      {/*          </svg>*/}
+      {/*        </button>*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Name*/}
+      {/*      </th>*/}
+
+      {/*      <th scope="col" className="px-6 py-3 w-[18ch]">*/}
+      {/*        Username*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3 w-[15ch]">*/}
+      {/*        Position*/}
+      {/*      </th>*/}
+      {/*      {authorizedStatus && (*/}
+      {/*        <>*/}
+      {/*          <th scope="col" className="px-6 py-3 w-[18ch]">*/}
+      {/*            Password*/}
+      {/*          </th>*/}
+
+      {/*          <th scope="col" className="px-6 py-3 w-[15ch]">*/}
+      {/*            Role*/}
+      {/*          </th>*/}
+      {/*        </>*/}
+      {/*      )}*/}
+      {/*    </tr>*/}
+      {/*  </thead>*/}
+      {/*  <tbody>*/}
+      {/*    {filteredData.map((employee) => (*/}
+      {/*      <tr*/}
+      {/*        className="bg-white border-b h-16 hover:bg-gray-100"*/}
+      {/*        key={employee.employeeID}*/}
+      {/*        onClick={() => handleRowClick(employee)}*/}
+      {/*      >*/}
+      {/*        <td className="px-6 py-4">{employee.employeeID}</td>*/}
+      {/*        <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">*/}
+      {/*          <img*/}
+      {/*            className="w-10 h-10 rounded-full"*/}
+      {/*            src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}*/}
+      {/*            alt={`${employee.name} image`}*/}
+      {/*          />*/}
+      {/*          <div className="ps-3">*/}
+      {/*            <div className="text-base font-semibold">*/}
+      {/*              {highlightSearchTerm(employee.name, filterBySearch)}*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*        </td>*/}
+      {/*        <td>{highlightSearchTerm(employee.userName, filterBySearch)}</td>*/}
+      {/*        <td>{highlightSearchTerm(employee.position, filterBySearch)}</td>*/}
+      {/*        {authorizedStatus && (*/}
+      {/*          <>*/}
+      {/*            <td>{employee.password}</td>*/}
+      {/*            <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>*/}
+      {/*          </>*/}
+      {/*        )}*/}
+      {/*      </tr>*/}
+      {/*    ))}*/}
+      {/*  </tbody>*/}
+      {/*</table>*/}
     </div>
   );
 }

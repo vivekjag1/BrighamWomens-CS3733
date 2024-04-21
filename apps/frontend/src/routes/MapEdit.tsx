@@ -119,6 +119,20 @@ function MapEdit() {
     }
   }
 
+  // function addNode(node: Node) {
+  //   const tempNodes = new Map(nodes);
+  //   tempNodes.set(node.nodeID, node);
+  //   setNodes(tempNodes);
+  // }
+  //
+  function deleteNode() {
+    if (selectedNodeID) {
+      const tempNodes = new Map(nodes);
+      tempNodes.delete(selectedNodeID);
+      setNodes(tempNodes);
+    }
+  }
+
   function handleNodeClick(nodeID: string) {
     if (cachedNode) {
       if (cachedNode.nodeID == nodeID)
@@ -176,6 +190,7 @@ function MapEdit() {
             selectedNodeID={selectedNodeID}
             onSave={handleSave}
             updateNode={updateNodeField}
+            deleteNode={deleteNode}
           />
         </MapContext.Provider>
       </div>
