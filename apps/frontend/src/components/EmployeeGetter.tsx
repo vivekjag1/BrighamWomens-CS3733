@@ -16,9 +16,9 @@ import {
   Typography,
   TableContainer,
   TableFooter,
+  Paper,
+  TablePagination,
 } from "@mui/material";
-import { Paper } from "@mui/material";
-import TablePagination from "@mui/material/TablePagination";
 import ExitButton from "./Banner/ExitButton.tsx";
 
 export function EmployeeGetter() {
@@ -50,6 +50,11 @@ export function EmployeeGetter() {
     setPage(0);
   };
 
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+
+
   const handleDeleteEmployee = async (email: string) => {
     const token = await getAccessTokenSilently();
     const send = {
@@ -63,6 +68,7 @@ export function EmployeeGetter() {
     console.log("deleting");
     handleDeleteEmployee(email).then().catch(console.error);
   };
+  
   useEffect(() => {
     const checkRole = async () => {
       const token = await getAccessTokenSilently();
@@ -163,9 +169,6 @@ export function EmployeeGetter() {
       setSortOrder("asc");
     }
   };
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   return (
     <div className="relative">
