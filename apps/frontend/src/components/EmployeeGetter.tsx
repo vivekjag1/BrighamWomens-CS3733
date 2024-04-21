@@ -15,10 +15,9 @@ import {
   Typography,
   TableContainer,
   TableFooter,
+  Paper,
+  TablePagination,
 } from "@mui/material";
-import { Paper } from "@mui/material";
-import TablePagination from "@mui/material/TablePagination";
-
 export function EmployeeGetter() {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -43,6 +42,9 @@ export function EmployeeGetter() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   useEffect(() => {
     const checkRole = async () => {
@@ -150,9 +152,6 @@ export function EmployeeGetter() {
       setSortOrder("asc");
     }
   };
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   return (
     <div className="relative">
