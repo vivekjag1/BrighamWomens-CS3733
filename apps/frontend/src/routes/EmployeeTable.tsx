@@ -88,7 +88,8 @@ const EmployeeTable = () => {
       const token = await getAccessTokenSilently();
       MakeProtectedGetRequest(APIEndpoints.makeEmployee, token);
     } catch (error) {
-      console.log(error);
+      console.log("user already exists!");
+      return;
     }
   }
 
