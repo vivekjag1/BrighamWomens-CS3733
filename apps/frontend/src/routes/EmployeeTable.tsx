@@ -16,6 +16,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 const EmployeeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [uploadTriggered, setUploadTriggered] = useState<boolean>(false);
 
   useEffect(() => {
     const checkRole = async () => {
@@ -71,7 +72,8 @@ const EmployeeTable = () => {
           console.log("success");
           await makeUsers();
           showToast("Employee data uploaded!", "success");
-
+          setUploadTriggered(true);
+          setTimeout(() => setUploadTriggered(false), 500);
           location.reload();
         }
       } else {
@@ -155,7 +157,7 @@ const EmployeeTable = () => {
           <hr />
 
           <div className="flex flex-col items-center">
-            <EmployeeGetter />
+            <EmployeeGetter uploadTriggered={uploadTriggered} />
           </div>
         </div>
       </div>
