@@ -69,6 +69,7 @@ const EmployeeTable = () => {
           showToast("File(s) failed validation!", "error");
         } else {
           console.log("success");
+          await makeUsers();
           showToast("Employee data uploaded!", "success");
           location.reload();
         }
@@ -78,6 +79,15 @@ const EmployeeTable = () => {
     } catch (error) {
       console.error("Upload failed:", error);
       showToast("Failed to upload employee data!", "error");
+    }
+  }
+
+  async function makeUsers() {
+    try {
+      const token = await getAccessTokenSilently();
+      MakeProtectedGetRequest(APIEndpoints.makeEmployee, token);
+    } catch (error) {
+      console.log(error);
     }
   }
 

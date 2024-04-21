@@ -5,6 +5,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import EmployeeFilterDropdown from "./EmployeeFilterDropdown.tsx";
 import { checkAuth } from "../checkAdminStatus.ts";
+import ExitButton from "./Banner/ExitButton.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 
 export function EmployeeGetter() {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
@@ -13,11 +15,24 @@ export function EmployeeGetter() {
   const [filterByPosition, setFilterByPosition] = useState<string[]>([]);
   const [filterByRole, setFilterByRole] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<Employee[]>([]);
-  const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
+  // const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
 
   const { getAccessTokenSilently } = useAuth0();
-  const [authorizedStatus, setStatus] = useState<boolean>(false);
 
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const handleDeleteEmployee = async (email: string) => {
+    const token = await getAccessTokenSilently();
+    const send = {
+      email: email,
+      token: token,
+    };
+    await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, send!, token);
+  };
+
+  const makeDeleteRequest = (email: string) => {
+    console.log("deleting");
+    handleDeleteEmployee(email).then().catch(console.error);
+  };
   useEffect(() => {
     const checkRole = async () => {
       const token = await getAccessTokenSilently();
@@ -112,10 +127,11 @@ export function EmployeeGetter() {
     );
   }
 
-  const handleRowClick = (employee: Employee) => {
-    setSelectedRow(employee);
-    console.log(selectedRow);
-  };
+  // const handleRowClick = () => {
+  //   // setSelectedRow(employee);
+  //   makeDeleteRequest();
+  //   // console.log(selectedRow);
+  // };
 
   const SortOrder = () => {
     if (sortOrder == "asc") {
@@ -287,7 +303,6 @@ export function EmployeeGetter() {
             <tr
               className="bg-white border-b h-16 hover:bg-gray-100"
               key={employee.employeeID}
-              onClick={() => handleRowClick(employee)}
             >
               <td className="px-6 py-4">{employee.employeeID}</td>
               <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
@@ -310,6 +325,11 @@ export function EmployeeGetter() {
                   <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>
                 </>
               )}
+              <ExitButton
+                onClick={() => {
+                  makeDeleteRequest(employee.email);
+                }}
+              />
             </tr>
           ))}
         </tbody>
