@@ -7,6 +7,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 function Layout() {
   return (
     <Auth0Provider
+      useRefreshTokens
       cacheLocation="localstorage"
       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"
