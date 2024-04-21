@@ -8,7 +8,7 @@ import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
-import AddNodeToolTip from "../components/AddNodeToolTip.tsx";
+import AddElementToolTip from "../components/AddElementToolTip.tsx";
 
 const defaultFloor: number = 1;
 
@@ -36,6 +36,7 @@ function MapEdit() {
   const [edges, setEdges] = useState<Edge[]>([]);
 
   const [addingNode, setAddingNode] = useState<boolean>(false);
+  const [addingEdge, setAddingEdge] = useState<boolean>(false);
 
   const contextValue = { nodes, setNodes, edges, setEdges };
 
@@ -166,6 +167,12 @@ function MapEdit() {
 
   function handleAddNodeButtonClicked() {
     setAddingNode(!addingNode);
+    setAddingEdge(false);
+  }
+
+  function handleAddEdgeButtonClicked() {
+    setAddingEdge(!addingEdge);
+    setAddingNode(false);
   }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
@@ -270,7 +277,18 @@ function MapEdit() {
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
       <div className="absolute left-[2%] bottom-[2%] z-50">
-        <AddNodeToolTip onClicked={handleAddNodeButtonClicked} />
+        <AddElementToolTip
+          onClicked={handleAddNodeButtonClicked}
+          title="Create Node"
+          selected={addingNode}
+        />
+      </div>
+      <div className="absolute left-[2%] bottom-[9%] z-50">
+        <AddElementToolTip
+          onClicked={handleAddEdgeButtonClicked}
+          title="Create Edge"
+          selected={addingEdge}
+        />
       </div>
     </div>
   );
