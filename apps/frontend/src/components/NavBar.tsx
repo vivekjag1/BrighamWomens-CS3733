@@ -119,7 +119,10 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link to={paths.ABOUT} onClick={() => setActivePage(paths.ABOUT)}>
+          <Link
+            to={paths.ABOUT_US}
+            onClick={() => setActivePage(paths.ABOUT_US)}
+          >
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -188,7 +191,7 @@ function NavBar() {
             collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
-            to={paths.SERVICES_DATA}
+            to={paths.SERVICE_LOG}
             activePage={activePage}
             setActivePage={setActivePage}
             Icon={TocIcon}
@@ -197,7 +200,7 @@ function NavBar() {
             collapsed={isHidingNavBarInfo}
           />
           <NavbarItem
-            to={paths.EMPLOYEE_TABLE}
+            to={paths.EMPLOYEE_LOG}
             activePage={activePage}
             setActivePage={setActivePage}
             Icon={AssignmentIndIcon}
@@ -212,7 +215,7 @@ function NavBar() {
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
               <NavbarItem
-                to={paths.LOGIN}
+                to={paths.HERO}
                 activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={LogoutIcon}
