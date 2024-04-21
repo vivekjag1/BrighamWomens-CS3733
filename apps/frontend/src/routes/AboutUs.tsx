@@ -20,7 +20,24 @@ import frankyImage from "../../assets/temp-employees/franky.jpeg";
 import colinImage from "../../assets/temp-employees/colin.jpeg";
 import griffinImage from "../../assets/temp-employees/griffin-brown.jpeg";
 import taehaImage from "../../assets/temp-employees/taeha-song.jpeg";
+import wongImage from "../../assets/temp-employees/wilsonwong.jpg";
 import FormContainer from "../components/FormContainer.tsx";
+import EmployeeCard from "../components/EmployeeCard.tsx";
+
+const employees = [
+  { name: "Danielle gorrovee", role: "Lead SWE", imageSrc: danielImage },
+  { name: "Matthew Brown", role: "Project Manager", imageSrc: mattImage },
+  { name: "Andy troung", role: "Assistant Lead", imageSrc: andyImage },
+  { name: "Vivek Jasdgasd", role: "Assistant Lead", imageSrc: vivekImage },
+  { name: "Mohamnad adem", role: "Scrum Master", imageSrc: ademImage },
+  { name: "Suliman mosagoij", role: "Product Owner", imageSrc: suliImage },
+  { name: "Frankesco di minso", role: "Documentation", imageSrc: frankyImage },
+  { name: "Colin Masgucci", role: "Frontend", imageSrc: colinImage },
+  { name: "Griffin Brown", role: "Algorithm", imageSrc: griffinImage },
+  { name: "Taeha Song", role: "Frontend", imageSrc: taehaImage },
+  { name: "Joseph cardsassd", role: "Team Coach", imageSrc: josephImage },
+  { name: "Wilson Wong", role: "Professor", imageSrc: wongImage },
+];
 
 export default function AboutUs() {
   return (
@@ -36,43 +53,6 @@ export default function AboutUs() {
         }}
         className="custom-form-container"
       >
-        {/*<div*/}
-        {/*  id="toast-default"*/}
-        {/*  className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"*/}
-        {/*  role="alert"*/}
-        {/*>*/}
-        {/*  <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">*/}
-        {/*    /!*<svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"*!/*/}
-        {/*    /!*     viewBox="0 0 18 20">*!/*/}
-        {/*    /!*  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"*!/*/}
-        {/*    /!*        d="M15.147 15.085a7.159 7.159 0 0 1-6.189 3.307A6.713 6.713 0 0 1 3.1 15.444c-2.679-4.513.287-8.737.888-9.548A4.373 4.373 0 0 0 5 1.608c1.287.953 6.445 3.218 5.537 10.5 1.5-1.122 2.706-3.01 2.853-6.14 1.433 1.049 3.993 5.395 1.757 9.117Z"/>*!/*/}
-        {/*    /!*</svg>*!/*/}
-        {/*  </div>*/}
-        {/*  <div className="ms-3 text-sm font-normal">*/}
-        {/*    Thanks to Brigham and Womens Hospital and their represenative, Andrew*/}
-        {/*    Shin. .*/}
-        {/*  </div>*/}
-        {/*  <button*/}
-        {/*    type="button"*/}
-        {/*    className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"*/}
-        {/*    data-dismiss-target="#toast-default"*/}
-        {/*    aria-label="Close"*/}
-        {/*  >*/}
-        {/*    <span className="sr-only">Close</span>*/}
-        {/*    <svg*/}
-        {/*      className="w-3 h-3"*/}
-        {/*      aria-hidden="true"*/}
-        {/*      xmlns="http://www.w3.org/2000/svg"*/}
-        {/*      fill="none"*/}
-        {/*      viewBox="0 0 14 14"*/}
-        {/*    >*/}
-        {/*      /!*<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"*!/*/}
-        {/*      /!*      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>*!/*/}
-        {/*    </svg>*/}
-        {/*  </button>*/}
-        {/*</div>*/}
-
-        <br />
         <h1 className=" text-4xl"> About Us </h1>
         <p style={{ color: "grey" }}> WPI Computer Science Department</p>
         <hr className="pl-96 pr-96" />
@@ -80,287 +60,288 @@ export default function AboutUs() {
         <p style={{ color: "grey" }}> CS3733-D24 (Software Engineering)</p>
         <p style={{ color: "grey" }}> Professor. Wilson Wong🐻</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={josephImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={danielImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full  "
-              src={mattImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={andyImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={vivekImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={ademImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={suliImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={frankyImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={colinImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={griffinImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
-          <div>
-            <img
-              className="w-25 h-40 object-cover rounded-full "
-              src={taehaImage}
-              alt=""
-            />
-            <label className="font-semibold"> Vivek jasdgasd </label>
-            <br /> <label>Assistant Lead</label>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {employees.map((employee, index) => (
+            <div key={index}>
+              <EmployeeCard
+                name={employee.name}
+                role={employee.role}
+                imageSrc={employee.imageSrc}
+              />
+            </div>
+          ))}
         </div>
-        <br />
-        <p style={{ color: "#012D5A" }}>
-          {" "}
-          "Thanks to Brigham and Womens Hospital and their represenative, Andrew
-          Shin."{" "}
-        </p>
-        <label className="animate-pulse">
-          {" "}
-          The B&WH maps and data used in this app are copyrighted and for
-          educational use only.{" "}
-        </label>
+        <div>
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={danielImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full  "*/}
+          {/*      src={mattImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={andyImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={vivekImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={ademImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={suliImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={frankyImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
 
-        {/*  <div*/}
-        {/*    style={{*/}
-        {/*      width: "70%",*/}
-        {/*      height: "20%",*/}
-        {/*      display: "flex",*/}
-        {/*      flexDirection: "row",*/}
-        {/*      justifyContent: "center",*/}
-        {/*    }}*/}
-        {/*    className="custom-form-container"*/}
-        {/*  >*/}
-        {/*    <FormContainer >*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center "*/}
-        {/*        src={josephImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Joseph cardsasd*/}
-        {/*        <br/> Team Coach*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={danielImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {""}*/}
-        {/*        Danielle Godlfioew*/}
-        {/*        <br/> Lead SWE*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={andyImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Andy Troug*/}
-        {/*        <br/> Assistant Lead*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={colinImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={griffinImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*  <div>*/}
+          {/*    <img*/}
+          {/*      className="w-25 h-40 object-cover rounded-full "*/}
+          {/*      src={taehaImage}*/}
+          {/*      alt=""*/}
+          {/*    />*/}
+          {/*    <label className="font-semibold"> Vivek jasdgasd </label>*/}
+          {/*    <br/> <label>Assistant Lead</label>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+          <br />
+          <p style={{ color: "#012D5A", textAlign: "center" }}>
+            {" "}
+            "Thanks to Brigham and Womens Hospital and their represenative,
+            Andrew Shin."{" "}
+          </p>
+          <label className="animate-pulse">
+            {" "}
+            The B&WH maps and data used in this app are copyrighted and for
+            educational use only.{" "}
+          </label>
 
-        {/*  <div*/}
-        {/*    style={{*/}
-        {/*      width: "70%",*/}
-        {/*      height: "20%",*/}
-        {/*      display: "flex",*/}
-        {/*      flexDirection: "row",*/}
-        {/*      justifyContent: "center",*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-40 rounded-lg object-cover object-center"*/}
-        {/*        src={vivekImage}*/}
-        {/*      />*/}
+          {/*  <div*/}
+          {/*    style={{*/}
+          {/*      width: "70%",*/}
+          {/*      height: "20%",*/}
+          {/*      display: "flex",*/}
+          {/*      flexDirection: "row",*/}
+          {/*      justifyContent: "center",*/}
+          {/*    }}*/}
+          {/*    className="custom-form-container"*/}
+          {/*  >*/}
+          {/*    <FormContainer >*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center "*/}
+          {/*        src={josephImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Joseph cardsasd*/}
+          {/*        <br/> Team Coach*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={danielImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {""}*/}
+          {/*        Danielle Godlfioew*/}
+          {/*        <br/> Lead SWE*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={andyImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Andy Troug*/}
+          {/*        <br/> Assistant Lead*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*  </div>*/}
 
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Vivek jadfasd*/}
-        {/*        <br/> Assistant Lead*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={mattImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        MAttherg bowewoe*/}
-        {/*        <br/> Project Manager*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={ademImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Mohalkgnla adem*/}
-        {/*        <br/> Scrum Master*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
+          {/*  <div*/}
+          {/*    style={{*/}
+          {/*      width: "70%",*/}
+          {/*      height: "20%",*/}
+          {/*      display: "flex",*/}
+          {/*      flexDirection: "row",*/}
+          {/*      justifyContent: "center",*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-40 rounded-lg object-cover object-center"*/}
+          {/*        src={vivekImage}*/}
+          {/*      />*/}
 
-        {/*  </div>*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Vivek jadfasd*/}
+          {/*        <br/> Assistant Lead*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={mattImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        MAttherg bowewoe*/}
+          {/*        <br/> Project Manager*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={ademImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Mohalkgnla adem*/}
+          {/*        <br/> Scrum Master*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
 
-        {/*  <div*/}
-        {/*    style={{*/}
-        {/*      width: "70%",*/}
-        {/*      height: "20%",*/}
-        {/*      display: "flex",*/}
-        {/*      flexDirection: "row",*/}
-        {/*      justifyContent: "center",*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={suliImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Sulimanf masdgsdg*/}
-        {/*        <br/> Product Owner*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={frankyImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Frank dmi meiwf*/}
-        {/*        <br/> Documentation*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={colinImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        colin masgucci*/}
-        {/*        <br/> Front-End*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*  </div>*/}
+          {/*  </div>*/}
 
-        {/*  <div*/}
-        {/*    style={{*/}
-        {/*      width: "70%",*/}
-        {/*      height: "20%",*/}
-        {/*      display: "flex",*/}
-        {/*      flexDirection: "row",*/}
-        {/*      justifyContent: "center",*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={griffinImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Grifif brown*/}
-        {/*        <br/> Algorithm*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*    <FormContainer>*/}
-        {/*      <img*/}
-        {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
-        {/*        src={taehaImage}*/}
-        {/*      />*/}
-        {/*      <label>*/}
-        {/*        {" "}*/}
-        {/*        Taeha Song*/}
-        {/*        <br/> Front-End*/}
-        {/*      </label>*/}
-        {/*    </FormContainer>*/}
-        {/*  </div>*/}
+          {/*  <div*/}
+          {/*    style={{*/}
+          {/*      width: "70%",*/}
+          {/*      height: "20%",*/}
+          {/*      display: "flex",*/}
+          {/*      flexDirection: "row",*/}
+          {/*      justifyContent: "center",*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={suliImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Sulimanf masdgsdg*/}
+          {/*        <br/> Product Owner*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={frankyImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Frank dmi meiwf*/}
+          {/*        <br/> Documentation*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={colinImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        colin masgucci*/}
+          {/*        <br/> Front-End*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*  </div>*/}
+
+          {/*  <div*/}
+          {/*    style={{*/}
+          {/*      width: "70%",*/}
+          {/*      height: "20%",*/}
+          {/*      display: "flex",*/}
+          {/*      flexDirection: "row",*/}
+          {/*      justifyContent: "center",*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={griffinImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Grifif brown*/}
+          {/*        <br/> Algorithm*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+          {/*    <FormContainer>*/}
+          {/*      <img*/}
+          {/*        className="block h-full w-20 rounded-lg object-cover object-center"*/}
+          {/*        src={taehaImage}*/}
+          {/*      />*/}
+          {/*      <label>*/}
+          {/*        {" "}*/}
+          {/*        Taeha Song*/}
+          {/*        <br/> Front-End*/}
+          {/*      </label>*/}
+          {/*    </FormContainer>*/}
+        </div>
         {/*  <br/>*/}
       </div>
     </FormContainer>
