@@ -71,7 +71,6 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
-
   const handleDeleteEmployee = async (employee: Employee) => {
     const token = await getAccessTokenSilently();
     const send = {
@@ -334,13 +333,13 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer className="shadow-md">
-          <Table className="text-center text-gray-50e">
-            <TableHead className="text-xs text-gray-50 uppercase bg-secondary">
+          <Table className="text-center text-gray-50">
+            <TableHead className="text-xs text-gray-50 uppercase">
               <TableRow
                 sx={{
                   "& > th": {
-                    backgroundColor: "#012D5A",
-                    color: "white",
+                    backgroundColor: "#f9fafb",
+                    color: "#012D5A",
                     padding: "8px 16px",
                     textAlign: "center",
                     fontFamily: "Poppins, sans-serif",
@@ -399,7 +398,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                     <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
                       {employee.employeeID}
                     </TableCell>
-                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
+                    <TableCell style={{ width: "32ch", maxWidth: "32ch" }}>
                       <div className="flex items-center whitespace-nowrap">
                         <Avatar
                           src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
@@ -411,9 +410,15 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                           style={{ marginLeft: 2 }}
                         >
                           <div className="ps-3">
-                            <div className="text-base font-semibold text-black">
+                            <div className="text-base font-semibold text-black text-start">
                               {highlightSearchTerm(
                                 employee.name,
+                                filterBySearch,
+                              )}
+                            </div>
+                            <div className="font-normal text-gray-500">
+                              {highlightSearchTerm(
+                                employee.email,
                                 filterBySearch,
                               )}
                             </div>
@@ -454,7 +459,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  rowsPerPageOptions={[5, 10, 25, 50]}
                   colSpan={6}
                   count={filteredData.length}
                   rowsPerPage={rowsPerPage}

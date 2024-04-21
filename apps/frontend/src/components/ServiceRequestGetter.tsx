@@ -219,7 +219,6 @@ export function ServiceRequestGetter() {
 
   const handleRowClick = (request: ServiceRequest) => {
     setSelectedRow(request);
-    console.log(request);
   };
 
   const sortPriorityOrder = () => {
@@ -364,8 +363,8 @@ export function ServiceRequestGetter() {
               <TableRow
                 sx={{
                   "& > th": {
-                    backgroundColor: "#012D5A",
-                    color: "white",
+                    backgroundColor: "#f9fafb",
+                    color: "#012D5A",
                     padding: "8px 16px",
                     textAlign: "center",
                     fontFamily: "Poppins, sans-serif",
@@ -548,7 +547,7 @@ export function ServiceRequestGetter() {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  rowsPerPageOptions={[5, 10, 25, 50]}
                   colSpan={9}
                   count={filteredData.length}
                   rowsPerPage={rowsPerPage}
