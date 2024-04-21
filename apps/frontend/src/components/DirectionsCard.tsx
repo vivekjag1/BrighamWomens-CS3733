@@ -9,7 +9,6 @@ import React, {
   useState,
 } from "react";
 import { createNodes } from "common/src/GraphCommon.ts";
-import NavigateButton from "./NavigateButton.tsx";
 import NodeDropdown from "./NodeDropdown.tsx";
 import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -160,7 +159,7 @@ function DirectionsCard(props: {
               name={`${NavigateAttributes.algorithmKey}`}
               value={pathAlgorithm}
             />
-            <NavigateButton type="submit" className={"flex"} />
+            {/*<NavigateButton type="submit" className={"flex"} />*/}
           </div>
         </div>
 

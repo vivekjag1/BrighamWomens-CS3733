@@ -7,7 +7,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
 
@@ -19,13 +19,14 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
+  addingNode: boolean;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
-  onMapClick: () => void;
+  onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
-  console.log(tempNodes);
+  //console.log(tempNodes);
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -82,7 +83,7 @@ const MapEditImage = (props: {
   // This stops the map event handler from being called
   // Separates node clicks from map clicks
   function nodeClicked(
-    event: React.MouseEvent<SVGCircleElement, MouseEvent>,
+    event: React.MouseEvent<SVGCircleElement>,
     nodeID: string,
   ) {
     event.stopPropagation();
@@ -132,7 +133,8 @@ const MapEditImage = (props: {
   }
 
   return (
-    <div className={"z-0"} style={{ position: "relative" }}>
+    //onClick={props.onMapClick}
+    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -168,6 +170,7 @@ const MapEditImage = (props: {
             onPointerUp={() => {
               setPosition({ ...position, active: false });
             }}
+            onClick={props.onMapClick}
           >
             <image href={map} />
             {edgeCoords.map((edge, index) => (

@@ -71,7 +71,9 @@ export async function checkDBStatus() {
 }
 
 export async function populateEmployeeDB(employeeData: string[][]) {
+  let i = 0;
   const employees = employeeData.map((data) => ({
+    employeeID: i++,
     name: data[0],
     userName: data[1],
     password: data[2],

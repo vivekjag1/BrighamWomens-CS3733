@@ -71,6 +71,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
+
   const handleDeleteEmployee = async (employee: Employee) => {
     const token = await getAccessTokenSilently();
     const send = {

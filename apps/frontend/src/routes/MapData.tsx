@@ -1,8 +1,8 @@
 import { checkAuth } from "../checkAdminStatus.ts";
-import { Button } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import UploadIcon from "@mui/icons-material/Upload";
-import DownloadIcon from "@mui/icons-material/Download";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
@@ -10,6 +10,8 @@ import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { NodeGetter } from "../components/NodeGetter.tsx";
 import { EdgeGetter } from "../components/EdgeGetter.tsx";
+import ButtonBlue from "../components/ButtonBlue.tsx";
+
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [authorizedStatus, setStatus] = useState<boolean>(false);
@@ -113,7 +115,7 @@ const NodeTable = () => {
   }
 
   return (
-    <div className=" h-screen overflow-y-scroll bg-gray-50">
+    <div className=" h-screen overflow-y-scroll bg-offwhite">
       <div className="w-full items-center">
         <div className="flex flex-col items-center gap-8 ">
           <div className="flex flex-col items-center gap-2 mt-8">
@@ -130,15 +132,14 @@ const NodeTable = () => {
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <div className="flex flex-row items-center">
-                      <p className="mr-2 font-bold">Node File:</p>
-                      <Button
-                        variant="contained"
+                      <ButtonBlue
                         component="label"
                         style={{
-                          backgroundColor: nodeFile ? "green" : "#012D5A",
+                          backgroundColor: nodeFile ? "green" : "",
                         }}
+                        endIcon={nodeFile ? undefined : <FileUploadIcon />}
                       >
-                        {nodeFile ? nodeFile.name : "Upload File"}
+                        {nodeFile ? "Nodes: " + nodeFile.name : "Node File"}
                         <input
                           id="importNodeFile"
                           type="file"
@@ -147,18 +148,17 @@ const NodeTable = () => {
                           onChange={nodeFileChange}
                           hidden
                         />
-                      </Button>
+                      </ButtonBlue>
                     </div>
                     <div className="flex flex-row items-center">
-                      <p className="mr-2 font-bold">Edge File:</p>
-                      <Button
-                        variant="contained"
+                      <ButtonBlue
                         component="label"
                         style={{
-                          backgroundColor: edgeFile ? "green" : "#012D5A",
+                          backgroundColor: edgeFile ? "green" : "",
                         }}
+                        endIcon={edgeFile ? undefined : <FileUploadIcon />}
                       >
-                        {edgeFile ? edgeFile.name : "Upload File"}
+                        {edgeFile ? "Edges: " + edgeFile.name : "Edge File"}
                         <input
                           id="importEdgeFile"
                           type="file"
@@ -167,30 +167,26 @@ const NodeTable = () => {
                           onChange={edgeFileChange}
                           hidden
                         />
-                      </Button>
+                      </ButtonBlue>
                     </div>
                   </div>
 
                   <div className="flex flex-row items-center gap-2 mb-5 mt-2">
                     <div>
-                      <Button
-                        variant="contained"
+                      <ButtonBlue
                         onClick={uploadFiles}
-                        sx={{ backgroundColor: "#012D5A" }}
-                        endIcon={<UploadIcon />}
+                        endIcon={<CloudUploadIcon />}
                       >
-                        Upload Map Data
-                      </Button>
+                        Upload
+                      </ButtonBlue>
                     </div>
                     <div>
-                      <Button
-                        variant="contained"
+                      <ButtonBlue
                         onClick={downloadFiles}
-                        sx={{ backgroundColor: "#012D5A" }}
-                        endIcon={<DownloadIcon />}
+                        endIcon={<CloudDownloadIcon />}
                       >
-                        Download Map Data
-                      </Button>
+                        Download Data
+                      </ButtonBlue>
                     </div>
                   </div>
                 </div>
