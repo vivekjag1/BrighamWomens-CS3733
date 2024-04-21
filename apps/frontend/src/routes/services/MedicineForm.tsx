@@ -29,7 +29,7 @@ const initialState: MedicineDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -115,13 +115,13 @@ export function MedicineForm() {
                 sx={{ width: "25rem", padding: 0 }}
                 label="Requesting Employee *"
                 onChange={(newValue) =>
-                  setMedicineDelivery({
+                  setMedicineDelivery((medicineDelivery) => ({
                     ...medicineDelivery,
                     serviceRequest: {
                       ...medicineDelivery.serviceRequest,
                       requestingUsername: newValue,
                     },
-                  })
+                  }))
                 }
                 disabled={false}
               />

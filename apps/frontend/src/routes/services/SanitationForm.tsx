@@ -30,7 +30,7 @@ const initialState: SanitationRequestObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 

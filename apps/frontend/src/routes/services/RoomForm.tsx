@@ -31,7 +31,7 @@ const initialState: RoomReservationType = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 export function RoomForm() {

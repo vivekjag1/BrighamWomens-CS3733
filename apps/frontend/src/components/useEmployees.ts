@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { EmployeeType } from "common/src/EmployeeType.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
@@ -31,5 +31,5 @@ export const useEmployees = () => {
     fetchEmployees();
   }, [getAccessTokenSilently]);
 
-  return employees;
+  return useMemo(() => employees, [employees]);
 };
