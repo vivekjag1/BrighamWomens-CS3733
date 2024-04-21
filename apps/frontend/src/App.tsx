@@ -6,13 +6,13 @@ import Map from "./routes/Map.tsx";
 import paths from "./paths/paths.tsx";
 import Layout from "./components/Layout.tsx";
 import AuthComp from "./components/AuthenticationComponent.tsx";
-import MedicineDeliveryForm from "./routes/MedicineDeliveryForm.tsx";
-import MedicalDeviceDeliveryForm from "./routes/MedicalDeviceDeliveryForm.tsx";
-import SanitationForm from "./routes/SanitationForm.tsx";
-import RoomReservation from "./routes/RoomReservation.tsx";
-import SecurityRequest from "./routes/SecurityRequest.tsx";
+import MedicineForm from "./routes/services/MedicineForm.tsx";
+import MedicalDeviceForm from "./routes/services/MedicalDeviceForm.tsx";
+import SanitationForm from "./routes/services/SanitationForm.tsx";
+import RoomForm from "./routes/services/RoomForm.tsx";
+import SecurityForm from "./routes/services/SecurityForm.tsx";
 import ServicesTable from "./routes/ServicesTable.tsx";
-import GiftDelivery from "./routes/GiftDelivery.tsx";
+import GiftForm from "./routes/services/GiftForm.tsx";
 import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Hero from "./routes/Hero.tsx";
@@ -39,11 +39,11 @@ function App() {
         },
         {
           path: paths.MEDICINE_REQUEST,
-          element: <AuthComp component={MedicineDeliveryForm} />,
+          element: <AuthComp component={MedicineForm} />,
         },
         {
           path: paths.MEDICAL_DEVICE_DELIVERY,
-          element: <AuthComp component={MedicalDeviceDeliveryForm} />,
+          element: <AuthComp component={MedicalDeviceForm} />,
         },
         {
           path: paths.SANITATION_FORM,
@@ -51,15 +51,15 @@ function App() {
         },
         {
           path: paths.ROOM_RESERVATION,
-          element: <AuthComp component={RoomReservation} />,
+          element: <AuthComp component={RoomForm} />,
         },
         {
           path: paths.SECURITY_REQUEST,
-          element: <AuthComp component={SecurityRequest} />,
+          element: <AuthComp component={SecurityForm} />,
         },
         {
           path: paths.GIFT_DELIVERY,
-          element: <AuthComp component={GiftDelivery} />,
+          element: <AuthComp component={GiftForm} />,
         },
         {
           path: paths.SERVICES_DATA,

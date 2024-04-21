@@ -5,7 +5,6 @@ function Login() {
   const navigate = useNavigate();
   return (
     <Auth0Provider
-      useRefreshTokens
       cacheLocation="localstorage"
       domain="dev-7eoh0ojk0tkfhypo.us.auth0.com"
       clientId="U8XpuA4s1L8lmd1avUIOupo1494YlppB"

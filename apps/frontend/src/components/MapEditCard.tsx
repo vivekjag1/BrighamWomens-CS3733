@@ -7,6 +7,9 @@ import NodeParam from "./NodeParam.tsx";
 import { MapContext } from "../routes/MapEdit.tsx";
 import CustomSaveButton from "./CustomSaveButton.tsx";
 import { Node } from "database";
+import CustomDeleteButton from "./CustomDeleteButton.tsx";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
 const textFieldStyles_large = {
   width: "16vw",
@@ -16,10 +19,15 @@ const textFieldStyles_small = {
   width: "8vw",
 };
 
+const buttonStyles = {
+  width: "8vw",
+};
+
 function MapEditCard(props: {
   selectedNodeID?: string | undefined;
   onSave: () => void;
   updateNode: (field: keyof Node, value: string) => void;
+  deleteNode: () => void;
 }) {
   const nodes = useContext(MapContext).nodes;
 
@@ -27,12 +35,6 @@ function MapEditCard(props: {
     <div>
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
         <div className="flex flex-col gap-[1rem]">
-          <div className="flex flex-row justify-between">
-            <h2 className="text-2xl font-extralight text-secondary">
-              Modify Nodes
-            </h2>
-          </div>
-
           <div className="flex gap-1 items-center">
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
@@ -96,11 +98,23 @@ function MapEditCard(props: {
               props={{ type: "number" }}
             />
           </form>
-          <div className="flex justify-end">
+          <div className="flex justify-between ml-[32px]">
+            <CustomDeleteButton
+              onClick={props.deleteNode}
+              disabled={!props.selectedNodeID}
+              endIcon={<ClearIcon />}
+              style={buttonStyles}
+            >
+              DELETE
+            </CustomDeleteButton>
             <CustomSaveButton
               onClick={props.onSave}
               disabled={!props.selectedNodeID}
-            />
+              endIcon={<CheckIcon />}
+              style={buttonStyles}
+            >
+              SAVE
+            </CustomSaveButton>
           </div>
         </div>
       </div>

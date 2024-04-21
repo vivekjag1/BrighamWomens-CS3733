@@ -31,7 +31,7 @@ router.post(
     if (files) {
       console.log("inside if");
       const employeeFile: Express.Multer.File[] = files["Employees"];
-      if (validateInput(employeeFile[0], 6)) {
+      if (validateInput(employeeFile[0], 7)) {
         await checkDBStatus();
         console.log("checkDBStatus done");
         await populateDatabases(employeeFile[0]);
@@ -71,14 +71,18 @@ export async function checkDBStatus() {
 }
 
 export async function populateEmployeeDB(employeeData: string[][]) {
+  let i = 0;
   const employees = employeeData.map((data) => ({
+    employeeID: i++,
     name: data[0],
     userName: data[1],
     password: data[2],
     position: data[3],
     role: data[4],
     profilePicture: data[5],
+    email: data[6],
   }));
+  employees.pop();
 
   await prisma.employee.createMany({
     data: employees,
