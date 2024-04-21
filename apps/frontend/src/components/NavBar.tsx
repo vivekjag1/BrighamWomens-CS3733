@@ -12,7 +12,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/animatedLine.css";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 
 function NavBar() {

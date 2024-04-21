@@ -5,7 +5,7 @@ import roomIcon from "../../assets/room-icon.svg";
 import sanitationIcon from "../../assets/sanitation-icon.svg";
 import deviceIcon from "../../assets/device-icon.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
@@ -24,7 +24,7 @@ function Services() {
 
         <div className="flex justify-center gap-8 ">
           <Link
-            to={paths.MEDICINE_REQUEST}
+            to={paths.MEDICINE_DELIVERY}
             className=" serviceCard medicineDelivery ]  "
           >
             <ServiceCard
@@ -49,7 +49,7 @@ function Services() {
         </div>
         <div className="flex justify-center gap-8">
           <Link
-            to={paths.SANITATION_FORM}
+            to={paths.SANITATION_REQUEST}
             className="serviceCard sanitationRequest"
           >
             <ServiceCard

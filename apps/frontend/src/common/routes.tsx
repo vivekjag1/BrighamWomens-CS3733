@@ -1,4 +1,4 @@
-import paths from "./paths";
+import paths from "./paths.tsx";
 import Map from "../routes/Map.tsx";
 import MapEdit from "../routes/MapEdit.tsx";
 import PathTables from "../routes/MapData.tsx";
