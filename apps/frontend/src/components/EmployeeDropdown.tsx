@@ -1,6 +1,6 @@
 // import React, { useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import { MenuItem, SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
 // import {EmployeeType} from "common/src/EmployeeType.ts";
@@ -74,18 +74,26 @@ const EmployeeDropdown = ({
         />
       )}
       // smaller, wrap, poppins font
-      renderOption={(props, option) => (
-        <MenuItem
-          {...props}
-          style={{
-            fontSize: ".8rem",
-            whiteSpace: "pre-wrap",
-            fontFamily: "Poppins, sans-serif",
-          }}
-        >
-          {option.label}
-        </MenuItem>
-      )}
+      renderOption={(props, option) => {
+        const employeeImage = employees.find(
+          (employee) => employee.name === option.label,
+        )?.profilePicture;
+        return (
+          <Box
+            component="li"
+            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            {...props}
+          >
+            <img
+              className="w-10 h-10 rounded-full"
+              loading="lazy"
+              src={`../../assets/temp-employees/${employeeImage}.jpeg`}
+              alt={`${selectedValue} image`}
+            />
+            {option.label}
+          </Box>
+        );
+      }}
     />
   );
 };

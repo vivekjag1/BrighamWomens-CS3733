@@ -109,19 +109,20 @@ export function SanitationForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={sanitationRequest.serviceRequest.requestingUsername}
-                onChange={(e) =>
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setSanitationRequest({
                     ...sanitationRequest,
                     serviceRequest: {
                       ...sanitationRequest.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
                   })
                 }
-                required
+                disabled={false}
               />
 
               <NodeDropdown
