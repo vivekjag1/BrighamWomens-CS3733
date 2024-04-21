@@ -17,6 +17,7 @@ import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Hero from "./routes/Hero.tsx";
 import EmployeeTable from "./routes/EmployeeTable.tsx";
+import AboutUs from "./routes/AboutUs.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -75,6 +76,10 @@ function App() {
         {
           path: paths.EMPLOYEE_TABLE,
           element: <AuthComp component={EmployeeTable} />,
+        },
+        {
+          path: paths.ABOUT,
+          element: <AboutUs />,
         },
       ],
     },

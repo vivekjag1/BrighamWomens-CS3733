@@ -11,6 +11,7 @@ import PathTables from "../routes/MapData.tsx";
 import MapEdit from "../routes/MapEdit.tsx";
 import GiftForm from "../routes/services/GiftForm.tsx";
 import EmployeeTable from "../routes/EmployeeTable.tsx";
+import AboutUs from "../routes/AboutUs.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Map /> },
@@ -28,6 +29,7 @@ const routes = [
   { path: paths.MAP_DATA, element: <PathTables /> },
   { path: paths.MAP_EDITOR, element: <MapEdit /> },
   { path: paths.EMPLOYEE_TABLE, element: <EmployeeTable /> },
+  { path: paths.ABOUT, element: <AboutUs /> },
 ];
 
 export default routes;
