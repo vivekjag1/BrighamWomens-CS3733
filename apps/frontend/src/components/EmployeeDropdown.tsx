@@ -37,16 +37,28 @@ const EmployeeDropdown = ({
     onChange(newValue ? newValue.label : "");
   };
 
-  const options = employees.map((employee) => ({ label: employee.name }));
-  const selectedValue = options.find((option) => option.label === value)
-    ? { label: value }
-    : null;
+  const options = employees.map((employee) => ({
+    label: employee.name,
+    profilePicture: employee.profilePicture,
+  }));
+
+  // const selectedValue = options.find((option) => option.label === value)
+  //   ? { label: value }
+  //   : null;
+
+  const selectedValue =
+    value === "Unassigned"
+      ? { label: "Unassigned" }
+      : value
+        ? options.find((option) => option.label === value) || null
+        : null;
 
   return (
     <Autocomplete
       disablePortal
       id="combo-box-location"
       options={options}
+      getOptionLabel={(option) => option.label}
       ListboxProps={{
         style: {
           maxHeight: "15rem",
@@ -82,21 +94,24 @@ const EmployeeDropdown = ({
       )}
       // smaller, wrap, poppins font
       renderOption={(props, option) => {
-        const employeeImage = employees.find(
+        const employee = employees.find(
           (employee) => employee.name === option.label,
-        )?.profilePicture;
+        );
+
         return (
           <Box
             component="li"
             sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             {...props}
           >
-            <img
-              className="w-10 h-10 rounded-full"
-              loading="lazy"
-              src={`../../assets/temp-employees/${employeeImage}.jpeg`}
-              alt={`${selectedValue} image`}
-            />
+            {employee && employee.profilePicture && (
+              <img
+                className="w-10 h-10 rounded-full"
+                loading="lazy"
+                src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
+                alt={`${option.label} profile`}
+              />
+            )}
             {option.label}
           </Box>
         );

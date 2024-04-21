@@ -217,6 +217,8 @@ export function GiftForm(): JSX.Element {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setGiftDeliveryRequest({
