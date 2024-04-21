@@ -31,7 +31,7 @@ const initialState: MedicineDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -112,21 +112,21 @@ export function MedicineForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={medicineDelivery.serviceRequest.requestingUsername}
-                onChange={(e) =>
-                  setMedicineDelivery({
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
+                  setMedicineDelivery((medicineDelivery) => ({
                     ...medicineDelivery,
                     serviceRequest: {
                       ...medicineDelivery.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
-                  })
+                  }))
                 }
-                required
+                disabled={false}
               />
-
               <NodeDropdown
                 value={medicineDelivery.serviceRequest.location}
                 sx={{ width: "25rem", padding: 0 }}

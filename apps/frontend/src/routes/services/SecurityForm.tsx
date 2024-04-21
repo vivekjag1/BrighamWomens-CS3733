@@ -32,7 +32,7 @@ const initialState: SecurityRequestType = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -107,19 +107,20 @@ export function SecurityForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Username"
+              <EmployeeDropdown
                 value={securityRequestForm.serviceRequest.requestingUsername}
-                onChange={(e) =>
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setSecurityRequestForm({
                     ...securityRequestForm,
                     serviceRequest: {
                       ...securityRequestForm.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
                   })
                 }
-                required
+                disabled={false}
               />
 
               <NodeDropdown

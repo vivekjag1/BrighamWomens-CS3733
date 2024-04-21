@@ -33,7 +33,7 @@ const initialState: RoomReservationType = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 export function RoomForm() {
@@ -114,6 +114,22 @@ export function RoomForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
+              <EmployeeDropdown
+                value={roomReservation.serviceRequest.requestingUsername}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
+                  setRoomReservation({
+                    ...roomReservation,
+                    serviceRequest: {
+                      ...roomReservation.serviceRequest,
+                      requestingUsername: newValue,
+                    },
+                  })
+                }
+                disabled={false}
+              />
+
               <NodeDropdown
                 sx={{ width: "25rem", padding: 0 }}
                 label="Location *"
@@ -127,38 +143,6 @@ export function RoomForm() {
                     },
                   }))
                 }
-              />
-
-              <TextField
-                value={roomReservation.serviceRequest.requestingUsername}
-                onChange={(e) =>
-                  setRoomReservation({
-                    ...roomReservation,
-                    serviceRequest: {
-                      ...roomReservation.serviceRequest,
-                      requestingUsername: e.target.value,
-                    },
-                  })
-                }
-                id="outlined-basic"
-                label="Reservation Name"
-                variant="outlined"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-                className="bg-gray-50"
-                InputProps={{
-                  style: {
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    color: "#a4aab5",
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-                size="small"
               />
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
