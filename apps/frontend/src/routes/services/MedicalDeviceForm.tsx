@@ -28,7 +28,7 @@ const initialState: MedicalDeviceDelivery = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -106,19 +106,20 @@ export function MedicalDeviceForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={medicalDeviceDelivery.serviceRequest.requestingUsername}
-                onChange={(e) =>
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setMedicalDeviceDelivery({
                     ...medicalDeviceDelivery,
                     serviceRequest: {
                       ...medicalDeviceDelivery.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
                   })
                 }
-                required
+                disabled={false}
               />
 
               <NodeDropdown
@@ -249,13 +250,15 @@ export function MedicalDeviceForm() {
               <CustomTextField
                 label="Quantity"
                 type="number"
+                value={medicalDeviceDelivery.quantity.toString()}
                 InputProps={{
                   inputProps: { min: 0 },
                 }}
                 onChange={(e) =>
                   setMedicalDeviceDelivery({
                     ...medicalDeviceDelivery,
-                    quantity: parseInt(e.target.value),
+                    quantity:
+                      e.target.value === "" ? 0 : parseInt(e.target.value, 10),
                   })
                 }
                 required
