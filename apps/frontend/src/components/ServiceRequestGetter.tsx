@@ -90,7 +90,13 @@ export function ServiceRequestGetter() {
 
     const updatedRequests = requestData.map((request) => {
       if (request.serviceID === serviceID) {
-        return { ...request, status: newStatus };
+        const updatedRequest = {
+          ...request,
+          status: newStatus,
+          assignedTo:
+            newStatus === "Unassigned" ? "Unassigned" : request.assignedTo,
+        };
+        return updatedRequest;
       }
       return request;
     });
@@ -100,6 +106,7 @@ export function ServiceRequestGetter() {
     const updateData = {
       serviceID: serviceID,
       status: newStatus,
+      ...(newStatus === "Unassigned" && { assignedTo: "Unassigned" }),
     };
 
     try {
