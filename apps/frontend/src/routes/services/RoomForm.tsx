@@ -257,6 +257,8 @@ export function RoomForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setRoomReservation({

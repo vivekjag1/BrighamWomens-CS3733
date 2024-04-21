@@ -23,6 +23,7 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
+import EmployeeDropdown from "./EmployeeDropdown.tsx";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
@@ -127,6 +128,48 @@ export function ServiceRequestGetter() {
       showToast("Status update failed!", "error");
     }
   }
+
+  const handleEmployeeChange = async (
+    newAssignedTo: string,
+    serviceID: number,
+  ) => {
+    const updatedRequests = requestData.map((request) => {
+      if (request.serviceID === serviceID) {
+        return {
+          ...request,
+          assignedTo: newAssignedTo,
+          status: newAssignedTo !== "Unassigned" ? "Assigned" : "Unassigned",
+        };
+      }
+      return request;
+    });
+
+    setRequestData(updatedRequests);
+
+    const updateData = {
+      serviceID: serviceID,
+      assignedTo: newAssignedTo,
+      ...(newAssignedTo !== "Unassigned" && { status: "Assigned" }),
+    };
+
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await axios.patch(
+        APIEndpoints.servicePutRequests,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Employee updated successfully", response.data);
+      showToast("Assigned employee updated successfully!", "success");
+    } catch (error) {
+      console.error("Error updating assigned employee", error);
+      showToast("Failed to update assigned employee!", "error");
+    }
+  };
 
   useEffect(() => {
     let data = requestData;
@@ -456,7 +499,14 @@ export function ServiceRequestGetter() {
                         className="border border-gray-300 rounded px-3 py-1 text-center"
                       >
                         {statusOptions.map((option) => (
-                          <option key={option} value={option}>
+                          <option
+                            key={option}
+                            value={option}
+                            disabled={
+                              request.status === "Unassigned" &&
+                              option !== "Unassigned"
+                            }
+                          >
                             {option === "InProgress" ? "In Progress" : option}
                           </option>
                         ))}
@@ -527,11 +577,23 @@ export function ServiceRequestGetter() {
                         ? truncateString(request.description, 20)
                         : "N/A"}
                     </TableCell>
-                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
-                      {highlightSearchTerm(
-                        truncateString(request.assignedTo, 15),
-                        filterBySearch,
-                      )}
+                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                      {/*{highlightSearchTerm(*/}
+                      {/*  truncateString(request.assignedTo, 15),*/}
+                      {/*  filterBySearch,*/}
+                      {/*)}*/}
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <EmployeeDropdown
+                          value={request.assignedTo}
+                          onChange={(newAssignedTo) =>
+                            handleEmployeeChange(
+                              newAssignedTo,
+                              request.serviceID,
+                            )
+                          }
+                          disabled={false}
+                        />
+                      </div>
                     </TableCell>
                     <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
                       {truncateString(
