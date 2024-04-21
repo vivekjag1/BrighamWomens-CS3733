@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
@@ -15,9 +15,9 @@ export const useGraphNodes = () => {
       graphNodes.sort((a, b) => a.longName.localeCompare(b.longName));
       setNodes(graphNodes);
     }
-
+    // console.log("nodes called");
     fetchNodes();
   }, []);
 
-  return useMemo(() => nodes, [nodes]);
+  return nodes;
 };
