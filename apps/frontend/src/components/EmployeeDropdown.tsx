@@ -1,5 +1,5 @@
 // import React, { useState } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete /*, { createFilterOptions }*/ from "@mui/material/Autocomplete";
 import { Box, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
@@ -27,6 +27,8 @@ const EmployeeDropdown = ({
   // const [employees, setEmployees] = useState<EmployeeType[]>([]);
   // setEmployees(useEmployees);
   const employees = useEmployees();
+  const options = employees.map((employee) => ({ label: employee.name }));
+  const selectedValue = options.find((option) => option.label === value);
 
   console.log("employee list: ", employees);
 
@@ -37,15 +39,17 @@ const EmployeeDropdown = ({
     onChange(newValue ? newValue.label : "");
   };
 
-  const selectedValue = employees.find((employee) => employee.name === value)
-    ? { label: value }
-    : null;
-
   return (
     <Autocomplete
       disablePortal
       id="combo-box-location"
-      options={employees.map((employee) => ({ label: employee.name }))}
+      options={options}
+      ListboxProps={{
+        style: {
+          maxHeight: "15rem",
+          overflowY: "auto",
+        },
+      }}
       sx={{
         ...sx,
         "& .MuiAutocomplete-input": {
