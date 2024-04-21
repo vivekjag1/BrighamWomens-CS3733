@@ -148,6 +148,10 @@ function MapEdit() {
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
+
+    setSelectedNodeID(undefined);
+    setCachedNode(undefined);
+    setNodeSaved(false);
   }
 
   function handleNodeClick(nodeID: string) {
