@@ -7,8 +7,6 @@ import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import dayjs, { Dayjs } from "dayjs";
 import FormContainer from "../../components/FormContainer.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
-import CustomSubmitButton from "../../components/CustomSubmitButton.tsx";
-import CustomClearButton from "../../components/CustomClearButton.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
@@ -17,6 +15,10 @@ import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../../components/ServiceImages.tsx";
 import giftPlaceholder from "../../../assets/gift-placeholder.jpg";
+import ButtonBlue from "../../components/ButtonBlue.tsx";
+import ButtonRed from "../../components/ButtonRed.tsx";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -273,10 +275,21 @@ export function MedicineForm() {
                   }
                 />
               </FormControl>
-              <div className="flex justify-between w-full mt-4">
-                <CustomClearButton onClick={clear}>Clear</CustomClearButton>
-
-                <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+              <div className="flex justify-around w-full mt-4">
+                <ButtonRed
+                  onClick={clear}
+                  endIcon={<ClearIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Clear
+                </ButtonRed>
+                <ButtonBlue
+                  onClick={submit}
+                  endIcon={<CheckIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Submit
+                </ButtonBlue>
               </div>
             </form>
           </div>

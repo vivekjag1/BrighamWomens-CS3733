@@ -1,41 +1,52 @@
 import { useControls } from "react-zoom-pan-pinch";
-import { Button, ButtonGroup } from "@mui/material";
+import { ButtonGroup } from "@mui/material";
+import { ButtonStyling } from "../common/StylingCommon.ts";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import IconButton from "@mui/material/IconButton";
 
 function MapZoomButtons() {
   const styles = {
-    color: "#FFFFFF",
-    backgroundColor: "#012D5A",
-    width: "3vw",
-    height: "5vh",
+    color: "white",
+    width: "40px",
+    height: "35px",
+    fontWeight: "light",
+    borderRadius: "5px",
     "&:hover": {
-      backgroundColor: "rgba(0,0,0,0.15)",
-      //minWidth: "0vw",
+      backgroundColor: ButtonStyling.blueButtonHover,
+    },
+    "&.Mui-selected, &.Mui-selected:hover": {
+      backgroundColor: ButtonStyling.blueButtonClicked,
+      color: "white",
+      fontWeight: "bold",
     },
   } as const;
 
   const { zoomIn, zoomOut } = useControls();
 
   return (
-    <div className="fixed top-[2%] right-[2%] z-10">
+    <div className="fixed bottom-[28%] right-[2%] z-10">
       <ButtonGroup
-        sx={{ backgroundColor: "#013B96" }}
-        orientation="horizontal"
+        orientation="vertical"
         variant="contained"
-        aria-label="Basic button group"
+        aria-label="Zoom"
+        sx={{ backgroundColor: ButtonStyling.blueButton, borderRadius: "5px" }}
       >
-        <Button sx={styles} variant="contained" onClick={() => zoomOut()}>
-          -
-        </Button>
-        {/*<Button*/}
-        {/*  sx={styles}*/}
-        {/*  variant="contained"*/}
-        {/*  onClick={() => resetTransform()}*/}
-        {/*>*/}
-        {/*  =*/}
-        {/*</Button>*/}
-        <Button sx={styles} variant="contained" onClick={() => zoomIn()}>
-          +
-        </Button>
+        <IconButton
+          sx={styles}
+          // variant="contained"
+          onClick={() => zoomIn()}
+          // endIcon={}
+        >
+          <AddIcon />
+        </IconButton>
+        <IconButton
+          sx={styles}
+          // variant="contained"
+          onClick={() => zoomOut()}
+        >
+          <RemoveIcon />
+        </IconButton>
       </ButtonGroup>
     </div>
   );

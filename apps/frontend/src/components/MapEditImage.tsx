@@ -134,9 +134,7 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div
-      className={`map-container z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}
-    >
+    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -151,61 +149,59 @@ const MapEditImage = (props: {
           pointerEvents: "none", // Ensures the overlay doesn't intercept mouse events
         }}
       ></div>
-      <div>
-        <TransformWrapper
-          initialScale={1}
-          doubleClick={{ disabled: true }}
-          panning={{ velocityDisabled: true, disabled: position.active }}
+      <TransformWrapper
+        initialScale={1}
+        doubleClick={{ disabled: true }}
+        panning={{ velocityDisabled: true, disabled: position.active }}
+      >
+        <MapZoomButtons />
+        <TransformComponent
+          wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+          contentStyle={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          <MapZoomButtons />
-          <TransformComponent
-            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
-            contentStyle={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
+          <svg
+            viewBox="0 0 5000 3400"
+            height="100vh"
+            onPointerUp={() => {
+              setPosition({ ...position, active: false });
             }}
+            onClick={props.onMapClick}
           >
-            <svg
-              viewBox="0 0 5000 3400"
-              height="100vh"
-              onPointerUp={() => {
-                setPosition({ ...position, active: false });
-              }}
-              onClick={props.onMapClick}
-            >
-              <image href={map} />
-              {edgeCoords.map((edge, index) => (
-                <line
-                  key={index}
-                  className="edge"
-                  x1={edge.startX}
-                  x2={edge.endX}
-                  y1={edge.startY}
-                  y2={edge.endY}
-                  stroke={MapStyling.edgeColor}
-                  strokeWidth={MapStyling.edgeWidth}
-                />
-              ))}
-              {Array.from(nodes.values()).map((node) => (
-                <circle
-                  key={node.nodeID}
-                  className="node"
-                  r={MapStyling.nodeRadius}
-                  cx={node.xcoord}
-                  cy={node.ycoord}
-                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                  fill={MapStyling.nodeColor}
-                  onClick={(e) => nodeClicked(e, node.nodeID)}
-                  style={{ cursor: "pointer" }}
-                />
-              ))}
-            </svg>
-          </TransformComponent>
-        </TransformWrapper>
-      </div>
+            <image href={map} />
+            {edgeCoords.map((edge, index) => (
+              <line
+                key={index}
+                className="edge"
+                x1={edge.startX}
+                x2={edge.endX}
+                y1={edge.startY}
+                y2={edge.endY}
+                stroke={MapStyling.edgeColor}
+                strokeWidth={MapStyling.edgeWidth}
+              />
+            ))}
+            {Array.from(nodes.values()).map((node) => (
+              <circle
+                key={node.nodeID}
+                className="node"
+                r={MapStyling.nodeRadius}
+                cx={node.xcoord}
+                cy={node.ycoord}
+                onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                fill={MapStyling.nodeColor}
+                onClick={(e) => nodeClicked(e, node.nodeID)}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
+          </svg>
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 };
