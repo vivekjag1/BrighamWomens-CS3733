@@ -3,6 +3,7 @@ import { FormControl } from "@mui/material";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import FormContainer from "../../components/FormContainer.tsx";
@@ -29,6 +30,7 @@ const initialState: GiftDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 
@@ -38,13 +40,22 @@ export function GiftForm(): JSX.Element {
     useState<GiftDeliveryObject>(initialState);
   const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    giftDeliveryRequest.serviceRequest.status,
+  );
 
   const validateForm = () => {
+    const { status, assignedTo } = giftDeliveryRequest.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     return (
       giftDeliveryRequest.giftType &&
       giftDeliveryRequest.serviceRequest.requestingUsername &&
       giftDeliveryRequest.serviceRequest.location &&
-      giftDeliveryRequest.serviceRequest.priority
+      giftDeliveryRequest.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
     );
   };
 
@@ -98,7 +109,7 @@ export function GiftForm(): JSX.Element {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <CustomTextField
-                label="Requesting Username"
+                label="Requesting Employee"
                 value={giftDeliveryRequest.serviceRequest.requestingUsername}
                 onChange={(e) =>
                   setGiftDeliveryRequest({
@@ -194,17 +205,51 @@ export function GiftForm(): JSX.Element {
               <FormControl sx={{ width: "25rem" }} size="small">
                 <CustomStatusDropdown
                   value={giftDeliveryRequest.serviceRequest.status}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      giftDeliveryRequest.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    }
+
                     setGiftDeliveryRequest({
                       ...giftDeliveryRequest,
                       serviceRequest: {
                         ...giftDeliveryRequest.serviceRequest,
-                        status: e.target.value as string,
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
                       },
-                    })
-                  }
+                    });
+                  }}
                 />
               </FormControl>
+
+              <EmployeeDropdown
+                value={giftDeliveryRequest.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Assigned Employee *"
+                onChange={(newValue: string) => {
+                  let newStatus = giftDeliveryRequest.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setGiftDeliveryRequest((giftDeliveryRequest) => ({
+                    ...giftDeliveryRequest,
+                    serviceRequest: {
+                      ...giftDeliveryRequest.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
 
               <FormControl
                 component="fieldset"

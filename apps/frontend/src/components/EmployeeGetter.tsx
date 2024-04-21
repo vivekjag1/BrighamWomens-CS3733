@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import EmployeeFilterDropdown from "./EmployeeFilterDropdown.tsx";
 import { checkAuth } from "../checkAdminStatus.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import {
   Table,
   TableBody,
@@ -18,6 +19,8 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
+import ExitButton from "./Banner/ExitButton.tsx";
+
 export function EmployeeGetter() {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -31,6 +34,10 @@ export function EmployeeGetter() {
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const handleRowClick = (employee: Employee) => {
+    setSelectedRow(employee);
+    console.log(selectedRow);
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -43,9 +50,25 @@ export function EmployeeGetter() {
     setPage(0);
   };
 
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
+
+  const handleDeleteEmployee = async (email: string) => {
+    const token = await getAccessTokenSilently();
+    const send = {
+      email: email,
+      token: token,
+    };
+    await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, send!, token);
+  };
+
+  const makeDeleteRequest = (email: string) => {
+    console.log("deleting");
+    handleDeleteEmployee(email).then().catch(console.error);
+  };
+  
   useEffect(() => {
     const checkRole = async () => {
       const token = await getAccessTokenSilently();
@@ -110,13 +133,6 @@ export function EmployeeGetter() {
     setFilteredData(sortedData);
   }, [employeeData, filterByPosition, filterByRole, filterBySearch, sortOrder]);
 
-  // function truncateString(str: string, num: number) {
-  //     if (str.length <= num) {
-  //         return str;
-  //     }
-  //     return str.slice(0, num) + "...";
-  // }
-
   function highlightSearchTerm(text: string, searchTerm: string) {
     if (!searchTerm.trim()) {
       return text;
@@ -140,10 +156,11 @@ export function EmployeeGetter() {
     );
   }
 
-  const handleRowClick = (employee: Employee) => {
-    setSelectedRow(employee);
-    console.log(selectedRow);
-  };
+  // const handleRowClick = () => {
+  //   // setSelectedRow(employee);
+  //   makeDeleteRequest();
+  //   // console.log(selectedRow);
+  // };
 
   const SortOrder = () => {
     if (sortOrder == "asc") {
@@ -361,6 +378,15 @@ export function EmployeeGetter() {
                         <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
                           {highlightSearchTerm(employee.role, filterBySearch)}
                         </TableCell>
+                      </>
+                    )}
+                    {authorizedStatus && (
+                      <>
+                        <ExitButton
+                          onClick={() => {
+                            makeDeleteRequest(employee.email);
+                          }}
+                        />
                       </>
                     )}
                   </TableRow>

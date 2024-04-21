@@ -113,4 +113,5 @@ model Employee {
   position       String
   role           String
   profilePicture String
+  email          String
 }

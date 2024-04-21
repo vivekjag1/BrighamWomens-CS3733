@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import FormControl from "@mui/material/FormControl";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
+import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
@@ -30,6 +31,7 @@ const initialState: RoomReservationType = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
+    assignedTo: "",
   },
 };
 export function RoomForm() {
@@ -40,14 +42,24 @@ export function RoomForm() {
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
+  const isEmployeeDisabled = ["Unassigned"].includes(
+    roomReservation.serviceRequest.status,
+  );
+
   const validateForm = () => {
+    const { status, assignedTo } = roomReservation.serviceRequest;
+    const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
+      status,
+    );
+
     const isValid =
       roomReservation.reservationReason &&
       roomReservation.endTime &&
       roomReservation.serviceRequest.location &&
       roomReservation.serviceRequest.requestingUsername &&
       roomReservation.serviceRequest.requestedTime &&
-      roomReservation.serviceRequest.priority;
+      roomReservation.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo));
 
     console.log(roomReservation);
     return isValid;
@@ -248,8 +260,54 @@ export function RoomForm() {
               />
 
               <FormControl sx={{ width: "25rem" }} size="small">
-                <CustomStatusDropdown />
+                <CustomStatusDropdown
+                  value={roomReservation.serviceRequest.status}
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      roomReservation.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    }
+
+                    setRoomReservation({
+                      ...roomReservation,
+                      serviceRequest: {
+                        ...roomReservation.serviceRequest,
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
+                      },
+                    });
+                  }}
+                />
               </FormControl>
+
+              <EmployeeDropdown
+                value={roomReservation.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Assigned Employee *"
+                // employees={employees}
+                onChange={(newValue: string) => {
+                  let newStatus = roomReservation.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setRoomReservation((currentReservation) => ({
+                    ...currentReservation,
+                    serviceRequest: {
+                      ...currentReservation.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
 
               <FormControl
                 component="fieldset"
