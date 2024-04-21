@@ -17,7 +17,7 @@ import MapEdit from "./routes/MapEdit.tsx";
 import PathTables from "./routes/MapData.tsx";
 import Hero from "./routes/Hero.tsx";
 import EmployeeTable from "./routes/EmployeeTable.tsx";
-import { AboutUs } from "./routes/AboutUs.tsx";
+import AboutUs from "./routes/AboutUs.tsx";
 function App() {
   const router = createBrowserRouter([
     {
