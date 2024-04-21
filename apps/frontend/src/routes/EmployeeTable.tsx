@@ -71,6 +71,7 @@ const EmployeeTable = () => {
           console.log("success");
           await makeUsers();
           showToast("Employee data uploaded!", "success");
+
           location.reload();
         }
       } else {

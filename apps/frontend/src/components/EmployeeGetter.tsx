@@ -377,11 +377,15 @@ export function EmployeeGetter() {
                         </TableCell>
                       </>
                     )}
-                    <ExitButton
-                      onClick={() => {
-                        makeDeleteRequest(employee.email);
-                      }}
-                    />
+                    {authorizedStatus && (
+                      <>
+                        <ExitButton
+                          onClick={() => {
+                            makeDeleteRequest(employee.email);
+                          }}
+                        />
+                      </>
+                    )}
                   </TableRow>
                 ))}
               {emptyRows > 0 && (
