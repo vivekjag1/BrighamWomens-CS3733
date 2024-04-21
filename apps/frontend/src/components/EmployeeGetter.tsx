@@ -50,10 +50,8 @@ export function EmployeeGetter() {
     setPage(0);
   };
 
-
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
-
 
   const handleDeleteEmployee = async (email: string) => {
     const token = await getAccessTokenSilently();
@@ -68,7 +66,7 @@ export function EmployeeGetter() {
     console.log("deleting");
     handleDeleteEmployee(email).then().catch(console.error);
   };
-  
+
   useEffect(() => {
     const checkRole = async () => {
       const token = await getAccessTokenSilently();
