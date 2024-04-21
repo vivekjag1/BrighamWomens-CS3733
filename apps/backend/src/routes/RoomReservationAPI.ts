@@ -23,7 +23,7 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
             priority: request.serviceRequest.priority,
             status: request.serviceRequest.status,
             requestedTime: request.serviceRequest.requestedTime,
-            assignedTo: "Bestest Joe",
+            assignedTo: request.serviceRequest.assignedTo,
           },
         },
       },

@@ -102,7 +102,7 @@ function MapImage(props: {
 
   return (
     <div className={"z-0"} style={{ position: "relative" }}>
-      {/* Map overlay */}
+      {/*  White Fade */}
       <div
         className={"z-10"}
         style={{

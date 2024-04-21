@@ -19,6 +19,8 @@ export class APIEndpoints {
   static readonly employeePostRequest: string = "/api/employee/postRequests";
   static readonly employeeGetRequest: string = "/api/employee/getRequests";
   static readonly employeeDownload: string = "/api/employee/download";
+  static readonly deleteEmployee: string = "/api/employee/delete";
+  static readonly makeEmployee: string = "/api/employee/create";
 }
 
 export class FileAttributes {

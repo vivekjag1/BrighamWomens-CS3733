@@ -5,6 +5,8 @@ import logger from "morgan";
 import mapUpload from "./routes/map/mapUpload.ts";
 import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
+import deleteUser from "./routes/accounts/deleteUser.ts";
+import createUser from "./routes/accounts/createUser.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
@@ -66,6 +68,8 @@ app.use(APIEndpoints.updateNodes, updateNodes);
 app.use(APIEndpoints.employeePostRequest, handleEmployees);
 app.use(APIEndpoints.employeeGetRequest, handleEmployees);
 app.use(APIEndpoints.employeeDownload, employeeDownload);
+app.use(APIEndpoints.deleteEmployee, deleteUser);
+app.use(APIEndpoints.makeEmployee, createUser);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

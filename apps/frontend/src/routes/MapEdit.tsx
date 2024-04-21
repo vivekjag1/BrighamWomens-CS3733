@@ -28,6 +28,8 @@ export const MapContext = createContext<MapData>({
   setEdges: () => {},
 });
 
+const userNodePrefix = "userNode";
+
 function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
@@ -42,6 +44,8 @@ function MapEdit() {
     undefined,
   );
 
+  const [numUserNodes, setNumUserNodes] = useState<number>(1);
+
   const { showToast } = useToast();
 
   const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
@@ -52,9 +56,22 @@ function MapEdit() {
 
   useEffect(() => {
     const fetchData = async () => {
+      let activeFloorString;
+
+      switch (activeFloor) {
+        case -1:
+          activeFloorString = "L1";
+          break;
+        case -2:
+          activeFloorString = "L2";
+          break;
+        default:
+          activeFloorString = activeFloor.toString();
+      }
+
       try {
         const queryParams = {
-          [NavigateAttributes.floorKey]: activeFloor.toString(),
+          [NavigateAttributes.floorKey]: activeFloorString,
         };
         const params = new URLSearchParams(queryParams);
 
@@ -80,9 +97,6 @@ function MapEdit() {
 
         setNodes(tempNodes);
 
-        // 2 character floor string "L1", "01"
-        const correctedFloor: string =
-          activeFloor < 0 ? "0" + activeFloor : activeFloor.toString();
         const tempEdges: Edge[] = [];
 
         for (let i = 0; i < fetchedEdges.length; i++) {
@@ -90,8 +104,8 @@ function MapEdit() {
 
           // compare suffixes of start and end node, if equal to floor add the edge
           if (
-            edge.startNodeID.endsWith(correctedFloor) &&
-            edge.endNodeID.endsWith(correctedFloor)
+            edge.startNodeID.endsWith(activeFloorString) &&
+            edge.endNodeID.endsWith(activeFloorString)
           ) {
             tempEdges.push(edge);
           }
@@ -186,7 +200,6 @@ function MapEdit() {
   }
 
   const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
-    //console.log("place node");
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -206,12 +219,14 @@ function MapEdit() {
 
     const xVal = x.toString();
     const yVal = y.toString();
-    const nodeID = "";
+    const nodeID = userNodePrefix + numUserNodes;
     const floor = activeFloor;
     const building = "";
     const nodeType = "";
     const longName = "";
-    const shortName = "";
+    const shortName = nodeID;
+
+    setNumUserNodes(numUserNodes + 1);
 
     // Add new node to the nodes array
     const newNode = {
@@ -228,7 +243,7 @@ function MapEdit() {
     const tempNodes = new Map(nodes);
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
-    console.log("Nodes Start", nodes, "Nodes End");
+    setSelectedNodeID(nodeID);
   };
 
   return (
