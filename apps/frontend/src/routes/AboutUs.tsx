@@ -35,6 +35,7 @@ const employees = [
 export default function AboutUs() {
   return (
     <FormContainer>
+      {/*<div className="bg-lime-900">*/}
       <div
         style={{
           width: "100%",
@@ -47,12 +48,13 @@ export default function AboutUs() {
         className="custom-form-container"
       >
         <h1 className=" text-4xl"> About Us </h1>
-        <p style={{ color: "grey" }}> WPI Computer Science Department</p>
+        <br />
+        <p style={{ color: "olive" }}> WPI Computer Science Department</p>
+        <p style={{ color: "grey" }}> CS3733-D24 (Software Engineering)</p>
         <br />
         <hr className="pl-96 pr-96" />
         <br />
-        <p style={{ color: "grey" }}> CS3733-D24 (Software Engineering)</p>
-        <p style={{ color: "grey" }}> Professor. Wilson Wong🐻</p>
+        {/*<p style={{color: "grey"}}> Professor. Wilson Wong🐻</p>*/}
         <br />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
@@ -80,6 +82,7 @@ export default function AboutUs() {
           </label>
         </div>
       </div>
+      {/*</div>*/}
     </FormContainer>
   );
 }
