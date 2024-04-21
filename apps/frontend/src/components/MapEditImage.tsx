@@ -6,7 +6,7 @@ import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import MapZoomButtons from "./MapZoomButtons.tsx";
-import { MapStyling } from "../common/StylingCommon.ts";
+import { FormStyling, MapStyling } from "../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
@@ -36,6 +36,8 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
+
+  const selectedNodeID = useContext(MapContext).selectedNodeID;
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -191,13 +193,17 @@ const MapEditImage = (props: {
               {Array.from(nodes.values()).map((node) => (
                 <circle
                   key={node.nodeID}
-                  className="node"
+                  className={"node"}
                   r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
                   onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
                   onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                  fill={MapStyling.nodeColor}
+                  fill={
+                    selectedNodeID == node.nodeID
+                      ? FormStyling.clearColor
+                      : MapStyling.nodeColor
+                  }
                   onClick={(e) => nodeClicked(e, node.nodeID)}
                   style={{ cursor: "pointer" }}
                 />

@@ -17,6 +17,7 @@ type MapData = {
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
+  selectedNodeID: string | undefined;
 };
 
 export const MapContext = createContext<MapData>({
@@ -26,6 +27,7 @@ export const MapContext = createContext<MapData>({
   edges: [],
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
+  selectedNodeID: undefined,
 });
 
 const userNodePrefix = "userNode";
@@ -37,15 +39,19 @@ function MapEdit() {
 
   const [addingNode, setAddingNode] = useState<boolean>(false);
   const [addingEdge, setAddingEdge] = useState<boolean>(false);
-
-  const contextValue = { nodes, setNodes, edges, setEdges };
-
-  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
+  const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
   );
 
+  const contextValue = { nodes, setNodes, edges, setEdges, selectedNodeID };
+
+  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
+
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
+  const [numUserEdges, setNumUserEdges] = useState<number>(1);
 
   const { showToast } = useToast();
 
@@ -155,18 +161,27 @@ function MapEdit() {
   }
 
   function handleNodeClick(nodeID: string) {
-    if (cachedNode) {
-      if (cachedNode.nodeID == nodeID)
-        return; // same node pressed
-      else {
-        // different node pressed
-        if (!nodeSaved) updateNode(cachedNode);
+    if (addingEdge) {
+      if (!startEdgeNodeID) {
+        setStartEdgeNodeID(nodeID);
+      } else {
+        handleCreateEdge(startEdgeNodeID, nodeID);
+        setStartEdgeNodeID(undefined);
       }
-    }
+    } else {
+      if (cachedNode) {
+        if (cachedNode.nodeID == nodeID)
+          return; // same node pressed
+        else {
+          // different node pressed
+          if (!nodeSaved) updateNode(cachedNode);
+        }
+      }
 
-    setSelectedNodeID(nodeID);
-    setCachedNode(nodes.get(nodeID));
-    setNodeSaved(false);
+      setSelectedNodeID(nodeID);
+      setCachedNode(nodes.get(nodeID));
+      setNodeSaved(false);
+    }
   }
 
   function handleAddNodeButtonClicked() {
@@ -257,6 +272,23 @@ function MapEdit() {
     setSelectedNodeID(nodeID);
   };
 
+  function handleCreateEdge(startNodeID: string, endNodeID: string) {
+    const edgeID = "";
+
+    setNumUserEdges(numUserEdges + 1);
+
+    // Add new node to the nodes array
+    const newEdge = {
+      edgeID: edgeID,
+      startNodeID: startNodeID,
+      endNodeID: endNodeID,
+    };
+
+    const tempEdges: Edge[] = edges;
+    tempEdges.push(newEdge);
+    setEdges(tempEdges);
+  }
+
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
@@ -270,7 +302,6 @@ function MapEdit() {
       <div className="absolute left-[1%] top-[2%]">
         <MapContext.Provider value={contextValue}>
           <MapEditCard
-            selectedNodeID={selectedNodeID}
             onSave={handleSave}
             updateNode={updateNodeField}
             deleteNode={deleteNode}

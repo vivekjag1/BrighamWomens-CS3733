@@ -24,12 +24,12 @@ const buttonStyles = {
 };
 
 function MapEditCard(props: {
-  selectedNodeID?: string | undefined;
   onSave: () => void;
   updateNode: (field: keyof Node, value: string) => void;
   deleteNode: () => void;
 }) {
   const nodes = useContext(MapContext).nodes;
+  const selectedNodeID = useContext(MapContext).selectedNodeID;
 
   return (
     <div>
@@ -38,7 +38,7 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <StarIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.shortName}
+              value={nodes?.get(selectedNodeID ?? "")?.shortName}
               onChange={(value) => {
                 props.updateNode("shortName", value);
               }}
@@ -50,7 +50,7 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <TextFieldsIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.longName}
+              value={nodes?.get(selectedNodeID ?? "")?.longName}
               onChange={(value) => {
                 props.updateNode("longName", value);
               }}
@@ -63,13 +63,13 @@ function MapEditCard(props: {
           <div className="flex gap-1 items-center">
             <InfoIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.nodeType}
+              value={nodes?.get(selectedNodeID ?? "")?.nodeType}
               sx={textFieldStyles_small}
               label="Type"
               editable={false}
             />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.floor}
+              value={nodes?.get(selectedNodeID ?? "")?.floor}
               sx={textFieldStyles_small}
               label="Floor"
               editable={false}
@@ -78,7 +78,7 @@ function MapEditCard(props: {
           <form className="flex flex-row gap-1 items-center">
             <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.xcoord}
+              value={nodes?.get(selectedNodeID ?? "")?.xcoord}
               onChange={(value) => {
                 props.updateNode("xcoord", value);
               }}
@@ -88,7 +88,7 @@ function MapEditCard(props: {
               props={{ type: "number" }}
             />
             <NodeParam
-              value={nodes?.get(props.selectedNodeID ?? "")?.ycoord}
+              value={nodes?.get(selectedNodeID ?? "")?.ycoord}
               onChange={(value) => {
                 props.updateNode("ycoord", value);
               }}
@@ -101,7 +101,7 @@ function MapEditCard(props: {
           <div className="flex justify-between ml-[32px]">
             <CustomDeleteButton
               onClick={props.deleteNode}
-              disabled={!props.selectedNodeID}
+              disabled={!selectedNodeID}
               endIcon={<ClearIcon />}
               style={buttonStyles}
             >
@@ -109,7 +109,7 @@ function MapEditCard(props: {
             </CustomDeleteButton>
             <CustomSaveButton
               onClick={props.onSave}
-              disabled={!props.selectedNodeID}
+              disabled={!selectedNodeID}
               endIcon={<CheckIcon />}
               style={buttonStyles}
             >
