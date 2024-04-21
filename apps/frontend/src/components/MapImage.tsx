@@ -109,7 +109,7 @@ function MapImage(props: {
           position: "absolute",
           top: 0,
           left: 0,
-          width: "12%", // Adjust the width of the overlay as needed
+          width: "12%",
           height: "100%",
           background:
             "linear-gradient(to left, rgba(234,234,234,0) 0%, rgba(234,234,234,1) 100%)",

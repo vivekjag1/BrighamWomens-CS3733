@@ -38,7 +38,6 @@ function Map() {
 
   useEffect(() => {
     //get the nodes from the db
-
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
       let graphNodes = createNodes(rawNodes.data);
@@ -92,24 +91,8 @@ function Map() {
       .catch(console.error);
   }
 
-  // const [clickedNode, setclickedNode] = useState<GraphNode>();
-  /*const [startNode, setStart] = useState<GraphNode>();
-  const [endNode, setEnd] = useState<GraphNode>();
-
-  /!*const getClickedNode = (node: GraphNode) => {
-    //console.log("Hello world", startNode);
-    if (startNode) {
-      setEnd(node!);
-      //console.log("End node", endNode);
-    } else {
-      setStart(node!);
-      //console.log("Start node", startNode);
-    }
-  };*!/*/
-
   return (
     <div className="relative bg-offwhite">
-      {/*//passClickedNode={getClickedNode}*/}
       <MapImage
         activeFloor={activeFloor}
         path={path}

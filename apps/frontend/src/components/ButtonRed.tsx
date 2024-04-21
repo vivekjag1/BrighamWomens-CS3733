@@ -1,13 +1,14 @@
 import { Button } from "@mui/material";
 import { ButtonProps } from "@mui/material/Button";
-import { FormStyling } from "../common/StylingCommon.ts";
+import { ButtonStyling } from "../common/StylingCommon.ts";
+import React from "react";
 
 const styles = {
   color: "white",
-  backgroundColor: FormStyling.submitColor,
-  padding: ".5rem 3rem",
+  backgroundColor: ButtonStyling.redButton,
+  // padding: ".5rem 3rem",
   "&:hover": {
-    backgroundColor: FormStyling.submitHoverColor,
+    backgroundColor: ButtonStyling.redButtonHover,
   },
   fontFamily: "Poppins, sans-serif",
 } as const;
