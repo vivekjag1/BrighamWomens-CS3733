@@ -7,7 +7,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Map.css";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
 
@@ -19,13 +19,14 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
+  addingNode: boolean;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
-  onMapClick: () => void;
+  onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
-  console.log(tempNodes);
+  //console.log(tempNodes);
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -82,7 +83,7 @@ const MapEditImage = (props: {
   // This stops the map event handler from being called
   // Separates node clicks from map clicks
   function nodeClicked(
-    event: React.MouseEvent<SVGCircleElement, MouseEvent>,
+    event: React.MouseEvent<SVGCircleElement>,
     nodeID: string,
   ) {
     event.stopPropagation();
@@ -132,7 +133,10 @@ const MapEditImage = (props: {
   }
 
   return (
-    <div className={"z-0"} style={{ position: "relative" }}>
+    //onClick={props.onMapClick}
+    <div
+      className={`map-container z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}
+    >
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -147,58 +151,61 @@ const MapEditImage = (props: {
           pointerEvents: "none", // Ensures the overlay doesn't intercept mouse events
         }}
       ></div>
-      <TransformWrapper
-        initialScale={1}
-        doubleClick={{ disabled: true }}
-        panning={{ velocityDisabled: true, disabled: position.active }}
-      >
-        <MapZoomButtons />
-        <TransformComponent
-          wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
-          contentStyle={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
+      <div>
+        <TransformWrapper
+          initialScale={1}
+          doubleClick={{ disabled: true }}
+          panning={{ velocityDisabled: true, disabled: position.active }}
         >
-          <svg
-            viewBox="0 0 5000 3400"
-            height="100vh"
-            onPointerUp={() => {
-              setPosition({ ...position, active: false });
+          <MapZoomButtons />
+          <TransformComponent
+            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+            contentStyle={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            <image href={map} />
-            {edgeCoords.map((edge, index) => (
-              <line
-                key={index}
-                className="edge"
-                x1={edge.startX}
-                x2={edge.endX}
-                y1={edge.startY}
-                y2={edge.endY}
-                stroke={MapStyling.edgeColor}
-                strokeWidth={MapStyling.edgeWidth}
-              />
-            ))}
-            {Array.from(nodes.values()).map((node) => (
-              <circle
-                key={node.nodeID}
-                className="node"
-                r={MapStyling.nodeRadius}
-                cx={node.xcoord}
-                cy={node.ycoord}
-                onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                fill={MapStyling.nodeColor}
-                onClick={(e) => nodeClicked(e, node.nodeID)}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </svg>
-        </TransformComponent>
-      </TransformWrapper>
+            <svg
+              viewBox="0 0 5000 3400"
+              height="100vh"
+              onPointerUp={() => {
+                setPosition({ ...position, active: false });
+              }}
+              onClick={props.onMapClick}
+            >
+              <image href={map} />
+              {edgeCoords.map((edge, index) => (
+                <line
+                  key={index}
+                  className="edge"
+                  x1={edge.startX}
+                  x2={edge.endX}
+                  y1={edge.startY}
+                  y2={edge.endY}
+                  stroke={MapStyling.edgeColor}
+                  strokeWidth={MapStyling.edgeWidth}
+                />
+              ))}
+              {Array.from(nodes.values()).map((node) => (
+                <circle
+                  key={node.nodeID}
+                  className="node"
+                  r={MapStyling.nodeRadius}
+                  cx={node.xcoord}
+                  cy={node.ycoord}
+                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                  fill={MapStyling.nodeColor}
+                  onClick={(e) => nodeClicked(e, node.nodeID)}
+                  style={{ cursor: "pointer" }}
+                />
+              ))}
+            </svg>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
     </div>
   );
 };
