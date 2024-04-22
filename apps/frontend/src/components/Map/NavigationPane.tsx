@@ -1,27 +1,26 @@
-/*import { CSSProperties, FormEventHandler, useState } from "react";*/
+import { CSSProperties, FormEventHandler, SyntheticEvent } from "react";
 import { GraphNode } from "common/src/GraphNode.ts";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOn from "@mui/icons-material/LocationOn";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { IconButton } from "@mui/material";
-/*import NodeDropdown from "./NodeDropdown.tsx";
-import AlgorithmDropdown from "./AlgorithmDropdown.tsx";*/
-/*import NavigateButton from "../NavigateButton.tsx";*/
 import { DesignSystem } from "../../common/StylingCommon.ts";
-import { FormEventHandler } from "react";
-/*import { nodeOption } from "../../common/NodeOption.ts";*/
+import NodeDropdown from "./NodeDropdown.tsx";
+import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
 
 interface NavigationPaneProps {
   nodes: GraphNode[];
+  startNodeID: string;
+  startNodeIDSetter: (id: string) => void;
+  endNodeID: string;
+  endNodeIDSetter: (id: string) => void;
+  algorithm: string;
+  algorithmSetter: (algorithm: string) => void;
   onSubmit: FormEventHandler;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
-  /*  const [startNode, setStartNode] = useState<nodeOption>({ id: "", label: "" });
-  const [endNode, setEndNode] = useState<nodeOption>({ id: "", label: "" });
-  const [algorithm, setAlgorithm] = useState("A-Star");*/
-
   return (
     <div>
       <form
@@ -36,28 +35,34 @@ function NavigationPane(props: NavigationPaneProps) {
             <LocationOn sx={IconStyles} />
           </div>
           <div className="flex flex-col gap-6">
-            {/*<NodeDropdown
+            <NodeDropdown
               nodes={props.nodes}
               name="start"
               label="Start Location"
               sx={NodeDropdownStyles}
-              value={startNode}
-              onChange={(e, newValue) => newValue && setStartNode(newValue)}
+              value={props.startNodeID}
+              onChange={(e, newValue) =>
+                newValue && props.startNodeIDSetter(newValue!.id)
+              }
             />
             <NodeDropdown
               nodes={props.nodes}
               name="end"
               label="End Location"
               sx={NodeDropdownStyles}
-              value={endNode}
-              onChange={(e, newValue) => newValue && setEndNode(newValue)}
-            />*/}
+              value={props.endNodeID}
+              onChange={(e, newValue) =>
+                newValue && props.endNodeIDSetter(newValue!.id)
+              }
+            />
             <div className="flex justify-between">
-              {/*<AlgorithmDropdown
+              <AlgorithmDropdown
                 sx={AlgorithmDropdownStyles}
-                value={algorithm}
-                onChange={(e, newValue) => newValue && setAlgorithm(newValue)}
-              />*/}
+                value={props.algorithm}
+                onChange={(e: SyntheticEvent<Element, Event>, newValue) =>
+                  newValue && props.algorithmSetter(newValue)
+                }
+              />
             </div>
           </div>
           <div className="pt-[7%]">
@@ -65,6 +70,7 @@ function NavigationPane(props: NavigationPaneProps) {
               <SwapVertIcon />
             </IconButton>
           </div>
+          <button type="submit">SUBMIT</button>
         </div>
       </form>
     </div>
@@ -76,7 +82,6 @@ const IconStyles = {
   fontSize: "xx-large",
 } as const;
 
-/*
 const NodeDropdownStyles = {
   width: "17vw",
   "& .MuiOutlinedInput-root": {
@@ -92,6 +97,5 @@ const AlgorithmDropdownStyles = {
     fontSize: "0.9rem",
   },
 } as CSSProperties;
-*/
 
 export default NavigationPane;

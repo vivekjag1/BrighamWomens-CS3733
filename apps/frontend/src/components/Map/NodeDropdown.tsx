@@ -9,7 +9,7 @@ interface NodeDropdownProps {
   name: string;
   label: string;
   sx: CSSProperties;
-  value: nodeOption;
+  value: string;
   onChange: (
     e: SyntheticEvent<Element, Event>,
     newValue: nodeOption | null,
@@ -34,9 +34,8 @@ function NodeDropdown(props: NodeDropdownProps) {
         />
       )}
       options={nodeOptions}
-      getOptionLabel={(option) => option.label}
       sx={props.sx}
-      value={props.value}
+      value={nodeOptions.find((nodeOption) => nodeOption.id === props.value)}
       onChange={props.onChange}
     />
   );

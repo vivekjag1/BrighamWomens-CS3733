@@ -1,4 +1,4 @@
-/*import { CSSProperties, SyntheticEvent } from "react";
+import { CSSProperties, SyntheticEvent } from "react";
 import { PathAlgorithm } from "common/src/Path.ts";
 import { Autocomplete, TextField } from "@mui/material";
 interface algorithmDropdownProps {
@@ -30,4 +30,4 @@ function AlgorithmDropdown(props: algorithmDropdownProps) {
 }
 
 const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS", "Dijkstra"];
-export default AlgorithmDropdown;*/
+export default AlgorithmDropdown;

@@ -6,7 +6,12 @@ function ZoomControls() {
   const { zoomIn, zoomOut } = useControls();
 
   return (
-    <ButtonGroup orientation="vertical" variant="contained" size="medium">
+    <ButtonGroup
+      orientation="vertical"
+      variant="contained"
+      size="medium"
+      sx={buttonGroupStyles}
+    >
       <Button sx={buttonStyles} onClick={() => zoomIn()}>
         +
       </Button>
@@ -17,14 +22,22 @@ function ZoomControls() {
   );
 }
 
+const buttonGroupStyles = {
+  borderRadius: "10px",
+} as const;
+
 const buttonStyles = {
   backgroundColor: DesignSystem.primaryColor,
   color: DesignSystem.white,
   fontFamily: DesignSystem.fontFamily,
-  width: "55px",
-  height: "55px",
+  fontSize: "1.5rem",
+  fontWeight: "semibold",
+  width: "5.5vh",
+  height: "5.5vh",
+  borderRadius: "10px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
   },
 } as const;
+
 export default ZoomControls;
