@@ -3,3 +3,8 @@
   transform: rotateX(62deg) rotateZ(20deg) skewX(165deg);
   filter: drop-shadow(10px 10px 0px #000000);
 }
+
+.map:hover {
+  filter: drop-shadow(10px 10px 0px #012d5a);
+  scale: 1.1;
+}

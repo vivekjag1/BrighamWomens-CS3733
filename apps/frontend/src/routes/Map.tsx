@@ -80,6 +80,13 @@ function Map() {
   return (
     <div className="relative bg-offwhite pl-[200px]">
       <Wayfinder />
+      <div className="absolute left-[91%] top-0 h-screen flex flex-col justify-center items-center gap-[10%] text-[1vw] font-medium text-secondary">
+        <h2 className="relative top-[-10%]">Floor 3</h2>
+        <h2 className="relative top-[-6%]">Floor 2</h2>
+        <h2 className="relative top-[-4%]">Floor 1</h2>
+        <h2 className="relative top-[-2%]">Lower Level 1</h2>
+        <h2>Lower Level 2</h2>
+      </div>
       <div className="absolute left-[1%] top-[2%]">
         <NavigateCard
           onSubmit={handleForm}
