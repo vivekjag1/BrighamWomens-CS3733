@@ -4,11 +4,11 @@ import { GraphNode } from "common/src/GraphNode.ts";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import Map from "../components/Map/Map.tsx";
+import NavigationPane from "../components/Map/NavigationPane.tsx";
 import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { getFloorNumber } from "../common/PathUtilities.ts";
-import NavigationPane from "../components/Map/NavigationPane.tsx";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);

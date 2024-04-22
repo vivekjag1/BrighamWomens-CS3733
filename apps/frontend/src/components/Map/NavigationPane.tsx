@@ -1,13 +1,14 @@
 import { CSSProperties, FormEventHandler, SyntheticEvent } from "react";
 import { GraphNode } from "common/src/GraphNode.ts";
+import NodeDropdown from "./NodeDropdown.tsx";
+import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
+import NavigationButton from "./NavigationButton.tsx";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOn from "@mui/icons-material/LocationOn";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { IconButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon.ts";
-import NodeDropdown from "./NodeDropdown.tsx";
-import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
 
 interface NavigationPaneProps {
   nodes: GraphNode[];
@@ -25,9 +26,11 @@ function NavigationPane(props: NavigationPaneProps) {
     <div>
       <form
         onSubmit={props.onSubmit}
-        className="flex flex-col gap-5 border-5 p-4 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col gap-5 border-5 p-3 bg-white rounded-2xl shadow-xl"
       >
-        <h2 className="text-2xl font-extralight text-secondary">Navigate</h2>
+        <h2 className="text-2xl font-extralight text-secondary pl-2">
+          Navigate
+        </h2>
         <div className="flex gap-4">
           <div className="flex flex-col text-[#012D5A]">
             <MyLocationIcon sx={IconStyles} />
@@ -56,13 +59,16 @@ function NavigationPane(props: NavigationPaneProps) {
               }
             />
             <div className="flex justify-between">
-              <AlgorithmDropdown
-                sx={AlgorithmDropdownStyles}
-                value={props.algorithm}
-                onChange={(e: SyntheticEvent<Element, Event>, newValue) =>
-                  newValue && props.algorithmSetter(newValue)
-                }
-              />
+              <div className="flex-grow">
+                <AlgorithmDropdown
+                  sx={AlgorithmDropdownStyles}
+                  value={props.algorithm}
+                  onChange={(e: SyntheticEvent<Element, Event>, newValue) =>
+                    newValue && props.algorithmSetter(newValue)
+                  }
+                />
+              </div>
+              <NavigationButton />
             </div>
           </div>
           <div className="pt-[7%]">
@@ -70,7 +76,6 @@ function NavigationPane(props: NavigationPaneProps) {
               <SwapVertIcon />
             </IconButton>
           </div>
-          <button type="submit">SUBMIT</button>
         </div>
       </form>
     </div>
@@ -83,7 +88,7 @@ const IconStyles = {
 } as const;
 
 const NodeDropdownStyles = {
-  width: "17vw",
+  width: "16vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "0.9rem",
