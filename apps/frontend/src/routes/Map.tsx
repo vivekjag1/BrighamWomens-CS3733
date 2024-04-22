@@ -100,11 +100,15 @@ function Map() {
         />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
-        <MapFloorSelect
-          activeFloor={activeFloor}
-          onClick={setActiveFloor}
-          path={path}
-        />
+        {activeFloor == 0 ? (
+          <></>
+        ) : (
+          <MapFloorSelect
+            activeFloor={activeFloor}
+            onClick={setActiveFloor}
+            path={path}
+          />
+        )}
       </div>
     </div>
   );
