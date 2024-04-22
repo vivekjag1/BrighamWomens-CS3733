@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner/Banner.tsx";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import "../styles/Hero.css";
 
 const bannerChildren: JSX.Element = (

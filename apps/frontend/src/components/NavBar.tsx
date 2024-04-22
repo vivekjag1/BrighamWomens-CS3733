@@ -7,12 +7,10 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-//import IconButton from "@mui/material/IconButton";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
-import "../styles/animatedLine.css";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 
 function NavBar() {
@@ -68,7 +66,7 @@ function NavBar() {
     callback,
   }) => {
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative parent items-center overflow-hidden">
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animatedUnderline items-center overflow-hidden">
         <Link
           to={to}
           className="inline-block"
@@ -101,7 +99,7 @@ function NavBar() {
           </div>
           <span
             className={`flex child absolute bottom-[0.5rem] right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage === to ? "scale-x-1" : "scale-x-0"}`}
-            style={{ transformOrigin: "left" }}
+            style={{ transformOrigin: "center" }}
           ></span>
         </Link>
       </div>

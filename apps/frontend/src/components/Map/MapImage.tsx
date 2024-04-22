@@ -1,17 +1,16 @@
-import lowerLevel2 from "../../assets/maps/00_thelowerlevel2.png";
-import lowerLevel1 from "../../assets/maps/00_thelowerlevel1.png";
-import firstFloor from "../../assets/maps/01_thefirstfloor.png";
-import secondFloor from "../../assets/maps/02_thesecondfloor.png";
-import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
+import lowerLevel2 from "../../../assets/maps/00_thelowerlevel2.png";
+import lowerLevel1 from "../../../assets/maps/00_thelowerlevel1.png";
+import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
+import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
+import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import MapZoomButtons from "./MapZoomButtons.tsx";
-import { MapStyling } from "../common/StylingCommon.ts";
+import MapZoomButtons from "../MapZoomButtons.tsx";
+import { MapStyling } from "../../common/StylingCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
 
 function MapImage(props: {

@@ -14,3 +14,7 @@ export class ButtonStyling {
   static readonly redButton: string = "#B31602"; // HSV 7°, 99%, 70%
   static readonly redButtonHover: string = "#FF2003"; // HSV 7°, 99%, 100% (+30% V)
 }
+
+export class DesignSystem {
+  static readonly primaryColor: string = "#012D5A";
+}

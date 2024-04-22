@@ -5,7 +5,7 @@ import roomIcon from "../../assets/room-icon.svg";
 import sanitationIcon from "../../assets/sanitation-icon.svg";
 import deviceIcon from "../../assets/device-icon.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
