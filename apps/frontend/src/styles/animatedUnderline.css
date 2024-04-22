@@ -1,0 +1,20 @@
+.animatedUnderline {
+  position: relative;
+  display: inline;
+}
+
+.animatedUnderline::after {
+  content: "";
+  background-color: rgb(246 189 56);
+  width: 100%;
+  height: 0.125rem;
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  transform: scale(0);
+  transition: transform 0.3s ease-in;
+}
+
+.animatedUnderline:hover::after {
+  transform: scale(1);
+}

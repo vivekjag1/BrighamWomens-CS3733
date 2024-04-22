@@ -6,15 +6,14 @@ import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
-import Wayfinder from "../components/Map/Wayfinder.tsx";
+import StackedMaps from "../components/Map/StackedMaps.tsx";
+import MapImage from "../components/Map/MapImage.tsx";
 
 function Map() {
+  const [activeFloor, setActiveFloor] = useState<number>(DEFAULT_FLOOR);
+
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
-  // const { getAccessTokenSilently } = useAuth0();
-
-  // Sets the floor number depending on which button user clicks
-  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -40,7 +39,7 @@ function Map() {
     event.preventDefault();
     setPath(pathInitialState);
     setPathNodeObject(initialState);
-    setActiveFloor(defaultFloor);
+    setActiveFloor(DEFAULT_FLOOR);
   }
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
@@ -76,18 +75,23 @@ function Map() {
       .catch(console.error);
     console.log(nodes);
   }
+  const mapToBeRendered =
+    activeFloor === DEFAULT_FLOOR ? (
+      <StackedMaps onClick={setActiveFloor} />
+    ) : (
+      <MapImage
+        activeFloor={activeFloor}
+        path={path}
+        nodes={nodes}
+        setPathNodeObject={setPathNodeObject}
+        pathNodeObject={pathNodeObject}
+      />
+    );
 
   return (
     <div className="relative bg-offwhite pl-[200px]">
-      <Wayfinder />
-      <div className="absolute left-[91%] top-0 h-screen flex flex-col justify-center items-center gap-[10%] text-[1vw] font-medium text-secondary">
-        <h2 className="relative top-[-10%]">Floor 3</h2>
-        <h2 className="relative top-[-6%]">Floor 2</h2>
-        <h2 className="relative top-[-4%]">Floor 1</h2>
-        <h2 className="relative top-[-2%]">Lower Level 1</h2>
-        <h2>Lower Level 2</h2>
-      </div>
-      <div className="absolute left-[1%] top-[2%]">
+      {mapToBeRendered}
+      <div className="absolute left-[1%] top-[2%] z-[60]">
         <NavigateCard
           onSubmit={handleForm}
           pathNodeObject={pathNodeObject}
@@ -95,7 +99,7 @@ function Map() {
           onReset={resetNavigation}
         />
       </div>
-      <div className="fixed right-[2%] bottom-[2%] hidden">
+      <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect
           activeFloor={activeFloor}
           onClick={setActiveFloor}
@@ -114,7 +118,7 @@ const pathInitialState: number[][] = [
   [0, 0, 3],
 ];
 
-const defaultFloor: number = 1;
+const DEFAULT_FLOOR: number = 0;
 
 const initialState: PathNodesObject = {
   startNode: "",
