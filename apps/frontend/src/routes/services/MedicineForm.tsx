@@ -14,7 +14,7 @@ import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import ServiceImages from "../../components/ServiceImages.tsx";
-import giftPlaceholder from "../../../assets/gift-placeholder.jpg";
+import giftPlaceholder from "../../../assets/medicinedelivery.jpg";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import CheckIcon from "@mui/icons-material/Check";
