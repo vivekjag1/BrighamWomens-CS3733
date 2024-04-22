@@ -7,6 +7,7 @@ import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
 import Wayfinder from "../components/Map/Wayfinder.tsx";
+
 function Map() {
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
@@ -77,9 +78,9 @@ function Map() {
   }
 
   return (
-    <div className="relative bg-offwhite">
+    <div className="relative bg-offwhite pl-[200px]">
       <Wayfinder />
-      <div className="absolute left-[1%] top-[2%] hidden">
+      <div className="absolute left-[1%] top-[2%]">
         <NavigateCard
           onSubmit={handleForm}
           pathNodeObject={pathNodeObject}

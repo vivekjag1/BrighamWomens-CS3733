@@ -11,7 +11,7 @@ interface MapProps {
 function MapPhoto(props: MapProps) {
   const map = determineMap(props.activeFloor);
   return (
-    <svg viewBox="0 0 5000 3400" height="75vh">
+    <svg viewBox="0 0 5000 3400" height="72vh">
       <image href={map} />
     </svg>
   );

@@ -1,0 +1,5 @@
+.map {
+  width: fit-content;
+  transform: rotateX(62deg) rotateZ(20deg) skewX(165deg);
+  filter: drop-shadow(10px 10px 0px #000000);
+}

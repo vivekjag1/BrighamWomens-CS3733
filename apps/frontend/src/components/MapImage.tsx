@@ -4,7 +4,6 @@ import firstFloor from "../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import "../styles/Map.css";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
