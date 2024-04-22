@@ -1,4 +1,3 @@
-import MapImage from "../components/MapImage.tsx";
 import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -7,22 +6,7 @@ import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
-
-const pathInitialState: number[][] = [
-  [0, 0, -2],
-  [0, 0, -1],
-  [0, 0, 1],
-  [0, 0, 2],
-  [0, 0, 3],
-];
-
-const defaultFloor: number = 1;
-
-const initialState: PathNodesObject = {
-  startNode: "",
-  endNode: "",
-};
-
+import Wayfinder from "../components/Map/Wayfinder.tsx";
 function Map() {
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
@@ -89,18 +73,13 @@ function Map() {
         setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
+    console.log(nodes);
   }
 
   return (
     <div className="relative bg-offwhite">
-      <MapImage
-        activeFloor={activeFloor}
-        path={path}
-        nodes={nodes}
-        setPathNodeObject={setPathNodeObject}
-        pathNodeObject={pathNodeObject}
-      />
-      <div className="absolute left-[1%] top-[2%]">
+      <Wayfinder />
+      <div className="absolute left-[1%] top-[2%] hidden">
         <NavigateCard
           onSubmit={handleForm}
           pathNodeObject={pathNodeObject}
@@ -108,7 +87,7 @@ function Map() {
           onReset={resetNavigation}
         />
       </div>
-      <div className="fixed right-[2%] bottom-[2%]">
+      <div className="fixed right-[2%] bottom-[2%] hidden">
         <MapFloorSelect
           activeFloor={activeFloor}
           onClick={setActiveFloor}
@@ -118,5 +97,20 @@ function Map() {
     </div>
   );
 }
+
+const pathInitialState: number[][] = [
+  [0, 0, -2],
+  [0, 0, -1],
+  [0, 0, 1],
+  [0, 0, 2],
+  [0, 0, 3],
+];
+
+const defaultFloor: number = 1;
+
+const initialState: PathNodesObject = {
+  startNode: "",
+  endNode: "",
+};
 
 export default Map;
