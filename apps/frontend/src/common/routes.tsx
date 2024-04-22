@@ -13,6 +13,7 @@ import SecurityForm from "../routes/services/SecurityForm.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import EmployeeTable from "../routes/EmployeeTable.tsx";
 import AuthComp from "../components/AuthenticationComponent.tsx";
+import Home from "../routes/Home.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Map /> },
@@ -40,7 +41,7 @@ const routes = [
   },
   { path: paths.SERVICE_LOG, element: <AuthComp component={ServicesTable} /> },
   { path: paths.EMPLOYEE_LOG, element: <AuthComp component={EmployeeTable} /> },
-  /*{ path: "/home/refactor", element: <Home /> },*/
+  { path: "/home/refactor", element: <Home /> },
 ];
 
 export default routes;
