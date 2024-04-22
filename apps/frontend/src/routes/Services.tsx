@@ -24,7 +24,7 @@ function Services() {
 
         <div className="flex justify-center gap-8 ">
           <Link
-            to={paths.MEDICINE_REQUEST}
+            to={paths.MEDICINE_DELIVERY}
             className=" serviceCard medicineDelivery ]  "
           >
             <ServiceCard
@@ -49,7 +49,7 @@ function Services() {
         </div>
         <div className="flex justify-center gap-8">
           <Link
-            to={paths.SANITATION_FORM}
+            to={paths.SANITATION_REQUEST}
             className="serviceCard sanitationRequest"
           >
             <ServiceCard
