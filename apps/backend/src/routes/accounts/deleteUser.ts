@@ -46,6 +46,7 @@ router.post("/", async (req: Request, res: Response) => {
       },
     );
     console.log("that user was deleted", deleteUser.data);
+    res.json({ numLeft: deleteUser.headers["x-ratelimit-remaining"] });
   } catch (error) {
     console.error(error);
     res.status(400);

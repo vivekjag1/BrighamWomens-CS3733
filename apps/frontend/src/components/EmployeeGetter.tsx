@@ -77,12 +77,19 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
       email: employee.email,
       token: token,
     };
-    console.log("sadsadasdsadsadadsadadada");
     setEmployeesDeleted((prevEmployees) => [
       ...prevEmployees,
       employee.employeeID,
     ]);
-    await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, send, token);
+    const rateLeft = await MakeProtectedPostRequest(
+      APIEndpoints.deleteEmployee,
+      send,
+      token,
+    );
+    console.log(rateLeft.data.numLeft);
+    if (rateLeft.data.numLeft == 0) {
+      console.log("test");
+    }
   };
 
   const makeDeleteRequest = (employee: Employee) => {
