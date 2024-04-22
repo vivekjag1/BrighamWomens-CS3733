@@ -590,6 +590,7 @@ export function ServiceRequestGetter() {
                               request.serviceID,
                             )
                           }
+                          disableClearable={true}
                           disabled={false}
                         />
                       </div>
