@@ -267,6 +267,8 @@ export function SanitationForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setSanitationRequest({

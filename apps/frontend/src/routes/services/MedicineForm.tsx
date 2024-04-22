@@ -220,6 +220,8 @@ export function MedicineForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setMedicineDelivery({

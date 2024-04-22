@@ -294,6 +294,8 @@ export function MedicalDeviceForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setMedicalDeviceDelivery({

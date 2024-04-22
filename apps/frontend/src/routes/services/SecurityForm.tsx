@@ -241,6 +241,8 @@ export function SecurityForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setSecurityRequestForm({
