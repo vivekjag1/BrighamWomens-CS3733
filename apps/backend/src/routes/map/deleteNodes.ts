@@ -2,10 +2,10 @@ import express, { Router } from "express";
 const router: Router = express.Router();
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 
 router.post("/", async (req, res) => {
-  const node: GraphNode = req.body;
+  const node: Node = req.body;
   console.log(req.body);
   try {
     const createdNode = await prisma.node.delete({
