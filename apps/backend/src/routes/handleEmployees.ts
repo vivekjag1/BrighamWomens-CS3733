@@ -79,7 +79,7 @@ export async function populateEmployeeDB(employeeData: string[][]) {
     password: data[2],
     position: data[3],
     role: data[4],
-    profilePicture: data[5],
+    profilePicture: data[5] || "default-photo",
     email: data[6],
   }));
   employees.pop();

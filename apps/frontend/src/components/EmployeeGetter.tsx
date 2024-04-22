@@ -44,7 +44,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const { getAccessTokenSilently } = useAuth0();
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openModal, setOpenModal] = React.useState(false);
   const [currentEmployeeDelete, setEmployeeDelete] =
     React.useState<Employee | null>(null);
@@ -408,7 +408,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                     <TableCell style={{ width: "32ch", maxWidth: "32ch" }}>
                       <div className="flex items-center whitespace-nowrap">
                         <Avatar
-                          src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
+                          src={`../../assets/employees/${employee.profilePicture}.jpeg`}
                           alt={`${employee.name} image`}
                         />
                         <Typography
@@ -610,7 +610,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
       {/*        <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">*/}
       {/*          <img*/}
       {/*            className="w-10 h-10 rounded-full"*/}
-      {/*            src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}*/}
+      {/*            src={`../../assets/employees/${employee.profilePicture}.jpeg`}*/}
       {/*            alt={`${employee.name} image`}*/}
       {/*          />*/}
       {/*          <div className="ps-3">*/}

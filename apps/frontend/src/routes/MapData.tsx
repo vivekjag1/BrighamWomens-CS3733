@@ -22,6 +22,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import axios from "axios";
+import NodeFilterDropdown from "../components/NodeFilterDropdown.tsx";
 
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -33,10 +34,13 @@ const NodeTable = () => {
   const [activeTab, setActiveTab] = useState<string>("node");
   const nodeTableButtonRef = useRef<HTMLButtonElement>(null);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [filterBySearch, setFilterBySearch] = useState("");
   const [filteredNodes, setFilteredNodes] = useState<Node[]>([]);
   const [filteredEdges, setFilteredEdges] = useState<Edge[]>([]);
+  const [filterByFloor, setFilterByFloor] = useState<string[]>([]);
+  const [filterByBuilding, setFilterByBuilding] = useState<string[]>([]);
+  const [filterByType, setFilterByType] = useState<string[]>([]);
   const { showToast } = useToast();
 
   const handleTabChange = (tabName: string) => {
@@ -191,6 +195,15 @@ const NodeTable = () => {
             item.longName.toLowerCase().includes(filterBySearch.toLowerCase()),
         );
       }
+      if (filterByFloor.length) {
+        data = data.filter((item) => filterByFloor.includes(item.floor));
+      }
+      if (filterByBuilding.length) {
+        data = data.filter((item) => filterByBuilding.includes(item.building));
+      }
+      if (filterByType.length) {
+        data = data.filter((item) => filterByType.includes(item.nodeType));
+      }
       setFilteredNodes(data);
     } else {
       let data = edges;
@@ -226,7 +239,16 @@ const NodeTable = () => {
     //         ? a.serviceID - b.serviceID
     //         : b.serviceID - a.serviceID;
     // });
-  }, [filterBySearch, filteredNodes, nodes, activeTab, edges]);
+  }, [
+    filterBySearch,
+    filteredNodes,
+    nodes,
+    activeTab,
+    edges,
+    filterByFloor,
+    filterByBuilding,
+    filterByType,
+  ]);
 
   function highlightSearchTerm(text: string) {
     if (!filterBySearch.trim()) {
@@ -353,7 +375,6 @@ const NodeTable = () => {
                 </button>
               </li>
             </ul>
-
             <div className="relative">
               <div className="flex flex-column sm:flex-row flex-wrap space-y-2 sm:space-y-0 items-center justify-between pb-2">
                 <label htmlFor="table-search" className="sr-only">
@@ -399,6 +420,18 @@ const NodeTable = () => {
                     </button>
                   )}
                 </div>
+                {activeTab === "node" && (
+                  <div>
+                    <NodeFilterDropdown
+                      filterByFloor={filterByFloor}
+                      setFilterByFloor={setFilterByFloor}
+                      filterByBuilding={filterByBuilding}
+                      setFilterByBuilding={setFilterByBuilding}
+                      filterByType={filterByType}
+                      setFilterByType={setFilterByType}
+                    />
+                  </div>
+                )}
               </div>
 
               {activeTab === "node" && (

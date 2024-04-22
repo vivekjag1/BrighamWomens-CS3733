@@ -111,7 +111,7 @@ const EmployeeDropdown = ({
               <img
                 className="w-10 h-10 rounded-full"
                 loading="lazy"
-                src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
+                src={`../../assets/employees/${employee.profilePicture}.jpeg`}
                 alt={`${option.label} profile`}
               />
             )}
