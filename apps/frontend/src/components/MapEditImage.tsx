@@ -119,13 +119,11 @@ const MapEditImage = (props: {
     const y = e.clientY - bbox.top;
     if (position.active) {
       const updatedNode: Node = nodes.get(nodeID)!;
-      updatedNode.xcoord = (
-        parseFloat(updatedNode.xcoord) +
-        (x - position.offset.x)
+      updatedNode.xcoord = Math.floor(
+        parseInt(updatedNode.xcoord) + (x - position.offset.x),
       ).toString();
-      updatedNode.ycoord = (
-        parseFloat(updatedNode.ycoord) +
-        (y - position.offset.y)
+      updatedNode.ycoord = Math.floor(
+        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
       ).toString();
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
