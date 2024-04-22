@@ -11,7 +11,7 @@ import { useToast } from "../components/useToast.tsx";
 import AddNodeToolTip from "../components/AddNodeToolTip.tsx";
 
 const defaultFloor: number = 1;
-
+//merge changes to dev
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
@@ -48,7 +48,7 @@ function MapEdit() {
 
   const { showToast } = useToast();
 
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
+  // const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -155,37 +155,73 @@ function MapEdit() {
     location.reload();
   }
 
+  // function handleNodeClick(nodeID: string) {
+  //   if (cachedNode) {
+  //     if (cachedNode.nodeID == nodeID)
+  //       return; // same node pressed
+  //     else {
+  //       // different node pressed
+  //       if (!nodeSaved) updateNode(cachedNode);
+  //     }
+  //   }
+  //   setSelectedNodeID(nodeID);
+  //   setCachedNode(nodes.get(nodeID));
+  //   setNodeSaved(false);
+  // }
   function handleNodeClick(nodeID: string) {
-    if (cachedNode) {
-      if (cachedNode.nodeID == nodeID)
-        return; // same node pressed
-      else {
-        // different node pressed
-        if (!nodeSaved) updateNode(cachedNode);
+    if (selectedNodeID) {
+      // Update the node if changes were not saved
+      const unsavedNode = nodes.get(selectedNodeID);
+      if (unsavedNode) {
+        updateNode(unsavedNode);
       }
     }
 
     setSelectedNodeID(nodeID);
-    setCachedNode(nodes.get(nodeID));
     setNodeSaved(false);
   }
-
   function handleAddNodeButtonClicked() {
     setAddingNode(!addingNode);
   }
 
+  // function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
+  //   if (addingNode) {
+  //     handleCreateNode(event);
+  //   } else {
+  //     // if node wasn't saved, revert node to cached version
+  //     if (cachedNode && !nodeSaved) {
+  //       updateNode(cachedNode);
+  //     }
+  //
+  //     setSelectedNodeID(undefined);
+  //     setCachedNode(undefined);
+  //     setNodeSaved(false);
+  //   }
+  // }
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
     if (addingNode) {
       handleCreateNode(event);
     } else {
-      // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
+      if (selectedNodeID && !nodeSaved) {
+        // Prompt user to save changes
+        confirmSaveChanges(); // This function would handle the confirmation logic
+      } else {
+        // No unsaved changes or no node selected
+        setSelectedNodeID(undefined);
+        setNodeSaved(true); // Assume no changes need saving
       }
+    }
+  }
 
+  function confirmSaveChanges() {
+    // This could be a modal or simple confirmation box
+    if (
+      window.confirm("You have unsaved changes. Would you like to save them?")
+    ) {
+      handleSave();
+    } else {
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
+      setNodeSaved(true);
     }
   }
 
