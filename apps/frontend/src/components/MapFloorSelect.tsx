@@ -1,16 +1,20 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useState } from "react";
+import { ButtonStyling } from "../common/StylingCommon";
 
 const styles = {
-  color: "#FFFFFF",
-  width: "3vw",
-  height: "5vh",
+  color: "white",
+  width: "40px",
+  height: "35px",
+  fontWeight: "light",
+  borderRadius: "5px",
   "&:hover": {
-    backgroundColor: "#013B96",
+    backgroundColor: ButtonStyling.blueButtonHover,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: "#013B96",
-    color: "#FFFFFF",
+    backgroundColor: ButtonStyling.blueButtonClicked,
+    color: "white",
+    fontWeight: "bold",
   },
 } as const;
 
@@ -43,7 +47,7 @@ function MapFloorSelect(props: {
       value={activeMap}
       exclusive
       onChange={handleChange}
-      sx={{ backgroundColor: "#012D5A", height: "100%" }}
+      sx={{ backgroundColor: ButtonStyling.blueButton, borderRadius: "5px" }}
     >
       <ToggleButton
         onClick={() => props.onClick(3)}

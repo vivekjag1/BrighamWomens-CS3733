@@ -5,12 +5,12 @@ import roomIcon from "../../assets/room-icon.svg";
 import sanitationIcon from "../../assets/sanitation-icon.svg";
 import deviceIcon from "../../assets/device-icon.svg";
 import ServiceCard from "../components/ServiceCard.tsx";
-import paths from "../paths/paths.tsx";
+import paths from "../common/paths.tsx";
 import giftIcon from "../../assets/gift_delivery.svg";
 
 function Services() {
   return (
-    <div className="">
+    <div className="bg-offwhite h-screen">
       <div className="flex flex-col items-center gap-8 ">
         <div className="flex flex-col items-center gap-2 mt-8">
           <h2 className="w-full text-3xl font-bold text-center">
@@ -19,17 +19,18 @@ function Services() {
           <h2 className="w-full text-md text-center">
             Submit a service request
           </h2>
-          <hr className="pl-96 pr-96" />
+          <hr className="pl-96 pr-96 " />
         </div>
-        <div className="flex justify-center gap-8">
+
+        <div className="flex justify-center gap-8 ">
           <Link
-            to={paths.MEDICINE_REQUEST}
-            className="serviceCard medicineDelivery"
+            to={paths.MEDICINE_DELIVERY}
+            className=" serviceCard medicineDelivery ]  "
           >
             <ServiceCard
               imgPath={medicineIcon}
               alt="pill icon"
-              label="Medicine Delivery"
+              label="Medicine"
             />
           </Link>
           <Link
@@ -39,33 +40,22 @@ function Services() {
             <ServiceCard
               imgPath={deviceIcon}
               alt="device icon"
-              label="Medical Device Delivery"
+              label="Medical Devices"
             />
           </Link>
-          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
-            <ServiceCard
-              imgPath={giftIcon}
-              alt="device icon"
-              label="Gift Delivery"
-            />
+          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
+            <ServiceCard imgPath={roomIcon} alt="room icon" label="Rooms" />
           </Link>
         </div>
         <div className="flex justify-center gap-8">
           <Link
-            to={paths.SANITATION_FORM}
+            to={paths.SANITATION_REQUEST}
             className="serviceCard sanitationRequest"
           >
             <ServiceCard
               imgPath={sanitationIcon}
               alt="sanitation icon"
-              label="Sanitation Request"
-            />
-          </Link>
-          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
-            <ServiceCard
-              imgPath={roomIcon}
-              alt="room icon"
-              label="Reserve a Room"
+              label="Sanitation"
             />
           </Link>
           <Link
@@ -75,8 +65,11 @@ function Services() {
             <ServiceCard
               imgPath={securityIcon}
               alt="security icon"
-              label="Security Request"
+              label="Security"
             />
+          </Link>
+          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
+            <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
           </Link>
         </div>
       </div>

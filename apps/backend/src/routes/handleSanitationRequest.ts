@@ -3,7 +3,7 @@ import express, { Router, Request, Response } from "express";
 import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 
 const router: Router = express.Router();
-const JoeArray = ["Joseph", "Bestest Joe", "Joe", "Joe Mama"];
+// const JoeArray = ["Joseph", "Bestest Joe", "Joe", "Joe Mama"];
 
 router.post("/", async function (req: Request, res: Response): Promise<void> {
   const request: SanitationRequestObject = req.body;
@@ -24,7 +24,7 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
             priority: request.serviceRequest.priority,
             status: request.serviceRequest.status,
             requestedTime: request.serviceRequest.requestedTime,
-            assignedTo: JoeArray[Math.floor(Math.random() * JoeArray.length)],
+            assignedTo: request.serviceRequest.assignedTo,
           },
         },
       },

@@ -9,6 +9,21 @@ import { useToast } from "./useToast.tsx";
 import ServiceFilterDropdown from "./ServiceFilterDropdown.tsx";
 import { Card, CardContent } from "@mui/material";
 import CustomTextField from "./CustomTextField.tsx";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TableFooter,
+  Paper,
+  TablePagination,
+} from "@mui/material";
+import EmployeeDropdown from "./EmployeeDropdown.tsx";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
@@ -24,6 +39,23 @@ export function ServiceRequestGetter() {
   const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
   const { getAccessTokenSilently } = useAuth0();
   const { showToast } = useToast();
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   useEffect(() => {
     async function fetchData() {
@@ -59,7 +91,13 @@ export function ServiceRequestGetter() {
 
     const updatedRequests = requestData.map((request) => {
       if (request.serviceID === serviceID) {
-        return { ...request, status: newStatus };
+        const updatedRequest = {
+          ...request,
+          status: newStatus,
+          assignedTo:
+            newStatus === "Unassigned" ? "Unassigned" : request.assignedTo,
+        };
+        return updatedRequest;
       }
       return request;
     });
@@ -69,6 +107,7 @@ export function ServiceRequestGetter() {
     const updateData = {
       serviceID: serviceID,
       status: newStatus,
+      ...(newStatus === "Unassigned" && { assignedTo: "Unassigned" }),
     };
 
     try {
@@ -89,6 +128,48 @@ export function ServiceRequestGetter() {
       showToast("Status update failed!", "error");
     }
   }
+
+  const handleEmployeeChange = async (
+    newAssignedTo: string,
+    serviceID: number,
+  ) => {
+    const updatedRequests = requestData.map((request) => {
+      if (request.serviceID === serviceID) {
+        return {
+          ...request,
+          assignedTo: newAssignedTo,
+          status: newAssignedTo !== "Unassigned" ? "Assigned" : "Unassigned",
+        };
+      }
+      return request;
+    });
+
+    setRequestData(updatedRequests);
+
+    const updateData = {
+      serviceID: serviceID,
+      assignedTo: newAssignedTo,
+      ...(newAssignedTo !== "Unassigned" && { status: "Assigned" }),
+    };
+
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await axios.patch(
+        APIEndpoints.servicePutRequests,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Employee updated successfully", response.data);
+      showToast("Assigned employee updated successfully!", "success");
+    } catch (error) {
+      console.error("Error updating assigned employee", error);
+      showToast("Failed to update assigned employee!", "error");
+    }
+  };
 
   useEffect(() => {
     let data = requestData;
@@ -188,7 +269,6 @@ export function ServiceRequestGetter() {
 
   const handleRowClick = (request: ServiceRequest) => {
     setSelectedRow(request);
-    console.log(request);
   };
 
   const sortPriorityOrder = () => {
@@ -326,139 +406,377 @@ export function ServiceRequestGetter() {
           </div>
         </div>
       </div>
-      <table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" className="px-6 py-3 w-[17ch]">
-              Service ID
-              <button
-                onClick={() => SortOrder()}
-                className="hover:text-blue-700"
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer className="shadow-md">
+          <Table className="text-center text-gray-50e">
+            <TableHead className="text-xs text-gray-50 uppercase bg-secondary">
+              <TableRow
+                sx={{
+                  "& > th": {
+                    backgroundColor: "#f9fafb",
+                    color: "#012D5A",
+                    padding: "8px 16px",
+                    textAlign: "center",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: "0.76rem",
+                    fontWeight: "bold",
+                  },
+                }}
               >
-                <svg
-                  className="w-3 h-3 ml-1"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewBox="0 0 24 20"
-                >
-                  <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                </svg>
-              </button>
-            </th>
-            <th scope="col" className="px-6 py-3 w-[20ch]">
-              Type
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Priority
-              <button
-                onClick={sortPriorityOrder}
-                className="hover:text-blue-700"
-              >
-                <svg
-                  className="w-3 h-3 ml-1"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewBox="0 0 24 20"
-                >
-                  <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                </svg>
-              </button>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Requesting Username
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Location
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Description
-            </th>
-            <th scope="col" className="px-3 py-3 w-[14ch]">
-              Assigned To
-            </th>
+                <TableCell>
+                  Service ID
+                  <button
+                    onClick={() => SortOrder()}
+                    className="hover:text-blue-700"
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1"
+                      aria-hidden="true"
+                      fill="currentColor"
+                      viewBox="0 0 24 20"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>
+                  Priority
+                  <button
+                    onClick={sortPriorityOrder}
+                    className="hover:text-blue-700"
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1"
+                      aria-hidden="true"
+                      fill="currentColor"
+                      viewBox="0 0 24 20"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </TableCell>
+                <TableCell>Requesting Username</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Assigned To</TableCell>
+                <TableCell>Requested Time</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((request) => (
+                  <TableRow
+                    key={request.serviceID}
+                    onClick={() => handleRowClick(request)}
+                    hover
+                    style={{ cursor: "pointer" }}
+                    sx={{
+                      "& > td": {
+                        color: "#6B7280",
+                        textAlign: "center",
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "0.875rem",
+                      },
+                    }}
+                  >
+                    <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
+                      {request.serviceID}
+                    </TableCell>
+                    <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
+                      {highlightSearchTerm(request.type, filterBySearch)}
+                    </TableCell>
+                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
+                      <select
+                        value={request.status}
+                        onChange={(e) =>
+                          handleStatusChange(e, request.serviceID)
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                        className="border border-gray-300 rounded px-3 py-1 text-center"
+                      >
+                        {statusOptions.map((option) => (
+                          <option
+                            key={option}
+                            value={option}
+                            disabled={
+                              request.status === "Unassigned" &&
+                              option !== "Unassigned"
+                            }
+                          >
+                            {option === "InProgress" ? "In Progress" : option}
+                          </option>
+                        ))}
+                      </select>
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        width: "18ch",
+                        maxWidth: "18ch",
+                        position: "relative",
+                        height: "auto",
+                        padding: "10px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {" "}
+                      {/* Added textAlign for center alignment */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            request.priority === "Low"
+                              ? "bg-green-500"
+                              : request.priority === "Medium"
+                                ? "bg-yellow-500"
+                                : request.priority === "High"
+                                  ? "bg-orange-500"
+                                  : request.priority === "Emergency"
+                                    ? "bg-red-500"
+                                    : "bg-gray-200"
+                          }`}
+                          style={{ marginRight: "8px" }}
+                        ></div>
+                        <span
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "normal",
+                          }}
+                        >
+                          {request.priority}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                      {highlightSearchTerm(
+                        truncateString(request.requestingUsername, 15),
+                        filterBySearch,
+                      )}
+                    </TableCell>
+                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                      {highlightSearchTerm(
+                        truncateString(request.location, 15),
+                        filterBySearch,
+                      )}
+                    </TableCell>
+                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                      {request.description && request.description.trim() !== ""
+                        ? truncateString(request.description, 20)
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                      {/*{highlightSearchTerm(*/}
+                      {/*  truncateString(request.assignedTo, 15),*/}
+                      {/*  filterBySearch,*/}
+                      {/*)}*/}
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <EmployeeDropdown
+                          value={request.assignedTo}
+                          onChange={(newAssignedTo) =>
+                            handleEmployeeChange(
+                              newAssignedTo,
+                              request.serviceID,
+                            )
+                          }
+                          disableClearable={true}
+                          disabled={false}
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                      {truncateString(
+                        dayjs
+                          .tz(
+                            request.requestedTime.toString(),
+                            "America/New_York",
+                          )
+                          .toString(),
+                        16,
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 73 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  colSpan={9}
+                  count={filteredData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  sx={{
+                    ".MuiTablePagination-selectLabel": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiTablePagination-select": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiButtonBase-root": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                    ".MuiTablePagination-selectRoot": {
+                      fontFamily: "Poppins, sans-serif",
+                    },
+                  }}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </Paper>
+      {/*<table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">*/}
+      {/*  <thead className="text-xs text-gray-700 uppercase bg-gray-50">*/}
+      {/*    <tr>*/}
+      {/*      <th scope="col" className="px-6 py-3 w-[17ch]">*/}
+      {/*        Service ID*/}
+      {/*        <button*/}
+      {/*          onClick={() => SortOrder()}*/}
+      {/*          className="hover:text-blue-700"*/}
+      {/*        >*/}
+      {/*          <svg*/}
+      {/*            className="w-3 h-3 ml-1"*/}
+      {/*            aria-hidden="true"*/}
+      {/*            fill="currentColor"*/}
+      {/*            viewBox="0 0 24 20"*/}
+      {/*          >*/}
+      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
+      {/*          </svg>*/}
+      {/*        </button>*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3 w-[20ch]">*/}
+      {/*        Type*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Status*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Priority*/}
+      {/*        <button*/}
+      {/*          onClick={sortPriorityOrder}*/}
+      {/*          className="hover:text-blue-700"*/}
+      {/*        >*/}
+      {/*          <svg*/}
+      {/*            className="w-3 h-3 ml-1"*/}
+      {/*            aria-hidden="true"*/}
+      {/*            fill="currentColor"*/}
+      {/*            viewBox="0 0 24 20"*/}
+      {/*          >*/}
+      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
+      {/*          </svg>*/}
+      {/*        </button>*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Requesting Username*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Location*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Description*/}
+      {/*      </th>*/}
+      {/*      <th scope="col" className="px-3 py-3 w-[14ch]">*/}
+      {/*        Assigned To*/}
+      {/*      </th>*/}
 
-            <th scope="col" className="px-6 py-3">
-              Requested Time
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((request) => (
-            <tr
-              className="bg-white border-b h-16 hover:bg-gray-100"
-              key={request.serviceID}
-              onClick={() => handleRowClick(request)}
-            >
-              <td className="px-6 py-4">{request.serviceID}</td>
-              <td>{highlightSearchTerm(request.type, filterBySearch)}</td>
-              <td className="px-6 py-4">
-                <select
-                  value={request.status}
-                  onChange={(e) => handleStatusChange(e, request.serviceID)}
-                  onClick={(e) => e.stopPropagation()}
-                  className="border border-gray-300 rounded px-3 py-1 text-center"
-                >
-                  {statusOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option === "InProgress" ? "In Progress" : option}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td className="flex justify-center items-center space-x-2 px-6 pt-[26px]">
-                <span
-                  className={`w-3 h-3 rounded-full ${
-                    request.priority === "Low"
-                      ? "bg-green-500"
-                      : request.priority === "Medium"
-                        ? "bg-yellow-500"
-                        : request.priority === "High"
-                          ? "bg-orange-500"
-                          : request.priority === "Emergency"
-                            ? "bg-red-500"
-                            : "bg-gray-200"
-                  }`}
-                ></span>
-                <span>{truncateString(request.priority, 10)}</span>
-              </td>
-              <td className="px-6 py-4">
-                {highlightSearchTerm(
-                  truncateString(request.requestingUsername, 15),
-                  filterBySearch,
-                )}
-              </td>
-              <td className="px-4 py-4">
-                {highlightSearchTerm(
-                  truncateString(request.location, 15),
-                  filterBySearch,
-                )}
-              </td>
-              <td className="px-5 py-4">
-                {request.description && request.description.trim() !== ""
-                  ? truncateString(request.description, 20)
-                  : "N/A"}
-              </td>
-              <td className="px-6 py-4">
-                {highlightSearchTerm(
-                  truncateString(request.assignedTo, 15),
-                  filterBySearch,
-                )}
-              </td>
-              <td className="px-6 py-4">
-                {truncateString(
-                  dayjs
-                    .tz(request.requestedTime.toString(), "America/New_York")
-                    .toString(),
-                  16,
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/*      <th scope="col" className="px-6 py-3">*/}
+      {/*        Requested Time*/}
+      {/*      </th>*/}
+      {/*    </tr>*/}
+      {/*  </thead>*/}
+      {/*  <tbody>*/}
+      {/*    {filteredData.map((request) => (*/}
+      {/*      <tr*/}
+      {/*        className="bg-white border-b h-16 hover:bg-gray-100"*/}
+      {/*        key={request.serviceID}*/}
+      {/*        onClick={() => handleRowClick(request)}*/}
+      {/*      >*/}
+      {/*        <td className="px-6 py-4">{request.serviceID}</td>*/}
+      {/*        <td>{highlightSearchTerm(request.type, filterBySearch)}</td>*/}
+      {/*        <td className="px-6 py-4">*/}
+      {/*          <select*/}
+      {/*            value={request.status}*/}
+      {/*            onChange={(e) => handleStatusChange(e, request.serviceID)}*/}
+      {/*            onClick={(e) => e.stopPropagation()}*/}
+      {/*            className="border border-gray-300 rounded px-3 py-1 text-center"*/}
+      {/*          >*/}
+      {/*            {statusOptions.map((option) => (*/}
+      {/*              <option key={option} value={option}>*/}
+      {/*                {option === "InProgress" ? "In Progress" : option}*/}
+      {/*              </option>*/}
+      {/*            ))}*/}
+      {/*          </select>*/}
+      {/*        </td>*/}
+      {/*        <td className="flex justify-center items-center space-x-2 px-6 pt-[26px]">*/}
+      {/*          <span*/}
+      {/*            className={`w-3 h-3 rounded-full ${*/}
+      {/*              request.priority === "Low"*/}
+      {/*                ? "bg-green-500"*/}
+      {/*                : request.priority === "Medium"*/}
+      {/*                  ? "bg-yellow-500"*/}
+      {/*                  : request.priority === "High"*/}
+      {/*                    ? "bg-orange-500"*/}
+      {/*                    : request.priority === "Emergency"*/}
+      {/*                      ? "bg-red-500"*/}
+      {/*                      : "bg-gray-200"*/}
+      {/*            }`}*/}
+      {/*          ></span>*/}
+      {/*          <span>{truncateString(request.priority, 10)}</span>*/}
+      {/*        </td>*/}
+      {/*        <td className="px-6 py-4">*/}
+      {/*          {highlightSearchTerm(*/}
+      {/*            truncateString(request.requestingUsername, 15),*/}
+      {/*            filterBySearch,*/}
+      {/*          )}*/}
+      {/*        </td>*/}
+      {/*        <td className="px-4 py-4">*/}
+      {/*          {highlightSearchTerm(*/}
+      {/*            truncateString(request.location, 15),*/}
+      {/*            filterBySearch,*/}
+      {/*          )}*/}
+      {/*        </td>*/}
+      {/*        <td className="px-5 py-4">*/}
+      {/*          {request.description && request.description.trim() !== ""*/}
+      {/*            ? truncateString(request.description, 20)*/}
+      {/*            : "N/A"}*/}
+      {/*        </td>*/}
+      {/*        <td className="px-6 py-4">*/}
+      {/*          {highlightSearchTerm(*/}
+      {/*            truncateString(request.assignedTo, 15),*/}
+      {/*            filterBySearch,*/}
+      {/*          )}*/}
+      {/*        </td>*/}
+      {/*        <td className="px-6 py-4">*/}
+      {/*          {truncateString(*/}
+      {/*            dayjs*/}
+      {/*              .tz(request.requestedTime.toString(), "America/New_York")*/}
+      {/*              .toString(),*/}
+      {/*            16,*/}
+      {/*          )}*/}
+      {/*        </td>*/}
+      {/*      </tr>*/}
+      {/*    ))}*/}
+      {/*  </tbody>*/}
+      {/*</table>*/}
       {selectedRow && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-[1px]"
@@ -467,7 +785,7 @@ export function ServiceRequestGetter() {
           <div className="relative">
             <Card
               sx={{ borderRadius: 2 }}
-              className="drop-shadow-2xl w-full max-w-lg ml-[9%] pl-4 pb-2"
+              className="drop-shadow-2xl w-full max-w-lg ml-[9%] px-4 pb-2"
               onClick={(e) => e.stopPropagation()}
             >
               <CardContent>
@@ -487,11 +805,11 @@ export function ServiceRequestGetter() {
                 >
                   {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
                 </h1>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                   {Object.entries(selectedRow).map(
                     ([key, value]) =>
                       key !== "type" && (
-                        <div key={key}>
+                        <div key={key} className="flex flex-col">
                           <label className="font-medium mb-2">{key}:</label>
                           <CustomTextField
                             value={
@@ -514,11 +832,39 @@ export function ServiceRequestGetter() {
                                     ? "In Progress"
                                     : value
                             }
-                            sx={{ width: "13rem" }}
+                            sx={{ width: "12rem" }}
                           />
                         </div>
                       ),
                   )}
+                  <div className="col-span-2 flex justify-between items-end px-0">
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#EA422D",
+                        color: "white",
+                        width: "100%",
+                        maxWidth: "8rem",
+                        fontFamily: "Poppins, sans-serif",
+                      }}
+                      endIcon={<DeleteIcon />}
+                    >
+                      DELETE
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#012D5A",
+                        color: "white",
+                        width: "100%",
+                        maxWidth: "8rem",
+                        fontFamily: "Poppins, sans-serif",
+                      }}
+                      endIcon={<SaveIcon />}
+                    >
+                      SAVE
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

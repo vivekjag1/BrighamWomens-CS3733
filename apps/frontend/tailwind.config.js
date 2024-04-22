@@ -7,6 +7,8 @@ export default {
         primary: "#009CA6",
         secondary: "#012D5A",
         offwhite: "#eaeaea",
+        white: "#ffffff",
+        offgrey: "#e1e1e1",
         gold: "#D4B547",
         highlight: "#F6BD38",
       },

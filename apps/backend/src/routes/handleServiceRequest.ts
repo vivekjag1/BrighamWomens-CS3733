@@ -25,7 +25,7 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
             priority: request.serviceRequest.priority,
             status: request.serviceRequest.status,
             requestedTime: request.serviceRequest.requestedTime,
-            assignedTo: "Bestest Joe",
+            assignedTo: request.serviceRequest.assignedTo,
           },
         },
       },
@@ -47,12 +47,12 @@ router.get("/", async function (req: Request, res: Response): Promise<void> {
 });
 
 router.patch("/", async (req, res) => {
-  const { serviceID, status } = req.body;
+  const { serviceID, status, assignedTo } = req.body;
 
   try {
     const updatedServiceRequest = await client.serviceRequest.update({
       where: { serviceID: serviceID },
-      data: { status: status },
+      data: { status: status, assignedTo: assignedTo },
     });
 
     res.json({

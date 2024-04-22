@@ -9,10 +9,16 @@ interface BannerProps {
 function Banner(props: BannerProps) {
   return (
     <motion.div
-      className="w-[80vw] h-[5.5vh] flex justify-center items-center gap-8 border-2 border-gray-200 rounded-md shadow-md bg-gray-100"
-      initial={{ y: "-10vh" }}
-      animate={{ y: 0, transition: { delay: 1.5, duration: 1 } }}
-      exit={{ y: "-10vh", transition: { duration: 1 } }}
+      className="bg-white fixed top-0 flex gap-1 justify-center items-center p-3 rounded-xl text-secondary z-10"
+      initial={{ y: "-100%" }}
+      animate={{
+        y: "1vh",
+        transition: { type: "spring", delay: 1, stiffness: 30, duration: 1 },
+      }}
+      exit={{
+        y: "-100%",
+        transition: { type: "spring", stiffness: 30, duration: 1 },
+      }}
     >
       {props.children}
       <ExitButton onClick={props.onClick} />

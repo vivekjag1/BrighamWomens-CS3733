@@ -89,7 +89,7 @@ function ServiceFilterDropdown({
           </div>
         )}
         displayEmpty
-        className="bg-gray-50"
+        className="bg-gray-50 h-10"
         sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
         <MenuItem onClick={() => toggleSubMenu("type")}>
@@ -198,17 +198,42 @@ function ServiceFilterDropdown({
               />
             </MenuItem>
           ))}
-        <MenuItem>
+        <hr className="mx-auto w-4/5" />
+        <MenuItem
+          style={{
+            backgroundColor: "transparent",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Button
-            fullWidth
             onClick={handleResetFilters}
-            style={{ color: "red", padding: 0 }}
-            sx={{
-              "&:hover": { bgcolor: "unset" },
+            variant="contained"
+            style={{
+              backgroundColor: "#EA422D",
+              color: "white",
+              width: "60%",
+              padding: ".2rem",
+              marginTop: ".4rem",
               fontFamily: "Poppins, sans-serif",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
+            endIcon={
+              <svg
+                fill="white"
+                width="14px"
+                height="14px"
+                viewBox="0 0 1920 1920"
+              >
+                <path
+                  d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            }
           >
-            Reset
+            RESET
           </Button>
         </MenuItem>
       </Select>
