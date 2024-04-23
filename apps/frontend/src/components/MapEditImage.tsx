@@ -25,7 +25,6 @@ const MapEditImage = (props: {
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
-
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
@@ -38,6 +37,14 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
+
+  useEffect(() => {
+    setNodes(tempNodes);
+    const initialRadii = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialRadii.set(nodeID, MapStyling.nodeRadius);
+    });
+  }, [tempNodes]);
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -92,7 +99,6 @@ const MapEditImage = (props: {
     props.onNodeClick(nodeID);
     setSelectedNodeId(nodeID);
 
-    // Toggle flickering effect
     if (flickeringNode === nodeID) {
       setFlickeringNode(null);
     } else {
