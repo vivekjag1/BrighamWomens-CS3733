@@ -10,6 +10,7 @@ import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { getFloorNumber } from "../common/PathUtilities.ts";
+import ResetButton from "../components/Map/ResetButton.tsx";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -77,8 +78,7 @@ function Home() {
   }
 
   // Resets pathfinding page
-  function handleClear(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function handleReset() {
     setActiveFloor(DEFAULT_FLOOR);
     setPath(INITIAL_PATH);
     setStartNode(INITIAL_PATH[0].nodeID);
@@ -144,7 +144,6 @@ function Home() {
           endNodeIDSetter={setEndNode}
           algorithm={algorithm}
           algorithmSetter={setAlgo}
-          onClear={handleClear}
           onSwap={handleSwap}
           onSubmit={handleSubmit}
         />
@@ -157,6 +156,9 @@ function Home() {
           updateGlowSequence={updateGlowSequence}
           glowSequence={glowSequence}
         />
+      </div>
+      <div className="absolute bottom-[2%] left-[1.5%]">
+        <ResetButton onClick={handleReset} />
       </div>
     </div>
   );

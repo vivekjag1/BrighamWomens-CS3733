@@ -43,14 +43,18 @@ function Map(props: mapProps) {
     <DashedPolyline points={polyline} />
   ));
 
-  const nodeElements = nodes.map((node) => (
-    <ClickableCircle
-      x={node.xcoord}
-      y={node.ycoord}
-      id={node.nodeID}
-      onClick={() => props.onNodeClick(node.nodeID)}
-    />
-  ));
+  const nodeElements = nodes.map((node) =>
+    node.xcoord != "0" && node.ycoord != "0" ? (
+      <ClickableCircle
+        x={node.xcoord}
+        y={node.ycoord}
+        id={node.nodeID}
+        onClick={() => props.onNodeClick(node.nodeID)}
+      />
+    ) : (
+      <></>
+    ),
+  );
 
   const startMarkerElement = (() => {
     return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
