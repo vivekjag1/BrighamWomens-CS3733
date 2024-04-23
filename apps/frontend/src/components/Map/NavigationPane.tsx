@@ -86,18 +86,24 @@ const IconStyles = {
 } as const;
 
 const NodeDropdownStyles = {
-  width: "16vw",
+  width: "17vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
+  },
+  "&. MuiInputLabel-root": {
+    fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
 
 const AlgorithmDropdownStyles = {
-  width: "10vw",
+  width: "12vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
+  },
+  "&. MuiInputLabel-root": {
+    fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
 

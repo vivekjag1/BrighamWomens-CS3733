@@ -1,9 +1,9 @@
 import React, { CSSProperties, SyntheticEvent } from "react";
 import { Node } from "database";
 import Autocomplete from "@mui/material/Autocomplete";
-import { TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import { nodeOption } from "../../common/NodeOption.ts";
-/*import {DesignSystem} from "../../common/StylingCommon.ts";*/
+import { DesignSystem } from "../../common/StylingCommon.ts";
 
 interface NodeDropdownProps {
   nodes: Node[];
@@ -38,14 +38,19 @@ function NodeDropdown(props: NodeDropdownProps) {
       sx={props.sx}
       value={nodeOptions.find((nodeOption) => nodeOption.id === props.value)}
       onChange={props.onChange}
+      renderOption={(props, option) => (
+        <MenuItem {...props} sx={menuItemStyles}>
+          {option.label}
+        </MenuItem>
+      )}
     />
   );
 }
 
-/*const menuItemStyles = {
+const menuItemStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "0.9rem",
-  whiteSpace: "pre-wrap"
-} as const;*/
+  whiteSpace: "pre-wrap",
+} as const;
 
 export default NodeDropdown;
