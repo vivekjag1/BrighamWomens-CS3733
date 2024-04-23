@@ -26,7 +26,7 @@ const tools = [
   {
     name: "Webstorm ",
     imageSrc: webstormImage,
-    url: "https://www.jetbrains.com/webstorm/",
+    url: "Webstorm Link",
   },
   { name: "GitHub ", imageSrc: webstormImage, url: "https://github.com" },
   { name: "Taiga ", imageSrc: webstormImage, url: "https://taiga.io" },
@@ -160,7 +160,11 @@ export default function Credit() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
                     {tools.map((tool, index) => (
                       <div key={index}>
-                        <CreditCard name={tool.name} imageSrc={tool.imageSrc} />
+                        <CreditCard
+                          name={tool.name}
+                          imageSrc={tool.imageSrc}
+                          url={tool.url}
+                        />
                       </div>
                     ))}
                   </div>
