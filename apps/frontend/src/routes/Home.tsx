@@ -68,8 +68,8 @@ function Home() {
     e.preventDefault();
     setActiveFloor(DEFAULT_FLOOR);
     setPath(INITIAL_PATH);
-    setStartNode("");
-    setEndNodeID("");
+    setStartNode("0");
+    setEndNodeID("0");
     setAlgorithm("A-Star");
   }
 

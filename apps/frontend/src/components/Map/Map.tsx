@@ -53,7 +53,7 @@ function Map(props: mapProps) {
   ));
 
   const startMarkerElement = (() => {
-    return parseInt(props.path[0].floor) === props.activeFloor ? (
+    return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
       <LocationMarker
         x={parseInt(props.path[0].xcoord)}
         y={parseInt(props.path[0].ycoord)}
@@ -77,8 +77,6 @@ function Map(props: mapProps) {
   })();
 
   const segments: Node[][] = getSegments(props.path, props.activeFloor);
-  console.log("path", props.path);
-  console.log("segments", segments);
   const allTransitionMarkers = segments.map((segment) => {
     const elements: JSX.Element[] = [];
     let xcoord: number = 0;
