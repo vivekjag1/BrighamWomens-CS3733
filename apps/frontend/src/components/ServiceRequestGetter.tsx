@@ -31,6 +31,7 @@ export function ServiceRequestGetter() {
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterBySearch, setFilterBySearch] = useState("");
+  const [filterByEmployee, setFilterByEmployee] = useState<string[]>([]);
   const [filterByPriority, setFilterByPriority] = useState<string[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByType, setFilterByType] = useState<string[]>([]);
@@ -191,6 +192,9 @@ export function ServiceRequestGetter() {
       );
     }
 
+    if (filterByEmployee.length) {
+      data = data.filter((item) => filterByEmployee.includes(item.assignedTo));
+    }
     if (filterByType.length) {
       data = data.filter((item) => filterByType.includes(item.type));
     }
@@ -229,6 +233,7 @@ export function ServiceRequestGetter() {
     setFilteredData(sortedData);
   }, [
     requestData,
+    filterByEmployee,
     filterByType,
     filterByPriority,
     filterByStatus,
@@ -337,6 +342,8 @@ export function ServiceRequestGetter() {
         </div>
         <div>
           <ServiceFilterDropdown
+            filterByEmployee={filterByEmployee}
+            setFilterByEmployee={setFilterByEmployee}
             filterByType={filterByType}
             setFilterByType={setFilterByType}
             filterByPriority={filterByPriority}
@@ -571,12 +578,12 @@ export function ServiceRequestGetter() {
                         filterBySearch,
                       )}
                     </TableCell>
-                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                    <TableCell style={{ width: "20ch", maxWidth: "20ch" }}>
                       {request.description && request.description.trim() !== ""
-                        ? truncateString(request.description, 20)
+                        ? truncateString(request.description, 18)
                         : "N/A"}
                     </TableCell>
-                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
                       {/*{highlightSearchTerm(*/}
                       {/*  truncateString(request.assignedTo, 15),*/}
                       {/*  filterBySearch,*/}
