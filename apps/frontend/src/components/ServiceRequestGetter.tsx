@@ -502,7 +502,7 @@ export function ServiceRequestGetter() {
                           handleStatusChange(e, request.serviceID)
                         }
                         onClick={(e) => e.stopPropagation()}
-                        className="border border-gray-300 rounded px-3 py-1 text-center"
+                        className="border bg-gray-50 border-gray-300 rounded px-3 py-1 text-center"
                       >
                         {statusOptions.map((option) => (
                           <option

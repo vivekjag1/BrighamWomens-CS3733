@@ -21,7 +21,7 @@ import CheckIcon from "@mui/icons-material/Check";
 
 const initialState: MedicalDeviceDelivery = {
   deviceType: "",
-  quantity: 0,
+  quantity: 1,
   serviceRequest: {
     requestingUsername: "",
     location: "",
@@ -253,7 +253,7 @@ export function MedicalDeviceForm() {
                 type="number"
                 value={medicalDeviceDelivery.quantity.toString()}
                 InputProps={{
-                  inputProps: { min: 0 },
+                  inputProps: { min: 1 },
                 }}
                 onChange={(e) =>
                   setMedicalDeviceDelivery({
