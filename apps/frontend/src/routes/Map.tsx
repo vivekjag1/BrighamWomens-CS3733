@@ -85,6 +85,7 @@ function Map() {
         nodes={nodes}
         setPathNodeObject={setPathNodeObject}
         pathNodeObject={pathNodeObject}
+        setActiveFloor={setActiveFloor}
       />
     );
 
