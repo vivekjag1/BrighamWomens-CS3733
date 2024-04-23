@@ -28,6 +28,7 @@ const MapEditImage = (props: {
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
+  const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
   const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
@@ -38,6 +39,14 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
+
+  useEffect(() => {
+    const initialColors = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialColors.set(nodeID, MapStyling.nodeColor);
+    });
+    setNodeColors(initialColors);
+  }, [tempNodes]);
 
   useEffect(() => {
     const initialRadii = new Map();
@@ -115,14 +124,18 @@ const MapEditImage = (props: {
   }
   function handleMouseEnter(nodeID: string) {
     setNodeRadii((prevRadii) =>
-      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.7),
+      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
     );
+    setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
   }
 
   function handleMouseLeave(nodeID: string) {
     setNodeRadii((prevRadii) =>
       new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
     );
+    setNodeColors((prevColors) =>
+      new Map(prevColors).set(nodeID, MapStyling.nodeColor),
+    ); // Reset color on mouse leave
   }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
@@ -226,12 +239,20 @@ const MapEditImage = (props: {
                 cy={node.ycoord}
                 onMouseEnter={() => handleMouseEnter(node.nodeID)}
                 onMouseLeave={() => handleMouseLeave(node.nodeID)}
-                onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                fill={
-                  node.nodeID === selectedNodeId ? "red" : MapStyling.nodeColor
+                onPointerDown={(e: React.PointerEvent<SVGCircleElement>) =>
+                  handlePointerDown(e, node.nodeID)
                 }
-                onClick={(e) => nodeClicked(e, node.nodeID)}
+                onPointerMove={(e: React.PointerEvent<SVGCircleElement>) =>
+                  handlePointerMove(e, node.nodeID)
+                }
+                fill={
+                  node.nodeID === selectedNodeId
+                    ? "red"
+                    : nodeColors.get(node.nodeID) || MapStyling.nodeColor
+                }
+                onClick={(e: React.MouseEvent<SVGCircleElement>) =>
+                  nodeClicked(e, node.nodeID)
+                }
                 style={{ cursor: "pointer" }}
               />
             ))}
