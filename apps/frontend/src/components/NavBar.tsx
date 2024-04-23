@@ -12,6 +12,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
+import "../../src/styles/animatedUnderline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
