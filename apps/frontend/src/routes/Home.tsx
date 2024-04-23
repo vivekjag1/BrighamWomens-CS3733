@@ -64,6 +64,15 @@ function Home() {
       .catch(console.error);
   }
 
+  function handleClear(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setActiveFloor(DEFAULT_FLOOR);
+    setPath(INITIAL_PATH);
+    setStartNode("");
+    setEndNodeID("");
+    setAlgorithm("A-Star");
+  }
+
   function setStartNode(id: string) {
     setStartNodeID(id);
   }
@@ -115,6 +124,7 @@ function Home() {
           algorithm={algorithm}
           algorithmSetter={setAlgo}
           onSubmit={handleSubmit}
+          onClear={handleClear}
         />
       </div>
       <div className="absolute bottom-[2%] right-[1.5%]">

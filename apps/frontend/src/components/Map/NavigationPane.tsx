@@ -9,6 +9,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { IconButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon.ts";
+import CustomClearButtonSmall from "../CustomClearButtonSmall.tsx";
 
 interface NavigationPaneProps {
   nodes: GraphNode[];
@@ -19,13 +20,21 @@ interface NavigationPaneProps {
   algorithm: string;
   algorithmSetter: (algorithm: string) => void;
   onSubmit: FormEventHandler;
+  onClear: FormEventHandler;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
+  // function reset(){
+  //   props.startNodeIDSetter('');
+  //   props.endNodeIDSetter('');
+  //
+  // }
+
   return (
     <div>
       <form
         onSubmit={props.onSubmit}
+        onReset={props.onClear}
         className="flex flex-col gap-5 border-5 p-3 bg-white rounded-2xl shadow-xl"
       >
         <h2 className="text-2xl font-extralight text-secondary pl-2">
@@ -75,6 +84,9 @@ function NavigationPane(props: NavigationPaneProps) {
             <IconButton className="h-[40px]">
               <SwapVertIcon />
             </IconButton>
+          </div>
+          <div className="flex justify-end mb-[-0.1rem]">
+            <CustomClearButtonSmall type="reset" />
           </div>
         </div>
       </form>
