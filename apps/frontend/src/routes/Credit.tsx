@@ -13,6 +13,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 import CreditCard from "../components/CreditCard.tsx";
 import webstormImage from "../../assets/webstormpics.png";
+import githubImage from "../../assets/githubpics.png";
+import taigaImage from "../../assets/taigapics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -31,13 +33,13 @@ const tools = [
   },
   {
     name: "GitHub ",
-    imageSrc: webstormImage,
+    imageSrc: githubImage,
     url: "https://github.com",
     urlName: "Git Hub Link",
   },
   {
     name: "Taiga ",
-    imageSrc: webstormImage,
+    imageSrc: taigaImage,
     url: "https://taiga.io",
     urlName: "Taiga Link",
   },
