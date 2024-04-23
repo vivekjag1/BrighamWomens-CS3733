@@ -1,4 +1,4 @@
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 import { getFloorNumber } from "../../common/PathUtilities.ts";
 import DashedPolyline from "./DashedPolyline.tsx";
 import ClickableCircle from "./ClickableCircle.tsx";
@@ -11,14 +11,14 @@ import LocationMarker from "./LocationMarker.tsx";
 
 interface mapProps {
   activeFloor: number;
-  nodes: GraphNode[];
-  path: GraphNode[];
+  nodes: Node[];
+  path: Node[];
   setFields: (nodeID: string) => void;
 }
 
 function Map(props: mapProps) {
   const map = getFloorMap(props.activeFloor);
-  const nodes: GraphNode[] = filterNodes(props.nodes, props.activeFloor);
+  const nodes: Node[] = filterNodes(props.nodes, props.activeFloor);
   const polylines = getPolylines(props.path, props.activeFloor);
 
   const polylineElements = polylines.map((polyline) => (
@@ -45,9 +45,11 @@ function Map(props: mapProps) {
     );
   })();
 
+  console.log(props.path, props.activeFloor);
   const length = props.path.length;
   const endMarkerElement = (() => {
-    return parseInt(props.path[length - 1].floor) === props.activeFloor ? (
+    return getFloorNumber(props.path[length - 1].floor) ===
+      props.activeFloor ? (
       <LocationMarker
         x={parseInt(props.path[length - 1].xcoord)}
         y={parseInt(props.path[length - 1].ycoord)}
@@ -73,14 +75,14 @@ function Map(props: mapProps) {
 }
 
 // Filters out nodes that do not apply to the current floor
-function filterNodes(nodes: GraphNode[], activeFloor: number): GraphNode[] {
+function filterNodes(nodes: Node[], activeFloor: number): Node[] {
   return nodes.filter((node) => getFloorNumber(node.floor) === activeFloor);
 }
 
 // Return an array of strings, where each string represents the list of points needed to draw one segment of a path
-function getPolylines(path: GraphNode[], activeFloor: number): string[] {
+function getPolylines(path: Node[], activeFloor: number): string[] {
   // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
-  const splitPaths: GraphNode[][] = [];
+  const splitPaths: Node[][] = [];
   let startIndex: number = 0,
     endIndex: number = 0;
   for (let i = 0, length = path.length; i < length - 1; i++) {
@@ -94,8 +96,7 @@ function getPolylines(path: GraphNode[], activeFloor: number): string[] {
 
   // Filter out sub-arrays with nodes that do not match the active floor.
   const filteredSplitPaths = splitPaths.filter(
-    (splitPath: GraphNode[]) =>
-      getFloorNumber(splitPath[0].floor) === activeFloor,
+    (splitPath: Node[]) => getFloorNumber(splitPath[0].floor) === activeFloor,
   );
 
   // Generate instructions to draw polyline(s) corresponding to the active floor

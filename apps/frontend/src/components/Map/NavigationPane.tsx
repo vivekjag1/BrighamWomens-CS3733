@@ -1,5 +1,5 @@
 import { CSSProperties, FormEventHandler, SyntheticEvent } from "react";
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 import NodeDropdown from "./NodeDropdown.tsx";
 import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
 import NavigationButton from "./NavigationButton.tsx";
@@ -11,7 +11,7 @@ import { IconButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon.ts";
 
 interface NavigationPaneProps {
-  nodes: GraphNode[];
+  nodes: Node[];
   startNodeID: string;
   startNodeIDSetter: (id: string) => void;
   endNodeID: string;

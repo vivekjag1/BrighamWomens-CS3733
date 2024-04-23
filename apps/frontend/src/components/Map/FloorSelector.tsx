@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getFloorNumber } from "../../common/PathUtilities.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon";
 import "../../styles/FloorSelector.css";
@@ -8,7 +8,7 @@ import "../../styles/FloorSelector.css";
 interface floorSelectorProps {
   onClick: (x: number) => void;
   activeFloor: number;
-  path: GraphNode[];
+  path: Node[];
 }
 
 function FloorSelector(props: floorSelectorProps) {
@@ -76,7 +76,7 @@ function FloorSelector(props: floorSelectorProps) {
 }
 
 // Gets the floors involved in a path
-function getFloorsInPath(path: GraphNode[]): number[] {
+function getFloorsInPath(path: Node[]): number[] {
   const relevantFloors: number[] = [];
   for (let i = 0, length = path.length; i < length; i++) {
     const currentFloorNumber: number = getFloorNumber(path[i].floor);

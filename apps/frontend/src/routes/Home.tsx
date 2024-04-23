@@ -1,6 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import Map from "../components/Map/Map.tsx";
@@ -12,8 +12,8 @@ import { getFloorNumber } from "../common/PathUtilities.ts";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
-  const [nodes, setNodes] = useState<GraphNode[]>(INITIAL_PATH);
-  const [path, setPath] = useState<GraphNode[]>(INITIAL_PATH);
+  const [nodes, setNodes] = useState<Node[]>(INITIAL_PATH);
+  const [path, setPath] = useState<Node[]>(INITIAL_PATH);
   const [startNodeID, setStartNodeID] = useState(nodes[0].nodeID);
   const [endNodeID, setEndNodeID] = useState(nodes[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
@@ -142,12 +142,57 @@ const contentStyles = {
 } as const;
 
 const DEFAULT_FLOOR: number = 1;
-const INITIAL_PATH: GraphNode[] = [
-  new GraphNode("0", "0", "0", "L2", "", "", "", ""),
-  new GraphNode("0", "0", "0", "L1", "", "", "", ""),
-  new GraphNode("0", "0", "0", "1", "", "", "", ""),
-  new GraphNode("0", "0", "0", "2", "", "", "", ""),
-  new GraphNode("0", "0", "0", "3", "", "", "", ""),
+const INITIAL_PATH: Node[] = [
+  {
+    nodeID: "0",
+    xcoord: "0",
+    ycoord: "0",
+    floor: "L2",
+    building: "",
+    nodeType: "",
+    longName: "",
+    shortName: "",
+  },
+  {
+    nodeID: "0",
+    xcoord: "0",
+    ycoord: "0",
+    floor: "L1",
+    building: "",
+    nodeType: "",
+    longName: "",
+    shortName: "",
+  },
+  {
+    nodeID: "0",
+    xcoord: "0",
+    ycoord: "0",
+    floor: "1",
+    building: "",
+    nodeType: "",
+    longName: "",
+    shortName: "",
+  },
+  {
+    nodeID: "0",
+    xcoord: "0",
+    ycoord: "0",
+    floor: "2",
+    building: "",
+    nodeType: "",
+    longName: "",
+    shortName: "",
+  },
+  {
+    nodeID: "0",
+    xcoord: "0",
+    ycoord: "0",
+    floor: "3",
+    building: "",
+    nodeType: "",
+    longName: "",
+    shortName: "",
+  },
 ];
 
 export default Home;
