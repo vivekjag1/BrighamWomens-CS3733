@@ -3,6 +3,9 @@ import { ReactNode } from "react";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
   "&:last-child": {
     padding: 0,
     paddingBottom: 0,
@@ -39,7 +42,7 @@ export function FormContainer({ imgPath, alt, children }: FormContainerProps) {
                 <img
                   src={imgPath}
                   alt={alt}
-                  className="w-[40rem] h-[750px] object-cover"
+                  className="w-[40rem] h-[700px] object-cover"
                 />
               </div>
             </CustomCardContent>
