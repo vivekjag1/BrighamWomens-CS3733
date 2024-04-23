@@ -12,6 +12,7 @@ interface mapProps {
   activeFloor: number;
   nodes: GraphNode[];
   path: GraphNode[];
+  setFields: (nodeID: string) => void;
 }
 
 function Map(props: mapProps) {
@@ -23,7 +24,12 @@ function Map(props: mapProps) {
     <DashedPolyline points={polyline} />
   ));
   const nodeElements = nodes.map((node) => (
-    <ClickableCircle x={node.xcoord} y={node.ycoord} />
+    <ClickableCircle
+      x={node.xcoord}
+      y={node.ycoord}
+      id={node.nodeID}
+      onClick={() => props.setFields(node.nodeID)}
+    />
   ));
 
   return (

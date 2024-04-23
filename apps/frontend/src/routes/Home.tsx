@@ -76,6 +76,14 @@ function Home() {
     setAlgorithm(algorithm);
   }
 
+  function setFields(nodeID: string) {
+    if (startNodeID === "0") {
+      setStartNodeID(nodeID);
+    } else {
+      setEndNodeID(nodeID);
+    }
+  }
+
   return (
     <div className="relative bg-offwhite">
       <TransformWrapper
@@ -89,7 +97,12 @@ function Home() {
           wrapperStyle={wrapperStyles}
           contentStyle={contentStyles}
         >
-          <Map activeFloor={activeFloor} nodes={nodes} path={path} />
+          <Map
+            activeFloor={activeFloor}
+            nodes={nodes}
+            path={path}
+            setFields={setFields}
+          />
         </TransformComponent>
       </TransformWrapper>
       <div className="absolute top-[1%] left-[1%]">
