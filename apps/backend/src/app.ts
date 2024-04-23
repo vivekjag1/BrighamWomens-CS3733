@@ -22,6 +22,8 @@ import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
 import updateNodes from "./routes/map/updateNodes.ts";
 import handleEmployees from "./routes/handleEmployees.ts";
 import employeeDownload from "./routes/employeeDownload.ts";
+import createNode from "./routes/map/createNode.ts";
+import countNodes from "./routes/map/CountNodes.ts";
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear
@@ -70,6 +72,8 @@ app.use(APIEndpoints.employeeGetRequest, handleEmployees);
 app.use(APIEndpoints.employeeDownload, employeeDownload);
 app.use(APIEndpoints.deleteEmployee, deleteUser);
 app.use(APIEndpoints.makeEmployee, createUser);
+app.use(APIEndpoints.countNodes, countNodes);
+app.use(APIEndpoints.createNode, createNode);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

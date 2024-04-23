@@ -9,6 +9,8 @@ import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
 import AddElementToolTip from "../components/AddElementToolTip.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 
 const defaultFloor: number = 1;
 
@@ -142,12 +144,6 @@ function MapEdit() {
     }
   }
 
-  // function addNode(node: Node) {
-  //   const tempNodes = new Map(nodes);
-  //   tempNodes.set(node.nodeID, node);
-  //   setNodes(tempNodes);
-  // }
-  //
   function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
@@ -211,18 +207,29 @@ function MapEdit() {
 
   async function handleSave() {
     token = await getAccessTokenSilently();
-    if (!selectedNodeID) return;
-    await axios
-      .patch(APIEndpoints.updateNodes, nodes.get(selectedNodeID), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        setNodeSaved(true);
-        showToast("Node updated successfully!", "success");
-      })
-      .catch(() => showToast("There was an issue updating this node", "error"));
+    if (nodes.get(selectedNodeID!)!.shortName === "") {
+      showToast("Please fill in a node ID!", "error");
+      return;
+    }
+    // const sendToBE = {
+    //   nodeID: selectedNodeID,
+    // };
+    const nodesWithSameID = await MakeProtectedGetRequest(
+      APIEndpoints.countNodes,
+      token,
+    );
+    const numNodesInDb = nodesWithSameID.data["numNodes"];
+    console.log("hehehe", nodesWithSameID);
+
+    const node = nodes.get(selectedNodeID!);
+    //cut first 8 characters
+    let numNode: number = numNodesInDb + 1;
+    console.log(numNode);
+    numNode = nodesWithSameID.data["numNodes"] + 1;
+    console.log(numNode);
+    node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
+    console.log(node);
+    await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
   }
 
   const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
@@ -250,7 +257,7 @@ function MapEdit() {
     const building = "";
     const nodeType = "";
     const longName = "";
-    const shortName = nodeID;
+    const shortName = "";
 
     setNumUserNodes(numUserNodes + 1);
 
