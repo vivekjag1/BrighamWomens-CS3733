@@ -1,11 +1,11 @@
 import { Graph } from "./Graph.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 
 export interface Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: GraphNode[];
-  getPath(): GraphNode[];
-  createPath(startNodeID: string, endNodeID: string): GraphNode[];
+  path: Node[];
+  getPath(): Node[];
+  createPath(startNodeID: string, endNodeID: string): Node[];
 }
