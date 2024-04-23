@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { ServiceRequest } from "database";
 import dayjs from "dayjs";
@@ -12,6 +11,8 @@ import CustomTextField from "./CustomTextField.tsx";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+
 import {
   Table,
   TableBody,
@@ -113,15 +114,12 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.patch(
+      const response = await MakeProtectedPatchRequest(
         APIEndpoints.servicePutRequests,
         updateData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        token,
       );
+
       console.log("Status updated successfully", response.data);
       showToast("Status updated successfully!", "success");
     } catch (error) {
@@ -155,14 +153,10 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.patch(
+      const response = await MakeProtectedPatchRequest(
         APIEndpoints.servicePutRequests,
         updateData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        token,
       );
       console.log("Employee updated successfully", response.data);
       showToast("Assigned employee updated successfully!", "success");

@@ -113,7 +113,6 @@ function ServiceFilterDropdown({
       }
     }
     fetchData();
-     
   }, [getAccessTokenSilently]);
 
   return (

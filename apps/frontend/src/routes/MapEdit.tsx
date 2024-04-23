@@ -11,6 +11,7 @@ import { useToast } from "../components/useToast.tsx";
 import AddElementToolTip from "../components/AddElementToolTip.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 
 const defaultFloor: number = 1;
 
@@ -252,11 +253,7 @@ function MapEdit() {
     const node = nodes.get(selectedNodeID!);
     console.log(node);
     if (node!.nodeID.substring(0, 8) != "userNode") {
-      await axios.patch(APIEndpoints.updateNodes, node, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
     } else {
       //cut first 8 characters
 
