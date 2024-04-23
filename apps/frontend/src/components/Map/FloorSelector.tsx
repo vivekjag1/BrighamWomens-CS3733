@@ -29,65 +29,45 @@ function FloorSelector(props: floorSelectorProps) {
       <ToggleButton
         sx={ToggleButtonStyles}
         value="3"
+        disabled={!relevantFloors.includes(3)}
         selected={props.activeFloor === 3}
         onClick={() => props.onClick(3)}
-        className={
-          relevantFloors.includes(3) && props.activeFloor != 3
-            ? "PulseAnimation"
-            : ""
-        }
       >
         3
       </ToggleButton>
       <ToggleButton
         sx={ToggleButtonStyles}
         value="2"
+        disabled={!relevantFloors.includes(2)}
         selected={props.activeFloor === 2}
         onClick={() => props.onClick(2)}
-        className={
-          relevantFloors.includes(2) && props.activeFloor != 2
-            ? "PulseAnimation"
-            : ""
-        }
       >
         2
       </ToggleButton>
       <ToggleButton
         sx={ToggleButtonStyles}
         value="1"
+        disabled={!relevantFloors.includes(1)}
         selected={props.activeFloor === 1}
         onClick={() => props.onClick(1)}
-        className={
-          relevantFloors.includes(1) && props.activeFloor != 1
-            ? "PulseAnimation"
-            : ""
-        }
       >
         1
       </ToggleButton>
       <ToggleButton
         sx={ToggleButtonStyles}
         value="-1"
+        disabled={!relevantFloors.includes(-1)}
         selected={props.activeFloor === -1}
         onClick={() => props.onClick(-1)}
-        className={
-          relevantFloors.includes(-1) && props.activeFloor != -1
-            ? "PulseAnimation"
-            : ""
-        }
       >
         L1
       </ToggleButton>
       <ToggleButton
         sx={ToggleButtonStyles}
         value="-2"
+        disabled={!relevantFloors.includes(-2)}
         selected={props.activeFloor === -2}
         onClick={() => props.onClick(-2)}
-        className={
-          relevantFloors.includes(-2) && props.activeFloor != -2
-            ? "PulseAnimation"
-            : ""
-        }
       >
         L2
       </ToggleButton>

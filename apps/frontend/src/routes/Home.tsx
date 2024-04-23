@@ -130,11 +130,11 @@ const contentStyles = {
 
 const DEFAULT_FLOOR: number = 1;
 const INITIAL_PATH: GraphNode[] = [
-  new GraphNode("0", "0", "0", "", "", "", "", ""),
-  new GraphNode("0", "0", "0", "", "", "", "", ""),
-  new GraphNode("0", "0", "0", "", "", "", "", ""),
-  new GraphNode("0", "0", "0", "", "", "", "", ""),
-  new GraphNode("0", "0", "0", "", "", "", "", ""),
+  new GraphNode("0", "0", "0", "L2", "", "", "", ""),
+  new GraphNode("0", "0", "0", "L1", "", "", "", ""),
+  new GraphNode("0", "0", "0", "1", "", "", "", ""),
+  new GraphNode("0", "0", "0", "2", "", "", "", ""),
+  new GraphNode("0", "0", "0", "3", "", "", "", ""),
 ];
 
 export default Home;
