@@ -1,12 +1,12 @@
 import { Path } from "./Path.ts";
 import { Graph } from "./Graph.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 
 export class BFSPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: GraphNode[];
+  path: Node[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
     this.startNodeID = startNodeID;
@@ -15,12 +15,12 @@ export class BFSPath implements Path {
     this.path = this.createPath(startNodeID, endNodeID);
   }
 
-  getPath(): GraphNode[] {
+  getPath(): Node[] {
     return this.path;
   }
 
   //Returns the shortest path between startNode and endNode using a Breadth First Search
-  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
+  public createPath(startNodeID: string, endNodeID: string): Node[] {
     //the queue of nodes that still need to be searched
     const searchQueue: string[] = [startNodeID];
     //nodes already searched
@@ -28,7 +28,7 @@ export class BFSPath implements Path {
     //organized as (node, parent node)
     const parentNodes: Map<string, string> = new Map();
     let searching: boolean = true;
-    const path: GraphNode[] = [];
+    const path: Node[] = [];
 
     //As long as there are nodes left to search and we haven't found the end node continue searching
     while (searchQueue.length > 0 && searching) {

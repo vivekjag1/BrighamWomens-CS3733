@@ -1,11 +1,11 @@
 import React, { CSSProperties, SyntheticEvent } from "react";
-import { GraphNode } from "common/src/GraphNode";
+import { Node } from "database";
 import Autocomplete from "@mui/material/Autocomplete";
 import { TextField } from "@mui/material";
 import { nodeOption } from "../../common/NodeOption.ts";
 
 interface NodeDropdownProps {
-  nodes: GraphNode[];
+  nodes: Node[];
   name: string;
   label: string;
   sx: CSSProperties;
