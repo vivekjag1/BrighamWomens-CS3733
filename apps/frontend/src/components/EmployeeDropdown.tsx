@@ -1,6 +1,6 @@
-// import React, { useState } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import { MenuItem, SxProps, Theme } from "@mui/material";
+import React from "react";
+import Autocomplete /*, { createFilterOptions }*/ from "@mui/material/Autocomplete";
+import { Box, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
 // import {EmployeeType} from "common/src/EmployeeType.ts";
@@ -12,6 +12,7 @@ interface EmployeeDropdownProps {
   sx?: SxProps<Theme>;
   className?: string;
   disabled: boolean;
+  disableClearable?: boolean;
   // employees: EmployeeType[];
 }
 
@@ -22,6 +23,7 @@ const EmployeeDropdown = ({
   sx,
   className,
   disabled,
+  disableClearable,
   // employees,
 }: EmployeeDropdownProps) => {
   // const [employees, setEmployees] = useState<EmployeeType[]>([]);
@@ -37,15 +39,34 @@ const EmployeeDropdown = ({
     onChange(newValue ? newValue.label : "");
   };
 
-  const selectedValue = employees.find((employee) => employee.name === value)
-    ? { label: value }
-    : null;
+  const options = employees.map((employee) => ({
+    label: employee.name,
+    profilePicture: employee.profilePicture,
+  }));
+
+  // const selectedValue = options.find((option) => option.label === value)
+  //   ? { label: value }
+  //   : null;
+
+  const selectedValue =
+    value === "Unassigned"
+      ? { label: "Unassigned" }
+      : value
+        ? options.find((option) => option.label === value) || null
+        : null;
 
   return (
     <Autocomplete
       disablePortal
       id="combo-box-location"
-      options={employees.map((employee) => ({ label: employee.name }))}
+      options={options}
+      getOptionLabel={(option) => option.label}
+      ListboxProps={{
+        style: {
+          maxHeight: "15rem",
+          overflowY: "auto",
+        },
+      }}
       sx={{
         ...sx,
         "& .MuiAutocomplete-input": {
@@ -58,6 +79,7 @@ const EmployeeDropdown = ({
       value={selectedValue}
       onChange={handleChange}
       hidden={disabled}
+      disableClearable={disableClearable}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -74,18 +96,29 @@ const EmployeeDropdown = ({
         />
       )}
       // smaller, wrap, poppins font
-      renderOption={(props, option) => (
-        <MenuItem
-          {...props}
-          style={{
-            fontSize: ".8rem",
-            whiteSpace: "pre-wrap",
-            fontFamily: "Poppins, sans-serif",
-          }}
-        >
-          {option.label}
-        </MenuItem>
-      )}
+      renderOption={(props, option) => {
+        const employee = employees.find(
+          (employee) => employee.name === option.label,
+        );
+
+        return (
+          <Box
+            component="li"
+            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            {...props}
+          >
+            {employee && employee.profilePicture && (
+              <img
+                className="w-10 h-10 rounded-full"
+                loading="lazy"
+                src={`../../assets/employees/${employee.profilePicture}.jpeg`}
+                alt={`${option.label} profile`}
+              />
+            )}
+            {option.label}
+          </Box>
+        );
+      }}
     />
   );
 };

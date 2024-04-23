@@ -71,13 +71,15 @@ export async function checkDBStatus() {
 }
 
 export async function populateEmployeeDB(employeeData: string[][]) {
+  let i = 0;
   const employees = employeeData.map((data) => ({
+    employeeID: i++,
     name: data[0],
     userName: data[1],
     password: data[2],
     position: data[3],
     role: data[4],
-    profilePicture: data[5],
+    profilePicture: data[5] || "default-photo",
     email: data[6],
   }));
   employees.pop();

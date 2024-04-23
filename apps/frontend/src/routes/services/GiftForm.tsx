@@ -9,16 +9,17 @@ import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import FormContainer from "../../components/FormContainer.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
-import CustomClearButton from "../../components/CustomClearButton.tsx";
-import CustomSubmitButton from "../../components/CustomSubmitButton.tsx";
 import { GiftDeliveryObject } from "common/src/GiftDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ServiceImages from "../../components/ServiceImages.tsx";
-import giftPlaceholder from "../../../assets/gift-placeholder.jpg";
+import giftPlaceholder from "../../../assets/giftdelivery.jpg";
+import ButtonRed from "../../components/ButtonRed.tsx";
+import ButtonBlue from "../../components/ButtonBlue.tsx";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
 const initialState: GiftDeliveryObject = {
   giftType: "",
@@ -30,7 +31,7 @@ const initialState: GiftDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -97,7 +98,7 @@ export function GiftForm(): JSX.Element {
 
   return (
     <div className="bg-offwhite">
-      <FormContainer>
+      <FormContainer imgPath={giftPlaceholder} alt={"Gift Delivery"}>
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pb-4 pt-4">
             Gift Delivery Request
@@ -108,19 +109,20 @@ export function GiftForm(): JSX.Element {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={giftDeliveryRequest.serviceRequest.requestingUsername}
-                onChange={(e) =>
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setGiftDeliveryRequest({
                     ...giftDeliveryRequest,
                     serviceRequest: {
                       ...giftDeliveryRequest.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
                   })
                 }
-                required
+                disabled={false}
               />
 
               <NodeDropdown
@@ -214,6 +216,8 @@ export function GiftForm(): JSX.Element {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setGiftDeliveryRequest({
@@ -270,19 +274,27 @@ export function GiftForm(): JSX.Element {
                 />
               </FormControl>
 
-              <div className="flex justify-between w-full mt-4">
-                <CustomClearButton onClick={clear}>Clear</CustomClearButton>
-
-                <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+              <div className="flex justify-around w-full mt-4">
+                <ButtonRed
+                  onClick={clear}
+                  endIcon={<ClearIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Clear
+                </ButtonRed>
+                <ButtonBlue
+                  onClick={submit}
+                  endIcon={<CheckIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Submit
+                </ButtonBlue>
               </div>
               <div className="text-center mt-4">
                 <p>Made by Matthew and Sulaiman</p>
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-[40rem]">
-          <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
         </div>
       </FormContainer>
     </div>

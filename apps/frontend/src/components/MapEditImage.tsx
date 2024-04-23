@@ -4,9 +4,8 @@ import firstFloor from "../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import "../styles/Map.css";
 import MapZoomButtons from "./MapZoomButtons.tsx";
-import { FormStyling, MapStyling } from "../common/StylingCommon.ts";
+import { MapStyling } from "../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
@@ -26,6 +25,11 @@ const MapEditImage = (props: {
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
+  const selectedNodeID = useContext(MapContext).selectedNodeID;
+  const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+
+  const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
+  //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
@@ -36,8 +40,6 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
-
-  const selectedNodeID = useContext(MapContext).selectedNodeID;
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -90,6 +92,14 @@ const MapEditImage = (props: {
   ) {
     event.stopPropagation();
     props.onNodeClick(nodeID);
+    setSelectedNodeID(nodeID);
+
+    // Toggle flickering effect
+    if (flickeringNode === nodeID) {
+      setFlickeringNode(null);
+    } else {
+      setFlickeringNode(nodeID);
+    }
   }
 
   function handlePointerDown(
@@ -122,13 +132,11 @@ const MapEditImage = (props: {
     const y = e.clientY - bbox.top;
     if (position.active) {
       const updatedNode: Node = nodes.get(nodeID)!;
-      updatedNode.xcoord = (
-        parseFloat(updatedNode.xcoord) +
-        (x - position.offset.x)
+      updatedNode.xcoord = Math.round(
+        parseFloat(updatedNode.xcoord) + (x - position.offset.x),
       ).toString();
-      updatedNode.ycoord = (
-        parseFloat(updatedNode.ycoord) +
-        (y - position.offset.y)
+      updatedNode.ycoord = Math.round(
+        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
       ).toString();
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
@@ -136,9 +144,7 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div
-      className={`map-container z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}
-    >
+    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -193,7 +199,7 @@ const MapEditImage = (props: {
               {Array.from(nodes.values()).map((node) => (
                 <circle
                   key={node.nodeID}
-                  className={"node"}
+                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
                   r={MapStyling.nodeRadius}
                   cx={node.xcoord}
                   cy={node.ycoord}
@@ -201,7 +207,7 @@ const MapEditImage = (props: {
                   onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
                   fill={
                     selectedNodeID == node.nodeID
-                      ? FormStyling.clearColor
+                      ? MapStyling.edgeColor
                       : MapStyling.nodeColor
                   }
                   onClick={(e) => nodeClicked(e, node.nodeID)}

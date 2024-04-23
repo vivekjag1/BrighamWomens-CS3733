@@ -9,13 +9,15 @@ import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { EmployeeGetter } from "../components/EmployeeGetter.tsx";
-import Button from "@mui/material/Button";
-import UploadIcon from "@mui/icons-material/Upload";
-import DownloadIcon from "@mui/icons-material/Download";
+import ButtonBlue from "../components/ButtonBlue.tsx";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 
 const EmployeeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [uploadTriggered, setUploadTriggered] = useState<boolean>(false);
 
   useEffect(() => {
     const checkRole = async () => {
@@ -71,7 +73,8 @@ const EmployeeTable = () => {
           console.log("success");
           await makeUsers();
           showToast("Employee data uploaded!", "success");
-
+          setUploadTriggered(true);
+          setTimeout(() => setUploadTriggered(false), 500);
           location.reload();
         }
       } else {
@@ -88,7 +91,8 @@ const EmployeeTable = () => {
       const token = await getAccessTokenSilently();
       MakeProtectedGetRequest(APIEndpoints.makeEmployee, token);
     } catch (error) {
-      console.log(error);
+      console.log("user already exists!");
+      return;
     }
   }
 
@@ -107,46 +111,41 @@ const EmployeeTable = () => {
             <>
               <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-row items-center">
-                  <p className="mr-2 font-bold">Employees File:</p>
-                  <Button
-                    variant="contained"
+                  <ButtonBlue
                     component="label"
                     style={{
-                      backgroundColor: employeesFile ? "green" : "#012D5A",
+                      backgroundColor: employeesFile ? "green" : "",
                     }}
+                    endIcon={employeesFile ? undefined : <FileUploadIcon />}
                   >
-                    {employeesFile ? employeesFile.name : "Upload File"}
+                    {employeesFile ? employeesFile.name : "Employee File"}
                     <input
-                      id="importNodeFile"
+                      id="importNodeFile" //TODO: remove/rename these
                       type="file"
                       accept=".csv"
                       name="Import Node File"
                       onChange={employeeFileChange}
                       hidden
                     />
-                  </Button>
+                  </ButtonBlue>
                 </div>
               </div>
               <div className="flex flex-row items-center gap-x-2">
                 <div>
-                  <Button
-                    variant="contained"
+                  <ButtonBlue
                     onClick={uploadFiles}
-                    sx={{ backgroundColor: "#012D5A" }}
-                    endIcon={<UploadIcon />}
+                    endIcon={<CloudUploadIcon />}
                   >
-                    Upload Employee Data
-                  </Button>
+                    Upload
+                  </ButtonBlue>
                 </div>
                 <div>
-                  <Button
-                    variant="contained"
+                  <ButtonBlue
                     onClick={downloadFiles}
-                    sx={{ backgroundColor: "#012D5A" }}
-                    endIcon={<DownloadIcon />}
+                    endIcon={<CloudDownloadIcon />}
                   >
-                    Download Employee Data
-                  </Button>
+                    Download Data
+                  </ButtonBlue>
                 </div>
               </div>
             </>
@@ -155,7 +154,7 @@ const EmployeeTable = () => {
           <hr />
 
           <div className="flex flex-col items-center">
-            <EmployeeGetter />
+            <EmployeeGetter uploadTriggered={uploadTriggered} />
           </div>
         </div>
       </div>

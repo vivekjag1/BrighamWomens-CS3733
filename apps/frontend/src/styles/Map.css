@@ -1,7 +1,0 @@
-.map-container {
-  perspective: 1000px;
-}
-
-.map {
-  transform: rotateX(0deg);
-}

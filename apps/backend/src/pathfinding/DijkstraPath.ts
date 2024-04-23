@@ -49,6 +49,7 @@ export class DijkstraPath implements Path {
           path.unshift(nextNodeInPath);
           nextNodeInPath = parentsMap.get(nextNodeInPath.nodeID)!;
         }
+        path.unshift(nextNodeInPath);
         console.log("Djikstra (" + startNodeID + " -> " + endNodeID + "):");
         console.log(path);
       } else {

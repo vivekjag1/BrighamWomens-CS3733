@@ -11,13 +11,14 @@ import { useToast } from "../components/useToast.tsx";
 import AddElementToolTip from "../components/AddElementToolTip.tsx";
 
 const defaultFloor: number = 1;
-
+//merge changes to dev
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   selectedNodeID: string | undefined;
+  setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 export const MapContext = createContext<MapData>({
@@ -28,6 +29,8 @@ export const MapContext = createContext<MapData>({
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
   selectedNodeID: undefined,
+  // eslint-disable-next-line no-empty-function
+  setSelectedNodeID: () => {},
 });
 
 const userNodePrefix = "userNode";
@@ -46,7 +49,14 @@ function MapEdit() {
     undefined,
   );
 
-  const contextValue = { nodes, setNodes, edges, setEdges, selectedNodeID };
+  const contextValue = {
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    selectedNodeID,
+    setSelectedNodeID,
+  };
 
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
 
@@ -55,7 +65,7 @@ function MapEdit() {
 
   const { showToast } = useToast();
 
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
+  // const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -148,18 +158,62 @@ function MapEdit() {
   //   setNodes(tempNodes);
   // }
   //
-  function deleteNode() {
+  async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
+    console.log(selectedNodeID);
 
-    setSelectedNodeID(undefined);
-    setCachedNode(undefined);
-    setNodeSaved(false);
+    const selectedNodeEdges: Edge[] = edges.filter(
+      (value) =>
+        value.startNodeID == selectedNodeID ||
+        value.endNodeID == selectedNodeID,
+    );
+    console.log(selectedNodeEdges);
+    let tempRepairedEdges: Edge[] = [];
+    const tempNeighborNodesIDs: string[] = [];
+    for (let i = 0; i < selectedNodeEdges.length; i++) {
+      if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
+      } else {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
+      }
+    }
+    console.log(tempNeighborNodesIDs);
+    for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
+      for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
+        tempRepairedEdges.push({
+          edgeID: tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j],
+          startNodeID: tempNeighborNodesIDs[i],
+          endNodeID: tempNeighborNodesIDs[j],
+        });
+      }
+    }
+    console.log(tempRepairedEdges);
+    tempRepairedEdges = tempRepairedEdges.concat(edges);
+    setEdges(tempRepairedEdges);
+
+    const sendToDb = {
+      nodeID: selectedNodeID,
+    };
+    await axios.post(APIEndpoints.deleteNode, sendToDb);
   }
 
+  // function handleNodeClick(nodeID: string) {
+  //   if (cachedNode) {
+  //     if (cachedNode.nodeID == nodeID)
+  //       return; // same node pressed
+  //     else {
+  //       // different node pressed
+  //       if (!nodeSaved) updateNode(cachedNode);
+  //     }
+  //   }
+  //   setSelectedNodeID(nodeID);
+  //   setCachedNode(nodes.get(nodeID));
+  //   setNodeSaved(false);
+  // }
   function handleNodeClick(nodeID: string) {
     if (addingEdge) {
       if (!startEdgeNodeID) {
@@ -169,21 +223,18 @@ function MapEdit() {
         setStartEdgeNodeID(undefined);
       }
     } else {
-      if (cachedNode) {
-        if (cachedNode.nodeID == nodeID)
-          return; // same node pressed
-        else {
-          // different node pressed
-          if (!nodeSaved) updateNode(cachedNode);
+      if (selectedNodeID) {
+        // Update the node if changes were not saved
+        const unsavedNode = nodes.get(selectedNodeID);
+        if (unsavedNode) {
+          updateNode(unsavedNode);
         }
       }
 
       setSelectedNodeID(nodeID);
-      setCachedNode(nodes.get(nodeID));
       setNodeSaved(false);
     }
   }
-
   function handleAddNodeButtonClicked() {
     setAddingNode(!addingNode);
     setAddingEdge(false);
@@ -198,14 +249,26 @@ function MapEdit() {
     if (addingNode) {
       handleCreateNode(event);
     } else {
-      // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
+      if (selectedNodeID && !nodeSaved) {
+        // Prompt user to save changes
+        confirmSaveChanges(); // This function would handle the confirmation logic
+      } else {
+        // No unsaved changes or no node selected
+        setSelectedNodeID(undefined);
+        setNodeSaved(true); // Assume no changes need saving
       }
+    }
+  }
 
+  function confirmSaveChanges() {
+    // This could be a modal or simple confirmation box
+    if (
+      window.confirm("You have unsaved changes. Would you like to save them?")
+    ) {
+      handleSave();
+    } else {
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
+      setNodeSaved(true);
     }
   }
 
@@ -225,7 +288,7 @@ function MapEdit() {
       .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
-  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -270,6 +333,7 @@ function MapEdit() {
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
     setSelectedNodeID(nodeID);
+    await axios.post(APIEndpoints.createNode, newNode);
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
