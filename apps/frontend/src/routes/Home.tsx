@@ -15,8 +15,8 @@ function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
   const [nodes, setNodes] = useState<Node[]>(INITIAL_PATH);
   const [path, setPath] = useState<Node[]>(INITIAL_PATH);
-  const [startNodeID, setStartNodeID] = useState(nodes[0].nodeID);
-  const [endNodeID, setEndNodeID] = useState(nodes[0].nodeID);
+  const [startNodeID, setStartNodeID] = useState(INITIAL_PATH[0].nodeID);
+  const [endNodeID, setEndNodeID] = useState(INITIAL_PATH[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
 
@@ -67,13 +67,38 @@ function Home() {
       .catch(console.error);
   }
 
+  // Sequences an animation on floor selector based on the sequence of floors a user must go through
+  function updateGlowSequence(selectedFloor: number) {
+    if (glowSequence[0] == selectedFloor) {
+      const updatedGlowingFloors = glowSequence;
+      updatedGlowingFloors.shift();
+      setGlowSequence(updatedGlowingFloors);
+    }
+  }
+
+  // Resets pathfinding page
   function handleClear(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setActiveFloor(DEFAULT_FLOOR);
     setPath(INITIAL_PATH);
-    setStartNode("0");
-    setEndNodeID("0");
+    setStartNode(INITIAL_PATH[0].nodeID);
+    setEndNodeID(INITIAL_PATH[0].nodeID);
     setAlgorithm("A-Star");
+  }
+
+  // Swaps the start and end locations in navigation pane
+  function handleSwap() {
+    const prevStartNodeID = startNodeID;
+    setStartNodeID(endNodeID);
+    setEndNodeID(prevStartNodeID);
+  }
+
+  function handleNodeClick(nodeID: string) {
+    if (startNodeID === "") {
+      setStartNodeID(nodeID);
+    } else {
+      setEndNodeID(nodeID);
+    }
   }
 
   function setStartNode(id: string) {
@@ -86,22 +111,6 @@ function Home() {
 
   function setAlgo(algorithm: string) {
     setAlgorithm(algorithm);
-  }
-
-  function setFields(nodeID: string) {
-    if (startNodeID === "0") {
-      setStartNodeID(nodeID);
-    } else {
-      setEndNodeID(nodeID);
-    }
-  }
-
-  function updateGlowSequence(selectedFloor: number) {
-    if (glowSequence[0] == selectedFloor) {
-      const updatedGlowingFloors = glowSequence;
-      updatedGlowingFloors.shift();
-      setGlowSequence(updatedGlowingFloors);
-    }
   }
 
   return (
@@ -121,7 +130,7 @@ function Home() {
             activeFloor={activeFloor}
             nodes={nodes}
             path={path}
-            setFields={setFields}
+            onNodeClick={handleNodeClick}
             onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
           />
         </TransformComponent>
@@ -135,8 +144,9 @@ function Home() {
           endNodeIDSetter={setEndNode}
           algorithm={algorithm}
           algorithmSetter={setAlgo}
-          onSubmit={handleSubmit}
           onClear={handleClear}
+          onSwap={handleSwap}
+          onSubmit={handleSubmit}
         />
       </div>
       <div className="absolute bottom-[2%] right-[1.5%]">
@@ -168,7 +178,7 @@ const contentStyles = {
 const DEFAULT_FLOOR: number = 1;
 const INITIAL_PATH: Node[] = [
   {
-    nodeID: "A",
+    nodeID: "",
     xcoord: "0",
     ycoord: "0",
     floor: "L2",
@@ -178,7 +188,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "AB",
+    nodeID: "",
     xcoord: "0",
     ycoord: "0",
     floor: "L1",
@@ -188,7 +198,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "ABC",
+    nodeID: "",
     xcoord: "0",
     ycoord: "0",
     floor: "1",
@@ -198,7 +208,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "ABCD",
+    nodeID: "",
     xcoord: "0",
     ycoord: "0",
     floor: "2",
@@ -208,7 +218,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "ABCDE",
+    nodeID: "",
     xcoord: "0",
     ycoord: "0",
     floor: "3",

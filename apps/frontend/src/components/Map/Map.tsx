@@ -14,7 +14,7 @@ interface mapProps {
   activeFloor: number;
   nodes: Node[];
   path: Node[];
-  setFields: (nodeID: string) => void;
+  onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
 }
 
@@ -48,7 +48,7 @@ function Map(props: mapProps) {
       x={node.xcoord}
       y={node.ycoord}
       id={node.nodeID}
-      onClick={() => props.setFields(node.nodeID)}
+      onClick={() => props.onNodeClick(node.nodeID)}
     />
   ));
 

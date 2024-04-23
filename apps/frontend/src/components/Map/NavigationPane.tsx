@@ -19,17 +19,12 @@ interface NavigationPaneProps {
   endNodeIDSetter: (id: string) => void;
   algorithm: string;
   algorithmSetter: (algorithm: string) => void;
-  onSubmit: FormEventHandler;
   onClear: FormEventHandler;
+  onSwap: () => void;
+  onSubmit: FormEventHandler;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
-  // function reset(){
-  //   props.startNodeIDSetter('');
-  //   props.endNodeIDSetter('');
-  //
-  // }
-
   return (
     <div>
       <form
@@ -37,9 +32,6 @@ function NavigationPane(props: NavigationPaneProps) {
         onReset={props.onClear}
         className="flex flex-col gap-5 border-5 p-3 bg-white rounded-2xl shadow-xl"
       >
-        <h2 className="text-2xl font-extralight text-secondary pl-2">
-          Navigate
-        </h2>
         <div className="flex gap-4">
           <div className="flex flex-col text-[#012D5A]">
             <MyLocationIcon sx={IconStyles} />
@@ -81,7 +73,7 @@ function NavigationPane(props: NavigationPaneProps) {
             </div>
           </div>
           <div className="pt-[7%]">
-            <IconButton className="h-[40px]">
+            <IconButton className="h-[40px]" onClick={props.onSwap}>
               <SwapVertIcon />
             </IconButton>
           </div>
