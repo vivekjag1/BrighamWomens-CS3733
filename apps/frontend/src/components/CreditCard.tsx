@@ -3,7 +3,7 @@ import React from "react";
 interface CreditCardProps {
   imageSrc: string;
   name: string;
-  // link: string;
+  // url: string;
 }
 function CreditCard({ imageSrc, name }: CreditCardProps) {
   return (
