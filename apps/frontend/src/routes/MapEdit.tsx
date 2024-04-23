@@ -141,12 +141,18 @@ function MapEdit() {
   //   setNodes(tempNodes);
   // }
   //
-  function deleteNode() {
+  async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
+    console.log(selectedNodeID);
+    const sendToDb = {
+      nodeID: selectedNodeID,
+    };
+    await axios.post(APIEndpoints.deleteNode, sendToDb);
+    location.reload();
   }
 
   // function handleNodeClick(nodeID: string) {
@@ -235,7 +241,7 @@ function MapEdit() {
       .catch(() => showToast("There was an issue updating this node", "error"));
   }
 
-  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -280,6 +286,7 @@ function MapEdit() {
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
     setSelectedNodeID(nodeID);
+    await axios.post(APIEndpoints.createNode, newNode);
   };
 
   return (
