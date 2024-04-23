@@ -18,12 +18,12 @@ import griffinImage from "../../assets/employees/griffin-brown.jpeg";
 import taehaImage from "../../assets/employees/taeha-song.jpeg";
 import wongImage from "../../assets/employees/wilsonwong.jpg";
 // import FormContainer from "../components/FormContainer.tsx";
-import EmployeeCard from "../components/EmployeeCard.tsx";
 import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import ArrowIosForwardComponent from "../components/ArrowComponent.tsx";
 import { Link } from "react-router-dom";
 import paths from "../common/paths.tsx";
+import EmployeeCard from "../components/EmployeeCard.tsx";
 
 const employees = [
   { name: "Daniel Gorbunov ", role: "Lead SWE", imageSrc: danielImage },

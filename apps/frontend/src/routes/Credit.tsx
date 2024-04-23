@@ -10,6 +10,9 @@ import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
+import CreditCard from "../components/CreditCard.tsx";
+import webstormImage from "../../assets/webstormpics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -18,6 +21,39 @@ const CustomCardContent = styled(CardContent)({
     paddingBottom: 0,
   },
 });
+
+const tools = [
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: webstormImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+  { name: "Webstorm ", imageSrc: danielImage },
+];
 
 export default function Credit() {
   return (
@@ -69,6 +105,13 @@ export default function Credit() {
                   </p>
                   <br />
                   <hr className="pl-96 pr-96" />
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+                    {tools.map((tool, index) => (
+                      <div key={index}>
+                        <CreditCard name={tool.name} imageSrc={tool.imageSrc} />
+                      </div>
+                    ))}
+                  </div>
                   Tools
                   <br />
                   <br />
