@@ -44,7 +44,7 @@ function Map(props: mapProps) {
   ));
 
   const nodeElements = nodes.map((node) =>
-    node.xcoord != "0" && node.ycoord != "0" ? (
+    node.xcoord != 0 && node.ycoord != 0 ? (
       <ClickableCircle
         x={node.xcoord}
         y={node.ycoord}
@@ -59,8 +59,8 @@ function Map(props: mapProps) {
   const startMarkerElement = (() => {
     return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
       <LocationMarker
-        x={parseInt(props.path[0].xcoord)}
-        y={parseInt(props.path[0].ycoord)}
+        x={props.path[0].xcoord}
+        y={props.path[0].ycoord}
         color="green"
       />
     ) : (
@@ -71,8 +71,8 @@ function Map(props: mapProps) {
   const endMarkerElement = (() => {
     return getFloorNumber(props.path[lastIndex].floor) === props.activeFloor ? (
       <LocationMarker
-        x={parseInt(props.path[lastIndex].xcoord)}
-        y={parseInt(props.path[lastIndex].ycoord)}
+        x={props.path[lastIndex].xcoord}
+        y={props.path[lastIndex].ycoord}
         color="red"
       />
     ) : (
@@ -86,8 +86,8 @@ function Map(props: mapProps) {
     let xcoord: number = 0;
     let ycoord: number = 0;
     if (segment[0].nodeID != startNode.nodeID) {
-      xcoord = parseInt(segment[0].xcoord);
-      ycoord = parseInt(segment[0].ycoord);
+      xcoord = segment[0].xcoord;
+      ycoord = segment[0].ycoord;
       const indexSegmentStart: number = props.path.indexOf(segment[0]);
       const nextFloor: string = props.path[indexSegmentStart - 1].floor;
       elements.push(
@@ -100,8 +100,8 @@ function Map(props: mapProps) {
       );
     }
     if (segment[segment.length - 1].nodeID != endNode.nodeID) {
-      xcoord = parseInt(segment[segment.length - 1].xcoord);
-      ycoord = parseInt(segment[segment.length - 1].ycoord);
+      xcoord = segment[segment.length - 1].xcoord;
+      ycoord = segment[segment.length - 1].ycoord;
       const indexSegmentEnd: number = props.path.indexOf(
         segment[segment.length - 1],
       );

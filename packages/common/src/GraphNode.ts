@@ -1,13 +1,13 @@
 export class GraphNode {
   get _ycoord(): number {
-    return parseInt(this.ycoord);
+    return this.ycoord;
   }
   get _xcoord(): number {
-    return parseInt(this.xcoord);
+    return this.xcoord;
   }
   readonly nodeID: string;
-  readonly xcoord: string;
-  readonly ycoord: string;
+  readonly xcoord: number;
+  readonly ycoord: number;
   readonly floor: string;
   readonly building: string;
   readonly nodeType: string;
@@ -16,8 +16,8 @@ export class GraphNode {
 
   constructor(
     nodeID: string,
-    xcoord: string,
-    ycoord: string,
+    xcoord: number,
+    ycoord: number,
     floor: string,
     building: string,
     nodeType: string,

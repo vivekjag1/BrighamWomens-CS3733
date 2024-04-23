@@ -25,7 +25,7 @@ const buttonStyles = {
 
 function MapEditCard(props: {
   onSave: () => void;
-  updateNode: (field: keyof Node, value: string) => void;
+  updateNode: (field: keyof Node, value: string | number) => void;
   deleteNode: () => void;
 }) {
   const nodes = useContext(MapContext).nodes;
@@ -80,7 +80,7 @@ function MapEditCard(props: {
             <NodeParam
               value={nodes?.get(selectedNodeID ?? "")?.xcoord}
               onChange={(value) => {
-                props.updateNode("xcoord", value);
+                props.updateNode("xcoord", parseInt(value));
               }}
               sx={textFieldStyles_small}
               label="X"
@@ -90,7 +90,7 @@ function MapEditCard(props: {
             <NodeParam
               value={nodes?.get(selectedNodeID ?? "")?.ycoord}
               onChange={(value) => {
-                props.updateNode("ycoord", value);
+                props.updateNode("ycoord", parseInt(value));
               }}
               sx={textFieldStyles_small}
               label="Y"

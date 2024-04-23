@@ -191,8 +191,8 @@ const DEFAULT_FLOOR: number = 1;
 const INITIAL_PATH: Node[] = [
   {
     nodeID: "",
-    xcoord: "0",
-    ycoord: "0",
+    xcoord: 0,
+    ycoord: 0,
     floor: "L2",
     building: "",
     nodeType: "",
@@ -201,8 +201,8 @@ const INITIAL_PATH: Node[] = [
   },
   {
     nodeID: "",
-    xcoord: "0",
-    ycoord: "0",
+    xcoord: 0,
+    ycoord: 0,
     floor: "L1",
     building: "",
     nodeType: "",
@@ -211,8 +211,8 @@ const INITIAL_PATH: Node[] = [
   },
   {
     nodeID: "",
-    xcoord: "0",
-    ycoord: "0",
+    xcoord: 0,
+    ycoord: 0,
     floor: "1",
     building: "",
     nodeType: "",
@@ -221,8 +221,8 @@ const INITIAL_PATH: Node[] = [
   },
   {
     nodeID: "",
-    xcoord: "0",
-    ycoord: "0",
+    xcoord: 0,
+    ycoord: 0,
     floor: "2",
     building: "",
     nodeType: "",
@@ -231,8 +231,8 @@ const INITIAL_PATH: Node[] = [
   },
   {
     nodeID: "",
-    xcoord: "0",
-    ycoord: "0",
+    xcoord: 0,
+    ycoord: 0,
     floor: "3",
     building: "",
     nodeType: "",

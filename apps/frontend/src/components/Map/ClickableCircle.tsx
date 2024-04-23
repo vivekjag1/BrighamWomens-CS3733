@@ -1,8 +1,8 @@
 import { MapStyles } from "../../common/StylingCommon";
 
 interface ClickableCircleProps {
-  x: string;
-  y: string;
+  x: number;
+  y: number;
   id: string;
   onClick: (nodeID: string) => void;
 }

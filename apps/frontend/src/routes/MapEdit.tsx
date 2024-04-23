@@ -95,10 +95,7 @@ function MapEdit() {
           APIEndpoints.mapGetEdges,
           window.location.origin,
         );
-        // const numNodes = await MakeProtectedGetRequest(
-        //   APIEndpoints.countNodes,
-        //   token,
-        // );
+
         nodeURL.search = params.toString();
 
         const fetchedNodes: Node[] = (await axios.get(nodeURL.toString())).data;
@@ -135,7 +132,8 @@ function MapEdit() {
     fetchData();
   }, [activeFloor, getAccessTokenSilently]);
 
-  function updateNodeField(field: keyof Node, value: string) {
+  function updateNodeField(field: keyof Node, value: string | number) {
+    console.log("new value!", value);
     const node = nodes.get(selectedNodeID!);
     if (node) {
       updateNode({ ...node, [field]: value });
@@ -252,6 +250,7 @@ function MapEdit() {
     }
 
     const node = nodes.get(selectedNodeID!);
+    console.log(node);
     if (node!.nodeID.substring(0, 8) != "userNode") {
       await axios.patch(APIEndpoints.updateNodes, node, {
         headers: {
@@ -271,6 +270,9 @@ function MapEdit() {
       console.log(numNode);
       node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
       console.log(node);
+      node!.xcoord = Math.round(node!.xcoord);
+      node!.ycoord = Math.round(node!.ycoord);
+
       await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
     }
   }
@@ -283,8 +285,8 @@ function MapEdit() {
       return;
     }
     const point = svg.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
+    point.x = Math.round(event.clientX);
+    point.y = Math.round(event.clientY);
 
     const matrix = svg.getScreenCTM();
     if (!matrix) {
@@ -293,8 +295,8 @@ function MapEdit() {
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
 
-    const xVal = x.toString();
-    const yVal = y.toString();
+    const xVal = x;
+    const yVal = y;
     const nodeID = userNodePrefix + numUserNodes;
     const floor = activeFloor;
     const building = "";

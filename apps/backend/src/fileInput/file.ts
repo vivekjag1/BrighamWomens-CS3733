@@ -43,8 +43,8 @@ export async function populateNodeDB(nodeData: string[][]) {
     nodeArray.push(
       new GraphNode(
         node[0],
-        node[1],
-        node[2],
+        parseInt(node[1]),
+        parseInt(node[2]),
         node[3],
         node[4],
         node[5],

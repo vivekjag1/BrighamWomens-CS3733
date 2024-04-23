@@ -211,15 +211,15 @@ export class TextualDirections {
 
   // Calculates the angle between an edge and the x-axis
   static calculateAngleDegrees(from: GraphNode, to: GraphNode): number {
-    const xDifference: number = parseInt(to.xcoord) - parseInt(from.xcoord);
-    const yDifference: number = parseInt(to.ycoord) - parseInt(from.ycoord);
+    const xDifference: number = to.xcoord - from.xcoord;
+    const yDifference: number = to.ycoord - from.ycoord;
     return (Math.atan2(yDifference, xDifference) * 180) / Math.PI;
   }
 
   // Calculates the distance between two nodes
   static calculateDistance(from: GraphNode, to: GraphNode): number {
-    const xDifference: number = parseInt(to.xcoord) - parseInt(from.xcoord);
-    const yDifference: number = parseInt(to.ycoord) - parseInt(from.ycoord);
+    const xDifference: number = to.xcoord - from.xcoord;
+    const yDifference: number = to.ycoord - from.ycoord;
     const euclideanDistance = Math.sqrt(
       Math.pow(xDifference, 2) + Math.pow(yDifference, 2),
     );

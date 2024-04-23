@@ -56,10 +56,10 @@ const MapEditImage = (props: {
 
       if (startNode && endNode) {
         tempCoords.push({
-          startX: parseInt(startNode.xcoord),
-          startY: parseInt(startNode.ycoord),
-          endX: parseInt(endNode.xcoord),
-          endY: parseInt(endNode.ycoord),
+          startX: startNode.xcoord,
+          startY: startNode.ycoord,
+          endX: endNode.xcoord,
+          endY: endNode.ycoord,
         });
       }
     }
@@ -128,8 +128,8 @@ const MapEditImage = (props: {
     const yOffset = e.clientY - bbox.top;
     setPosition({
       ...position,
-      x: parseInt(nodes.get(nodeID)!.xcoord),
-      y: parseInt(nodes.get(nodeID)!.ycoord),
+      x: nodes.get(nodeID)!.xcoord,
+      y: nodes.get(nodeID)!.ycoord,
       active: true,
       offset: {
         x: xOffset,
@@ -149,11 +149,11 @@ const MapEditImage = (props: {
     if (position.active) {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        parseFloat(updatedNode.xcoord) + (x - position.offset.x),
-      ).toString();
+        updatedNode.xcoord + (x - position.offset.x),
+      );
       updatedNode.ycoord = Math.round(
-        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
-      ).toString();
+        updatedNode.ycoord + (y - position.offset.y),
+      );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
   }
