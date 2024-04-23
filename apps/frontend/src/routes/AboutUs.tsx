@@ -22,6 +22,8 @@ import EmployeeCard from "../components/EmployeeCard.tsx";
 import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import ArrowIosForwardComponent from "../components/ArrowComponent.tsx";
+import { Link } from "react-router-dom";
+import paths from "../common/paths.tsx";
 
 const employees = [
   { name: "Daniel Gorbunov ", role: "Lead SWE", imageSrc: danielImage },
@@ -78,7 +80,9 @@ export default function AboutUs() {
                   {/*<div style={{ display: "flex", alignItems: "center" }}>*/}
                   <div className="flex items-center justify-between w-full">
                     <h1 className="text-4xl flex-grow text-center">About Us</h1>
-                    <ArrowIosForwardComponent />
+                    <Link to={paths.CREDIT} onClick={() => paths.CREDIT}>
+                      <ArrowIosForwardComponent />
+                    </Link>
                   </div>
                   <p style={{ color: "olive" }}>
                     {" "}
