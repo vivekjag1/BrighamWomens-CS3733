@@ -25,10 +25,10 @@ const MapEditImage = (props: {
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
-
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
+  const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -38,6 +38,21 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
+
+  useEffect(() => {
+    const initialRadii = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialRadii.set(nodeID, MapStyling.nodeRadius);
+    });
+    setNodeRadii(initialRadii);
+  }, [tempNodes]);
+  useEffect(() => {
+    setNodes(tempNodes);
+    const initialRadii = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialRadii.set(nodeID, MapStyling.nodeRadius);
+    });
+  }, [tempNodes]);
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -92,14 +107,23 @@ const MapEditImage = (props: {
     props.onNodeClick(nodeID);
     setSelectedNodeId(nodeID);
 
-    // Toggle flickering effect
     if (flickeringNode === nodeID) {
       setFlickeringNode(null);
     } else {
       setFlickeringNode(nodeID);
     }
   }
+  function handleMouseEnter(nodeID: string) {
+    setNodeRadii((prevRadii) =>
+      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.7),
+    );
+  }
 
+  function handleMouseLeave(nodeID: string) {
+    setNodeRadii((prevRadii) =>
+      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
+    );
+  }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -197,9 +221,11 @@ const MapEditImage = (props: {
               <circle
                 key={node.nodeID}
                 className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                r={MapStyling.nodeRadius}
+                r={nodeRadii.get(node.nodeID) || MapStyling.nodeRadius}
                 cx={node.xcoord}
                 cy={node.ycoord}
+                onMouseEnter={() => handleMouseEnter(node.nodeID)}
+                onMouseLeave={() => handleMouseLeave(node.nodeID)}
                 onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
                 onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
                 fill={
