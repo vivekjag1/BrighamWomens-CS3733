@@ -40,7 +40,6 @@ const routes = [
   },
   { path: paths.SERVICE_LOG, element: <AuthComp component={ServicesTable} /> },
   { path: paths.EMPLOYEE_LOG, element: <AuthComp component={EmployeeTable} /> },
-  { path: "/home/refactor", element: <Home /> },
 ];
 
 export default routes;

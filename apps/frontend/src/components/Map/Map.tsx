@@ -8,7 +8,7 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
-import MultifloorMarker from "./MultifloorMarker.tsx";
+import FloorMarkers from "./FloorMarkers.tsx";
 
 interface mapProps {
   activeFloor: number;
@@ -87,7 +87,7 @@ function Map(props: mapProps) {
       const indexSegmentStart: number = props.path.indexOf(segment[0]);
       const nextFloor: string = props.path[indexSegmentStart - 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}
@@ -103,7 +103,7 @@ function Map(props: mapProps) {
       );
       const nextFloor = props.path[indexSegmentEnd + 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}

@@ -1,4 +1,6 @@
-// Holds functions that may be necessary in the manipulation of GraphNode[]s
+import { Node } from "database";
+
+// Holds functions that may be necessary in the manipulation of Node[]s
 
 // Gets the floor number corresponding to the string representation of the floor
 export function getFloorNumber(floor: string): number {
@@ -16,4 +18,15 @@ export function getFloorNumber(floor: string): number {
     default:
       return -100;
   }
+}
+
+// Gets the floors involved in a path
+export function getFloorsInPath(path: Node[]): number[] {
+  const relevantFloors: number[] = [];
+  for (let i = 0, length = path.length; i < length; i++) {
+    const currentFloorNumber: number = getFloorNumber(path[i].floor);
+    if (!relevantFloors.includes(currentFloorNumber))
+      relevantFloors.push(currentFloorNumber);
+  }
+  return relevantFloors;
 }
