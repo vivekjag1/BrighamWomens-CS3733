@@ -44,29 +44,23 @@ function MapEdit() {
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
   );
+  const [numberOfNodes, setNumberOfNodes] = useState<number>(0);
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
   );
 
   const contextValue = { nodes, setNodes, edges, setEdges, selectedNodeID };
-
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
-
   const { showToast } = useToast();
-
   const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
-
   const { getAccessTokenSilently } = useAuth0();
-  let token = "";
-
   useEffect(() => {
     const fetchData = async () => {
+      const token = await getAccessTokenSilently();
       let activeFloorString;
-
       switch (activeFloor) {
         case -1:
           activeFloorString = "L1";
@@ -77,7 +71,6 @@ function MapEdit() {
         default:
           activeFloorString = activeFloor.toString();
       }
-
       try {
         const queryParams = {
           [NavigateAttributes.floorKey]: activeFloorString,
@@ -92,7 +85,11 @@ function MapEdit() {
           APIEndpoints.mapGetEdges,
           window.location.origin,
         );
-
+        const numNodes = await MakeProtectedGetRequest(
+          APIEndpoints.countNodes,
+          token,
+        );
+        setNumberOfNodes(numNodes.data["numNodes"]);
         nodeURL.search = params.toString();
 
         const fetchedNodes: Node[] = (await axios.get(nodeURL.toString())).data;
@@ -127,7 +124,7 @@ function MapEdit() {
     };
 
     fetchData();
-  }, [activeFloor]);
+  }, [activeFloor, getAccessTokenSilently]);
 
   function updateNodeField(field: keyof Node, value: string) {
     const node = nodes.get(selectedNodeID!);
@@ -206,30 +203,27 @@ function MapEdit() {
   }
 
   async function handleSave() {
-    token = await getAccessTokenSilently();
+    const token = await getAccessTokenSilently();
     if (nodes.get(selectedNodeID!)!.shortName === "") {
       showToast("Please fill in a node ID!", "error");
       return;
     }
-    // const sendToBE = {
-    //   nodeID: selectedNodeID,
-    // };
-    const nodesWithSameID = await MakeProtectedGetRequest(
-      APIEndpoints.countNodes,
-      token,
-    );
-    const numNodesInDb = nodesWithSameID.data["numNodes"];
-    console.log("hehehe", nodesWithSameID);
-
     const node = nodes.get(selectedNodeID!);
-    //cut first 8 characters
-    let numNode: number = numNodesInDb + 1;
-    console.log(numNode);
-    numNode = nodesWithSameID.data["numNodes"] + 1;
-    console.log(numNode);
-    node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
-    console.log(node);
-    await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+    if (node!.nodeID.substring(0, 8) != "userNode") {
+      await axios.patch(APIEndpoints.updateNodes, node, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } else {
+      //cut first 8 characters
+      const numNode: number = numberOfNodes + 1;
+      setNumberOfNodes(numberOfNodes + 1);
+      console.log(numNode);
+      node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
+      console.log(node);
+      await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+    }
   }
 
   const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
