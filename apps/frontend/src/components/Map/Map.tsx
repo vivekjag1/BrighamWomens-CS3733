@@ -24,6 +24,7 @@ function Map(props: mapProps) {
   const polylineElements = polylines.map((polyline) => (
     <DashedPolyline points={polyline} />
   ));
+
   const nodeElements = nodes.map((node) => (
     <ClickableCircle
       x={node.xcoord}
@@ -45,7 +46,6 @@ function Map(props: mapProps) {
     );
   })();
 
-  console.log(props.path, props.activeFloor);
   const length = props.path.length;
   const endMarkerElement = (() => {
     return getFloorNumber(props.path[length - 1].floor) ===
@@ -98,6 +98,8 @@ function getPolylines(path: Node[], activeFloor: number): string[] {
   const filteredSplitPaths = splitPaths.filter(
     (splitPath: Node[]) => getFloorNumber(splitPath[0].floor) === activeFloor,
   );
+
+  console.log(filteredSplitPaths);
 
   // Generate instructions to draw polyline(s) corresponding to the active floor
   const polylineInstructions: string[] = [];
