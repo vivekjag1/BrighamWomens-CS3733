@@ -2,7 +2,7 @@ import { FormEvent, useState, useEffect } from "react";
 import axios from "axios";
 import { Node } from "database";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import { getFloorsInPath } from "../common/PathUtilities.ts";
+import { getSegments } from "../common/PathUtilities.ts";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import Map from "../components/Map/Map.tsx";
 import NavigationPane from "../components/Map/NavigationPane.tsx";
@@ -63,7 +63,7 @@ function Home() {
       .then(function (response) {
         setPath(response.data);
         setActiveFloor(getFloorNumber(response.data[0].floor));
-        setGlowSequence(getFloorsInPath(response.data).slice(1));
+        setGlowSequence(getFloorSequence(response.data).slice(1));
       })
       .catch(console.error);
   }
@@ -176,6 +176,16 @@ const contentStyles = {
   display: "flex",
   justifyContent: "center",
 } as const;
+
+// Gets sequence of floor one must traverse through along a path
+function getFloorSequence(path: Node[]) {
+  const floorSequence: number[] = [];
+  const segments: Node[][] = getSegments(path);
+  for (let i = 0, length = segments.length; i < length; i++) {
+    floorSequence.push(getFloorNumber(segments[i][0].floor));
+  }
+  return floorSequence;
+}
 
 const DEFAULT_FLOOR: number = 1;
 const INITIAL_PATH: Node[] = [

@@ -3,6 +3,7 @@ import { Node } from "database";
 import Autocomplete from "@mui/material/Autocomplete";
 import { TextField } from "@mui/material";
 import { nodeOption } from "../../common/NodeOption.ts";
+/*import {DesignSystem} from "../../common/StylingCommon.ts";*/
 
 interface NodeDropdownProps {
   nodes: Node[];
@@ -40,5 +41,11 @@ function NodeDropdown(props: NodeDropdownProps) {
     />
   );
 }
+
+/*const menuItemStyles = {
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "0.9rem",
+  whiteSpace: "pre-wrap"
+} as const;*/
 
 export default NodeDropdown;

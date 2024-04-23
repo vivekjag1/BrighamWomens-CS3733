@@ -20,13 +20,19 @@ export function getFloorNumber(floor: string): number {
   }
 }
 
-// Gets the floors involved in a path
-export function getFloorsInPath(path: Node[]): number[] {
-  const relevantFloors: number[] = [];
-  for (let i = 0, length = path.length; i < length; i++) {
-    const currentFloorNumber: number = getFloorNumber(path[i].floor);
-    if (!relevantFloors.includes(currentFloorNumber))
-      relevantFloors.push(currentFloorNumber);
+// Groups nodes along the same segment
+export function getSegments(path: Node[]): Node[][] {
+  // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
+  const splitPaths: Node[][] = [];
+  let startIndex: number = 0,
+    endIndex: number = 0;
+  for (let i = 0, length = path.length; i < length - 1; i++) {
+    if (path[i].floor != path[i + 1].floor) {
+      endIndex = i + 1;
+      splitPaths.push(path.slice(startIndex, endIndex));
+      startIndex = i + 1;
+    }
   }
-  return relevantFloors;
+  splitPaths.push(path.slice(startIndex));
+  return splitPaths;
 }

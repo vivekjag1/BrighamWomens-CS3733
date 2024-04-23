@@ -1,6 +1,7 @@
 import { CSSProperties, SyntheticEvent } from "react";
 import { PathAlgorithm } from "common/src/Path.ts";
 import { Autocomplete, TextField } from "@mui/material";
+/*import {DesignSystem} from "../../common/StylingCommon.ts";*/
 interface algorithmDropdownProps {
   sx: CSSProperties;
   value: string;
@@ -28,6 +29,12 @@ function AlgorithmDropdown(props: algorithmDropdownProps) {
     />
   );
 }
+
+/*const menuItemStyles = {
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "0.9rem",
+  whiteSpace: "pre-wrap"
+} as const;*/
 
 const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS", "Dijkstra"];
 export default AlgorithmDropdown;
