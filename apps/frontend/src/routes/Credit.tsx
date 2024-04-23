@@ -115,6 +115,28 @@ export default function Credit() {
                   <br />
                   prismaORM : https://www.prisma.io/
                   <br />
+                  expressjs : https://expressjs.com/
+                  <br />
+                  traefik : https://doc.traefik.io/traefik/
+                  <br />
+                  Multer: https://www.npmjs.com/package/multer
+                  <br />
+                  Auth0: https://www.npmjs.com/package/multer
+                  <br />
+                  material ui :https://mui.com/
+                  <br />
+                  tailwind: https://tailwindcss.com/
+                  <br />
+                  axios : https://www.npmjs.com/package/axios
+                  <br />
+                  bootstrap: https://getbootstrap.com/
+                  <br />
+                  framer motion:https://www.framer.com/motion/
+                  <br />
+                  flowbite: https://flowbite.com/
+                  <br />
+                  Tan stake table:https://tanstack.com/table/v8
+                  <br />
                   <div>
                     <br />
                     <p style={{ color: "#012D5A", textAlign: "center" }}>
