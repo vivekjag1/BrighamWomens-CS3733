@@ -22,7 +22,7 @@ export function FormContainer({ imgPath, alt, children }: FormContainerProps) {
   return (
     <div className="h-screen overflow-auto">
       <div className="flex justify-center w-full">
-        <div className="flex flex-col items-center gap-2 mx-5 my-8">
+        <div className="flex flex-col items-center gap-2 mx-5 absolute top-1/2 -translate-y-1/2">
           <Card
             className="shadow-xl drop-shadow w-full max-w-5xl overflow-hidden"
             sx={{ borderRadius: "20px" }}
@@ -42,7 +42,7 @@ export function FormContainer({ imgPath, alt, children }: FormContainerProps) {
                 <img
                   src={imgPath}
                   alt={alt}
-                  className="w-[40rem] h-[700px] object-cover"
+                  className="w-[40rem] h-[750px] object-cover"
                 />
               </div>
             </CustomCardContent>
