@@ -7,7 +7,7 @@ import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
 import StackedMaps from "../components/Map/StackedMaps.tsx";
-import MapImage from "../components/Map/MapImage.tsx";
+import MapImage from "../components/MapImage.tsx";
 
 function Map() {
   const [activeFloor, setActiveFloor] = useState<number>(DEFAULT_FLOOR);
@@ -85,6 +85,7 @@ function Map() {
         nodes={nodes}
         setPathNodeObject={setPathNodeObject}
         pathNodeObject={pathNodeObject}
+        setActiveFloor={setActiveFloor}
       />
     );
 

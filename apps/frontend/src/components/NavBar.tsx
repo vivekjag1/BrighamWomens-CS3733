@@ -14,6 +14,7 @@ import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
+import "../../src/styles/animatedUnderline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();

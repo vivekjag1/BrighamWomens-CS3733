@@ -1,12 +1,12 @@
 import { Path } from "./Path.ts";
 import { Graph } from "./Graph.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
 
 export class AStarPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: GraphNode[];
+  path: Node[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
     this.startNodeID = startNodeID;
@@ -15,13 +15,13 @@ export class AStarPath implements Path {
     this.path = this.createPath(startNodeID, endNodeID);
   }
 
-  getPath(): GraphNode[] {
+  getPath(): Node[] {
     return this.path;
   }
 
   //Returns the shortest path between startNode and endNode using the A* algorithm
-  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
-    const path: GraphNode[] = [];
+  public createPath(startNodeID: string, endNodeID: string): Node[] {
+    const path: Node[] = [];
     const searchList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
     let numOfOpenNodes: number = 1;
     let searching: boolean = true;
@@ -103,8 +103,8 @@ export class AStarPath implements Path {
   }
 
   public distanceBetweenNodes(a: string, b: string): number {
-    const nodeA: GraphNode = this.parentGraph.getNodeWithNodeID(a);
-    const nodeB: GraphNode = this.parentGraph.getNodeWithNodeID(b);
+    const nodeA: Node = this.parentGraph.getNodeWithNodeID(a);
+    const nodeB: Node = this.parentGraph.getNodeWithNodeID(b);
     if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
       return 1000;
     }
@@ -112,8 +112,8 @@ export class AStarPath implements Path {
       return 2000;
     }
     return Math.sqrt(
-      Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
-        Math.pow(nodeB._ycoord - nodeA._ycoord, 2),
+      Math.pow(+nodeB.xcoord - +nodeA.xcoord, 2) +
+        Math.pow(+nodeB.ycoord - +nodeA.ycoord, 2),
     );
   }
 

@@ -40,17 +40,7 @@ router.get("/", async (req, res) => {
     algorithm as PathAlgorithm,
   );
 
-  const pathAsCoords: number[][] = [];
-  for (let i = 0; i < path.length; i++) {
-    pathAsCoords.push([
-      +path[i].xcoord,
-      +path[i].ycoord,
-      Graph.getNumFromFloor(path[i].floor),
-    ]);
-  }
-  console.log(pathAsCoords);
-
-  res.status(200).json(pathAsCoords);
+  res.status(200).json(path);
 });
 
 export default router;

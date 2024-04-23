@@ -26,9 +26,14 @@ const MapEditImage = (props: {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
 
+  const selectedNodeID = useContext(MapContext).selectedNodeID;
+  const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
+  // const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
+  // const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -90,16 +95,29 @@ const MapEditImage = (props: {
   ) {
     event.stopPropagation();
     props.onNodeClick(nodeID);
-    setSelectedNodeId(nodeID);
+    setSelectedNodeID(nodeID);
 
-    // Toggle flickering effect
     if (flickeringNode === nodeID) {
       setFlickeringNode(null);
     } else {
       setFlickeringNode(nodeID);
     }
   }
-
+  // function handleMouseEnter(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
+  //   );
+  //   setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
+  // }
+  //
+  // function handleMouseLeave(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
+  //   );
+  //   setNodeColors((prevColors) =>
+  //     new Map(prevColors).set(nodeID, MapStyling.nodeColor),
+  //   ); // Reset color on mouse leave
+  // }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -157,61 +175,65 @@ const MapEditImage = (props: {
           pointerEvents: "none", // Ensures the overlay doesn't intercept mouse events
         }}
       ></div>
-      <TransformWrapper
-        initialScale={1}
-        doubleClick={{ disabled: true }}
-        panning={{ velocityDisabled: true, disabled: position.active }}
-      >
-        <MapZoomButtons />
-        <TransformComponent
-          wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
-          contentStyle={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
+      <div>
+        <TransformWrapper
+          initialScale={1}
+          doubleClick={{ disabled: true }}
+          panning={{ velocityDisabled: true, disabled: position.active }}
         >
-          <svg
-            viewBox="0 0 5000 3400"
-            height="100vh"
-            onPointerUp={() => {
-              setPosition({ ...position, active: false });
+          <MapZoomButtons />
+          <TransformComponent
+            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+            contentStyle={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
             }}
-            onClick={props.onMapClick}
           >
-            <image href={map} />
-            {edgeCoords.map((edge, index) => (
-              <line
-                key={index}
-                className="edge"
-                x1={edge.startX}
-                x2={edge.endX}
-                y1={edge.startY}
-                y2={edge.endY}
-                stroke={MapStyling.edgeColor}
-                strokeWidth={MapStyling.edgeWidth}
-              />
-            ))}
-            {Array.from(nodes.values()).map((node) => (
-              <circle
-                key={node.nodeID}
-                className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                r={MapStyling.nodeRadius}
-                cx={node.xcoord}
-                cy={node.ycoord}
-                onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                fill={
-                  node.nodeID === selectedNodeId ? "red" : MapStyling.nodeColor
-                }
-                onClick={(e) => nodeClicked(e, node.nodeID)}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </svg>
-        </TransformComponent>
-      </TransformWrapper>
+            <svg
+              viewBox="0 0 5000 3400"
+              height="100vh"
+              onPointerUp={() => {
+                setPosition({ ...position, active: false });
+              }}
+              onClick={props.onMapClick}
+            >
+              <image href={map} />
+              {edgeCoords.map((edge, index) => (
+                <line
+                  key={index}
+                  className="edge"
+                  x1={edge.startX}
+                  x2={edge.endX}
+                  y1={edge.startY}
+                  y2={edge.endY}
+                  stroke={MapStyling.edgeColor}
+                  strokeWidth={MapStyling.edgeWidth}
+                />
+              ))}
+              {Array.from(nodes.values()).map((node) => (
+                <circle
+                  key={node.nodeID}
+                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
+                  r={MapStyling.nodeRadius}
+                  cx={node.xcoord}
+                  cy={node.ycoord}
+                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                  fill={
+                    selectedNodeID == node.nodeID
+                      ? MapStyling.edgeColor
+                      : MapStyling.nodeColor
+                  }
+                  onClick={(e) => nodeClicked(e, node.nodeID)}
+                  style={{ cursor: "pointer" }}
+                />
+              ))}
+            </svg>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
     </div>
   );
 };

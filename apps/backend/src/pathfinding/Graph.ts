@@ -1,7 +1,4 @@
-import { GraphNode } from "common/src/GraphNode.ts";
-import { GraphEdge } from "common/src/GraphEdge.ts";
 import type { Node, Edge } from "database";
-import { createNodes } from "common/src/GraphCommon.ts";
 import { BFSPath } from "./BFSPath.ts";
 import { DFSPath } from "./DFSPath.ts";
 import { AStarPath } from "./AStarPath.ts";
@@ -9,31 +6,18 @@ import { DijkstraPath } from "./DijkstraPath.ts";
 import { PathAlgorithm } from "common/src/Path.ts";
 
 export class Graph {
-  private nodeArray: GraphNode[];
-  private edgeArray: GraphEdge[];
-  private path: GraphNode[];
+  private nodeArray: Node[];
+  private edgeArray: Edge[];
+  private path: Node[];
 
   constructor(nodeInput: Node[], edgeInput: Edge[]) {
-    this.nodeArray = createNodes(nodeInput);
-    this.edgeArray = this.createEdges(edgeInput);
+    this.nodeArray = nodeInput;
+    this.edgeArray = edgeInput;
     this.path = [];
   }
 
-  //Converts the Edge objects given from the prisma database
-  // into GraphEdge objects
-  public createEdges(input: Edge[]): GraphEdge[] {
-    const output: GraphEdge[] = [];
-
-    for (const value of input) {
-      output.push(
-        new GraphEdge(value.edgeID, value.startNodeID, value.endNodeID),
-      );
-    }
-
-    return output;
-  }
-  //Finds the GraphNode object with the corresponding nodeID value
-  public getNodeWithNodeID(nodeID: string): GraphNode {
+  //Finds the Node object with the corresponding nodeID value
+  public getNodeWithNodeID(nodeID: string): Node {
     return this.nodeArray.filter((value) => value.nodeID == nodeID)[0];
   }
 
@@ -56,7 +40,7 @@ export class Graph {
     startNodeID: string,
     endNodeID: string,
     pathAlgorithm: PathAlgorithm,
-  ): GraphNode[] {
+  ): Node[] {
     switch (pathAlgorithm) {
       case "BFS":
         this.path = new BFSPath(startNodeID, endNodeID, this).getPath();

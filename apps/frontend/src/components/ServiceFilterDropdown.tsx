@@ -8,14 +8,21 @@ import {
   OutlinedInput,
   ListItemIcon,
   Button,
+  Box,
 } from "@mui/material";
 import {
   ExpandMore,
   ExpandLess,
   FilterList as FilterListIcon,
 } from "@mui/icons-material";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface ServiceFilterDropdownProps {
+  filterByEmployee: string[];
+  setFilterByEmployee: React.Dispatch<React.SetStateAction<string[]>>;
   filterByType: string[];
   setFilterByType: React.Dispatch<React.SetStateAction<string[]>>;
   filterByPriority: string[];
@@ -25,6 +32,8 @@ interface ServiceFilterDropdownProps {
 }
 
 function ServiceFilterDropdown({
+  filterByEmployee,
+  setFilterByEmployee,
   filterByType,
   setFilterByType,
   filterByPriority,
@@ -32,6 +41,7 @@ function ServiceFilterDropdown({
   filterByStatus,
   setFilterByStatus,
 }: ServiceFilterDropdownProps) {
+  const { getAccessTokenSilently } = useAuth0();
   const types = [
     "MedicineDelivery",
     "SecurityService",
@@ -44,8 +54,11 @@ function ServiceFilterDropdown({
   const statuses = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
   const [openSubMenu, setOpenSubMenu] = React.useState<
-    "type" | "priority" | "status" | null
+    "employee" | "type" | "priority" | "status" | null
   >(null);
+
+  const [employees, setEmployees] = useState<string[]>([]);
+  const [employeePfps, setEmployeePfps] = useState<string[]>([]);
 
   const handleFilterChange = (
     value: string,
@@ -64,7 +77,9 @@ function ServiceFilterDropdown({
     setFilter(newChecked);
   };
 
-  const toggleSubMenu = (category: "type" | "priority" | "status"): void => {
+  const toggleSubMenu = (
+    category: "employee" | "type" | "priority" | "status",
+  ): void => {
     setOpenSubMenu((prev) => (prev === category ? null : category));
   };
 
@@ -72,7 +87,34 @@ function ServiceFilterDropdown({
     setFilterByType([]);
     setFilterByPriority([]);
     setFilterByStatus([]);
+    setFilterByEmployee([]);
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const token = await getAccessTokenSilently();
+
+      try {
+        const res = await MakeProtectedGetRequest(
+          APIEndpoints.employeeGetRequest,
+          token,
+        );
+        setEmployees(
+          res.data.map((employee: { name: string }) => employee.name),
+        );
+        setEmployeePfps(
+          res.data.map(
+            (employee: { profilePicture: string }) => employee.profilePicture,
+          ),
+        );
+        console.log("Successfully got data from get request:", res.data);
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+    }
+    fetchData();
+     
+  }, [getAccessTokenSilently]);
 
   return (
     <FormControl
@@ -92,6 +134,64 @@ function ServiceFilterDropdown({
         className="bg-gray-50 h-10"
         sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
+        <MenuItem onClick={() => toggleSubMenu("employee")}>
+          <ListItemIcon>
+            {openSubMenu === "employee" ? <ExpandLess /> : <ExpandMore />}
+          </ListItemIcon>
+          <ListItemText
+            primary="Employees"
+            primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+          />
+        </MenuItem>
+        {openSubMenu === "employee" && (
+          <Box
+            sx={{
+              maxHeight: 300,
+              overflow: "auto",
+            }}
+          >
+            {employees.map((employee) => (
+              <MenuItem
+                key={employee}
+                value={employee}
+                sx={{ pl: 2 }}
+                onClick={() =>
+                  handleFilterChange(
+                    employee,
+                    filterByEmployee,
+                    setFilterByEmployee,
+                  )
+                }
+              >
+                <Checkbox
+                  size="small"
+                  checked={filterByEmployee.includes(employee)}
+                  onChange={() =>
+                    handleFilterChange(
+                      employee,
+                      filterByEmployee,
+                      setFilterByEmployee,
+                    )
+                  }
+                />
+                <img
+                  className="w-8 h-8 rounded-full mr-2"
+                  loading="lazy"
+                  src={`../../assets/employees/${employeePfps[employees.indexOf(employee)]}.jpeg`}
+                  alt={`${employee} profile`}
+                />
+                <ListItemText
+                  primary={employee.replace(/([A-Z])/g, " $1").trim()}
+                  primaryTypographyProps={{
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                />
+              </MenuItem>
+            ))}
+          </Box>
+        )}
+
         <MenuItem onClick={() => toggleSubMenu("type")}>
           <ListItemIcon>
             {openSubMenu === "type" ? <ExpandLess /> : <ExpandMore />}

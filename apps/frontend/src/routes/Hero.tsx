@@ -28,7 +28,7 @@ function Hero() {
         )}
         <div
           onClick={() => navigate(paths.HOME)}
-          className="text-fade-in w-screen h-screen flex flex-col justify-center items-center gap-8"
+          className="text-fade-in w-screen h-screen flex flex-col justify-center items-center gap-8 cursor-pointer"
         >
           <p className="text-[3vw] font-semibold text-white">
             Welcome to Brigham and Women's Hospital
