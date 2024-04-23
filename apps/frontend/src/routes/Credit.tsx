@@ -71,117 +71,138 @@ const tools = [
     url: "https://react.dev",
     urlName: "React Link",
   },
-  //   {
-  //     name: "Yarn ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://yarnpkg.com"> "Yarn Link"</a>,
-  //
-  //   },
-  //   {
-  //     name: "Nodejs ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://nodejs.org/en"> "Nodejs Link"</a>,
-  //   },
-  //   {
-  //     name: "Turbo ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://turbo.build"> "Turbo Link"</a>,
-  //   },
-  //   {
-  //     name: "Vite ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://vitest.dev"> "Vite Link"</a>,
-  //   },
-  //   {
-  //     name: "Prettier ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://prettier.io"> "Prettier Link"</a>,
-  //   },
-  //   {
-  //     name: "ESlint ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://eslint.org"> "ESlint Link"</a>,
-  //   },
-  //   {
-  //     name: "Husky ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://typicode.github.io/husky/"> "Husky Link"</a>,
-  //   },
-  //   {
-  //     name: "Ts-Node ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://typestrong.org/ts-node/docs/"> "Ts-Node Link"</a>,
-  //   },
-  //   {
-  //     name: "Nodemon ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://www.npmjs.com/package/nodemon"> "Nodemon Link"</a>,
-  //   },
-  //   {
-  //     name: "postgreSQL ",
-  //     imageSrc: danielImage,
-  //     url: <a href=" https://www.postgresql.org"> "PostgreSQL Link"</a>,
-  //   },
-  //   {
-  //     name: "prismaORM ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://www.prisma.io"> "PrismaORM Link"</a>,
-  //   },
-  //   {
-  //     name: "expressjs ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://expressjs.com"> "Expressjs Link"</a>,
-  //   },
-  //   {
-  //     name: "traefik ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://doc.traefik.io/traefik/"> "Traefik Link"</a>,
-  //   },
-  //   {
-  //     name: "Multer ",
-  //     imageSrc: danielImage,
-  //     url: <a href=" https://www.npmjs.com/package/multer">"Multer Link"</a>,
-  //   },
-  //   {
-  //     name: "Auth0 ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://auth0.com/"> "Auth0 Link"</a>,
-  //   },
-  //   {
-  //     name: "Material UI",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://mui.com"> "Material UI Link"</a>,
-  //   },
-  //   {
-  //     name: "Tailwind ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://tailwindcss.com"> "Tailwind Link"</a>,
-  //   },
-  //   {
-  //     name: "Axios ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://www.npmjs.com/package/axios"> "Axios Link"</a>,
-  //   },
-  //   {
-  //     name: "Bootstrap ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://getbootstrap.com"> "Bootstrap Link"</a>,
-  //   },
-  //   {
-  //     name: "Framer Motion ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://www.framer.com/motion/"> "Framer Motion Link"</a>,
-  //   },
-  //   {
-  //     name: "Flowbite ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://flowbite.com"> "Flowbite Link"</a>,
-  //   },
-  //   {
-  //     name: "Tan stake table ",
-  //     imageSrc: danielImage,
-  //     url: <a href="https://tanstack.com/table/v8"> "Tan Stake Table"</a>,
-  //   },
+  {
+    name: "Yarn ",
+    imageSrc: danielImage,
+    url: "https://yarnpkg.com",
+    urlName: "Yarn Link",
+  },
+  {
+    name: "Nodejs ",
+    imageSrc: danielImage,
+    url: "https://nodejs.org/en",
+    urlName: "Nodejs Link",
+  },
+  {
+    name: "Turbo ",
+    imageSrc: danielImage,
+    url: "https://turbo.build",
+    urlName: "Turbo Link",
+  },
+  {
+    name: "Vite ",
+    imageSrc: danielImage,
+    url: "https://vitest.dev",
+    urlName: "Vite Link",
+  },
+  {
+    name: "Prettier ",
+    imageSrc: danielImage,
+    url: "https://prettier.io",
+    urlName: "Prettier Link",
+  },
+  {
+    name: "ESlint ",
+    imageSrc: danielImage,
+    url: "https://eslint.org",
+    urlName: "ESlint Link",
+  },
+  {
+    name: "Husky ",
+    imageSrc: danielImage,
+    url: "https://typicode.github.io/husky/",
+    urlName: "Husky Link",
+  },
+  {
+    name: "Ts-Node ",
+    imageSrc: danielImage,
+    url: "https://typestrong.org/ts-node/docs/",
+    urlName: "Ts-Node Link",
+  },
+  {
+    name: "Nodemon ",
+    imageSrc: danielImage,
+    url: "https://www.npmjs.com/package/nodemon",
+    urlName: "Nodemon Link",
+  },
+  {
+    name: "postgreSQL ",
+    imageSrc: danielImage,
+    url: " https://www.postgresql.org",
+    urlName: "PostgreSQL Link",
+  },
+  {
+    name: "prismaORM ",
+    imageSrc: danielImage,
+    url: "https://www.prisma.io",
+    urlName: "PrismaORM Link",
+  },
+  {
+    name: "expressjs ",
+    imageSrc: danielImage,
+    url: "https://expressjs.com",
+    urlName: "Expressjs Link",
+  },
+  {
+    name: "traefik ",
+    imageSrc: danielImage,
+    url: "https://doc.traefik.io/traefik/",
+    urlName: "Traefik Link",
+  },
+  {
+    name: "Multer ",
+    imageSrc: danielImage,
+    url: " https://www.npmjs.com/package/multer",
+    urlName: "Multer Link",
+  },
+  {
+    name: "Auth0 ",
+    imageSrc: danielImage,
+    url: "https://auth0.com/",
+    urlName: "Auth0 Link",
+  },
+  {
+    name: "Material UI",
+    imageSrc: danielImage,
+    url: "https://mui.com",
+    urlName: "Material UI Link",
+  },
+  {
+    name: "Tailwind ",
+    imageSrc: danielImage,
+    url: "https://tailwindcss.com",
+    urlName: "Tailwind Link",
+  },
+  {
+    name: "Axios ",
+    imageSrc: danielImage,
+    url: "https://www.npmjs.com/package/axios",
+    urlName: "Axios Link",
+  },
+  {
+    name: "Bootstrap ",
+    imageSrc: danielImage,
+    url: "https://getbootstrap.com",
+    urlName: "Bootstrap Link",
+  },
+  {
+    name: "Framer Motion ",
+    imageSrc: danielImage,
+    url: "https://www.framer.com/motion/",
+    urlName: "Framer Motion Link",
+  },
+  {
+    name: "Flowbite ",
+    imageSrc: danielImage,
+    url: "https://flowbite.com",
+    urlName: "Flowbite Link",
+  },
+  {
+    name: "Tan stake table ",
+    imageSrc: danielImage,
+    url: "https://tanstack.com/table/v8",
+    urlName: "Tan Stake Table",
+  },
 ];
 
 export default function Credit() {
@@ -240,7 +261,7 @@ export default function Credit() {
                         <CreditCard
                           name={tool.name}
                           imageSrc={tool.imageSrc}
-                          url={tool.url}
+                          urls={tool.url}
                           urlName={tool.urlName}
                         />
                       </div>
