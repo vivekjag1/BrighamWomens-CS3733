@@ -8,13 +8,13 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
-import MultifloorMarker from "./MultifloorMarker.tsx";
+import FloorMarkers from "./FloorMarkers.tsx";
 
 interface mapProps {
   activeFloor: number;
   nodes: Node[];
   path: Node[];
-  setFields: (nodeID: string) => void;
+  onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
 }
 
@@ -43,14 +43,18 @@ function Map(props: mapProps) {
     <DashedPolyline points={polyline} />
   ));
 
-  const nodeElements = nodes.map((node) => (
-    <ClickableCircle
-      x={node.xcoord}
-      y={node.ycoord}
-      id={node.nodeID}
-      onClick={() => props.setFields(node.nodeID)}
-    />
-  ));
+  const nodeElements = nodes.map((node) =>
+    node.xcoord != "0" && node.ycoord != "0" ? (
+      <ClickableCircle
+        x={node.xcoord}
+        y={node.ycoord}
+        id={node.nodeID}
+        onClick={() => props.onNodeClick(node.nodeID)}
+      />
+    ) : (
+      <></>
+    ),
+  );
 
   const startMarkerElement = (() => {
     return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
@@ -87,7 +91,7 @@ function Map(props: mapProps) {
       const indexSegmentStart: number = props.path.indexOf(segment[0]);
       const nextFloor: string = props.path[indexSegmentStart - 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}
@@ -103,7 +107,7 @@ function Map(props: mapProps) {
       );
       const nextFloor = props.path[indexSegmentEnd + 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}

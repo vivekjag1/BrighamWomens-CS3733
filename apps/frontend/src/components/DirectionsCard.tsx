@@ -16,13 +16,12 @@ import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
 import LocationIcon from "@mui/icons-material/LocationOn";
 
-const initialState: PathNodesObject = {
+/*const initialState: PathNodesObject = {
   startNode: "",
   endNode: "",
-};
+};*/
 
 const textFieldStyles = {
   width: "17vw",
@@ -69,10 +68,10 @@ function DirectionsCard(props: {
       endNode: start,
     });
   }
-  function reset() {
+  /*function reset() {
     props.setPathNodeObject(initialState);
     setPathAlgorithm(defaultPathAlgorithm);
-  }
+  }*/
 
   /*function setStartNodeLabel(): string {
     if (props.clickedNodeStart) {
@@ -168,9 +167,6 @@ function DirectionsCard(props: {
             <IconButton onClick={swapLocations}>
               <SwapVertIcon />
             </IconButton>
-          </div>
-          <div className="flex justify-end mb-[-0.1rem]">
-            <CustomClearButtonSmall onClick={reset} type="reset" />
           </div>
         </div>
       </div>

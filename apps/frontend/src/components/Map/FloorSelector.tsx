@@ -3,18 +3,19 @@ import { getFloorNumber } from "../../common/PathUtilities.ts";
 import { Node } from "database";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon";
-import "../../styles/FloorSelector.css";
+import "./styles/FloorSelector.css";
 
 interface floorSelectorProps {
   onClick: (x: number) => void;
   activeFloor: number;
   path: Node[];
+  updateGlowSequence: (x: number) => void;
+  glowSequence: number[];
 }
 
 function FloorSelector(props: floorSelectorProps) {
-  const [activeMap, setActiveMap] = useState(0);
-
   const relevantFloors = getFloorsInPath(props.path);
+  const [activeMap, setActiveMap] = useState(0);
 
   return (
     <ToggleButtonGroup
@@ -31,43 +32,87 @@ function FloorSelector(props: floorSelectorProps) {
         value="3"
         disabled={!relevantFloors.includes(3)}
         selected={props.activeFloor === 3}
-        onClick={() => props.onClick(3)}
+        onClick={() => {
+          props.onClick(3);
+          props.updateGlowSequence(3);
+        }}
+        className={props.glowSequence[0] === 3 ? "pulseAnimation" : ""}
       >
         3
       </ToggleButton>
       <ToggleButton
-        sx={ToggleButtonStyles}
+        sx={{
+          ...ToggleButtonStyles,
+          "&.MuiToggleButtonGroup-middleButton": {
+            borderTop: "1px solid #1565c0",
+            borderBottom: "1px solid #1565c0",
+          },
+        }}
         value="2"
         disabled={!relevantFloors.includes(2)}
         selected={props.activeFloor === 2}
-        onClick={() => props.onClick(2)}
+        onClick={() => {
+          props.onClick(2);
+          props.updateGlowSequence(2);
+        }}
+        className={props.glowSequence[0] === 2 ? "pulseAnimation" : ""}
       >
         2
       </ToggleButton>
       <ToggleButton
-        sx={ToggleButtonStyles}
+        sx={{
+          ...ToggleButtonStyles,
+          "&.MuiToggleButtonGroup-middleButton": {
+            borderTop: "1px solid #1565c0",
+            borderBottom: "1px solid #1565c0",
+          },
+        }}
         value="1"
         disabled={!relevantFloors.includes(1)}
         selected={props.activeFloor === 1}
-        onClick={() => props.onClick(1)}
+        onClick={() => {
+          props.onClick(1);
+          props.updateGlowSequence(1);
+        }}
+        className={props.glowSequence[0] === 1 ? "pulseAnimation" : ""}
       >
         1
       </ToggleButton>
       <ToggleButton
-        sx={ToggleButtonStyles}
+        sx={{
+          ...ToggleButtonStyles,
+          "&.MuiToggleButtonGroup-middleButton": {
+            borderTop: "1px solid #1565c0",
+            borderBottom: "1px solid #1565c0",
+          },
+        }}
         value="-1"
         disabled={!relevantFloors.includes(-1)}
         selected={props.activeFloor === -1}
-        onClick={() => props.onClick(-1)}
+        onClick={() => {
+          props.onClick(-1);
+          props.updateGlowSequence(-1);
+        }}
+        className={props.glowSequence[0] === -1 ? "pulseAnimation" : ""}
       >
         L1
       </ToggleButton>
       <ToggleButton
-        sx={ToggleButtonStyles}
+        sx={{
+          ...ToggleButtonStyles,
+          "&.MuiToggleButtonGroup-lastButton": {
+            borderTop: "1px solid #1565c0",
+            borderBottom: "1px solid #1565c0",
+          },
+        }}
         value="-2"
         disabled={!relevantFloors.includes(-2)}
         selected={props.activeFloor === -2}
-        onClick={() => props.onClick(-2)}
+        onClick={() => {
+          props.onClick(-2);
+          props.updateGlowSequence(-2);
+        }}
+        className={props.glowSequence[0] === -2 ? "pulseAnimation" : ""}
       >
         L2
       </ToggleButton>
@@ -85,18 +130,19 @@ function getFloorsInPath(path: Node[]): number[] {
   }
   return relevantFloors;
 }
+
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
   borderRadius: "8px",
-  width: "5.5vh",
+  width: "6vh",
 } as const;
 
 const ToggleButtonStyles = {
   color: DesignSystem.white,
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.10rem",
-  fontWeight: "light",
-  height: "5.5vh",
+  fontWeight: "normal",
+  height: "6vh",
   borderRadius: "8px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,

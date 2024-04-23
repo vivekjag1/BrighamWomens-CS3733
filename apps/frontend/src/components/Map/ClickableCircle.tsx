@@ -1,4 +1,4 @@
-import { MapStyling } from "../../common/StylingCommon";
+import { MapStyles } from "../../common/StylingCommon";
 
 interface ClickableCircleProps {
   x: string;
@@ -9,11 +9,12 @@ interface ClickableCircleProps {
 function ClickableCircle(props: ClickableCircleProps) {
   return (
     <circle
-      r={MapStyling.nodeRadius}
+      r={MapStyles.nodeRadius}
       cx={props.x}
       cy={props.y}
-      fill={MapStyling.clickableNodeColor}
+      fill={MapStyles.nodeColor}
       onClick={() => props.onClick(props.id)}
+      className="cursor-pointer"
     />
   );
 }

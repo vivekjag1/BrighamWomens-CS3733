@@ -31,7 +31,7 @@ const buttonStyles = {
   color: DesignSystem.white,
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.25rem",
-  fontWeight: "light",
+  fontWeight: "normal",
   width: "5.5vh",
   height: "5.5vh",
   borderRadius: "8px",

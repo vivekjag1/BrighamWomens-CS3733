@@ -1,18 +1,18 @@
 import { DesignSystem } from "../../common/StylingCommon.ts";
 import { getFloorNumber } from "../../common/PathUtilities.ts";
 
-interface multifloorMarkerProps {
+interface floorMarkerProps {
   x: number;
   y: number;
   floor: string;
   onClick: (x: number) => void;
 }
 
-function MultifloorMarker(props: multifloorMarkerProps) {
+function FloorMarkers(props: floorMarkerProps) {
   const floor: number = getFloorNumber(props.floor);
 
   return (
-    <g className="cursor-pointer">
+    <g className="cursor-pointer" onClick={() => props.onClick(floor)}>
       <circle
         r="25"
         fill={DesignSystem.primaryColor}
@@ -28,7 +28,6 @@ function MultifloorMarker(props: multifloorMarkerProps) {
         dy="0.35em"
         x={props.x}
         y={props.y}
-        onClick={() => props.onClick(floor)}
       >
         {props.floor}
       </text>
@@ -36,4 +35,4 @@ function MultifloorMarker(props: multifloorMarkerProps) {
   );
 }
 
-export default MultifloorMarker;
+export default FloorMarkers;

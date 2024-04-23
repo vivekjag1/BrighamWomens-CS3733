@@ -1,5 +1,5 @@
 export class DesignSystem {
-  static readonly primaryColor: string = "#012D5A"; // Medically Blue
+  static readonly primaryColor: string = "#012D5A"; // Blue
   static readonly secondaryColor: string = "#F1F1F1"; // Off-White
   static readonly tertiaryColor: string = "#F6BD39"; // Yellow
   static readonly accentColor: string = "#013280";
@@ -8,9 +8,13 @@ export class DesignSystem {
   static readonly fontFamily: string = "Poppins, sans-serif";
 }
 
+export class MapStyles {
+  static readonly nodeColor: string = "#012D5ACC";
+  static readonly nodeRadius: number = 15;
+}
+
 export class MapStyling {
   static readonly nodeColor: string = "#012D5A";
-  static readonly clickableNodeColor: string = "#012D5AE6";
   static readonly edgeColor: string = "#0091FF";
   static readonly pathColor: string = MapStyling.nodeColor;
   static readonly nodeRadius: number = 10;
