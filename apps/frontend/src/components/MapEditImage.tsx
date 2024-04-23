@@ -18,7 +18,6 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
-  addingNode: boolean;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -27,6 +26,7 @@ const MapEditImage = (props: {
   const tempNodes = useContext(MapContext).nodes;
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+  const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -110,17 +110,19 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
-    setPosition({
-      ...position,
-      x: parseInt(nodes.get(nodeID)!.xcoord),
-      y: parseInt(nodes.get(nodeID)!.ycoord),
-      active: true,
-      offset: {
-        x: xOffset,
-        y: yOffset,
-      },
-    });
-    el.setPointerCapture(e.pointerId);
+    if (selectedAction.toString() == "MoveNode") {
+      setPosition({
+        ...position,
+        x: parseInt(nodes.get(nodeID)!.xcoord),
+        y: parseInt(nodes.get(nodeID)!.ycoord),
+        active: true,
+        offset: {
+          x: xOffset,
+          y: yOffset,
+        },
+      });
+      el.setPointerCapture(e.pointerId);
+    }
   }
 
   function handlePointerMove(
@@ -144,7 +146,9 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
+    <div
+      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+    >
       {/*  White Fade */}
       <div
         className={"z-10"}
