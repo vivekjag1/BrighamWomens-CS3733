@@ -148,11 +148,40 @@ function MapEdit() {
       setNodes(tempNodes);
     }
     console.log(selectedNodeID);
+
+    const selectedNodeEdges: Edge[] = edges.filter(
+      (value) =>
+        value.startNodeID == selectedNodeID ||
+        value.endNodeID == selectedNodeID,
+    );
+    console.log(selectedNodeEdges);
+    let tempRepairedEdges: Edge[] = [];
+    const tempNeighborNodesIDs: string[] = [];
+    for (let i = 0; i < selectedNodeEdges.length; i++) {
+      if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
+      } else {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
+      }
+    }
+    console.log(tempNeighborNodesIDs);
+    for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
+      for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
+        tempRepairedEdges.push({
+          edgeID: tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j],
+          startNodeID: tempNeighborNodesIDs[i],
+          endNodeID: tempNeighborNodesIDs[j],
+        });
+      }
+    }
+    console.log(tempRepairedEdges);
+    tempRepairedEdges = tempRepairedEdges.concat(edges);
+    setEdges(tempRepairedEdges);
+
     const sendToDb = {
       nodeID: selectedNodeID,
     };
     await axios.post(APIEndpoints.deleteNode, sendToDb);
-    location.reload();
   }
 
   // function handleNodeClick(nodeID: string) {

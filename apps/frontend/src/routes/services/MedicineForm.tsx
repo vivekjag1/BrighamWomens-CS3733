@@ -13,8 +13,6 @@ import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ServiceImages from "../../components/ServiceImages.tsx";
-import giftPlaceholder from "../../../assets/medicinedelivery.jpg";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import CheckIcon from "@mui/icons-material/Check";
@@ -101,7 +99,10 @@ export function MedicineForm() {
 
   return (
     <div className="bg-offwhite">
-      <FormContainer>
+      <FormContainer
+        imgPath={"../../../assets/medicinedelivery.jpg"}
+        alt={"Medicine Delivery"}
+      >
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Medicine Service Request
@@ -295,9 +296,6 @@ export function MedicineForm() {
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-[40rem]">
-          <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
         </div>
       </FormContainer>
     </div>

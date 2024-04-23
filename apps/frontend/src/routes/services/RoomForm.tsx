@@ -16,7 +16,6 @@ import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ServiceImages from "../../components/ServiceImages.tsx";
 import giftPlaceholder from "../../../assets/hospitalroom.jpg";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
@@ -103,7 +102,7 @@ export function RoomForm() {
   }
   return (
     <div className="bg-offwhite">
-      <FormContainer>
+      <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Reserve a Room
@@ -337,9 +336,6 @@ export function RoomForm() {
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-[40rem]">
-          <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
         </div>
       </FormContainer>
     </div>
