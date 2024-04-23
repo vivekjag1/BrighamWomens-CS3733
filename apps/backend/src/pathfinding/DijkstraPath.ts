@@ -1,12 +1,12 @@
 import { Path } from "./Path.ts";
 import { Graph } from "./Graph.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 
 export class DijkstraPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: GraphNode[];
+  path: Node[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
     this.startNodeID = startNodeID;
@@ -19,16 +19,14 @@ export class DijkstraPath implements Path {
     return this.path;
   }
 
-  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
+  public createPath(startNodeID: string, endNodeID: string): Node[] {
     const visited: string[] = [];
     const distanceMap: Map<string, number> = new Map<string, number>();
     distanceMap.set(startNodeID, 0);
-    const parentsMap: Map<string, GraphNode> = new Map<string, GraphNode>();
-    let toVisit: GraphNode[] = [
-      this.parentGraph.getNodeWithNodeID(startNodeID),
-    ];
+    const parentsMap: Map<string, Node> = new Map<string, Node>();
+    let toVisit: Node[] = [this.parentGraph.getNodeWithNodeID(startNodeID)];
     let searching = true;
-    const path: GraphNode[] = [];
+    const path: Node[] = [];
     if (startNodeID == endNodeID) {
       return [
         this.parentGraph.getNodeWithNodeID(startNodeID),
@@ -37,10 +35,7 @@ export class DijkstraPath implements Path {
     }
 
     while (toVisit.length > 0 && searching) {
-      const currentNode: GraphNode = this.getSmallestDistance(
-        toVisit,
-        distanceMap,
-      );
+      const currentNode: Node = this.getSmallestDistance(toVisit, distanceMap);
       toVisit = toVisit.filter((value) => value != currentNode);
       if (currentNode.nodeID == endNodeID) {
         searching = false;
@@ -49,6 +44,7 @@ export class DijkstraPath implements Path {
           path.unshift(nextNodeInPath);
           nextNodeInPath = parentsMap.get(nextNodeInPath.nodeID)!;
         }
+        path.unshift(nextNodeInPath);
         console.log("Djikstra (" + startNodeID + " -> " + endNodeID + "):");
         console.log(path);
       } else {
@@ -84,10 +80,10 @@ export class DijkstraPath implements Path {
   }
 
   public getSmallestDistance(
-    input: GraphNode[],
+    input: Node[],
     distanceInput: Map<string, number>,
-  ): GraphNode {
-    let smallestNode: GraphNode | null = null;
+  ): Node {
+    let smallestNode: Node | null = null;
     let smallestDistance: number = Math.max();
 
     for (let i = 0; i < input.length; i++) {
@@ -107,8 +103,8 @@ export class DijkstraPath implements Path {
   }
 
   public distanceBetweenNodes(a: string, b: string): number {
-    const nodeA: GraphNode = this.parentGraph.getNodeWithNodeID(a);
-    const nodeB: GraphNode = this.parentGraph.getNodeWithNodeID(b);
+    const nodeA: Node = this.parentGraph.getNodeWithNodeID(a);
+    const nodeB: Node = this.parentGraph.getNodeWithNodeID(b);
     if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
       return 1000;
     }
@@ -116,8 +112,8 @@ export class DijkstraPath implements Path {
       return 2000;
     }
     return Math.sqrt(
-      Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
-        Math.pow(nodeB._ycoord - nodeA._ycoord, 2),
+      Math.pow(+nodeB.xcoord - +nodeA.xcoord, 2) +
+        Math.pow(+nodeB.ycoord - +nodeA.ycoord, 2),
     );
   }
 }

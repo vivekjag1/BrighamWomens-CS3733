@@ -47,12 +47,12 @@ router.get("/", async function (req: Request, res: Response): Promise<void> {
 });
 
 router.patch("/", async (req, res) => {
-  const { serviceID, status } = req.body;
+  const { serviceID, status, assignedTo } = req.body;
 
   try {
     const updatedServiceRequest = await client.serviceRequest.update({
       where: { serviceID: serviceID },
-      data: { status: status },
+      data: { status: status, assignedTo: assignedTo },
     });
 
     res.json({

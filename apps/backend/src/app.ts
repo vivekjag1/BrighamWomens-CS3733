@@ -22,8 +22,10 @@ import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
 import updateNodes from "./routes/map/updateNodes.ts";
 import handleEmployees from "./routes/handleEmployees.ts";
 import employeeDownload from "./routes/employeeDownload.ts";
-import createNode from "./routes/map/createNode.ts";
+import makeNodes from "./routes/map/makeNodes.ts";
+import deleteNodes from "./routes/map/deleteNodes.ts";
 import countNodes from "./routes/map/CountNodes.ts";
+import createNode from "./routes/map/createNode.ts";
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear
@@ -48,6 +50,8 @@ app.use("/healthcheck", (req, res) => {
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
+app.use(APIEndpoints.createNode, makeNodes);
+app.use(APIEndpoints.deleteNode, deleteNodes);
 
 app.use(
   auth({

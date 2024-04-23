@@ -18,10 +18,21 @@ import {
   TableFooter,
   Paper,
   TablePagination,
+  Modal,
+  Card,
+  CardContent,
 } from "@mui/material";
-import ExitButton from "./Banner/ExitButton.tsx";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Button from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import { useToast } from "./useToast.tsx";
 
-export function EmployeeGetter() {
+interface EmployeeGetterProps {
+  uploadTriggered: boolean;
+}
+
+export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterBySearch, setFilterBySearch] = useState("");
@@ -33,7 +44,14 @@ export function EmployeeGetter() {
   const { getAccessTokenSilently } = useAuth0();
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [currentEmployeeDelete, setEmployeeDelete] =
+    React.useState<Employee | null>(null);
+  const [employeesDeleted, setEmployeesDeleted] = React.useState<number[]>([]);
+  const { showToast } = useToast();
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const handleRowClick = (employee: Employee) => {
     setSelectedRow(employee);
     console.log(selectedRow);
@@ -53,18 +71,31 @@ export function EmployeeGetter() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
-  const handleDeleteEmployee = async (email: string) => {
+  const handleDeleteEmployee = async (employee: Employee) => {
     const token = await getAccessTokenSilently();
     const send = {
-      email: email,
+      email: employee.email,
       token: token,
     };
-    await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, send!, token);
+    setEmployeesDeleted((prevEmployees) => [
+      ...prevEmployees,
+      employee.employeeID,
+    ]);
+    const rateLeft = await MakeProtectedPostRequest(
+      APIEndpoints.deleteEmployee,
+      send,
+      token,
+    );
+    console.log(rateLeft.data.numLeft);
+    if (rateLeft.data.numLeft == 0) {
+      console.log("test");
+    }
   };
 
-  const makeDeleteRequest = (email: string) => {
-    console.log("deleting");
-    handleDeleteEmployee(email).then().catch(console.error);
+  const makeDeleteRequest = (employee: Employee) => {
+    handleDeleteEmployee(employee).then().catch(console.error);
+    showToast("Employee successfully deleted!", "success");
+    handleCloseModal();
   };
 
   useEffect(() => {
@@ -102,6 +133,17 @@ export function EmployeeGetter() {
   useEffect(() => {
     let data = employeeData;
 
+    if (uploadTriggered) {
+      setEmployeesDeleted([]);
+      location.reload();
+    } else {
+      if (employeesDeleted.length > 0) {
+        data = employeeData.filter(
+          (employee) => !employeesDeleted.includes(employee.employeeID),
+        );
+      }
+    }
+
     if (filterBySearch) {
       data = data.filter(
         (item) =>
@@ -128,8 +170,27 @@ export function EmployeeGetter() {
         : b.employeeID - a.employeeID;
     });
 
+    //   console.log(employeesDeleted);
+    //   if (employeeDelete) {
+    //       if(employeesDeleted.length==employeeData.length)
+    //       console.log("Filtering out deleted employees");
+    //       const updatedFilteredData = sortedData.filter(employee => !employeesDeleted.includes(employee.employeeID));
+    //       setFilteredData(updatedFilteredData);
+    //       setEmployeeDelete(null);
+    //   }
+    // else{
+    //     setFilteredData(sortedData);
+    // }
     setFilteredData(sortedData);
-  }, [employeeData, filterByPosition, filterByRole, filterBySearch, sortOrder]);
+  }, [
+    employeeData,
+    filterByPosition,
+    filterByRole,
+    filterBySearch,
+    sortOrder,
+    employeesDeleted,
+    uploadTriggered,
+  ]);
 
   function highlightSearchTerm(text: string, searchTerm: string) {
     if (!searchTerm.trim()) {
@@ -153,12 +214,6 @@ export function EmployeeGetter() {
       </span>
     );
   }
-
-  // const handleRowClick = () => {
-  //   // setSelectedRow(employee);
-  //   makeDeleteRequest();
-  //   // console.log(selectedRow);
-  // };
 
   const SortOrder = () => {
     if (sortOrder == "asc") {
@@ -285,13 +340,13 @@ export function EmployeeGetter() {
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer className="shadow-md">
-          <Table className="text-center text-gray-50e">
-            <TableHead className="text-xs text-gray-50 uppercase bg-secondary">
+          <Table className="text-center text-gray-50">
+            <TableHead className="text-xs text-gray-50 uppercase">
               <TableRow
                 sx={{
                   "& > th": {
-                    backgroundColor: "#012D5A",
-                    color: "white",
+                    backgroundColor: "#f9fafb",
+                    color: "#012D5A",
                     padding: "8px 16px",
                     textAlign: "center",
                     fontFamily: "Poppins, sans-serif",
@@ -322,6 +377,9 @@ export function EmployeeGetter() {
                 {authorizedStatus && (
                   <>
                     <TableCell>Role</TableCell>
+                    <TableCell>
+                      <span className="sr-only">Edit</span>
+                    </TableCell>
                   </>
                 )}
               </TableRow>
@@ -347,17 +405,27 @@ export function EmployeeGetter() {
                     <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
                       {employee.employeeID}
                     </TableCell>
-                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
+                    <TableCell style={{ width: "32ch", maxWidth: "32ch" }}>
                       <div className="flex items-center whitespace-nowrap">
                         <Avatar
-                          src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}
+                          src={`../../assets/employees/${employee.profilePicture}.jpeg`}
                           alt={`${employee.name} image`}
                         />
-                        <Typography variant="body2" style={{ marginLeft: 2 }}>
+                        <Typography
+                          component="div"
+                          variant="body2"
+                          style={{ marginLeft: 2 }}
+                        >
                           <div className="ps-3">
-                            <div className="text-base font-semibold text-black">
+                            <div className="text-base font-semibold text-black text-start">
                               {highlightSearchTerm(
                                 employee.name,
+                                filterBySearch,
+                              )}
+                            </div>
+                            <div className="font-normal text-gray-500">
+                              {highlightSearchTerm(
+                                employee.email,
                                 filterBySearch,
                               )}
                             </div>
@@ -376,15 +444,15 @@ export function EmployeeGetter() {
                         <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
                           {highlightSearchTerm(employee.role, filterBySearch)}
                         </TableCell>
-                      </>
-                    )}
-                    {authorizedStatus && (
-                      <>
-                        <ExitButton
-                          onClick={() => {
-                            makeDeleteRequest(employee.email);
-                          }}
-                        />
+                        <TableCell>
+                          <DeleteForeverIcon
+                            onClick={() => {
+                              handleOpenModal();
+                              setEmployeeDelete(employee);
+                            }}
+                            className="text-red-500 mb-1 hover:text-red-700"
+                          />
+                        </TableCell>
                       </>
                     )}
                   </TableRow>
@@ -398,7 +466,7 @@ export function EmployeeGetter() {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  rowsPerPageOptions={[5, 10, 25, 50]}
                   colSpan={6}
                   count={filteredData.length}
                   rowsPerPage={rowsPerPage}
@@ -424,6 +492,70 @@ export function EmployeeGetter() {
             </TableFooter>
           </Table>
         </TableContainer>
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Card
+            sx={{
+              borderRadius: 2,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              "&:focus": {
+                outline: "none",
+                border: "none",
+                boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
+              },
+            }}
+            className="drop-shadow-2xl px-5 pb-2 w-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CardContent>
+              <h1
+                className={`text-md font-semibold mb-4 text-secondary text-center`}
+              >
+                Are you sure you want to delete this user?
+              </h1>
+              <div className="col-span-2 flex justify-between items-end px-5">
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#EA422D",
+                    color: "white",
+                    width: "8rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                  endIcon={<ClearIcon />}
+                  onClick={() => handleCloseModal()}
+                >
+                  CANCEL
+                </Button>
+
+                <Button
+                  variant="contained"
+                  className="justify-end"
+                  style={{
+                    backgroundColor: "#012D5A",
+                    width: "8rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                  endIcon={<CheckIcon />}
+                  onClick={() =>
+                    currentEmployeeDelete
+                      ? makeDeleteRequest(currentEmployeeDelete)
+                      : null
+                  }
+                >
+                  CONFIRM
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Modal>
       </Paper>
       {/*<table className="mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">*/}
       {/*  <thead className="text-xs text-gray-50 uppercase bg-secondary">*/}
@@ -478,7 +610,7 @@ export function EmployeeGetter() {
       {/*        <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">*/}
       {/*          <img*/}
       {/*            className="w-10 h-10 rounded-full"*/}
-      {/*            src={`../../assets/temp-employees/${employee.profilePicture}.jpeg`}*/}
+      {/*            src={`../../assets/employees/${employee.profilePicture}.jpeg`}*/}
       {/*            alt={`${employee.name} image`}*/}
       {/*          />*/}
       {/*          <div className="ps-3">*/}

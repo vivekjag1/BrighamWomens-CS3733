@@ -7,16 +7,16 @@ import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import dayjs, { Dayjs } from "dayjs";
 import FormContainer from "../../components/FormContainer.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
-import CustomSubmitButton from "../../components/CustomSubmitButton.tsx";
-import CustomClearButton from "../../components/CustomClearButton.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ServiceImages from "../../components/ServiceImages.tsx";
-import giftPlaceholder from "../../../assets/gift-placeholder.jpg";
+import ButtonBlue from "../../components/ButtonBlue.tsx";
+import ButtonRed from "../../components/ButtonRed.tsx";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -29,7 +29,7 @@ const initialState: MedicineDeliveryObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -99,7 +99,10 @@ export function MedicineForm() {
 
   return (
     <div className="bg-offwhite">
-      <FormContainer>
+      <FormContainer
+        imgPath={"../../../assets/medicinedelivery.jpg"}
+        alt={"Medicine Delivery"}
+      >
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Medicine Service Request
@@ -110,21 +113,21 @@ export function MedicineForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={medicineDelivery.serviceRequest.requestingUsername}
-                onChange={(e) =>
-                  setMedicineDelivery({
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
+                  setMedicineDelivery((medicineDelivery) => ({
                     ...medicineDelivery,
                     serviceRequest: {
                       ...medicineDelivery.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
-                  })
+                  }))
                 }
-                required
+                disabled={false}
               />
-
               <NodeDropdown
                 value={medicineDelivery.serviceRequest.location}
                 sx={{ width: "25rem", padding: 0 }}
@@ -218,6 +221,8 @@ export function MedicineForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setMedicineDelivery({
@@ -273,16 +278,24 @@ export function MedicineForm() {
                   }
                 />
               </FormControl>
-              <div className="flex justify-between w-full mt-4">
-                <CustomClearButton onClick={clear}>Clear</CustomClearButton>
-
-                <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+              <div className="flex justify-around w-full mt-4">
+                <ButtonRed
+                  onClick={clear}
+                  endIcon={<ClearIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Clear
+                </ButtonRed>
+                <ButtonBlue
+                  onClick={submit}
+                  endIcon={<CheckIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Submit
+                </ButtonBlue>
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-[40rem]">
-          <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
         </div>
       </FormContainer>
     </div>

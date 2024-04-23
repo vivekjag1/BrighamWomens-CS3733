@@ -9,16 +9,17 @@ import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import FormContainer from "../../components/FormContainer.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
-import CustomClearButton from "../../components/CustomClearButton.tsx";
-import CustomSubmitButton from "../../components/CustomSubmitButton.tsx";
 import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ServiceImages from "../../components/ServiceImages.tsx";
-import giftPlaceholder from "../../../assets/gift-placeholder.jpg";
+import giftPlaceholder from "../../../assets/hospitalsanitation.jpg";
+import ButtonRed from "../../components/ButtonRed.tsx";
+import ButtonBlue from "../../components/ButtonBlue.tsx";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
 const initialState: SanitationRequestObject = {
   sanitationType: "",
@@ -30,7 +31,7 @@ const initialState: SanitationRequestObject = {
     status: "Unassigned",
     description: "",
     requestedTime: dayjs().toISOString(),
-    assignedTo: "",
+    assignedTo: "Unassigned",
   },
 };
 
@@ -98,7 +99,7 @@ export function SanitationForm() {
 
   return (
     <div className="bg-offwhite">
-      <FormContainer>
+      <FormContainer imgPath={giftPlaceholder} alt={"Sanitation Request"}>
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Sanitation Request
@@ -109,19 +110,20 @@ export function SanitationForm() {
               autoComplete="off"
               className="space-y-4 flex flex-col justify-center items-center"
             >
-              <CustomTextField
-                label="Requesting Employee"
+              <EmployeeDropdown
                 value={sanitationRequest.serviceRequest.requestingUsername}
-                onChange={(e) =>
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setSanitationRequest({
                     ...sanitationRequest,
                     serviceRequest: {
                       ...sanitationRequest.serviceRequest,
-                      requestingUsername: e.target.value,
+                      requestingUsername: newValue,
                     },
                   })
                 }
-                required
+                disabled={false}
               />
 
               <NodeDropdown
@@ -264,6 +266,8 @@ export function SanitationForm() {
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
                     }
 
                     setSanitationRequest({
@@ -321,19 +325,27 @@ export function SanitationForm() {
                 />
               </FormControl>
 
-              <div className="flex justify-between w-full mt-4">
-                <CustomClearButton onClick={clear}>Clear</CustomClearButton>
-
-                <CustomSubmitButton onClick={submit}>Submit</CustomSubmitButton>
+              <div className="flex justify-around w-full mt-4">
+                <ButtonRed
+                  onClick={clear}
+                  endIcon={<ClearIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Clear
+                </ButtonRed>
+                <ButtonBlue
+                  onClick={submit}
+                  endIcon={<CheckIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Submit
+                </ButtonBlue>
               </div>
               <div className="text-center mt-4">
                 <p>Made by Matthew and Sulaiman</p>
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-[40rem]">
-          <ServiceImages imgPath={giftPlaceholder} alt="present picture" />
         </div>
       </FormContainer>
     </div>

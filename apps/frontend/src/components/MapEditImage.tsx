@@ -4,9 +4,8 @@ import firstFloor from "../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import "../styles/Map.css";
 import MapZoomButtons from "./MapZoomButtons.tsx";
-import { FormStyling, MapStyling } from "../common/StylingCommon.ts";
+import { MapStyling } from "../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
@@ -26,7 +25,11 @@ const MapEditImage = (props: {
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
+  const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
+  const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
+  const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -37,7 +40,30 @@ const MapEditImage = (props: {
     offset: { x: 0, y: 0 },
   });
 
-  const selectedNodeID = useContext(MapContext).selectedNodeID;
+  // const selectedNodeID = useContext(MapContext).selectedNodeID;
+
+  useEffect(() => {
+    const initialColors = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialColors.set(nodeID, MapStyling.nodeColor);
+    });
+    setNodeColors(initialColors);
+  }, [tempNodes]);
+
+  useEffect(() => {
+    const initialRadii = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialRadii.set(nodeID, MapStyling.nodeRadius);
+    });
+    setNodeRadii(initialRadii);
+  }, [tempNodes]);
+  useEffect(() => {
+    setNodes(tempNodes);
+    const initialRadii = new Map();
+    tempNodes.forEach((node, nodeID) => {
+      initialRadii.set(nodeID, MapStyling.nodeRadius);
+    });
+  }, [tempNodes]);
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -90,8 +116,29 @@ const MapEditImage = (props: {
   ) {
     event.stopPropagation();
     props.onNodeClick(nodeID);
+    setSelectedNodeId(nodeID);
+
+    if (flickeringNode === nodeID) {
+      setFlickeringNode(null);
+    } else {
+      setFlickeringNode(nodeID);
+    }
+  }
+  function handleMouseEnter(nodeID: string) {
+    setNodeRadii((prevRadii) =>
+      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
+    );
+    setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
   }
 
+  function handleMouseLeave(nodeID: string) {
+    setNodeRadii((prevRadii) =>
+      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
+    );
+    setNodeColors((prevColors) =>
+      new Map(prevColors).set(nodeID, MapStyling.nodeColor),
+    ); // Reset color on mouse leave
+  }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -122,13 +169,11 @@ const MapEditImage = (props: {
     const y = e.clientY - bbox.top;
     if (position.active) {
       const updatedNode: Node = nodes.get(nodeID)!;
-      updatedNode.xcoord = (
-        parseFloat(updatedNode.xcoord) +
-        (x - position.offset.x)
+      updatedNode.xcoord = Math.round(
+        parseFloat(updatedNode.xcoord) + (x - position.offset.x),
       ).toString();
-      updatedNode.ycoord = (
-        parseFloat(updatedNode.ycoord) +
-        (y - position.offset.y)
+      updatedNode.ycoord = Math.round(
+        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
       ).toString();
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
@@ -136,9 +181,7 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div
-      className={`map-container z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}
-    >
+    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -153,65 +196,71 @@ const MapEditImage = (props: {
           pointerEvents: "none", // Ensures the overlay doesn't intercept mouse events
         }}
       ></div>
-      <div>
-        <TransformWrapper
-          initialScale={1}
-          doubleClick={{ disabled: true }}
-          panning={{ velocityDisabled: true, disabled: position.active }}
+      <TransformWrapper
+        initialScale={1}
+        doubleClick={{ disabled: true }}
+        panning={{ velocityDisabled: true, disabled: position.active }}
+      >
+        <MapZoomButtons />
+        <TransformComponent
+          wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+          contentStyle={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          <MapZoomButtons />
-          <TransformComponent
-            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
-            contentStyle={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
+          <svg
+            viewBox="0 0 5000 3400"
+            height="100vh"
+            onPointerUp={() => {
+              setPosition({ ...position, active: false });
             }}
+            onClick={props.onMapClick}
           >
-            <svg
-              viewBox="0 0 5000 3400"
-              height="100vh"
-              onPointerUp={() => {
-                setPosition({ ...position, active: false });
-              }}
-              onClick={props.onMapClick}
-            >
-              <image href={map} />
-              {edgeCoords.map((edge, index) => (
-                <line
-                  key={index}
-                  className="edge"
-                  x1={edge.startX}
-                  x2={edge.endX}
-                  y1={edge.startY}
-                  y2={edge.endY}
-                  stroke={MapStyling.edgeColor}
-                  strokeWidth={MapStyling.edgeWidth}
-                />
-              ))}
-              {Array.from(nodes.values()).map((node) => (
-                <circle
-                  key={node.nodeID}
-                  className={"node"}
-                  r={MapStyling.nodeRadius}
-                  cx={node.xcoord}
-                  cy={node.ycoord}
-                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                  fill={
-                    selectedNodeID == node.nodeID
-                      ? FormStyling.clearColor
-                      : MapStyling.nodeColor
-                  }
-                  onClick={(e) => nodeClicked(e, node.nodeID)}
-                  style={{ cursor: "pointer" }}
-                />
-              ))}
-            </svg>
-          </TransformComponent>
-        </TransformWrapper>
-      </div>
+            <image href={map} />
+            {edgeCoords.map((edge, index) => (
+              <line
+                key={index}
+                className="edge"
+                x1={edge.startX}
+                x2={edge.endX}
+                y1={edge.startY}
+                y2={edge.endY}
+                stroke={MapStyling.edgeColor}
+                strokeWidth={MapStyling.edgeWidth}
+              />
+            ))}
+            {Array.from(nodes.values()).map((node) => (
+              <circle
+                key={node.nodeID}
+                className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
+                r={nodeRadii.get(node.nodeID) || MapStyling.nodeRadius}
+                cx={node.xcoord}
+                cy={node.ycoord}
+                onMouseEnter={() => handleMouseEnter(node.nodeID)}
+                onMouseLeave={() => handleMouseLeave(node.nodeID)}
+                onPointerDown={(e: React.PointerEvent<SVGCircleElement>) =>
+                  handlePointerDown(e, node.nodeID)
+                }
+                onPointerMove={(e: React.PointerEvent<SVGCircleElement>) =>
+                  handlePointerMove(e, node.nodeID)
+                }
+                fill={
+                  node.nodeID === selectedNodeId
+                    ? "red"
+                    : nodeColors.get(node.nodeID) || MapStyling.nodeColor
+                }
+                onClick={(e: React.MouseEvent<SVGCircleElement>) =>
+                  nodeClicked(e, node.nodeID)
+                }
+                style={{ cursor: "pointer" }}
+              />
+            ))}
+          </svg>
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 };

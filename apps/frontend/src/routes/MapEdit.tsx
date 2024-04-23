@@ -208,6 +208,7 @@ function MapEdit() {
       showToast("Please fill in a node ID!", "error");
       return;
     }
+
     const node = nodes.get(selectedNodeID!);
     if (node!.nodeID.substring(0, 8) != "userNode") {
       await axios.patch(APIEndpoints.updateNodes, node, {

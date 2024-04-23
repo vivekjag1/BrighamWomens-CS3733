@@ -9,7 +9,6 @@ import React, {
   useState,
 } from "react";
 import { createNodes } from "common/src/GraphCommon.ts";
-import NavigateButton from "./NavigateButton.tsx";
 import NodeDropdown from "./NodeDropdown.tsx";
 import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -19,6 +18,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
 import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
 import LocationIcon from "@mui/icons-material/LocationOn";
+import ButtonBlue from "./ButtonBlue.tsx";
+import NavigationIcon from "@mui/icons-material/Navigation";
 
 const initialState: PathNodesObject = {
   startNode: "",
@@ -41,7 +42,6 @@ function NavigateCard(props: {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
-  //const [clickedNode, setClickedNode] = useState<GraphNode>();
 
   function getNodeID(value: string): string {
     const foundNode = nodes.find((node) => node.longName === value);
@@ -75,118 +75,87 @@ function NavigateCard(props: {
     setPathAlgorithm(defaultPathAlgorithm);
   }
 
-  /*function setStartNodeLabel(): string {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.longName;
-    } else {
-      return pathNodeObject.startNode;
-    }
-  }
-  function setStartNodeValue() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.startNode);
-    }
-  }
-
-  function setEndNodeLabel() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.longName;
-    } else {
-      return pathNodeObject.endNode;
-    }
-  }
-  function setEndNodeValue() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.endNode);
-    }
-  }*/
-
   return (
-    <div>
-      <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
-        <form
-          className="flex flex-row"
-          noValidate
-          onSubmit={props.onSubmit}
-          onReset={props.onReset}
-        >
-          <div className="flex flex-col">
-            {/*<div className="flex flex-row justify-between">*/}
-            {/*  <h2 className="text-2xl font-extralight text-secondary">*/}
-            {/*    Navigate*/}
-            {/*  </h2>*/}
-            {/*</div>*/}
-            <div className="flex flex-row gap-1 items-center">
-              <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-              <NodeDropdown
-                value={props.pathNodeObject.startNode}
-                sx={textFieldStyles}
-                label="Start Location"
-                onChange={(newValue: string) =>
-                  props.setPathNodeObject((currentPathNode) => ({
-                    ...currentPathNode,
-                    startNode: newValue,
-                  }))
-                }
-              />
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.startLocationKey}`}
-                value={getNodeID(props.pathNodeObject.startNode)}
-              />
-            </div>
-            <MoreVertIcon style={{ color: "#012D5A" }} />
-            <div className="flex flex-row gap-1 items-center">
-              <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-              <NodeDropdown
-                value={props.pathNodeObject.endNode}
-                sx={textFieldStyles}
-                label="End Location"
-                onChange={(newValue: string) =>
-                  props.setPathNodeObject((currentPathNode) => ({
-                    ...currentPathNode,
-                    endNode: newValue,
-                  }))
-                }
-              />
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.endLocationKey}`}
-                value={getNodeID(props.pathNodeObject.endNode)}
-              />
-            </div>
-            <div className="ml-[2rem] flex flex-row mt-4 justify-between">
-              <PathAlgorithmDropdown
-                value={pathAlgorithm}
-                sx={{ width: "10vw" }}
-                label="Algorithm"
-                onChange={setPathAlgorithm}
-              ></PathAlgorithmDropdown>
-              <input
-                type="hidden"
-                name={`${NavigateAttributes.algorithmKey}`}
-                value={pathAlgorithm}
-              />
-              <NavigateButton type="submit" className={"flex"} />
-            </div>
+    <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
+      <form
+        className="flex flex-row"
+        noValidate
+        onSubmit={props.onSubmit}
+        onReset={props.onReset}
+      >
+        <div className="flex flex-col">
+          <div className="flex flex-row gap-1 items-center">
+            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
+            <NodeDropdown
+              value={props.pathNodeObject.startNode}
+              sx={textFieldStyles}
+              label="Start Location"
+              onChange={(newValue: string) =>
+                props.setPathNodeObject((currentPathNode) => ({
+                  ...currentPathNode,
+                  startNode: newValue,
+                }))
+              }
+            />
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.startLocationKey}`}
+              value={getNodeID(props.pathNodeObject.startNode)}
+            />
           </div>
+          <MoreVertIcon style={{ color: "#012D5A" }} />
+          <div className="flex flex-row gap-1 items-center">
+            <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
+            <NodeDropdown
+              value={props.pathNodeObject.endNode}
+              sx={textFieldStyles}
+              label="End Location"
+              onChange={(newValue: string) =>
+                props.setPathNodeObject((currentPathNode) => ({
+                  ...currentPathNode,
+                  endNode: newValue,
+                }))
+              }
+            />
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.endLocationKey}`}
+              value={getNodeID(props.pathNodeObject.endNode)}
+            />
+          </div>
+          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
+            <PathAlgorithmDropdown
+              value={pathAlgorithm}
+              sx={{ width: "10vw" }}
+              label="Algorithm"
+              onChange={setPathAlgorithm}
+            ></PathAlgorithmDropdown>
+            <input
+              type="hidden"
+              name={`${NavigateAttributes.algorithmKey}`}
+              value={pathAlgorithm}
+            />
+            <ButtonBlue
+              type="submit"
+              className={"flex justify-end"}
+              endIcon={<NavigationIcon />}
+            >
+              GO
+            </ButtonBlue>
+          </div>
+        </div>
 
-          <div className="flex flex-col ml-[0.2rem] items-center">
-            <div className="flex-grow flex justify-center items-center">
-              <IconButton onClick={swapLocations}>
-                <SwapVertIcon />
-              </IconButton>
-            </div>
-            <div className="flex justify-end mb-[-0.1rem]">
-              <CustomClearButtonSmall onClick={reset} type="reset" />
-            </div>
+        <div className="flex flex-col ml-[0.2rem] items-center">
+          <div className="flex-grow flex justify-center items-center">
+            <IconButton onClick={swapLocations}>
+              <SwapVertIcon />
+            </IconButton>
           </div>
-        </form>
-      </div>
+          <div className="flex justify-end mb-[-0.1rem]">
+            <CustomClearButtonSmall onClick={reset} type="reset" />
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

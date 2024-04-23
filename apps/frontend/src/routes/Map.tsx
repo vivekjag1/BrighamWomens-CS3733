@@ -1,4 +1,3 @@
-import MapImage from "../components/MapImage.tsx";
 import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -7,29 +6,14 @@ import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import { GraphNode } from "common/src/GraphNode.ts";
 import { createNodes } from "common/src/GraphCommon.ts";
 import { PathNodesObject } from "common/src/Path.ts";
-
-const pathInitialState: number[][] = [
-  [0, 0, -2],
-  [0, 0, -1],
-  [0, 0, 1],
-  [0, 0, 2],
-  [0, 0, 3],
-];
-
-const defaultFloor: number = 1;
-
-const initialState: PathNodesObject = {
-  startNode: "",
-  endNode: "",
-};
+import StackedMaps from "../components/Map/StackedMaps.tsx";
+import MapImage from "../components/Map/MapImage.tsx";
 
 function Map() {
+  const [activeFloor, setActiveFloor] = useState<number>(DEFAULT_FLOOR);
+
   const [pathNodeObject, setPathNodeObject] =
     useState<PathNodesObject>(initialState);
-  // const { getAccessTokenSilently } = useAuth0();
-
-  // Sets the floor number depending on which button user clicks
-  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -38,7 +22,6 @@ function Map() {
 
   useEffect(() => {
     //get the nodes from the db
-
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
       let graphNodes = createNodes(rawNodes.data);
@@ -56,7 +39,7 @@ function Map() {
     event.preventDefault();
     setPath(pathInitialState);
     setPathNodeObject(initialState);
-    setActiveFloor(defaultFloor);
+    setActiveFloor(DEFAULT_FLOOR);
   }
 
   async function handleForm(event: FormEvent<HTMLFormElement>) {
@@ -90,34 +73,26 @@ function Map() {
         setActiveFloor(response.data[0][2]);
       })
       .catch(console.error);
+    console.log(nodes);
   }
-
-  // const [clickedNode, setclickedNode] = useState<GraphNode>();
-  /*const [startNode, setStart] = useState<GraphNode>();
-  const [endNode, setEnd] = useState<GraphNode>();
-
-  /!*const getClickedNode = (node: GraphNode) => {
-    //console.log("Hello world", startNode);
-    if (startNode) {
-      setEnd(node!);
-      //console.log("End node", endNode);
-    } else {
-      setStart(node!);
-      //console.log("Start node", startNode);
-    }
-  };*!/*/
-
-  return (
-    <div className="relative bg-offwhite">
-      {/*//passClickedNode={getClickedNode}*/}
+  const mapToBeRendered =
+    activeFloor === DEFAULT_FLOOR ? (
+      <StackedMaps onClick={setActiveFloor} />
+    ) : (
       <MapImage
         activeFloor={activeFloor}
         path={path}
         nodes={nodes}
         setPathNodeObject={setPathNodeObject}
         pathNodeObject={pathNodeObject}
+        setActiveFloor={setActiveFloor}
       />
-      <div className="absolute left-[1%] top-[2%]">
+    );
+
+  return (
+    <div className="relative bg-offwhite pl-[200px]">
+      {mapToBeRendered}
+      <div className="absolute left-[1%] top-[2%] z-[60]">
         <NavigateCard
           onSubmit={handleForm}
           pathNodeObject={pathNodeObject}
@@ -126,14 +101,33 @@ function Map() {
         />
       </div>
       <div className="fixed right-[2%] bottom-[2%]">
-        <MapFloorSelect
-          activeFloor={activeFloor}
-          onClick={setActiveFloor}
-          path={path}
-        />
+        {activeFloor == 0 ? (
+          <></>
+        ) : (
+          <MapFloorSelect
+            activeFloor={activeFloor}
+            onClick={setActiveFloor}
+            path={path}
+          />
+        )}
       </div>
     </div>
   );
 }
+
+const pathInitialState: number[][] = [
+  [0, 0, -2],
+  [0, 0, -1],
+  [0, 0, 1],
+  [0, 0, 2],
+  [0, 0, 3],
+];
+
+const DEFAULT_FLOOR: number = 0;
+
+const initialState: PathNodesObject = {
+  startNode: "",
+  endNode: "",
+};
 
 export default Map;
