@@ -13,6 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
+import { useToast } from "./useToast.tsx";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -22,6 +23,8 @@ function NavBar() {
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
 
   const [remaining, setRemaining] = useState<number>(0);
+
+  const { showToast } = useToast();
 
   const onIdle = () => {
     logout({
@@ -41,8 +44,12 @@ function NavBar() {
     const interval = setInterval(() => {
       setRemaining(Math.ceil(getRemainingTime() / 1000));
     }, 500);
-    if (remaining <= 30) {
+    if (remaining <= 30 && remaining != 0) {
       console.log("logging out in " + remaining);
+      showToast(
+        "You will be logged out in " + remaining + " seconds due to inactivity",
+        "warning",
+      );
     }
 
     return () => {
