@@ -118,7 +118,7 @@ function Home() {
 const wrapperStyles = {
   width: "100%",
   height: "100%",
-  paddingLeft: "3%",
+  paddingLeft: "5%",
 } as const;
 
 const contentStyles = {
