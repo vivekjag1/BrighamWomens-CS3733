@@ -47,7 +47,6 @@ function MapEdit() {
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
   );
-  const [numberOfNodes, setNumberOfNodes] = useState<number>(0);
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
   );
@@ -70,7 +69,7 @@ function MapEdit() {
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     const fetchData = async () => {
-      const token = await getAccessTokenSilently();
+      // const token = await getAccessTokenSilently();
       let activeFloorString;
       switch (activeFloor) {
         case -1:
@@ -96,11 +95,10 @@ function MapEdit() {
           APIEndpoints.mapGetEdges,
           window.location.origin,
         );
-        const numNodes = await MakeProtectedGetRequest(
-          APIEndpoints.countNodes,
-          token,
-        );
-        setNumberOfNodes(numNodes.data["numNodes"]);
+        // const numNodes = await MakeProtectedGetRequest(
+        //   APIEndpoints.countNodes,
+        //   token,
+        // );
         nodeURL.search = params.toString();
 
         const fetchedNodes: Node[] = (await axios.get(nodeURL.toString())).data;
@@ -158,6 +156,7 @@ function MapEdit() {
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
+    console.log("testing", selectedNodeID);
     setSelectedNodeID(undefined);
     setCachedNode(undefined);
     setNodeSaved(false);
@@ -261,8 +260,14 @@ function MapEdit() {
       });
     } else {
       //cut first 8 characters
-      const numNode: number = numberOfNodes + 1;
-      setNumberOfNodes(numberOfNodes + 1);
+
+      const numNodeRaw = await MakeProtectedGetRequest(
+        APIEndpoints.countNodes,
+        token,
+      );
+      const numNode = numNodeRaw.data["numNodes"] + 1;
+      console.log("raw", numNodeRaw.data["numNodes"]);
+      // setNumberOfNodes(numNode );
       console.log(numNode);
       node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
       console.log(node);

@@ -7,11 +7,19 @@ router.post("/", async (req, res) => {
   const nodeID: string = req.body.nodeID;
   console.log(nodeID);
   try {
-    await prisma.edge.deleteMany({
+    const numEdges = await prisma.edge.findMany({
       where: {
         OR: [{ startNodeID: nodeID }, { endNodeID: nodeID }],
       },
     });
+    if (numEdges.length != 0) {
+      await prisma.edge.deleteMany({
+        where: {
+          OR: [{ startNodeID: nodeID }, { endNodeID: nodeID }],
+        },
+      });
+    }
+
     const createdNode = await prisma.node.delete({
       where: {
         nodeID: nodeID,
