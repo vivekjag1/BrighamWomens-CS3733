@@ -8,18 +8,36 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
+import MultifloorMarker from "./MultifloorMarker.tsx";
 
 interface mapProps {
   activeFloor: number;
   nodes: Node[];
   path: Node[];
   setFields: (nodeID: string) => void;
+  onClick: (x: number) => void;
 }
 
 function Map(props: mapProps) {
   const map = getFloorMap(props.activeFloor);
   const nodes: Node[] = filterNodes(props.nodes, props.activeFloor);
   const polylines = getPolylines(props.path, props.activeFloor);
+
+  const lastIndex = props.path.length - 1;
+
+  const startNode = {
+    nodeID: props.path[0].nodeID,
+    xcoord: props.path[0].xcoord,
+    ycoord: props.path[0].ycoord,
+    floor: props.path[0].floor,
+  };
+
+  const endNode = {
+    nodeID: props.path[lastIndex].nodeID,
+    xcoord: props.path[lastIndex].xcoord,
+    ycoord: props.path[lastIndex].ycoord,
+    floor: props.path[lastIndex].floor,
+  };
 
   const polylineElements = polylines.map((polyline) => (
     <DashedPolyline points={polyline} />
@@ -46,19 +64,57 @@ function Map(props: mapProps) {
     );
   })();
 
-  const length = props.path.length;
   const endMarkerElement = (() => {
-    return getFloorNumber(props.path[length - 1].floor) ===
-      props.activeFloor ? (
+    return getFloorNumber(props.path[lastIndex].floor) === props.activeFloor ? (
       <LocationMarker
-        x={parseInt(props.path[length - 1].xcoord)}
-        y={parseInt(props.path[length - 1].ycoord)}
+        x={parseInt(props.path[lastIndex].xcoord)}
+        y={parseInt(props.path[lastIndex].ycoord)}
         color="red"
       />
     ) : (
       <></>
     );
   })();
+
+  const segments: Node[][] = getSegments(props.path, props.activeFloor);
+  console.log("path", props.path);
+  console.log("segments", segments);
+  const allTransitionMarkers = segments.map((segment) => {
+    const elements: JSX.Element[] = [];
+    let xcoord: number = 0;
+    let ycoord: number = 0;
+    if (segment[0].nodeID != startNode.nodeID) {
+      xcoord = parseInt(segment[0].xcoord);
+      ycoord = parseInt(segment[0].ycoord);
+      const indexSegmentStart: number = props.path.indexOf(segment[0]);
+      const nextFloor: string = props.path[indexSegmentStart - 1].floor;
+      elements.push(
+        <MultifloorMarker
+          x={xcoord}
+          y={ycoord}
+          floor={nextFloor}
+          onClick={props.onClick}
+        />,
+      );
+    }
+    if (segment[segment.length - 1].nodeID != endNode.nodeID) {
+      xcoord = parseInt(segment[segment.length - 1].xcoord);
+      ycoord = parseInt(segment[segment.length - 1].ycoord);
+      const indexSegmentEnd: number = props.path.indexOf(
+        segment[segment.length - 1],
+      );
+      const nextFloor = props.path[indexSegmentEnd + 1].floor;
+      elements.push(
+        <MultifloorMarker
+          x={xcoord}
+          y={ycoord}
+          floor={nextFloor}
+          onClick={props.onClick}
+        />,
+      );
+    }
+    return elements;
+  });
 
   return (
     <svg viewBox="0 0 5000 3400" height="100vh">
@@ -70,6 +126,7 @@ function Map(props: mapProps) {
       {nodeElements}
       {startMarkerElement}
       {endMarkerElement}
+      {allTransitionMarkers}
     </svg>
   );
 }
@@ -81,6 +138,24 @@ function filterNodes(nodes: Node[], activeFloor: number): Node[] {
 
 // Return an array of strings, where each string represents the list of points needed to draw one segment of a path
 function getPolylines(path: Node[], activeFloor: number): string[] {
+  const segments: Node[][] = getSegments(path, activeFloor);
+
+  // Generate instructions to draw polyline(s) corresponding to the active floor
+  const polylineInstructions: string[] = [];
+  for (let i = 0, length1 = segments.length; i < length1; i++) {
+    let polylineInstruction = "";
+    for (let j = 0, length2 = segments[i].length; j < length2; j++) {
+      polylineInstruction +=
+        segments[i][j].xcoord + "," + segments[i][j].ycoord + " ";
+    }
+    polylineInstructions.push(polylineInstruction);
+  }
+
+  return polylineInstructions;
+}
+
+// Groups nodes along the same segment and filters out nodes that do not apply to the current floor map
+function getSegments(path: Node[], activeFloor: number): Node[][] {
   // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
   const splitPaths: Node[][] = [];
   let startIndex: number = 0,
@@ -99,23 +174,7 @@ function getPolylines(path: Node[], activeFloor: number): string[] {
     (splitPath: Node[]) => getFloorNumber(splitPath[0].floor) === activeFloor,
   );
 
-  console.log(filteredSplitPaths);
-
-  // Generate instructions to draw polyline(s) corresponding to the active floor
-  const polylineInstructions: string[] = [];
-  for (let i = 0, length1 = filteredSplitPaths.length; i < length1; i++) {
-    let polylineInstruction = "";
-    for (let j = 0, length2 = filteredSplitPaths[i].length; j < length2; j++) {
-      polylineInstruction +=
-        filteredSplitPaths[i][j].xcoord +
-        "," +
-        filteredSplitPaths[i][j].ycoord +
-        " ";
-    }
-    polylineInstructions.push(polylineInstruction);
-  }
-
-  return polylineInstructions;
+  return filteredSplitPaths;
 }
 
 // Returns the corresponding map, given a floor number

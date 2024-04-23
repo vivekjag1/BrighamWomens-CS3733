@@ -111,6 +111,7 @@ function Home() {
             nodes={nodes}
             path={path}
             setFields={setFields}
+            onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
           />
         </TransformComponent>
       </TransformWrapper>
@@ -154,7 +155,7 @@ const contentStyles = {
 const DEFAULT_FLOOR: number = 1;
 const INITIAL_PATH: Node[] = [
   {
-    nodeID: "0",
+    nodeID: "A",
     xcoord: "0",
     ycoord: "0",
     floor: "L2",
@@ -164,7 +165,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "0",
+    nodeID: "AB",
     xcoord: "0",
     ycoord: "0",
     floor: "L1",
@@ -174,7 +175,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "0",
+    nodeID: "ABC",
     xcoord: "0",
     ycoord: "0",
     floor: "1",
@@ -184,7 +185,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "0",
+    nodeID: "ABCD",
     xcoord: "0",
     ycoord: "0",
     floor: "2",
@@ -194,7 +195,7 @@ const INITIAL_PATH: Node[] = [
     shortName: "",
   },
   {
-    nodeID: "0",
+    nodeID: "ABCDE",
     xcoord: "0",
     ycoord: "0",
     floor: "3",
