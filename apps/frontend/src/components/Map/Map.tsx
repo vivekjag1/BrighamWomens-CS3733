@@ -7,6 +7,7 @@ import lowerLevel1 from "../../../assets/maps/00_thelowerlevel1.png";
 import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
+import LocationMarker from "./LocationMarker.tsx";
 
 interface mapProps {
   activeFloor: number;
@@ -32,6 +33,31 @@ function Map(props: mapProps) {
     />
   ));
 
+  const startMarkerElement = (() => {
+    return parseInt(props.path[0].floor) === props.activeFloor ? (
+      <LocationMarker
+        x={parseInt(props.path[0].xcoord)}
+        y={parseInt(props.path[0].ycoord)}
+        color="green"
+      />
+    ) : (
+      <></>
+    );
+  })();
+
+  const length = props.path.length;
+  const endMarkerElement = (() => {
+    return parseInt(props.path[length - 1].floor) === props.activeFloor ? (
+      <LocationMarker
+        x={parseInt(props.path[length - 1].xcoord)}
+        y={parseInt(props.path[length - 1].ycoord)}
+        color="red"
+      />
+    ) : (
+      <></>
+    );
+  })();
+
   return (
     <svg viewBox="0 0 5000 3400" height="100vh">
       <filter id="shadow">
@@ -40,6 +66,8 @@ function Map(props: mapProps) {
       <image href={map} filter="url(#shadow)" />
       {polylineElements}
       {nodeElements}
+      {startMarkerElement}
+      {endMarkerElement}
     </svg>
   );
 }
