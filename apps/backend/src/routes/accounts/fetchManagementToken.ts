@@ -2,7 +2,6 @@ import axios from "axios";
 
 export async function getManagementToken() {
   try {
-    console.log("calling the get");
     const options = {
       method: "POST",
       url: "https://dev-7eoh0ojk0tkfhypo.us.auth0.com/oauth/token",
@@ -16,7 +15,6 @@ export async function getManagementToken() {
       }),
     };
     const data = await axios.request(options);
-    console.log(data.data);
     return data.data["access_token"];
   } catch (error) {
     console.error(error);
