@@ -8,7 +8,6 @@ import Map from "../components/Map/Map.tsx";
 import NavigationPane from "../components/Map/NavigationPane.tsx";
 import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
-import { createNodes } from "common/src/GraphCommon.ts";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import ResetButton from "../components/Map/ResetButton.tsx";
 
@@ -25,7 +24,7 @@ function Home() {
   useEffect(() => {
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
+      let graphNodes: Node[] = rawNodes.data;
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),

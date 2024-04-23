@@ -3,8 +3,7 @@ import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
-import { GraphNode } from "common/src/GraphNode.ts";
-import { createNodes } from "common/src/GraphCommon.ts";
+import type { Node } from "database";
 import { PathNodesObject } from "common/src/Path.ts";
 import StackedMaps from "../components/Map/StackedMaps.tsx";
 import MapImage from "../components/MapImage.tsx";
@@ -18,13 +17,13 @@ function Map() {
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
 
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
 
   useEffect(() => {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
+      let graphNodes: Node[] = rawNodes.data;
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),

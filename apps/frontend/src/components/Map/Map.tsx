@@ -9,6 +9,7 @@ import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
 import FloorMarkers from "./FloorMarkers.tsx";
+import { useToast } from "../useToast.tsx";
 
 interface mapProps {
   activeFloor: number;
@@ -21,23 +22,40 @@ interface mapProps {
 function Map(props: mapProps) {
   const map = getFloorMap(props.activeFloor);
   const nodes: Node[] = filterNodes(props.nodes, props.activeFloor);
-  const polylines = getPolylines(props.path, props.activeFloor);
-
+  let polylines: string[] = [];
+  let startNode: {
+    nodeID: string;
+    xcoord?: number;
+    ycoord?: number;
+    floor?: string;
+  };
+  let endNode: {
+    nodeID: string;
+    xcoord?: number;
+    ycoord?: number;
+    floor?: string;
+  };
   const lastIndex = props.path.length - 1;
+  const { showToast } = useToast();
+  if (props.path.length == 0) {
+    showToast("There is no path between the two given locations", "warning");
+  } else {
+    polylines = getPolylines(props.path, props.activeFloor);
 
-  const startNode = {
-    nodeID: props.path[0].nodeID,
-    xcoord: props.path[0].xcoord,
-    ycoord: props.path[0].ycoord,
-    floor: props.path[0].floor,
-  };
+    startNode = {
+      nodeID: props.path[0].nodeID,
+      xcoord: props.path[0].xcoord,
+      ycoord: props.path[0].ycoord,
+      floor: props.path[0].floor,
+    };
 
-  const endNode = {
-    nodeID: props.path[lastIndex].nodeID,
-    xcoord: props.path[lastIndex].xcoord,
-    ycoord: props.path[lastIndex].ycoord,
-    floor: props.path[lastIndex].floor,
-  };
+    endNode = {
+      nodeID: props.path[lastIndex].nodeID,
+      xcoord: props.path[lastIndex].xcoord,
+      ycoord: props.path[lastIndex].ycoord,
+      floor: props.path[lastIndex].floor,
+    };
+  }
 
   const polylineElements = polylines.map((polyline) => (
     <DashedPolyline points={polyline} />
@@ -57,6 +75,9 @@ function Map(props: mapProps) {
   );
 
   const startMarkerElement = (() => {
+    if (props.path.length == 0) {
+      return <></>;
+    }
     return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
       <LocationMarker
         x={props.path[0].xcoord}
@@ -69,6 +90,9 @@ function Map(props: mapProps) {
   })();
 
   const endMarkerElement = (() => {
+    if (props.path.length == 0) {
+      return <></>;
+    }
     return getFloorNumber(props.path[lastIndex].floor) === props.activeFloor ? (
       <LocationMarker
         x={props.path[lastIndex].xcoord}
@@ -140,6 +164,10 @@ function filterNodes(nodes: Node[], activeFloor: number): Node[] {
 
 // Return an array of strings, where each string represents the list of points needed to draw one segment of a path
 function getPolylines(path: Node[], activeFloor: number): string[] {
+  if (path.length == 0) {
+    return [];
+  }
+
   const segments: Node[][] = getFloorSegments(path, activeFloor);
 
   // Generate instructions to draw polyline(s) corresponding to the active floor
@@ -180,6 +208,9 @@ function getSegments(path: Node[]): Node[][] {
 
 // Filters out nodes that do not apply to the current floor map
 function filterSegments(segments: Node[][], activeFloor: number): Node[][] {
+  if (segments[0].length == 0) {
+    return [];
+  }
   return segments.filter(
     (segment: Node[]) => getFloorNumber(segment[0].floor) === activeFloor,
   );

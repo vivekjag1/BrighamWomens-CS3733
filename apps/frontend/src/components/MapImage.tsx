@@ -5,7 +5,7 @@ import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import LocationIcon from "@mui/icons-material/LocationOn";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 import { getNumFromFloor } from "common/src/GraphCommon.ts";
 import { motion } from "framer-motion";
 import React, { Dispatch, SetStateAction, useState } from "react";
@@ -16,13 +16,13 @@ import { PathNodesObject } from "common/src/Path.ts";
 function MapImage(props: {
   activeFloor: number;
   path: number[][];
-  nodes: GraphNode[];
+  nodes: Node[];
   setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
   pathNodeObject: PathNodesObject;
   setActiveFloor: Dispatch<SetStateAction<number>>;
 }) {
   const nodesData = props.nodes;
-  const filteredNodes: GraphNode[] = [];
+  const filteredNodes: Node[] = [];
   for (let i = 0; i < nodesData.length; i++) {
     if (getNumFromFloor(nodesData[i].floor) == props.activeFloor) {
       filteredNodes.push(nodesData[i]);

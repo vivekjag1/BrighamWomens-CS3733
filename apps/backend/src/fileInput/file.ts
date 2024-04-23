@@ -1,5 +1,4 @@
-import { GraphNode } from "common/src/GraphNode.ts";
-import { GraphEdge } from "common/src/GraphEdge.ts";
+import type { Node, Edge } from "database";
 import { PrismaClient } from "database";
 import fs from "fs";
 const prisma = new PrismaClient();
@@ -38,30 +37,32 @@ export function readEmployeeFile(csvData: string) {
 }
 
 export async function populateNodeDB(nodeData: string[][]) {
-  const nodeArray: GraphNode[] = [];
+  const nodeArray: Node[] = [];
   for (const node of nodeData) {
-    nodeArray.push(
-      new GraphNode(
-        node[0],
-        parseInt(node[1]),
-        parseInt(node[2]),
-        node[3],
-        node[4],
-        node[5],
-        node[6],
-        node[7],
-      ),
-    );
+    nodeArray.push({
+      nodeID: node[0],
+      xcoord: parseInt(node[1]),
+      ycoord: parseInt(node[2]),
+      floor: node[3],
+      building: node[4],
+      nodeType: node[5],
+      longName: node[6],
+      shortName: node[7],
+    });
   }
   await prisma.node.createMany({ data: nodeArray, skipDuplicates: false });
   return nodeArray;
 }
 
 export async function populateEdgeDB(edgeData: string[][]) {
-  const edgeArray: GraphEdge[] = [];
+  const edgeArray: Edge[] = [];
   // let i = 1;
   for (const edge of edgeData) {
-    edgeArray.push(new GraphEdge(edge[0], edge[1], edge[2]));
+    edgeArray.push({
+      edgeID: edge[0],
+      startNodeID: edge[1],
+      endNodeID: edge[2],
+    });
   }
 
   // console.log(edgeArray);

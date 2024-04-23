@@ -1,6 +1,6 @@
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 import React, {
   Dispatch,
   FormEventHandler,
@@ -8,7 +8,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { createNodes } from "common/src/GraphCommon.ts";
 import NodeDropdown from "./NodeDropdown.tsx";
 import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -38,7 +37,7 @@ function NavigateCard(props: {
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
 
@@ -51,7 +50,7 @@ function NavigateCard(props: {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
+      let graphNodes: Node[] = rawNodes.data;
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),
