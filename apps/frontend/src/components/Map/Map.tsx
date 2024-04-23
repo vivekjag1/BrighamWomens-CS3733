@@ -80,7 +80,7 @@ function Map(props: mapProps) {
     );
   })();
 
-  const segments: Node[][] = getSegments(props.path, props.activeFloor);
+  const segments: Node[][] = getFloorSegments(props.path, props.activeFloor);
   const allTransitionMarkers = segments.map((segment) => {
     const elements: JSX.Element[] = [];
     let xcoord: number = 0;
@@ -140,7 +140,7 @@ function filterNodes(nodes: Node[], activeFloor: number): Node[] {
 
 // Return an array of strings, where each string represents the list of points needed to draw one segment of a path
 function getPolylines(path: Node[], activeFloor: number): string[] {
-  const segments: Node[][] = getSegments(path, activeFloor);
+  const segments: Node[][] = getFloorSegments(path, activeFloor);
 
   // Generate instructions to draw polyline(s) corresponding to the active floor
   const polylineInstructions: string[] = [];
@@ -157,7 +157,12 @@ function getPolylines(path: Node[], activeFloor: number): string[] {
 }
 
 // Groups nodes along the same segment and filters out nodes that do not apply to the current floor map
-function getSegments(path: Node[], activeFloor: number): Node[][] {
+function getFloorSegments(path: Node[], activeFloor: number) {
+  return filterSegments(getSegments(path), activeFloor);
+}
+
+// Groups nodes along the same segment
+function getSegments(path: Node[]): Node[][] {
   // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
   const splitPaths: Node[][] = [];
   let startIndex: number = 0,
@@ -170,13 +175,14 @@ function getSegments(path: Node[], activeFloor: number): Node[][] {
     }
   }
   splitPaths.push(path.slice(startIndex));
+  return splitPaths;
+}
 
-  // Filter out sub-arrays with nodes that do not match the active floor.
-  const filteredSplitPaths = splitPaths.filter(
-    (splitPath: Node[]) => getFloorNumber(splitPath[0].floor) === activeFloor,
+// Filters out nodes that do not apply to the current floor map
+function filterSegments(segments: Node[][], activeFloor: number): Node[][] {
+  return segments.filter(
+    (segment: Node[]) => getFloorNumber(segment[0].floor) === activeFloor,
   );
-
-  return filteredSplitPaths;
 }
 
 // Returns the corresponding map, given a floor number
