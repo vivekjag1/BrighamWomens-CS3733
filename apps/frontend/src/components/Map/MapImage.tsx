@@ -19,6 +19,7 @@ function MapImage(props: {
   nodes: GraphNode[];
   setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
   pathNodeObject: PathNodesObject;
+  setActiveFloor: Dispatch<SetStateAction<number>>;
 }) {
   const nodesData = props.nodes;
   const filteredNodes: GraphNode[] = [];
@@ -190,6 +191,14 @@ function MapImage(props: {
                       }
                       cy={path[0][1]}
                       fill={MapStyling.nodeColor}
+                      onClick={() =>
+                        props.setActiveFloor(
+                          props.path[
+                            Math.max(props.path.indexOf(path[0]) - 1, 0)
+                          ][2],
+                        )
+                      }
+                      className="cursor-pointer"
                     />
                     <text
                       x={
@@ -205,6 +214,14 @@ function MapImage(props: {
                       fontSize="2em"
                       fontWeight="bold"
                       dy=".35em"
+                      onClick={() =>
+                        props.setActiveFloor(
+                          props.path[
+                            Math.max(props.path.indexOf(path[0]) - 1, 0)
+                          ][2],
+                        )
+                      }
+                      className="cursor-pointer"
                     >
                       {getStringFromFloor(
                         props.path[
@@ -212,7 +229,6 @@ function MapImage(props: {
                         ][2],
                       )}
                     </text>
-
                     <circle
                       r="25"
                       cx={
@@ -224,6 +240,17 @@ function MapImage(props: {
                       }
                       cy={path[path.length - 1][1]}
                       fill={MapStyling.nodeColor}
+                      className="cursor-pointer"
+                      onClick={() =>
+                        props.setActiveFloor(
+                          props.path[
+                            Math.min(
+                              props.path.indexOf(path[path.length - 1]) + 1,
+                              props.path.length - 1,
+                            )
+                          ][2],
+                        )
+                      }
                     />
                     <text
                       x={
@@ -239,12 +266,22 @@ function MapImage(props: {
                       fontSize="2em"
                       fontWeight="bold"
                       dy=".35em"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        props.setActiveFloor(
+                          props.path[
+                            Math.min(
+                              props.path.indexOf(path[path.length - 1]) + 1,
+                              props.path.length - 1,
+                            )
+                          ][2],
+                        )
+                      }
                     >
                       {getStringFromFloor(
                         props.path[
                           Math.min(
                             props.path.indexOf(path[path.length - 1]) + 1,
-                            props.path.length - 1,
                             props.path.length - 1,
                           )
                         ][2],
