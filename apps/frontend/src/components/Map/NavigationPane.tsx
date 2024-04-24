@@ -21,44 +21,43 @@ import CollapseImg from "../../../assets/collapse.svg";
 
 import {
   Directions,
-  DirectionType,
-  StatUnit,
+  // DirectionType,
+  // StatUnit,
   TripStat,
 } from "common/src/Path.ts";
-// import {set} from "husky";
 
-const fakeDirections: Directions[] = [
-  {
-    directions: [
-      { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
-      { type: DirectionType.Straight, msg: "Go straight 200 ft" },
-      { type: DirectionType.Right, msg: "Turn right" },
-      { type: DirectionType.Straight, msg: "Go straight 275 ft" },
-      { type: DirectionType.Left, msg: "Turn left" },
-      { type: DirectionType.Straight, msg: "Go straight 20 ft" },
-      { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
-    ],
-    floor: "2",
-  },
-  {
-    directions: [
-      { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
-      { type: DirectionType.Straight, msg: "Go straight 200 ft" },
-      { type: DirectionType.Right, msg: "Turn right" },
-      { type: DirectionType.Straight, msg: "Go straight 275 ft" },
-      { type: DirectionType.Left, msg: "Turn left" },
-      { type: DirectionType.Straight, msg: "Go straight 20 ft" },
-      { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
-    ],
-    floor: "3",
-  },
-];
-
-const fakeStats: TripStat[] = [
-  { stat: "3", unit: StatUnit.Mins },
-  { stat: "9:36", unit: StatUnit.Arrival },
-  { stat: "1500", unit: StatUnit.Distance },
-];
+// const fakeDirections: Directions[] = [
+//   {
+//     directions: [
+//       { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
+//       { type: DirectionType.Straight, msg: "Go straight 200 ft" },
+//       { type: DirectionType.Right, msg: "Turn right" },
+//       { type: DirectionType.Straight, msg: "Go straight 275 ft" },
+//       { type: DirectionType.Left, msg: "Turn left" },
+//       { type: DirectionType.Straight, msg: "Go straight 20 ft" },
+//       { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
+//     ],
+//     floor: "2",
+//   },
+//   {
+//     directions: [
+//       { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
+//       { type: DirectionType.Straight, msg: "Go straight 200 ft" },
+//       { type: DirectionType.Right, msg: "Turn right" },
+//       { type: DirectionType.Straight, msg: "Go straight 275 ft" },
+//       { type: DirectionType.Left, msg: "Turn left" },
+//       { type: DirectionType.Straight, msg: "Go straight 20 ft" },
+//       { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
+//     ],
+//     floor: "3",
+//   },
+// ];
+//
+// const fakeStats: TripStat[] = [
+//   { stat: "3", unit: StatUnit.Mins },
+//   { stat: "9:36", unit: StatUnit.Arrival },
+//   { stat: "1500", unit: StatUnit.Distance },
+// ];
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -72,6 +71,8 @@ interface NavigationPaneProps {
   onSubmit: FormEventHandler;
   onReset: FormEventHandler;
   hasPath: boolean;
+  directions: Directions[];
+  tripStats: TripStat[];
 }
 
 function NavigationPane(props: NavigationPaneProps) {
@@ -143,8 +144,8 @@ function NavigationPane(props: NavigationPaneProps) {
         </div>
         <div id="DirectionsCard">
           <DirectionsCard
-            directions={fakeDirections}
-            stats={fakeStats}
+            directions={props.directions}
+            stats={props.tripStats}
             isCollapsed={collapsed}
             setIsCollapsed={setCollapsed}
             hasPath={props.hasPath}

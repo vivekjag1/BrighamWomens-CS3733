@@ -16,12 +16,14 @@ export class DirectionCreator {
   nodes: Node[];
   nodesLength: number;
   nodeIndex: number;
+  private directionList: Directions[];
   private directionListIndex: number;
 
   constructor(nodes: Node[]) {
     this.nodes = nodes;
     this.nodesLength = nodes.length;
     this.nodeIndex = 0;
+    this.directionList = [];
     this.directionListIndex = 0;
   }
 
@@ -71,14 +73,17 @@ export class DirectionCreator {
       msg: "Arrived at " + this.nodes[this.nodesLength - 1].longName,
     });
 
-    outputDirections.forEach((dir) => {
+    this.directionList = outputDirections;
+    return this.directionList;
+  }
+
+  public printDirections() {
+    this.directionList.forEach((dir) => {
       console.log("FLOOR: " + dir.floor);
       dir.directions.forEach((d, i) => {
         console.log("\t" + i + ". " + d.msg);
       });
     });
-
-    return outputDirections;
   }
 
   // Return relevant trip stats for a path
@@ -134,12 +139,12 @@ export class DirectionCreator {
     const absAngle = Math.abs(angle);
     const straightAngle = 8; // Tolerance for angles that are considered straight
 
-    console.log(
-      "angle: " +
-        this.absoluteAngleBetweenNodes(nodes[nodeIndex], nodes[nodeIndex + 1]) +
-        " anglediff: " +
-        angle,
-    );
+    // console.log(
+    //   "angle: " +
+    //     this.absoluteAngleBetweenNodes(nodes[nodeIndex], nodes[nodeIndex + 1]) +
+    //     " anglediff: " +
+    //     angle,
+    // );
 
     // Generate message for stairs and elevators
     if (this.isFloorTransition(nodes[nodeIndex], nodes[nodeIndex + 1])) {

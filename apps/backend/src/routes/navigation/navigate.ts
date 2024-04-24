@@ -42,10 +42,16 @@ router.get("/", async (req, res) => {
   );
 
   const directionCreator = new DirectionCreator(path);
-  directionCreator.getDirections();
-  console.log(directionCreator.getTripStats());
+  const directions = directionCreator.getDirections();
+  const tripStats = directionCreator.getTripStats();
 
-  res.status(200).json(path);
+  const responseData = {
+    path: path,
+    directions: directions,
+    tripStats: tripStats,
+  };
+
+  res.status(200).json(responseData);
 });
 
 export default router;
