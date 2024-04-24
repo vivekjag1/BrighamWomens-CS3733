@@ -15,25 +15,27 @@ const emptyDirectionList: Directions = { directions: [], floor: "" };
 // Returns textual directions given a list of nodes
 export function getDirections(nodes: Node[]): Directions[] {
   // Default starting instructions
-  const outputDirections: Directions[] = [emptyDirectionList];
+  const outputDirections: Directions[] = [];
 
   // Initial angle from start to second node
   let lastAngle = absoluteAngleBetweenNodes(nodes[0], nodes[1]);
 
   // Add start direction message
-  outputDirections[0].directions.push({
-    type: DirectionType.Start,
-    msg:
-      "Start at " +
-      nodes[0].longName +
-      ", facing " +
-      cardinalDirectionAfterNode(nodes[0], nodes[1]),
+  outputDirections.push({
+    directions: [
+      {
+        type: DirectionType.Start,
+        msg:
+          "Start at " +
+          nodes[0].longName +
+          ", facing " +
+          cardinalDirectionAfterNode(nodes[0], nodes[1]),
+      },
+    ],
+    floor: nodes[0].floor,
   });
 
   let directionsIndex = 0;
-
-  // Set first floor bucket to first node's floor
-  outputDirections[0].floor = nodes[0].floor;
 
   // Iterate over all nodes
   for (let nodeIndex = 0; nodeIndex < nodes.length - 1; nodeIndex++) {
