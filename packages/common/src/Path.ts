@@ -38,9 +38,10 @@ export type DirectionMessage = {
   msg: string;
 };
 
-enum StatUnit {
-  Mins,
-  Distance,
+export enum StatUnit {
+  Mins = "Mins",
+  Distance = "Distance",
+  Arrival = "Arrival",
 }
 
 export type TripStat = {
