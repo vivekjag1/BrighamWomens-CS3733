@@ -19,7 +19,7 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import ButtonBlue from "./ButtonBlue.tsx";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-/*const initialState: PathNodesObject = {
+/*const initialState: PathType = {
   startNode: "",
   endNode: "",
 };*/

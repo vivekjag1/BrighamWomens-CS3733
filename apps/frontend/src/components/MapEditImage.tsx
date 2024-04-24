@@ -4,11 +4,11 @@ import firstFloor from "../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
+import ZoomControls from "./Map/ZoomControls.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -185,7 +185,9 @@ const MapEditImage = (props: {
           doubleClick={{ disabled: true }}
           panning={{ velocityDisabled: true, disabled: position.active }}
         >
-          <MapZoomButtons />
+          <div className="absolute top-[2%] right-[1.5%] z-10">
+            <ZoomControls />
+          </div>
           <TransformComponent
             wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
             contentStyle={{
