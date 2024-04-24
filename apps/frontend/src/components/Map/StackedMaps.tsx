@@ -5,6 +5,7 @@ import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { Node } from "database";
 import DashedPolyline from "./DashedPolyline.tsx";
+import ElevatorPolyline from "./ElevatorPolyline.tsx";
 
 interface StackedMapsProps {
   path: Node[];
@@ -28,7 +29,7 @@ function StackedMaps(props: StackedMapsProps) {
     <DashedPolyline points={polyline2D} />
   ));
   const polylines3DElements = polylines3D.map((polyline3D) => (
-    <DashedPolyline points={polyline3D} />
+    <ElevatorPolyline points={polyline3D} />
   ));
 
   const startMarkerElement = (() => {
