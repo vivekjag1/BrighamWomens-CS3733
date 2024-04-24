@@ -25,6 +25,7 @@ import employeeDownload from "./routes/employeeDownload.ts";
 import makeNodes from "./routes/map/makeNodes.ts";
 import deleteNodes from "./routes/map/deleteNodes.ts";
 import countNodes from "./routes/map/CountNodes.ts";
+import createEdges from "./routes/map/createEdges.ts";
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear
@@ -76,6 +77,7 @@ app.use(APIEndpoints.employeeDownload, employeeDownload);
 app.use(APIEndpoints.deleteEmployee, deleteUser);
 app.use(APIEndpoints.makeEmployee, createUser);
 app.use(APIEndpoints.countNodes, countNodes);
+app.use(APIEndpoints.createEdge, createEdges);
 // app.use(APIEndpoints.createNode, createNode);
 /**
  * Catch all 404 errors, and forward them to the error handler

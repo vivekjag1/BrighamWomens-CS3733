@@ -336,7 +336,6 @@ function MapEdit() {
     tempEdges = tempEdges.concat(edges);
     setEdges(tempEdges);
   }
-
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
