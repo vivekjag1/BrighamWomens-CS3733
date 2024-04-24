@@ -10,7 +10,7 @@ import type { Node } from "database";
 
 const PIXELS_TO_FEET: number = 0.347;
 const FT_PER_SEC: number = 4.4; // 3 mph
-const emptyDirectionList: Directions = { directions: [], floor: "" };
+// const emptyDirectionList: Directions = { directions: [], floor: "" };
 
 // Returns textual directions given a list of nodes
 export function getDirections(nodes: Node[]): Directions[] {
@@ -54,10 +54,14 @@ export function getDirections(nodes: Node[]): Directions[] {
       nodes[nodeIndex + 1],
     );
 
-    // If there is a floor transition, advance output to group directions to the next bucket of directions for that floor
+    // If there is a floor transition, advance output to group directions to the next array of directions for that floor
     if (isFloorTransition(nodes[nodeIndex], nodes[nodeIndex + 1])) {
-      outputDirections[++directionsIndex] = emptyDirectionList; // create new output direction list
-      outputDirections[directionsIndex].floor = nodes[nodeIndex + 1].floor; // set it's floor
+      outputDirections.push({
+        directions: [],
+        floor: nodes[nodeIndex + 1].floor,
+      });
+
+      directionsIndex++;
     }
   }
 
