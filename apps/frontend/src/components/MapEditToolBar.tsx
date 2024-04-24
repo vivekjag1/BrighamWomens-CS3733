@@ -2,7 +2,6 @@ import * as React from "react";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import AddLocationRoundedIcon from "@mui/icons-material/AddLocationRounded";
 import OpenWithRoundedIcon from "@mui/icons-material/OpenWithRounded";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,23 +9,7 @@ import { Zoom } from "@mui/material";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { useContext } from "react";
 import { DesignSystem } from "../common/StylingCommon.ts";
-// import {blue} from "@mui/material/colors";
-
-// const styles = {
-//   color: "white",
-//   width: "40px",
-//   height: "35px",
-//   fontWeight: "light",
-//   borderRadius: "5px",
-//   "&:hover": {
-//     backgroundColor: ButtonStyling.blueButtonHover,
-//   },
-//   "&.Mui-selected, &.Mui-selected:hover": {
-//     backgroundColor: ButtonStyling.blueButtonClicked,
-//     color: "white",
-//     fontWeight: "bold",
-//   },
-// } as const;
+import AdsClickIcon from "@mui/icons-material/AdsClick";
 
 const ToggleButtonStyles = {
   color: DesignSystem.white,
@@ -89,7 +72,7 @@ export default function ToggleButtons(props: {
             selected={selectedAction.toString() == "SelectNode"}
             sx={ToggleButtonStyles}
           >
-            <GpsFixedIcon />
+            <AdsClickIcon />
           </ToggleButton>
         </Tooltip>
         <Tooltip

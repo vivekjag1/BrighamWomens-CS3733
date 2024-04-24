@@ -166,7 +166,7 @@ function MapEdit() {
   }
 
   const saveButtonStyles = {
-    width: "8vw",
+    width: "10vw",
   };
 
   function updateNode(node: Node) {
@@ -492,14 +492,14 @@ function MapEdit() {
           />
         </MapContext.Provider>
       </div>
-      <div className="fixed left-[60%] bottom-[2%] z-50 text-sm">
+      <div className="absolute left-[2%] bottom-[2%] z-50 text-sm">
         <ButtonBlue
           onClick={handleSaveAll}
           //disabled={!selectedNodeID}
           endIcon={<CheckIcon />}
           style={saveButtonStyles}
         >
-          SAVE ALL
+          Save All
         </ButtonBlue>
       </div>
     </div>
