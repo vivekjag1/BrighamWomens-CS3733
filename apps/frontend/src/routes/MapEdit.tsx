@@ -8,12 +8,20 @@ import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
-import AddElementToolTip from "../components/AddElementToolTip.tsx";
+import MapEditToolBar from "../components/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 
 const defaultFloor: number = 1;
+enum Action {
+  SelectNode = "SelectNode",
+  MoveNode = "MoveNode",
+  CreateNode = "CreateNode",
+  CreateEdge = "CreateEdge",
+}
+
+//merge changes to dev
 
 type MapData = {
   nodes: Map<string, Node>;
@@ -22,6 +30,7 @@ type MapData = {
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   selectedNodeID: string | undefined;
   setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedAction: Action;
 };
 
 export const MapContext = createContext<MapData>({
@@ -34,6 +43,7 @@ export const MapContext = createContext<MapData>({
   selectedNodeID: undefined,
   // eslint-disable-next-line no-empty-function
   setSelectedNodeID: () => {},
+  selectedAction: Action.SelectNode,
 });
 
 const userNodePrefix = "userNode";
@@ -43,13 +53,16 @@ function MapEdit() {
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
 
-  const [addingNode, setAddingNode] = useState<boolean>(false);
-  const [addingEdge, setAddingEdge] = useState<boolean>(false);
+  //const [addingNode, setAddingNode] = useState<boolean>(false);
+  //const [addingEdge, setAddingEdge] = useState<boolean>(false);
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
   );
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
+  );
+  const [selectedAction, setSelectedAction] = useState<Action>(
+    Action.SelectNode,
   );
 
   const contextValue = {
@@ -59,6 +72,7 @@ function MapEdit() {
     setEdges,
     selectedNodeID,
     setSelectedNodeID,
+    selectedAction,
   };
 
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
@@ -197,11 +211,19 @@ function MapEdit() {
   }
 
   function handleNodeClick(nodeID: string) {
-    if (addingEdge) {
+    if (selectedAction === Action.CreateEdge) {
       if (!startEdgeNodeID) {
         setStartEdgeNodeID(nodeID);
       } else {
         handleCreateEdge(startEdgeNodeID, nodeID);
+        setStartEdgeNodeID(undefined);
+      }
+    } else if (selectedAction === Action.CreateNode) {
+      if (!startEdgeNodeID) {
+        setStartEdgeNodeID(nodeID);
+      } else {
+        //const endNodeID = nodeID;
+        //Create an edge logic goes here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         setStartEdgeNodeID(undefined);
       }
     } else {
@@ -218,18 +240,27 @@ function MapEdit() {
     }
   }
 
-  function handleAddNodeButtonClicked() {
-    setAddingNode(!addingNode);
-    setAddingEdge(false);
-  }
+  // function handleAddNodeButtonClicked() {
+  //   setAddingNode(!addingNode);
+  //   setAddingEdge(false);
+  // }
 
-  function handleAddEdgeButtonClicked() {
-    setAddingEdge(!addingEdge);
-    setAddingNode(false);
+  function handleSelectNodeSelected() {
+    setSelectedAction(Action.SelectNode);
+  }
+  function handleMoveNodeSelected() {
+    setSelectedAction(Action.MoveNode);
+  }
+  function handleCreateNodeSelected() {
+    setSelectedAction(Action.CreateNode);
+  }
+  function handleCreateEdgeSelected() {
+    setSelectedAction(Action.CreateEdge);
+    setStartEdgeNodeID(undefined);
   }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
-    if (addingNode) {
+    if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
       // if node wasn't saved, revert node to cached version
@@ -342,7 +373,7 @@ function MapEdit() {
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
         <MapEditImage
-          addingNode={addingNode}
+          startEdgeNodeID={startEdgeNodeID}
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
@@ -360,19 +391,15 @@ function MapEdit() {
       <div className="fixed right-[2%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[2%] bottom-[2%] z-50">
-        <AddElementToolTip
-          onClicked={handleAddNodeButtonClicked}
-          title="Create Node"
-          selected={addingNode}
-        />
-      </div>
-      <div className="absolute left-[2%] bottom-[9%] z-50">
-        <AddElementToolTip
-          onClicked={handleAddEdgeButtonClicked}
-          title="Create Edge"
-          selected={addingEdge}
-        />
+      <div className="absolute right-[20%] top-[2%] z-50">
+        <MapContext.Provider value={contextValue}>
+          <MapEditToolBar
+            SelectNode={handleSelectNodeSelected}
+            MoveNode={handleMoveNodeSelected}
+            CreateNode={handleCreateNodeSelected}
+            CreateEdge={handleCreateEdgeSelected}
+          />
+        </MapContext.Provider>
       </div>
     </div>
   );

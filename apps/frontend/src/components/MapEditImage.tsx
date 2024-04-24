@@ -18,7 +18,7 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
-  addingNode: boolean;
+  startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -28,6 +28,7 @@ const MapEditImage = (props: {
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+  const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -126,6 +127,7 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
+
     setPosition({
       ...position,
       x: nodes.get(nodeID)!.xcoord,
@@ -146,7 +148,7 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (position.active) {
+    if (position.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
         updatedNode.xcoord + (x - position.offset.x),
@@ -160,7 +162,9 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
+    <div
+      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+    >
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -230,6 +234,17 @@ const MapEditImage = (props: {
                   style={{ cursor: "pointer" }}
                 />
               ))}
+              //This is rendering the line between the cursor and startNode
+              {props.startEdgeNodeID && (
+                <line
+                  x1={nodes.get(props.startEdgeNodeID)!.xcoord}
+                  y1={nodes.get(props.startEdgeNodeID)!.ycoord}
+                  x2={position.x}
+                  y2={position.y}
+                  stroke="red"
+                  strokeWidth="2"
+                />
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>
