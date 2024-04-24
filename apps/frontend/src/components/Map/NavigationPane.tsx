@@ -27,10 +27,10 @@ function NavigationPane(props: NavigationPaneProps) {
     <div>
       <form
         onSubmit={props.onSubmit}
-        className="flex flex-col gap-5 border-5 p-4 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col gap-4 border-5 p-4 pr-5 bg-white rounded-2xl shadow-xl"
       >
-        <div className="flex gap-4">
-          <div className="flex flex-col text-[#012D5A] gap-1 mt-1">
+        <div className="flex gap-2">
+          <div className="flex flex-col text-[#012D5A] gap-1 mt-1 pr-[3%]">
             <MyLocationIcon sx={IconStyles} />
             <MoreVertIcon sx={IconStyles} />
             <LocationOn sx={IconStyles} />
@@ -69,8 +69,8 @@ function NavigationPane(props: NavigationPaneProps) {
               <NavigationButton />
             </div>
           </div>
-          <div className="pt-[7%]">
-            <IconButton className="h-[40px]" onClick={props.onSwap}>
+          <div className="pt-[7%] pr-[7%]">
+            <IconButton className="p-0" onClick={props.onSwap}>
               <SwapVertIcon />
             </IconButton>
           </div>
@@ -91,7 +91,7 @@ const NodeDropdownStyles = {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "0.8rem",
   },
-  "&. MuiInputLabel-root": {
+  ".css-1pysi21-MuiFormLabel-root-MuiInputLabel-root": {
     fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
@@ -102,7 +102,10 @@ const AlgorithmDropdownStyles = {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "0.8rem",
   },
-  "&. MuiInputLabel-root": {
+  "&. MuiFormLabel-root-MuiInputLabel-root": {
+    fontFamily: DesignSystem.fontFamily,
+  },
+  ".css-1pysi21-MuiFormLabel-root-MuiInputLabel-root": {
     fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;

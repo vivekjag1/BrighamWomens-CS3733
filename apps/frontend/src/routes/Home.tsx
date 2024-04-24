@@ -90,6 +90,7 @@ function Home() {
       setStartNode(INITIAL_PATH[0].nodeID);
       setEndNodeID(INITIAL_PATH[0].nodeID);
       setAlgorithm("A-Star");
+      setGlowSequence([]);
       resetTransform();
     }
 
@@ -133,7 +134,7 @@ function Home() {
         doubleClick={{ disabled: true }}
         panning={{ velocityDisabled: true }}
       >
-        <div className="absolute top-[2%] right-[1.5%] z-10">
+        <div className="absolute bottom-[31%] right-[1.5%] z-10">
           <ZoomControls />
         </div>
         <TransformComponent

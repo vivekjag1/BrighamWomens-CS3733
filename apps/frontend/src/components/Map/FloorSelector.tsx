@@ -134,7 +134,7 @@ function getFloorsInPath(path: Node[]): number[] {
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
   borderRadius: "8px",
-  width: "6vh",
+  width: "5.5vh",
 } as const;
 
 const ToggleButtonStyles = {
@@ -142,7 +142,7 @@ const ToggleButtonStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.10rem",
   fontWeight: "normal",
-  height: "6vh",
+  height: "5.5vh",
   borderRadius: "8px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
