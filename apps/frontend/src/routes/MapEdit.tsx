@@ -482,7 +482,7 @@ function MapEdit() {
       <div className="absolute right-[1.5%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[42%] bottom-[2%] z-50">
+      <div className="absolute left-[45%] bottom-[2%] z-50">
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={handleSelectNodeSelected}
