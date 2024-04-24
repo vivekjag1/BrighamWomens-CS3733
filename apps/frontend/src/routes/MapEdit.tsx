@@ -7,13 +7,14 @@ import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import MapEditCard from "../components/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useToast } from "../components/useToast.tsx";
+// import { useToast } from "../components/useToast.tsx";
 import MapEditToolBar from "../components/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import ButtonBlue from "../components/ButtonBlue.tsx";
 import CheckIcon from "@mui/icons-material/Check";
+import { useToast } from "../components/useToast.tsx";
 
 const defaultFloor: number = 1;
 enum Action {
@@ -316,22 +317,27 @@ function MapEdit() {
 
   async function handleSaveAll() {
     const token = await getAccessTokenSilently();
-    const sendNodes = {
-      nodes: Array.from(addedNodes.values()),
-    };
+    // const sendNodes = {
+    //   nodes: Array.from(addedNodes.values()),
+    // };
     await MakeProtectedPostRequest(
-      APIEndpoints.createManyNodes,
-      sendNodes,
+      APIEndpoints.createNode,
+      Array.from(addedNodes.values()),
       token,
     );
     const sendUpdatedNodes = {
       nodes: Array.from(updatedNodes.values()),
+      //nodes: Array.from(updatedNodes.values()),
     };
-    await MakeProtectedPatchRequest(
-      APIEndpoints.updateNodes,
-      sendUpdatedNodes,
-      token,
-    );
+    console.log(updatedNodes);
+    if (Array.from(updatedNodes.values()).length != 0) {
+      await MakeProtectedPatchRequest(
+        APIEndpoints.updateNodes,
+        sendUpdatedNodes,
+        token,
+      );
+    }
+
     const sendDeletedNodes = {
       nodes: Array.from(deletedNodes.values()),
     };
@@ -344,20 +350,24 @@ function MapEdit() {
     const sendNewEdges = {
       edges: addedEdges,
     };
-    await MakeProtectedPostRequest(
-      APIEndpoints.createEdge,
-      sendNewEdges,
-      token,
-    );
-    location.reload();
+
+    if (Array.from(addedEdges.values()).length != 0) {
+      await MakeProtectedPostRequest(
+        APIEndpoints.createEdge,
+        sendNewEdges,
+        token,
+      );
+    }
+
+    showToast("Changes Saved!", "success");
   }
 
   async function handleSave() {
     const token = await getAccessTokenSilently();
-    if (nodes.get(selectedNodeID!)!.shortName === "") {
-      showToast("Please fill in a node ID!", "error");
-      return;
-    }
+    // if (nodes.get(selectedNodeID!)!.shortName === "") {
+    //   showToast("Please fill in a short name!", "error");
+    //   return;
+    // }
 
     const node = nodes.get(selectedNodeID!);
     console.log(node);
@@ -370,11 +380,23 @@ function MapEdit() {
         APIEndpoints.countNodes,
         token,
       );
-      const numNode = numNodeRaw.data["numNodes"] + 1;
+      console.log("nodes retrieved from API", numNodeRaw);
+      const numNode = numNodeRaw.data["numNodes"] + 1 + addedNodes.size;
+      console.log(addedNodes);
       console.log("raw", numNodeRaw.data["numNodes"]);
       // setNumberOfNodes(numNode );
       console.log(numNode);
-      node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
+      node!.nodeID =
+        node!.nodeID.substring(0, 8) +
+        (numNodeRaw.data["numNodes"] + addedNodes.size);
+      console.log(
+        "I hate life",
+        node!.nodeID.substring(0, 8) +
+          (numNodeRaw.data["numNodes"] + 1 + addedNodes.size),
+      );
+      if (node!.shortName == "") {
+        node!.shortName = node!.nodeID;
+      }
       console.log(node);
       node!.xcoord = Math.round(node!.xcoord);
       node!.ycoord = Math.round(node!.ycoord);
@@ -383,7 +405,9 @@ function MapEdit() {
     }
   }
 
-  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
+    const token = await getAccessTokenSilently();
+
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -400,15 +424,19 @@ function MapEdit() {
       return;
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
-
+    const numNodeRaw = await MakeProtectedGetRequest(
+      APIEndpoints.countNodes,
+      token,
+    );
     const xVal = Math.round(x);
     const yVal = Math.round(y);
-    const nodeID = userNodePrefix + numUserNodes;
+    const nodeID =
+      userNodePrefix + (addedNodes.size + numNodeRaw.data["numNodes"] + 1);
     const floor = activeFloor;
     const building = "";
     const nodeType = "";
-    const longName = "";
-    const shortName = "";
+    const longName = nodeID;
+    const shortName = nodeID;
 
     setNumUserNodes(numUserNodes + 1);
 
@@ -425,6 +453,19 @@ function MapEdit() {
     };
 
     const tempNodes = new Map(nodes);
+    if (newNode.building == "") {
+      newNode.building = "default building";
+    }
+    if (newNode.nodeType) {
+      newNode.nodeType = "created node";
+    }
+    if (newNode.longName == "") {
+      newNode.longName = newNode.nodeID;
+    }
+    if (newNode.shortName == "") {
+      newNode.shortName = newNode.nodeID;
+    }
+
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
     const tempAddedNodes = new Map(addedNodes);

@@ -113,7 +113,7 @@ function MapEditCard(props: {
               endIcon={<CheckIcon />}
               style={buttonStyles}
             >
-              SAVE
+              SUBMIT
             </CustomSaveButton>
           </div>
         </div>
