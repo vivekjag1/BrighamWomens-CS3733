@@ -54,6 +54,12 @@ function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [addedNodes, setAddedNodes] = useState<Map<string, Node>>(new Map());
+  const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
+  const [deletedNodes, setDeletedNodes] = useState<Map<string, Node>>(
+    new Map(),
+  );
+  const [deletedEdges, setDeletedEdges] = useState<Edge[]>([]);
 
   //const [addingNode, setAddingNode] = useState<boolean>(false);
   //const [addingEdge, setAddingEdge] = useState<boolean>(false);
@@ -163,17 +169,29 @@ function MapEdit() {
 
   function updateNode(node: Node) {
     const tempNodes = new Map(nodes);
+    const tempAddedNodes = new Map(addedNodes);
     if (selectedNodeID) {
       tempNodes.set(selectedNodeID, node);
+      tempAddedNodes.set(selectedNodeID, node);
       setNodes(tempNodes);
+      setAddedNodes(tempAddedNodes);
     }
   }
 
   async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
+      const tempDeletedNodes = new Map(deletedNodes);
+      tempDeletedNodes.set(selectedNodeID, nodes.get(selectedNodeID)!);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
+      setDeletedNodes(tempDeletedNodes);
+
+      if (addedNodes.has(selectedNodeID)) {
+        const tempAddedNodes = new Map(addedNodes);
+        tempAddedNodes.delete(selectedNodeID);
+        setAddedNodes(tempAddedNodes);
+      }
     }
 
     setSelectedNodeID(undefined);
@@ -186,7 +204,7 @@ function MapEdit() {
         value.endNodeID == selectedNodeID,
     );
 
-    let tempRepairedEdges: Edge[] = [];
+    const tempRepairedEdges: Edge[] = [];
     const tempNeighborNodesIDs: string[] = [];
     for (let i = 0; i < selectedNodeEdges.length; i++) {
       if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
@@ -206,8 +224,12 @@ function MapEdit() {
       }
     }
 
-    tempRepairedEdges = tempRepairedEdges.concat(edges);
-    setEdges(tempRepairedEdges);
+    const updatedTempEdges = tempRepairedEdges.concat(edges);
+    const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
+    const deletedTempEdges = selectedNodeEdges.concat(deletedEdges);
+    setEdges(updatedTempEdges);
+    setAddedEdges(addedRepairedEdges);
+    setDeletedEdges(deletedTempEdges);
 
     const sendToDb = {
       nodeID: selectedNodeID,
@@ -278,6 +300,11 @@ function MapEdit() {
       setNodeSaved(false);
     }
   }
+
+  /*async function handleSaveAll(){
+      const token = await getAccessTokenSilently();
+
+  }*/
 
   async function handleSave() {
     const token = await getAccessTokenSilently();
@@ -354,6 +381,9 @@ function MapEdit() {
     const tempNodes = new Map(nodes);
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
+    const tempAddedNodes = new Map(addedNodes);
+    tempAddedNodes.set(newNode.nodeID, newNode);
+    setAddedNodes(tempAddedNodes);
     setSelectedNodeID(nodeID);
   };
 
