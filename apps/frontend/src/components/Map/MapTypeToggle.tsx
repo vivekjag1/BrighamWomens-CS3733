@@ -3,6 +3,7 @@ import { ToggleButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon";
 
 interface mapTypeToggleProps {
+  mapType: string;
   setMapType: () => void;
 }
 function MapTypeToggle(props: mapTypeToggleProps) {
@@ -18,7 +19,7 @@ function MapTypeToggle(props: mapTypeToggleProps) {
       }}
       onClick={props.setMapType}
     >
-      <label className="text-lg font-semibold">3D</label>
+      <label className="text-lg font-semibold">{props.mapType}</label>
     </ToggleButton>
   );
 }
@@ -29,8 +30,13 @@ const toggleButtonStyles = {
   backgroundColor: DesignSystem.primaryColor,
   color: DesignSystem.white,
   borderRadius: "8px",
+  transition: "transform 0.1s linear",
   "&.MuiToggleButton-root:hover": {
     backgroundColor: DesignSystem.accentColor,
+    transform: "scale(1.1)",
+  },
+  "&.MuiToggleButton-root:active": {
+    transform: "scale(0.8)",
   },
   "&.Mui-selected": {
     backgroundColor: DesignSystem.accentColor,

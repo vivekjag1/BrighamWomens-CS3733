@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { DesignSystem, MapStyling } from "../../common/StylingCommon.ts";
+import { DesignSystem } from "../../common/StylingCommon.ts";
 
 interface DashedPolylineProps {
   points: string;
@@ -11,7 +11,7 @@ function DashedPolyline(props: DashedPolylineProps) {
       points={props.points}
       fill="none"
       stroke={DesignSystem.primaryColor}
-      strokeWidth={MapStyling.pathWidth}
+      strokeWidth={30}
       strokeDasharray={25}
       initial={{ strokeDashoffset: 25 }}
       animate={{ strokeDashoffset: [25, -25] }}

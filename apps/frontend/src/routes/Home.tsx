@@ -10,6 +10,8 @@ import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
 import MapTypeToggle from "../components/Map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
+import StackedMaps from "../components/Map/StackedMaps.tsx";
+import "../../src/components/Map/styles/StackedMaps.css";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -33,6 +35,7 @@ function Home() {
       setNodes(graphNodes);
       return graphNodes;
     }
+
     getNodesFromDb().then();
   }, []);
 
@@ -104,6 +107,7 @@ function Home() {
     if (mapType == "2D") setMapType("3D");
     else setMapType("2D");
   }
+
   function setStartNode(id: string) {
     setStartNodeID(id);
   }
@@ -116,29 +120,60 @@ function Home() {
     setAlgorithm(algorithm);
   }
 
+  const mapElement =
+    mapType == "3D" ? (
+      <div className="flexMap">
+        <StackedMaps path={path} />
+      </div>
+    ) : (
+      <Map
+        activeFloor={activeFloor}
+        nodes={nodes}
+        path={path}
+        onNodeClick={handleNodeClick}
+        onClick={(selectedFloor: number) => {
+          setActiveFloor(selectedFloor);
+        }}
+        updateGlowSequence={updateGlowSequence}
+      />
+    );
+
+  const zoomControlsElement =
+    mapType == "3D" ? (
+      <></>
+    ) : (
+      <div className="absolute bottom-[31%] right-[1.5%] z-10">
+        <ZoomControls />
+      </div>
+    );
+
+  const floorSelectorElement =
+    mapType == "3D" ? (
+      <></>
+    ) : (
+      <div className="absolute bottom-[2%] right-[1.5%]">
+        <FloorSelector
+          activeFloor={activeFloor}
+          path={path}
+          onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+          updateGlowSequence={updateGlowSequence}
+          glowSequence={glowSequence}
+        />
+      </div>
+    );
+
   return (
     <div className="relative bg-offwhite">
       <TransformWrapper
         doubleClick={{ disabled: true }}
         panning={{ velocityDisabled: true }}
       >
-        <div className="absolute bottom-[31%] right-[1.5%] z-10">
-          <ZoomControls />
-        </div>
+        {zoomControlsElement}
         <TransformComponent
           wrapperStyle={wrapperStyles}
           contentStyle={contentStyles}
         >
-          <Map
-            activeFloor={activeFloor}
-            nodes={nodes}
-            path={path}
-            onNodeClick={handleNodeClick}
-            onClick={(selectedFloor: number) => {
-              setActiveFloor(selectedFloor);
-            }}
-            updateGlowSequence={updateGlowSequence}
-          />
+          {mapElement}
         </TransformComponent>
         <div className="absolute top-[1%] left-[1%]">
           <NavigationPane
@@ -155,17 +190,9 @@ function Home() {
           />
         </div>
       </TransformWrapper>
-      <div className="absolute bottom-[2%] right-[1.5%]">
-        <FloorSelector
-          activeFloor={activeFloor}
-          path={path}
-          onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
-          updateGlowSequence={updateGlowSequence}
-          glowSequence={glowSequence}
-        />
-      </div>
+      {floorSelectorElement}
       <div className="absolute top-[2%] right-[1.5%]">
-        <MapTypeToggle setMapType={handleMapChange} />
+        <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+/*
 import { FormEvent, useState, useEffect } from "react";
 import NavigateCard from "../components/NavigateCard.tsx";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
@@ -74,7 +75,7 @@ function Map() {
       .catch(console.error);
     console.log(nodes);
   }
-  const mapToBeRendered =
+  /!*const mapToBeRendered =
     activeFloor === DEFAULT_FLOOR ? (
       <StackedMaps onClick={setActiveFloor} />
     ) : (
@@ -86,7 +87,7 @@ function Map() {
         pathNodeObject={pathNodeObject}
         setActiveFloor={setActiveFloor}
       />
-    );
+    );*!/
 
   return (
     <div className="relative bg-offwhite pl-[200px]">
@@ -130,3 +131,4 @@ const initialState: PathNodesObject = {
 };
 
 export default Map;
+*/

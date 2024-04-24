@@ -17,7 +17,7 @@ function Layout() {
         scope: "openid profile email offline_access",
       }}
     >
-      <div className="w-screen h-screen flex overflow-hidden">
+      <div className="w-screen h-screen flex">
         <NavBar />
         <main className="grow">
           <Outlet />
