@@ -18,6 +18,7 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
+  startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -110,19 +111,18 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
-    if (selectedAction.toString() == "MoveNode") {
-      setPosition({
-        ...position,
-        x: parseInt(nodes.get(nodeID)!.xcoord),
-        y: parseInt(nodes.get(nodeID)!.ycoord),
-        active: true,
-        offset: {
-          x: xOffset,
-          y: yOffset,
-        },
-      });
-      el.setPointerCapture(e.pointerId);
-    }
+
+    setPosition({
+      ...position,
+      x: parseInt(nodes.get(nodeID)!.xcoord),
+      y: parseInt(nodes.get(nodeID)!.ycoord),
+      active: true,
+      offset: {
+        x: xOffset,
+        y: yOffset,
+      },
+    });
+    el.setPointerCapture(e.pointerId);
   }
 
   function handlePointerMove(
@@ -132,7 +132,7 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (position.active) {
+    if (position.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
         parseFloat(updatedNode.xcoord) + (x - position.offset.x),
@@ -218,6 +218,17 @@ const MapEditImage = (props: {
                   style={{ cursor: "pointer" }}
                 />
               ))}
+              //This is rendering the line between the cursor and startNode
+              {props.startEdgeNodeID && (
+                <line
+                  x1={nodes.get(props.startEdgeNodeID)!.xcoord}
+                  y1={nodes.get(props.startEdgeNodeID)!.ycoord}
+                  x2={position.x}
+                  y2={position.y} //Ask what the position variabl means and instead make a mouse pointer position variable
+                  stroke="red"
+                  strokeWidth="2"
+                />
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>

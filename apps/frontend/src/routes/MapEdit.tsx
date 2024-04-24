@@ -235,6 +235,14 @@ function MapEdit() {
         handleCreateEdge(startEdgeNodeID, nodeID);
         setStartEdgeNodeID(undefined);
       }
+    } else if (selectedAction === Action.CreateNode) {
+      if (!startEdgeNodeID) {
+        setStartEdgeNodeID(nodeID);
+      } else {
+        //const endNodeID = nodeID;
+        //Create an edge logic goes here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        setStartEdgeNodeID(undefined);
+      }
     } else {
       if (selectedNodeID) {
         // Update the node if changes were not saved
@@ -258,6 +266,9 @@ function MapEdit() {
   //   setAddingNode(false);
   // }
 
+  function handleSelectNodeSelected() {
+    setSelectedAction(Action.SelectNode);
+  }
   function handleMoveNodeSelected() {
     setSelectedAction(Action.MoveNode);
   }
@@ -266,6 +277,7 @@ function MapEdit() {
   }
   function handleCreateEdgeSelected() {
     setSelectedAction(Action.CreateEdge);
+    setStartEdgeNodeID(undefined);
   }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
@@ -380,6 +392,7 @@ function MapEdit() {
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
         <MapEditImage
+          startEdgeNodeID={startEdgeNodeID}
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
@@ -398,11 +411,14 @@ function MapEdit() {
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
       <div className="absolute right-[20%] top-[2%] z-50">
-        <MapEditToolBar
-          MoveNode={handleMoveNodeSelected}
-          CreateNode={handleCreateNodeSelected}
-          CreateEdge={handleCreateEdgeSelected}
-        />
+        <MapContext.Provider value={contextValue}>
+          <MapEditToolBar
+            SelectNode={handleSelectNodeSelected}
+            MoveNode={handleMoveNodeSelected}
+            CreateNode={handleCreateNodeSelected}
+            CreateEdge={handleCreateEdgeSelected}
+          />
+        </MapContext.Provider>
       </div>
       {/*<div className="absolute left-[2%] bottom-[2%] z-50">*/}
       {/*  <AddElementToolTip*/}
