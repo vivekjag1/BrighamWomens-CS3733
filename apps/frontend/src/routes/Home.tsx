@@ -12,6 +12,7 @@ import MapTypeToggle from "../components/Map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/Map/StackedMaps.tsx";
 import "../../src/components/Map/styles/StackedMaps.css";
+import { Directions, TripStat } from "common/src/Path.ts";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -22,6 +23,9 @@ function Home() {
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
   const [mapType, setMapType] = useState("2D");
+  const [hasPath, setHasPath] = useState<boolean>(false);
+  const [directions, setDirections] = useState<Directions[]>([]);
+  const [tripStats, setTripStats] = useState<TripStat[]>([]);
 
   // Gets nodes from database to populate dropdowns and draw on map
   useEffect(() => {
@@ -35,7 +39,6 @@ function Home() {
       setNodes(graphNodes);
       return graphNodes;
     }
-
     getNodesFromDb().then();
   }, []);
 
@@ -58,15 +61,24 @@ function Home() {
         .get(NavigateAttributes.algorithmKey)!
         .toString(),
     };
+
     const params: URLSearchParams = new URLSearchParams(queryParams);
     const url = new URL(APIEndpoints.navigationRequest, window.location.origin);
+
     url.search = params.toString();
     await axios
       .get(url.toString())
       .then(function (response) {
-        setPath(response.data);
-        setActiveFloor(getFloorNumber(response.data[0].floor));
-        setGlowSequence(getFloorSequence(response.data).slice(1));
+        setPath(response.data.path);
+        setActiveFloor(getFloorNumber(response.data.path[0].floor));
+
+        setDirections(response.data.directions);
+        console.log(directions);
+        setTripStats(response.data.tripStats);
+        console.log(tripStats);
+
+        setGlowSequence(getFloorSequence(response.data.path).slice(1));
+        setHasPath(true);
       })
       .catch(console.error);
   }
@@ -87,6 +99,7 @@ function Home() {
     setEndNodeID(INITIAL_PATH[0].nodeID);
     setGlowSequence([]);
     setAlgorithm("A-Star");
+    setHasPath(false);
   }
 
   // Swaps the start and end locations in navigation pane
@@ -197,6 +210,9 @@ function Home() {
             onSwap={handleSwap}
             onSubmit={handleSubmit}
             onReset={handleReset}
+            hasPath={hasPath}
+            directions={directions}
+            tripStats={tripStats}
           />
         </div>
       </TransformWrapper>

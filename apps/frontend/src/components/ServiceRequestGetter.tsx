@@ -58,7 +58,7 @@ export function ServiceRequestGetter() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > -1 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const fetchData = useCallback(async () => {
     const token = await getAccessTokenSilently();
@@ -640,7 +640,7 @@ export function ServiceRequestGetter() {
                 ))}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 73 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={9} />
                 </TableRow>
               )}
             </TableBody>

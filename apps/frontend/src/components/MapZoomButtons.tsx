@@ -25,7 +25,10 @@ function MapZoomButtons() {
   const { zoomIn, zoomOut } = useControls();
 
   return (
-    <div className="fixed bottom-[28%] right-[2%] z-10">
+    <div
+      className="fixed right-[2%] z-10"
+      style={{ bottom: "calc(2% + 175px)" }}
+    >
       <ButtonGroup
         orientation="vertical"
         variant="contained"

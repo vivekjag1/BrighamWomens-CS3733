@@ -9,22 +9,44 @@ import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { useContext } from "react";
-import { ButtonStyling } from "../common/StylingCommon.ts";
+import { DesignSystem } from "../common/StylingCommon.ts";
+// import {blue} from "@mui/material/colors";
 
-const styles = {
-  color: "white",
-  width: "40px",
-  height: "35px",
-  fontWeight: "light",
-  borderRadius: "5px",
+// const styles = {
+//   color: "white",
+//   width: "40px",
+//   height: "35px",
+//   fontWeight: "light",
+//   borderRadius: "5px",
+//   "&:hover": {
+//     backgroundColor: ButtonStyling.blueButtonHover,
+//   },
+//   "&.Mui-selected, &.Mui-selected:hover": {
+//     backgroundColor: ButtonStyling.blueButtonClicked,
+//     color: "white",
+//     fontWeight: "bold",
+//   },
+// } as const;
+
+const ToggleButtonStyles = {
+  color: DesignSystem.white,
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "1.10rem",
+  fontWeight: "normal",
+  height: "6vh",
+  borderRadius: "10px",
   "&:hover": {
-    backgroundColor: ButtonStyling.blueButtonHover,
+    backgroundColor: DesignSystem.accentColor,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: ButtonStyling.blueButtonClicked,
-    color: "white",
-    fontWeight: "bold",
+    backgroundColor: DesignSystem.accentColor,
+    color: "#FFFFFF",
   },
+} as const;
+
+const ToggleButtonGroupStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  borderRadius: "10px",
 } as const;
 
 export default function ToggleButtons(props: {
@@ -45,77 +67,79 @@ export default function ToggleButtons(props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   return (
-    <ToggleButtonGroup
-      value={alignment}
-      exclusive
-      onChange={handleAlignment}
-      aria-label="text alignment"
-      sx={{ backgroundColor: ButtonStyling.blueButton, borderRadius: "5px" }}
-    >
-      <Tooltip
-        TransitionComponent={Zoom}
-        title="Select Node"
-        placement="bottom"
-        arrow
+    <div className="fixed right-[35%] z-10">
+      <ToggleButtonGroup
+        value={alignment}
+        exclusive
+        onChange={handleAlignment}
+        aria-label="text alignment"
+        sx={ToggleButtonGroupStyles}
       >
-        <ToggleButton
-          value="select"
-          aria-label="left aligned"
-          onClick={props.SelectNode}
-          selected={selectedAction.toString() == "SelectNode"}
-          sx={styles}
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Select Node"
+          placement="bottom"
+          arrow
         >
-          <GpsFixedIcon />
-        </ToggleButton>
-      </Tooltip>
-      <Tooltip
-        TransitionComponent={Zoom}
-        title="Move Node"
-        placement="bottom"
-        arrow
-      >
-        <ToggleButton
-          value="move"
-          aria-label="left aligned"
-          onClick={props.MoveNode}
-          selected={selectedAction.toString() == "MoveNode"}
-          sx={styles}
+          <ToggleButton
+            value="select"
+            aria-label="left aligned"
+            onClick={props.SelectNode}
+            selected={selectedAction.toString() == "SelectNode"}
+            sx={ToggleButtonStyles}
+          >
+            <GpsFixedIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Move Node"
+          placement="bottom"
+          arrow
         >
-          <OpenWithRoundedIcon />
-        </ToggleButton>
-      </Tooltip>
-      <Tooltip
-        TransitionComponent={Zoom}
-        title="Create Node"
-        placement="bottom"
-        arrow
-      >
-        <ToggleButton
-          value="createNode"
-          aria-label="centered"
-          onClick={props.CreateNode}
-          selected={selectedAction.toString() == "CreateNode"}
-          sx={styles}
+          <ToggleButton
+            value="move"
+            aria-label="left aligned"
+            onClick={props.MoveNode}
+            selected={selectedAction.toString() == "MoveNode"}
+            sx={ToggleButtonStyles}
+          >
+            <OpenWithRoundedIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Create Node"
+          placement="bottom"
+          arrow
         >
-          <AddLocationRoundedIcon />
-        </ToggleButton>
-      </Tooltip>
-      <Tooltip
-        TransitionComponent={Zoom}
-        title="Create Edge"
-        placement="bottom"
-        arrow
-      >
-        <ToggleButton
-          value="createEdge"
-          aria-label="right aligned"
-          onClick={props.CreateEdge}
-          selected={selectedAction.toString() == "CreateEdge"}
-          sx={styles}
+          <ToggleButton
+            value="createNode"
+            aria-label="centered"
+            onClick={props.CreateNode}
+            selected={selectedAction.toString() == "CreateNode"}
+            sx={ToggleButtonStyles}
+          >
+            <AddLocationRoundedIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Create Edge"
+          placement="bottom"
+          arrow
         >
-          <TimelineIcon />
-        </ToggleButton>
-      </Tooltip>
-    </ToggleButtonGroup>
+          <ToggleButton
+            value="createEdge"
+            aria-label="right aligned"
+            onClick={props.CreateEdge}
+            selected={selectedAction.toString() == "CreateEdge"}
+            sx={ToggleButtonStyles}
+          >
+            <TimelineIcon />
+          </ToggleButton>
+        </Tooltip>
+      </ToggleButtonGroup>
+    </div>
   );
 }
