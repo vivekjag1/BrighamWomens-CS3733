@@ -35,7 +35,7 @@ function ElevatorPolyline(props: ElevatorPolylineProps) {
         points={props.points}
         fill="none"
         stroke={DesignSystem.primaryColor}
-        strokeWidth={30}
+        strokeWidth={10}
         strokeDasharray={25}
         initial={{ strokeDashoffset: 25 }}
         animate={{ strokeDashoffset: [25, -25] }}

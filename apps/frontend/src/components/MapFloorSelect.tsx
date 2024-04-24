@@ -23,7 +23,8 @@ const ToggleButtonStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.10rem",
   fontWeight: "normal",
-  height: "6vh",
+  height: "5.5vh",
+  width: "5.5vh",
   borderRadius: "8px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
@@ -37,7 +38,7 @@ const ToggleButtonStyles = {
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
   borderRadius: "8px",
-  width: "6vh",
+  width: "5.5vh",
 } as const;
 
 function MapFloorSelect(props: {
@@ -64,7 +65,7 @@ function MapFloorSelect(props: {
     relevantFloors = [-2, -1, 1, 2, 3];
   }
   return (
-    <div className="fixed right-[2%] z-10" style={{ bottom: "calc(2%)" }}>
+    <div>
       <ToggleButtonGroup
         orientation="vertical"
         value={activeMap}
@@ -75,7 +76,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(3)}
           value="3"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 3}
           disabled={!relevantFloors.includes(3)}
         >
@@ -84,7 +91,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(2)}
           value="2"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 2}
           disabled={!relevantFloors.includes(2)}
         >
@@ -93,7 +106,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(1)}
           value="1"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 1}
           disabled={!relevantFloors.includes(1)}
         >
@@ -102,7 +121,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(-1)}
           value="-1"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === -1}
           disabled={!relevantFloors.includes(-1)}
         >

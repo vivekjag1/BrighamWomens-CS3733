@@ -6,7 +6,7 @@ import React from "react";
 const styles = {
   color: "white",
   backgroundColor: ButtonStyling.redButton,
-  // padding: ".5rem 3rem",
+  borderRadius: "8px",
   "&:hover": {
     backgroundColor: ButtonStyling.redButtonHover,
   },
