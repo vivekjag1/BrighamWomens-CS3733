@@ -89,9 +89,11 @@ const NodeDropdownStyles = {
   width: "17vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
+    whiteSpace: "pre-wrap",
     fontSize: "0.8rem",
   },
   "&. MuiInputLabel-root": {
+    whiteSpace: "pre-wrap",
     fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
