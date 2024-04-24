@@ -148,7 +148,7 @@ function Map(props: mapProps) {
   return (
     <svg viewBox="0 0 5000 3400" height="100vh">
       <filter id="shadow">
-        <feDropShadow dx="20" dy="20" floodOpacity="0.8" />
+        <feDropShadow dx="20" dy="20" floodOpacity="0.7" />
       </filter>
       <image href={map} filter="url(#shadow)" />
       {polylineElements}

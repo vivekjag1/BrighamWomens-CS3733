@@ -115,7 +115,7 @@ function DirectionsCard(props: {
 
   return (
     <div
-      className={`h-full overflow-y-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[25rem]" : "max-h-[0]"} `}
+      className={`h-full rounded-2xl shadow-xl overflow-y-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[25rem]" : "max-h-[0]"} `}
     >
       <div
         className={`mt-[1rem] border-5 bg-offwhite rounded-2xl shadow-xl flex flex-col gap-6 p-4 transition-height ease-in-out duration-500 ${props.isCollapsed ? "max-h-[5.5rem]" : "max-h-[25rem]"}`}

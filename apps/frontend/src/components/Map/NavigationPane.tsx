@@ -52,11 +52,11 @@ function NavigationPane(props: NavigationPaneProps) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
-    <div className="w-[22.5vw] max-w-[22.5vw]">
+    <div className="w-[21vw] max-w-[22.5vw]">
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}
-        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl min-w-[25vw] max-w-[25vw]"
+        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl"
       >
         <div className="flex gap-4">
           <div className="flex flex-col gap-0">
@@ -141,7 +141,7 @@ const IconStyles = {
 } as const;
 
 const NodeDropdownStyles = {
-  width: "17vw",
+  width: "15vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
     whiteSpace: "pre-wrap",
