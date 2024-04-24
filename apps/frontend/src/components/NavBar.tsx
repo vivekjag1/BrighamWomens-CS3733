@@ -9,6 +9,7 @@ import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
@@ -156,10 +157,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link
-            to={paths.ABOUT_US}
-            onClick={() => setActivePage(paths.ABOUT_US)}
-          >
+          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -243,6 +241,15 @@ function NavBar() {
             Icon={AssignmentIndIcon}
             label="Employee"
             labelLight="Data"
+            collapsed={isHidingNavBarInfo}
+          />
+          <NavbarItem
+            to={paths.ABOUT_US}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            Icon={GroupsIcon}
+            label="About"
+            labelLight="Us"
             collapsed={isHidingNavBarInfo}
           />
         </div>
