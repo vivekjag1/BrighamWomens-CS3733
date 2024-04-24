@@ -16,6 +16,27 @@ interface floorSelectorProps {
 function FloorSelector(props: floorSelectorProps) {
   const relevantFloors = getFloorsInPath(props.path);
   const [activeMap, setActiveMap] = useState(0);
+  const ToggleButtonGroupStyles = {
+    backgroundColor: DesignSystem.primaryColor,
+    borderRadius: "8px",
+    width: "6vh",
+  } as const;
+
+  const ToggleButtonStyles = {
+    color: DesignSystem.white,
+    fontFamily: DesignSystem.fontFamily,
+    fontSize: "1.10rem",
+    fontWeight: "normal",
+    height: "6vh",
+    borderRadius: "8px",
+    "&:hover": {
+      backgroundColor: DesignSystem.accentColor,
+    },
+    "&.Mui-selected, &.Mui-selected:hover": {
+      backgroundColor: DesignSystem.accentColor,
+      color: "#FFFFFF",
+    },
+  } as const;
 
   return (
     <ToggleButtonGroup
@@ -130,27 +151,5 @@ function getFloorsInPath(path: Node[]): number[] {
   }
   return relevantFloors;
 }
-
-const ToggleButtonGroupStyles = {
-  backgroundColor: DesignSystem.primaryColor,
-  borderRadius: "8px",
-  width: "6vh",
-} as const;
-
-const ToggleButtonStyles = {
-  color: DesignSystem.white,
-  fontFamily: DesignSystem.fontFamily,
-  fontSize: "1.10rem",
-  fontWeight: "normal",
-  height: "6vh",
-  borderRadius: "8px",
-  "&:hover": {
-    backgroundColor: DesignSystem.accentColor,
-  },
-  "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: DesignSystem.accentColor,
-    color: "#FFFFFF",
-  },
-} as const;
 
 export default FloorSelector;

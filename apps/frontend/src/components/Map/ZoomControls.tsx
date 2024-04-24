@@ -6,19 +6,24 @@ function ZoomControls() {
   const { zoomIn, zoomOut } = useControls();
 
   return (
-    <ButtonGroup
-      orientation="vertical"
-      variant="contained"
-      size="medium"
-      sx={buttonGroupStyles}
+    <div
+      className="fixed right-[2%] z-10"
+      style={{ bottom: "calc(2% + 300px)" }}
     >
-      <Button sx={buttonStyles} onClick={() => zoomIn()}>
-        +
-      </Button>
-      <Button sx={buttonStyles} onClick={() => zoomOut()}>
-        -
-      </Button>
-    </ButtonGroup>
+      <ButtonGroup
+        orientation="vertical"
+        variant="contained"
+        size="medium"
+        sx={buttonGroupStyles}
+      >
+        <Button sx={buttonStyles} onClick={() => zoomIn()}>
+          +
+        </Button>
+        <Button sx={buttonStyles} onClick={() => zoomOut()}>
+          -
+        </Button>
+      </ButtonGroup>
+    </div>
   );
 }
 

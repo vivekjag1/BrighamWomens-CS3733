@@ -1,21 +1,43 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useState } from "react";
-import { ButtonStyling } from "../common/StylingCommon";
+import { DesignSystem } from "../common/StylingCommon";
 
-const styles = {
-  color: "white",
-  width: "40px",
-  height: "35px",
-  fontWeight: "light",
-  borderRadius: "5px",
+// const styles = {
+//   color: "white",
+//   width: "40px",
+//   height: "35px",
+//   fontWeight: "light",
+//   borderRadius: "5px",
+//   "&:hover": {
+//     backgroundColor: ButtonStyling.blueButtonHover,
+//   },
+//   "&.Mui-selected, &.Mui-selected:hover": {
+//     backgroundColor: ButtonStyling.blueButtonClicked,
+//     color: "white",
+//     fontWeight: "bold",
+//   },
+// } as const;
+
+const ToggleButtonStyles = {
+  color: DesignSystem.white,
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "1.10rem",
+  fontWeight: "normal",
+  height: "6vh",
+  borderRadius: "8px",
   "&:hover": {
-    backgroundColor: ButtonStyling.blueButtonHover,
+    backgroundColor: DesignSystem.accentColor,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: ButtonStyling.blueButtonClicked,
-    color: "white",
-    fontWeight: "bold",
+    backgroundColor: DesignSystem.accentColor,
+    color: "#FFFFFF",
   },
+} as const;
+
+const ToggleButtonGroupStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  borderRadius: "8px",
+  width: "6vh",
 } as const;
 
 function MapFloorSelect(props: {
@@ -47,12 +69,12 @@ function MapFloorSelect(props: {
       value={activeMap}
       exclusive
       onChange={handleChange}
-      sx={{ backgroundColor: ButtonStyling.blueButton, borderRadius: "5px" }}
+      sx={ToggleButtonGroupStyles}
     >
       <ToggleButton
         onClick={() => props.onClick(3)}
         value="3"
-        sx={styles}
+        sx={ToggleButtonStyles}
         selected={props.activeFloor === 3}
         disabled={!relevantFloors.includes(3)}
       >
@@ -61,7 +83,7 @@ function MapFloorSelect(props: {
       <ToggleButton
         onClick={() => props.onClick(2)}
         value="2"
-        sx={styles}
+        sx={ToggleButtonStyles}
         selected={props.activeFloor === 2}
         disabled={!relevantFloors.includes(2)}
       >
@@ -70,7 +92,7 @@ function MapFloorSelect(props: {
       <ToggleButton
         onClick={() => props.onClick(1)}
         value="1"
-        sx={styles}
+        sx={ToggleButtonStyles}
         selected={props.activeFloor === 1}
         disabled={!relevantFloors.includes(1)}
       >
@@ -79,7 +101,7 @@ function MapFloorSelect(props: {
       <ToggleButton
         onClick={() => props.onClick(-1)}
         value="-1"
-        sx={styles}
+        sx={ToggleButtonStyles}
         selected={props.activeFloor === -1}
         disabled={!relevantFloors.includes(-1)}
       >
@@ -88,7 +110,7 @@ function MapFloorSelect(props: {
       <ToggleButton
         onClick={() => props.onClick(-2)}
         value="-2"
-        sx={styles}
+        sx={ToggleButtonStyles}
         selected={props.activeFloor === -2}
         disabled={!relevantFloors.includes(-2)}
       >

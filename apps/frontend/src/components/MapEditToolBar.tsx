@@ -9,22 +9,44 @@ import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { useContext } from "react";
-import { ButtonStyling } from "../common/StylingCommon.ts";
+import { DesignSystem } from "../common/StylingCommon.ts";
+// import {blue} from "@mui/material/colors";
 
-const styles = {
-  color: "white",
-  width: "40px",
-  height: "35px",
-  fontWeight: "light",
-  borderRadius: "5px",
+// const styles = {
+//   color: "white",
+//   width: "40px",
+//   height: "35px",
+//   fontWeight: "light",
+//   borderRadius: "5px",
+//   "&:hover": {
+//     backgroundColor: ButtonStyling.blueButtonHover,
+//   },
+//   "&.Mui-selected, &.Mui-selected:hover": {
+//     backgroundColor: ButtonStyling.blueButtonClicked,
+//     color: "white",
+//     fontWeight: "bold",
+//   },
+// } as const;
+
+const ToggleButtonStyles = {
+  color: DesignSystem.white,
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "1.10rem",
+  fontWeight: "normal",
+  height: "6vh",
+  borderRadius: "10px",
   "&:hover": {
-    backgroundColor: ButtonStyling.blueButtonHover,
+    backgroundColor: DesignSystem.accentColor,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: ButtonStyling.blueButtonClicked,
-    color: "white",
-    fontWeight: "bold",
+    backgroundColor: DesignSystem.accentColor,
+    color: "#FFFFFF",
   },
+} as const;
+
+const ToggleButtonGroupStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  borderRadius: "10px",
 } as const;
 
 export default function ToggleButtons(props: {
@@ -50,7 +72,7 @@ export default function ToggleButtons(props: {
       exclusive
       onChange={handleAlignment}
       aria-label="text alignment"
-      sx={{ backgroundColor: ButtonStyling.blueButton, borderRadius: "5px" }}
+      sx={ToggleButtonGroupStyles}
     >
       <Tooltip
         TransitionComponent={Zoom}
@@ -63,7 +85,7 @@ export default function ToggleButtons(props: {
           aria-label="left aligned"
           onClick={props.SelectNode}
           selected={selectedAction.toString() == "SelectNode"}
-          sx={styles}
+          sx={ToggleButtonStyles}
         >
           <GpsFixedIcon />
         </ToggleButton>
@@ -79,7 +101,7 @@ export default function ToggleButtons(props: {
           aria-label="left aligned"
           onClick={props.MoveNode}
           selected={selectedAction.toString() == "MoveNode"}
-          sx={styles}
+          sx={ToggleButtonStyles}
         >
           <OpenWithRoundedIcon />
         </ToggleButton>
@@ -95,7 +117,7 @@ export default function ToggleButtons(props: {
           aria-label="centered"
           onClick={props.CreateNode}
           selected={selectedAction.toString() == "CreateNode"}
-          sx={styles}
+          sx={ToggleButtonStyles}
         >
           <AddLocationRoundedIcon />
         </ToggleButton>
@@ -111,7 +133,7 @@ export default function ToggleButtons(props: {
           aria-label="right aligned"
           onClick={props.CreateEdge}
           selected={selectedAction.toString() == "CreateEdge"}
-          sx={styles}
+          sx={ToggleButtonStyles}
         >
           <TimelineIcon />
         </ToggleButton>

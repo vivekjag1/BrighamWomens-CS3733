@@ -1,20 +1,29 @@
 import { Button } from "@mui/material";
 import { ButtonProps } from "@mui/material/Button";
-import { ButtonStyling } from "../common/StylingCommon.ts";
+import { DesignSystem } from "../common/StylingCommon.ts";
 import React from "react";
 
-const styles = {
-  color: "white",
-  backgroundColor: ButtonStyling.blueButton,
-  // padding: ".5rem 3rem",
+const ToggleButtonStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  color: DesignSystem.white,
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "1.10rem",
+  fontWeight: "normal",
+  height: "6vh",
+  borderRadius: "10px",
   "&:hover": {
-    backgroundColor: ButtonStyling.blueButtonHover,
+    backgroundColor: DesignSystem.accentColor,
   },
-  fontFamily: "Poppins, sans-serif",
+  "&.Mui-selected, &.Mui-selected:hover": {
+    backgroundColor: DesignSystem.accentColor,
+    color: "#FFFFFF",
+  },
 } as const;
 
 const CustomButton: React.FC<ButtonProps> = (props) => {
-  return <Button variant="contained" sx={styles} {...props}></Button>;
+  return (
+    <Button variant="contained" sx={ToggleButtonStyles} {...props}></Button>
+  );
 };
 
 export default CustomButton;
