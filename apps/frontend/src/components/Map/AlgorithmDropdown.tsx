@@ -22,6 +22,12 @@ function AlgorithmDropdown(props: algorithmDropdownProps) {
           size="small"
           className="bg-gray-100"
           name="algorithm"
+          InputLabelProps={{
+            style: {
+              fontSize: ".9rem",
+              fontFamily: DesignSystem.fontFamily,
+            },
+          }}
         />
       )}
       sx={props.sx}
