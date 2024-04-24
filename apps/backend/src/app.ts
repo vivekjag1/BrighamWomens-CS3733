@@ -51,6 +51,7 @@ app.use(APIEndpoints.mapGetNodes, handleNodes);
 app.use(APIEndpoints.navigationRequest, pathfindingAPI);
 app.use(APIEndpoints.createNode, makeNodes);
 app.use(APIEndpoints.deleteNode, deleteNodes);
+app.use(APIEndpoints.serviceDeleteRequests, handleServiceRequests);
 
 app.use(
   auth({
