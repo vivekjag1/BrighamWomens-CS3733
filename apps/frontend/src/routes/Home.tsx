@@ -3,17 +3,12 @@ import axios from "axios";
 import { Node } from "database";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { getSegments } from "../common/PathUtilities.ts";
-import {
-  TransformComponent,
-  TransformWrapper,
-  useControls,
-} from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import Map from "../components/Map/Map.tsx";
 import NavigationPane from "../components/Map/NavigationPane.tsx";
 import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
-import ResetButton from "../components/Map/ResetButton.tsx";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -80,25 +75,12 @@ function Home() {
     }
   }
 
-  // Resets pathfinding page
-  function ResetButtonComponent() {
-    const { resetTransform } = useControls();
-
-    function handleReset() {
-      setActiveFloor(DEFAULT_FLOOR);
-      setPath(INITIAL_PATH);
-      setStartNode(INITIAL_PATH[0].nodeID);
-      setEndNodeID(INITIAL_PATH[0].nodeID);
-      setAlgorithm("A-Star");
-      setGlowSequence([]);
-      resetTransform();
-    }
-
-    return (
-      <div className="absolute bottom-[2%] left-[1.5%]">
-        <ResetButton onClick={handleReset} />
-      </div>
-    );
+  function handleReset() {
+    setActiveFloor(DEFAULT_FLOOR);
+    setPath(INITIAL_PATH);
+    setStartNode(INITIAL_PATH[0].nodeID);
+    setEndNodeID(INITIAL_PATH[0].nodeID);
+    setAlgorithm("A-Star");
   }
 
   // Swaps the start and end locations in navigation pane
@@ -134,7 +116,7 @@ function Home() {
         doubleClick={{ disabled: true }}
         panning={{ velocityDisabled: true }}
       >
-        <div className="absolute bottom-[31%] right-[1.5%] z-10">
+        <div className="absolute top-[2%] right-[1.5%] z-10">
           <ZoomControls />
         </div>
         <TransformComponent
@@ -152,21 +134,23 @@ function Home() {
             updateGlowSequence={updateGlowSequence}
           />
         </TransformComponent>
-        <ResetButtonComponent />
+        {/*<ResetButtonComponent/>*/}
+        <div className="absolute top-[1%] left-[1%]">
+          <NavigationPane
+            nodes={nodes}
+            startNodeID={startNodeID}
+            startNodeIDSetter={setStartNode}
+            endNodeID={endNodeID}
+            endNodeIDSetter={setEndNode}
+            algorithm={algorithm}
+            algorithmSetter={setAlgo}
+            onSwap={handleSwap}
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+          />
+        </div>
       </TransformWrapper>
-      <div className="absolute top-[1%] left-[1%]">
-        <NavigationPane
-          nodes={nodes}
-          startNodeID={startNodeID}
-          startNodeIDSetter={setStartNode}
-          endNodeID={endNodeID}
-          endNodeIDSetter={setEndNode}
-          algorithm={algorithm}
-          algorithmSetter={setAlgo}
-          onSwap={handleSwap}
-          onSubmit={handleSubmit}
-        />
-      </div>
+
       <div className="absolute bottom-[2%] right-[1.5%]">
         <FloorSelector
           activeFloor={activeFloor}

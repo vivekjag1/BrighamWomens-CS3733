@@ -32,6 +32,13 @@ function NodeDropdown(props: NodeDropdownProps) {
           name={props.name}
           size="small"
           className="bg-gray-100"
+          InputLabelProps={{
+            style: {
+              color: "#a4aab5",
+              fontSize: ".9rem",
+              fontFamily: DesignSystem.fontFamily,
+            },
+          }}
         />
       )}
       options={nodeOptions}

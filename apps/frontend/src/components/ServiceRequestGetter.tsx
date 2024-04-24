@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { ServiceRequest } from "database";
 import dayjs from "dayjs";
@@ -11,8 +12,6 @@ import CustomTextField from "./CustomTextField.tsx";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
-
 import {
   Table,
   TableBody,
@@ -25,6 +24,8 @@ import {
   TablePagination,
 } from "@mui/material";
 import EmployeeDropdown from "./EmployeeDropdown.tsx";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
@@ -59,31 +60,56 @@ export function ServiceRequestGetter() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
-  useEffect(() => {
-    async function fetchData() {
-      const token = await getAccessTokenSilently();
+  const fetchData = useCallback(async () => {
+    const token = await getAccessTokenSilently();
 
-      try {
-        const res = await MakeProtectedGetRequest(
-          APIEndpoints.serviceGetRequests,
-          token,
-        );
-        const sortedData = res.data.sort(
-          (a: ServiceRequest, b: ServiceRequest) => {
-            return sortOrder === "asc"
-              ? a.serviceID - b.serviceID
-              : b.serviceID - a.serviceID;
-          },
-        );
-        setRequestData(sortedData);
+    try {
+      const res = await MakeProtectedGetRequest(
+        APIEndpoints.serviceGetRequests,
+        token,
+      );
+      const sortedData = res.data.sort(
+        (a: ServiceRequest, b: ServiceRequest) => {
+          return sortOrder === "asc"
+            ? a.serviceID - b.serviceID
+            : b.serviceID - a.serviceID;
+        },
+      );
+      setRequestData(sortedData);
 
-        console.log("Successfully got data from get request:", res.data);
-      } catch (error) {
-        console.error("Error fetching service requests:", error);
-      }
+      console.log("Successfully got data from get request:", res.data);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
     }
-    fetchData();
   }, [getAccessTokenSilently, sortOrder]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  async function deleteServiceRequest(serviceID: number) {
+    const token = await getAccessTokenSilently();
+
+    try {
+      const res = await MakeProtectedDeleteRequest(
+        `${APIEndpoints.serviceGetRequests}/${serviceID}`,
+        token,
+      );
+
+      setSelectedRow(null);
+      showToast("Service Request deleted!", "error");
+      console.log(
+        `Service request with ID ${serviceID} deleted successfully`,
+        res,
+      );
+      fetchData();
+    } catch (error) {
+      console.error(
+        `Error deleting service request with ID ${serviceID}:`,
+        error,
+      );
+    }
+  }
 
   async function handleStatusChange(
     event: React.ChangeEvent<HTMLSelectElement>,
@@ -119,7 +145,6 @@ export function ServiceRequestGetter() {
         updateData,
         token,
       );
-
       console.log("Status updated successfully", response.data);
       showToast("Status updated successfully!", "success");
     } catch (error) {
@@ -153,10 +178,14 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
-      const response = await MakeProtectedPatchRequest(
+      const response = await axios.patch(
         APIEndpoints.servicePutRequests,
         updateData,
-        token,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       console.log("Employee updated successfully", response.data);
       showToast("Assigned employee updated successfully!", "success");
@@ -645,139 +674,6 @@ export function ServiceRequestGetter() {
           </Table>
         </TableContainer>
       </Paper>
-      {/*<table className="w-70vw mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">*/}
-      {/*  <thead className="text-xs text-gray-700 uppercase bg-gray-50">*/}
-      {/*    <tr>*/}
-      {/*      <th scope="col" className="px-6 py-3 w-[17ch]">*/}
-      {/*        Service ID*/}
-      {/*        <button*/}
-      {/*          onClick={() => SortOrder()}*/}
-      {/*          className="hover:text-blue-700"*/}
-      {/*        >*/}
-      {/*          <svg*/}
-      {/*            className="w-3 h-3 ml-1"*/}
-      {/*            aria-hidden="true"*/}
-      {/*            fill="currentColor"*/}
-      {/*            viewBox="0 0 24 20"*/}
-      {/*          >*/}
-      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
-      {/*          </svg>*/}
-      {/*        </button>*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3 w-[20ch]">*/}
-      {/*        Type*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Status*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Priority*/}
-      {/*        <button*/}
-      {/*          onClick={sortPriorityOrder}*/}
-      {/*          className="hover:text-blue-700"*/}
-      {/*        >*/}
-      {/*          <svg*/}
-      {/*            className="w-3 h-3 ml-1"*/}
-      {/*            aria-hidden="true"*/}
-      {/*            fill="currentColor"*/}
-      {/*            viewBox="0 0 24 20"*/}
-      {/*          >*/}
-      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
-      {/*          </svg>*/}
-      {/*        </button>*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Requesting Username*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Location*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Description*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-3 py-3 w-[14ch]">*/}
-      {/*        Assigned To*/}
-      {/*      </th>*/}
-
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Requested Time*/}
-      {/*      </th>*/}
-      {/*    </tr>*/}
-      {/*  </thead>*/}
-      {/*  <tbody>*/}
-      {/*    {filteredData.map((request) => (*/}
-      {/*      <tr*/}
-      {/*        className="bg-white border-b h-16 hover:bg-gray-100"*/}
-      {/*        key={request.serviceID}*/}
-      {/*        onClick={() => handleRowClick(request)}*/}
-      {/*      >*/}
-      {/*        <td className="px-6 py-4">{request.serviceID}</td>*/}
-      {/*        <td>{highlightSearchTerm(request.type, filterBySearch)}</td>*/}
-      {/*        <td className="px-6 py-4">*/}
-      {/*          <select*/}
-      {/*            value={request.status}*/}
-      {/*            onChange={(e) => handleStatusChange(e, request.serviceID)}*/}
-      {/*            onClick={(e) => e.stopPropagation()}*/}
-      {/*            className="border border-gray-300 rounded px-3 py-1 text-center"*/}
-      {/*          >*/}
-      {/*            {statusOptions.map((option) => (*/}
-      {/*              <option key={option} value={option}>*/}
-      {/*                {option === "InProgress" ? "In Progress" : option}*/}
-      {/*              </option>*/}
-      {/*            ))}*/}
-      {/*          </select>*/}
-      {/*        </td>*/}
-      {/*        <td className="flex justify-center items-center space-x-2 px-6 pt-[26px]">*/}
-      {/*          <span*/}
-      {/*            className={`w-3 h-3 rounded-full ${*/}
-      {/*              request.priority === "Low"*/}
-      {/*                ? "bg-green-500"*/}
-      {/*                : request.priority === "Medium"*/}
-      {/*                  ? "bg-yellow-500"*/}
-      {/*                  : request.priority === "High"*/}
-      {/*                    ? "bg-orange-500"*/}
-      {/*                    : request.priority === "Emergency"*/}
-      {/*                      ? "bg-red-500"*/}
-      {/*                      : "bg-gray-200"*/}
-      {/*            }`}*/}
-      {/*          ></span>*/}
-      {/*          <span>{truncateString(request.priority, 10)}</span>*/}
-      {/*        </td>*/}
-      {/*        <td className="px-6 py-4">*/}
-      {/*          {highlightSearchTerm(*/}
-      {/*            truncateString(request.requestingUsername, 15),*/}
-      {/*            filterBySearch,*/}
-      {/*          )}*/}
-      {/*        </td>*/}
-      {/*        <td className="px-4 py-4">*/}
-      {/*          {highlightSearchTerm(*/}
-      {/*            truncateString(request.location, 15),*/}
-      {/*            filterBySearch,*/}
-      {/*          )}*/}
-      {/*        </td>*/}
-      {/*        <td className="px-5 py-4">*/}
-      {/*          {request.description && request.description.trim() !== ""*/}
-      {/*            ? truncateString(request.description, 20)*/}
-      {/*            : "N/A"}*/}
-      {/*        </td>*/}
-      {/*        <td className="px-6 py-4">*/}
-      {/*          {highlightSearchTerm(*/}
-      {/*            truncateString(request.assignedTo, 15),*/}
-      {/*            filterBySearch,*/}
-      {/*          )}*/}
-      {/*        </td>*/}
-      {/*        <td className="px-6 py-4">*/}
-      {/*          {truncateString(*/}
-      {/*            dayjs*/}
-      {/*              .tz(request.requestedTime.toString(), "America/New_York")*/}
-      {/*              .toString(),*/}
-      {/*            16,*/}
-      {/*          )}*/}
-      {/*        </td>*/}
-      {/*      </tr>*/}
-      {/*    ))}*/}
-      {/*  </tbody>*/}
-      {/*</table>*/}
       {selectedRow && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-[1px]"
@@ -834,6 +730,7 @@ export function ServiceRequestGetter() {
                                     : value
                             }
                             sx={{ width: "12rem" }}
+                            inputProps={{ readOnly: true }}
                           />
                         </div>
                       ),
@@ -849,6 +746,9 @@ export function ServiceRequestGetter() {
                         fontFamily: "Poppins, sans-serif",
                       }}
                       endIcon={<DeleteIcon />}
+                      onClick={() =>
+                        deleteServiceRequest(selectedRow?.serviceID)
+                      }
                     >
                       DELETE
                     </Button>
