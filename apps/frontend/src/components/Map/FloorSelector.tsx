@@ -39,105 +39,107 @@ function FloorSelector(props: floorSelectorProps) {
   } as const;
 
   return (
-    <ToggleButtonGroup
-      orientation="vertical"
-      exclusive
-      sx={ToggleButtonGroupStyles}
-      value={activeMap}
-      onChange={(e: React.MouseEvent<HTMLElement>, nextActiveMap: number) =>
-        setActiveMap(nextActiveMap)
-      }
-    >
-      <ToggleButton
-        sx={ToggleButtonStyles}
-        value="3"
-        disabled={!relevantFloors.includes(3)}
-        selected={props.activeFloor === 3}
-        onClick={() => {
-          props.onClick(3);
-          props.updateGlowSequence(3);
-        }}
-        className={props.glowSequence[0] === 3 ? "pulseAnimation" : ""}
+    <div className="fixed right-[2%] z-10" style={{ bottom: "calc(2%)" }}>
+      <ToggleButtonGroup
+        orientation="vertical"
+        exclusive
+        sx={ToggleButtonGroupStyles}
+        value={activeMap}
+        onChange={(e: React.MouseEvent<HTMLElement>, nextActiveMap: number) =>
+          setActiveMap(nextActiveMap)
+        }
       >
-        3
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          ...ToggleButtonStyles,
-          "&.MuiToggleButtonGroup-middleButton": {
-            borderTop: "1px solid #1565c0",
-            borderBottom: "1px solid #1565c0",
-          },
-        }}
-        value="2"
-        disabled={!relevantFloors.includes(2)}
-        selected={props.activeFloor === 2}
-        onClick={() => {
-          props.onClick(2);
-          props.updateGlowSequence(2);
-        }}
-        className={props.glowSequence[0] === 2 ? "pulseAnimation" : ""}
-      >
-        2
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          ...ToggleButtonStyles,
-          "&.MuiToggleButtonGroup-middleButton": {
-            borderTop: "1px solid #1565c0",
-            borderBottom: "1px solid #1565c0",
-          },
-        }}
-        value="1"
-        disabled={!relevantFloors.includes(1)}
-        selected={props.activeFloor === 1}
-        onClick={() => {
-          props.onClick(1);
-          props.updateGlowSequence(1);
-        }}
-        className={props.glowSequence[0] === 1 ? "pulseAnimation" : ""}
-      >
-        1
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          ...ToggleButtonStyles,
-          "&.MuiToggleButtonGroup-middleButton": {
-            borderTop: "1px solid #1565c0",
-            borderBottom: "1px solid #1565c0",
-          },
-        }}
-        value="-1"
-        disabled={!relevantFloors.includes(-1)}
-        selected={props.activeFloor === -1}
-        onClick={() => {
-          props.onClick(-1);
-          props.updateGlowSequence(-1);
-        }}
-        className={props.glowSequence[0] === -1 ? "pulseAnimation" : ""}
-      >
-        L1
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          ...ToggleButtonStyles,
-          "&.MuiToggleButtonGroup-lastButton": {
-            borderTop: "1px solid #1565c0",
-            borderBottom: "1px solid #1565c0",
-          },
-        }}
-        value="-2"
-        disabled={!relevantFloors.includes(-2)}
-        selected={props.activeFloor === -2}
-        onClick={() => {
-          props.onClick(-2);
-          props.updateGlowSequence(-2);
-        }}
-        className={props.glowSequence[0] === -2 ? "pulseAnimation" : ""}
-      >
-        L2
-      </ToggleButton>
-    </ToggleButtonGroup>
+        <ToggleButton
+          sx={ToggleButtonStyles}
+          value="3"
+          disabled={!relevantFloors.includes(3)}
+          selected={props.activeFloor === 3}
+          onClick={() => {
+            props.onClick(3);
+            props.updateGlowSequence(3);
+          }}
+          className={props.glowSequence[0] === 3 ? "pulseAnimation" : ""}
+        >
+          3
+        </ToggleButton>
+        <ToggleButton
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
+          value="2"
+          disabled={!relevantFloors.includes(2)}
+          selected={props.activeFloor === 2}
+          onClick={() => {
+            props.onClick(2);
+            props.updateGlowSequence(2);
+          }}
+          className={props.glowSequence[0] === 2 ? "pulseAnimation" : ""}
+        >
+          2
+        </ToggleButton>
+        <ToggleButton
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
+          value="1"
+          disabled={!relevantFloors.includes(1)}
+          selected={props.activeFloor === 1}
+          onClick={() => {
+            props.onClick(1);
+            props.updateGlowSequence(1);
+          }}
+          className={props.glowSequence[0] === 1 ? "pulseAnimation" : ""}
+        >
+          1
+        </ToggleButton>
+        <ToggleButton
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
+          value="-1"
+          disabled={!relevantFloors.includes(-1)}
+          selected={props.activeFloor === -1}
+          onClick={() => {
+            props.onClick(-1);
+            props.updateGlowSequence(-1);
+          }}
+          className={props.glowSequence[0] === -1 ? "pulseAnimation" : ""}
+        >
+          L1
+        </ToggleButton>
+        <ToggleButton
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-lastButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
+          value="-2"
+          disabled={!relevantFloors.includes(-2)}
+          selected={props.activeFloor === -2}
+          onClick={() => {
+            props.onClick(-2);
+            props.updateGlowSequence(-2);
+          }}
+          className={props.glowSequence[0] === -2 ? "pulseAnimation" : ""}
+        >
+          L2
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </div>
   );
 }
 

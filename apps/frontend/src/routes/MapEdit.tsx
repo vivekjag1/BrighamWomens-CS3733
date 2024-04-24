@@ -407,7 +407,7 @@ function MapEdit() {
           />
         </MapContext.Provider>
       </div>
-      <div className="absolute right-[10%] top-[2%] z-50">
+      <div className="fixed right-[20%] top-[2%] z-50 text-sm">
         <ButtonBlue
           //onClick={SaveAll}
           //disabled={!selectedNodeID}

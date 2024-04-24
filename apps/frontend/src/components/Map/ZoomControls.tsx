@@ -4,6 +4,23 @@ import { DesignSystem } from "../../common/StylingCommon";
 
 function ZoomControls() {
   const { zoomIn, zoomOut } = useControls();
+  const buttonGroupStyles = {
+    borderRadius: "10px",
+  } as const;
+
+  const buttonStyles = {
+    backgroundColor: DesignSystem.primaryColor,
+    color: DesignSystem.white,
+    fontFamily: DesignSystem.fontFamily,
+    fontSize: "1.25rem",
+    fontWeight: "normal",
+    width: "5.5vh",
+    height: "5.5vh",
+    borderRadius: "8px",
+    "&:hover": {
+      backgroundColor: DesignSystem.accentColor,
+    },
+  } as const;
 
   return (
     <div
@@ -26,23 +43,5 @@ function ZoomControls() {
     </div>
   );
 }
-
-const buttonGroupStyles = {
-  borderRadius: "10px",
-} as const;
-
-const buttonStyles = {
-  backgroundColor: DesignSystem.primaryColor,
-  color: DesignSystem.white,
-  fontFamily: DesignSystem.fontFamily,
-  fontSize: "1.25rem",
-  fontWeight: "normal",
-  width: "5.5vh",
-  height: "5.5vh",
-  borderRadius: "8px",
-  "&:hover": {
-    backgroundColor: DesignSystem.accentColor,
-  },
-} as const;
 
 export default ZoomControls;
