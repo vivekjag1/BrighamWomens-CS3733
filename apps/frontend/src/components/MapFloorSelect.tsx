@@ -23,7 +23,8 @@ const ToggleButtonStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.10rem",
   fontWeight: "normal",
-  height: "6vh",
+  height: "5.5vh",
+  width: "5.5vh",
   borderRadius: "8px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
@@ -37,7 +38,7 @@ const ToggleButtonStyles = {
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
   borderRadius: "8px",
-  width: "6vh",
+  width: "5.5vh",
 } as const;
 
 function MapFloorSelect(props: {
@@ -64,7 +65,7 @@ function MapFloorSelect(props: {
     relevantFloors = [-2, -1, 1, 2, 3];
   }
   return (
-    <div className="fixed right-[2%] z-10" style={{ bottom: "calc(2%)" }}>
+    <div>
       <ToggleButtonGroup
         orientation="vertical"
         value={activeMap}

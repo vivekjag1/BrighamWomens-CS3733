@@ -479,7 +479,7 @@ function MapEdit() {
           />
         </MapContext.Provider>
       </div>
-      <div className="fixed right-[2%] bottom-[2%]">
+      <div className="absolute right-[1.5%] bottom-[2%]">
         <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
       <div className="absolute right-[30%] top-[2%] z-50">

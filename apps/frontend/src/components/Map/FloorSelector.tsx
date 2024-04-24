@@ -39,7 +39,7 @@ function FloorSelector(props: floorSelectorProps) {
   } as const;
 
   return (
-    <div className="fixed right-[2%] z-10" style={{ bottom: "calc(2%)" }}>
+    <div>
       <ToggleButtonGroup
         orientation="vertical"
         exclusive
