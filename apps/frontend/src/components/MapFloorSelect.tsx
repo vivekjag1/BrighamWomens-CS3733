@@ -76,7 +76,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(3)}
           value="3"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 3}
           disabled={!relevantFloors.includes(3)}
         >
@@ -85,7 +91,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(2)}
           value="2"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 2}
           disabled={!relevantFloors.includes(2)}
         >
@@ -94,7 +106,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(1)}
           value="1"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === 1}
           disabled={!relevantFloors.includes(1)}
         >
@@ -103,7 +121,13 @@ function MapFloorSelect(props: {
         <ToggleButton
           onClick={() => props.onClick(-1)}
           value="-1"
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-middleButton": {
+              borderTop: "1px solid #1565c0",
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           selected={props.activeFloor === -1}
           disabled={!relevantFloors.includes(-1)}
         >

@@ -34,6 +34,7 @@ const ToggleButtonStyles = {
   fontSize: "1.10rem",
   fontWeight: "normal",
   height: "6vh",
+  width: "6vh",
   borderRadius: "10px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
@@ -67,7 +68,7 @@ export default function ToggleButtons(props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   return (
-    <div className="fixed right-[35%] z-10">
+    <div>
       <ToggleButtonGroup
         value={alignment}
         exclusive
