@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import paths from "./common/paths.tsx";
 import routes from "./common/routes.tsx";

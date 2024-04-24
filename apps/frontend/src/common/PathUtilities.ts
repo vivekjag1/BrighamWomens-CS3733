@@ -1,4 +1,6 @@
-// Holds functions that may be necessary in the manipulation of GraphNode[]s
+import { Node } from "database";
+
+// Holds functions that may be necessary in the manipulation of Node[]
 
 // Gets the floor number corresponding to the string representation of the floor
 export function getFloorNumber(floor: string): number {
@@ -16,4 +18,21 @@ export function getFloorNumber(floor: string): number {
     default:
       return -100;
   }
+}
+
+// Groups nodes along the same segment
+export function getSegments(path: Node[]): Node[][] {
+  // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
+  const splitPaths: Node[][] = [];
+  let startIndex: number = 0,
+    endIndex: number = 0;
+  for (let i = 0, length = path.length; i < length - 1; i++) {
+    if (path[i].floor != path[i + 1].floor) {
+      endIndex = i + 1;
+      splitPaths.push(path.slice(startIndex, endIndex));
+      startIndex = i + 1;
+    }
+  }
+  splitPaths.push(path.slice(startIndex));
+  return splitPaths;
 }

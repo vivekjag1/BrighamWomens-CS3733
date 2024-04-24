@@ -8,55 +8,80 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
-import MultifloorMarker from "./MultifloorMarker.tsx";
+import FloorMarkers from "./FloorMarkers.tsx";
+import { useToast } from "../useToast.tsx";
 
 interface mapProps {
   activeFloor: number;
   nodes: Node[];
   path: Node[];
-  setFields: (nodeID: string) => void;
+  onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
 }
 
 function Map(props: mapProps) {
   const map = getFloorMap(props.activeFloor);
   const nodes: Node[] = filterNodes(props.nodes, props.activeFloor);
-  const polylines = getPolylines(props.path, props.activeFloor);
-
+  let polylines: string[] = [];
+  let startNode: {
+    nodeID: string;
+    xcoord?: number;
+    ycoord?: number;
+    floor?: string;
+  };
+  let endNode: {
+    nodeID: string;
+    xcoord?: number;
+    ycoord?: number;
+    floor?: string;
+  };
   const lastIndex = props.path.length - 1;
+  const { showToast } = useToast();
+  if (props.path.length == 0) {
+    showToast("There is no path between the two given locations", "warning");
+  } else {
+    polylines = getPolylines(props.path, props.activeFloor);
 
-  const startNode = {
-    nodeID: props.path[0].nodeID,
-    xcoord: props.path[0].xcoord,
-    ycoord: props.path[0].ycoord,
-    floor: props.path[0].floor,
-  };
+    startNode = {
+      nodeID: props.path[0].nodeID,
+      xcoord: props.path[0].xcoord,
+      ycoord: props.path[0].ycoord,
+      floor: props.path[0].floor,
+    };
 
-  const endNode = {
-    nodeID: props.path[lastIndex].nodeID,
-    xcoord: props.path[lastIndex].xcoord,
-    ycoord: props.path[lastIndex].ycoord,
-    floor: props.path[lastIndex].floor,
-  };
+    endNode = {
+      nodeID: props.path[lastIndex].nodeID,
+      xcoord: props.path[lastIndex].xcoord,
+      ycoord: props.path[lastIndex].ycoord,
+      floor: props.path[lastIndex].floor,
+    };
+  }
 
   const polylineElements = polylines.map((polyline) => (
     <DashedPolyline points={polyline} />
   ));
 
-  const nodeElements = nodes.map((node) => (
-    <ClickableCircle
-      x={node.xcoord}
-      y={node.ycoord}
-      id={node.nodeID}
-      onClick={() => props.setFields(node.nodeID)}
-    />
-  ));
+  const nodeElements = nodes.map((node) =>
+    node.xcoord != 0 && node.ycoord != 0 ? (
+      <ClickableCircle
+        x={node.xcoord}
+        y={node.ycoord}
+        id={node.nodeID}
+        onClick={() => props.onNodeClick(node.nodeID)}
+      />
+    ) : (
+      <></>
+    ),
+  );
 
   const startMarkerElement = (() => {
+    if (props.path.length == 0) {
+      return <></>;
+    }
     return getFloorNumber(props.path[0].floor) === props.activeFloor ? (
       <LocationMarker
-        x={parseInt(props.path[0].xcoord)}
-        y={parseInt(props.path[0].ycoord)}
+        x={props.path[0].xcoord}
+        y={props.path[0].ycoord}
         color="green"
       />
     ) : (
@@ -65,10 +90,13 @@ function Map(props: mapProps) {
   })();
 
   const endMarkerElement = (() => {
+    if (props.path.length == 0) {
+      return <></>;
+    }
     return getFloorNumber(props.path[lastIndex].floor) === props.activeFloor ? (
       <LocationMarker
-        x={parseInt(props.path[lastIndex].xcoord)}
-        y={parseInt(props.path[lastIndex].ycoord)}
+        x={props.path[lastIndex].xcoord}
+        y={props.path[lastIndex].ycoord}
         color="red"
       />
     ) : (
@@ -76,18 +104,18 @@ function Map(props: mapProps) {
     );
   })();
 
-  const segments: Node[][] = getSegments(props.path, props.activeFloor);
+  const segments: Node[][] = getFloorSegments(props.path, props.activeFloor);
   const allTransitionMarkers = segments.map((segment) => {
     const elements: JSX.Element[] = [];
     let xcoord: number = 0;
     let ycoord: number = 0;
     if (segment[0].nodeID != startNode.nodeID) {
-      xcoord = parseInt(segment[0].xcoord);
-      ycoord = parseInt(segment[0].ycoord);
+      xcoord = segment[0].xcoord;
+      ycoord = segment[0].ycoord;
       const indexSegmentStart: number = props.path.indexOf(segment[0]);
       const nextFloor: string = props.path[indexSegmentStart - 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}
@@ -96,14 +124,14 @@ function Map(props: mapProps) {
       );
     }
     if (segment[segment.length - 1].nodeID != endNode.nodeID) {
-      xcoord = parseInt(segment[segment.length - 1].xcoord);
-      ycoord = parseInt(segment[segment.length - 1].ycoord);
+      xcoord = segment[segment.length - 1].xcoord;
+      ycoord = segment[segment.length - 1].ycoord;
       const indexSegmentEnd: number = props.path.indexOf(
         segment[segment.length - 1],
       );
       const nextFloor = props.path[indexSegmentEnd + 1].floor;
       elements.push(
-        <MultifloorMarker
+        <FloorMarkers
           x={xcoord}
           y={ycoord}
           floor={nextFloor}
@@ -136,7 +164,11 @@ function filterNodes(nodes: Node[], activeFloor: number): Node[] {
 
 // Return an array of strings, where each string represents the list of points needed to draw one segment of a path
 function getPolylines(path: Node[], activeFloor: number): string[] {
-  const segments: Node[][] = getSegments(path, activeFloor);
+  if (path.length == 0) {
+    return [];
+  }
+
+  const segments: Node[][] = getFloorSegments(path, activeFloor);
 
   // Generate instructions to draw polyline(s) corresponding to the active floor
   const polylineInstructions: string[] = [];
@@ -153,7 +185,12 @@ function getPolylines(path: Node[], activeFloor: number): string[] {
 }
 
 // Groups nodes along the same segment and filters out nodes that do not apply to the current floor map
-function getSegments(path: Node[], activeFloor: number): Node[][] {
+function getFloorSegments(path: Node[], activeFloor: number) {
+  return filterSegments(getSegments(path), activeFloor);
+}
+
+// Groups nodes along the same segment
+function getSegments(path: Node[]): Node[][] {
   // Split the array into sub-arrays, where each sub-array holds nodes of the same floor
   const splitPaths: Node[][] = [];
   let startIndex: number = 0,
@@ -166,13 +203,17 @@ function getSegments(path: Node[], activeFloor: number): Node[][] {
     }
   }
   splitPaths.push(path.slice(startIndex));
+  return splitPaths;
+}
 
-  // Filter out sub-arrays with nodes that do not match the active floor.
-  const filteredSplitPaths = splitPaths.filter(
-    (splitPath: Node[]) => getFloorNumber(splitPath[0].floor) === activeFloor,
+// Filters out nodes that do not apply to the current floor map
+function filterSegments(segments: Node[][], activeFloor: number): Node[][] {
+  if (segments[0].length == 0) {
+    return [];
+  }
+  return segments.filter(
+    (segment: Node[]) => getFloorNumber(segment[0].floor) === activeFloor,
   );
-
-  return filteredSplitPaths;
 }
 
 // Returns the corresponding map, given a floor number

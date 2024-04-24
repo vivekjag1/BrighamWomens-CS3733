@@ -58,6 +58,7 @@ function ServiceFilterDropdown({
   >(null);
 
   const [employees, setEmployees] = useState<string[]>([]);
+  const [employeePfps, setEmployeePfps] = useState<string[]>([]);
 
   const handleFilterChange = (
     value: string,
@@ -101,14 +102,17 @@ function ServiceFilterDropdown({
         setEmployees(
           res.data.map((employee: { name: string }) => employee.name),
         );
-        console.log(employees);
+        setEmployeePfps(
+          res.data.map(
+            (employee: { profilePicture: string }) => employee.profilePicture,
+          ),
+        );
         console.log("Successfully got data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }
     }
     fetchData();
-    // eslint-disable-next-line
   }, [getAccessTokenSilently]);
 
   return (
@@ -169,9 +173,18 @@ function ServiceFilterDropdown({
                     )
                   }
                 />
+                <img
+                  className="w-8 h-8 rounded-full mr-2"
+                  loading="lazy"
+                  src={`../../assets/employees/${employeePfps[employees.indexOf(employee)]}.jpeg`}
+                  alt={`${employee} profile`}
+                />
                 <ListItemText
                   primary={employee.replace(/([A-Z])/g, " $1").trim()}
-                  primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+                  primaryTypographyProps={{
+                    fontSize: ".9rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
                 />
               </MenuItem>
             ))}

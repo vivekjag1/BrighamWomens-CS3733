@@ -1,12 +1,12 @@
-import { GraphNode } from "common/src/GraphNode.ts";
 import { Direction } from "./Direction.ts";
 import { TextualDirection } from "./TextualDirection.ts";
+import type { Node } from "database";
 
 const PIXELS_TO_FEET: number = 0.347;
 
 // Utility class used for the purposes of generating textual directions given a collection of nodes representing a path
 export class TextualDirections {
-  static getTextualDirections(nodes: GraphNode[]): TextualDirection[] {
+  static getTextualDirections(nodes: Node[]): TextualDirection[] {
     // Default starting instructions
     const textualDirections: TextualDirection[] = [];
     let newInstruction = "Starting at " + nodes[0].longName + ", face north.";
@@ -18,7 +18,7 @@ export class TextualDirections {
 
     // Generate instructions to navigate each segment of the path
     let currentOrientation: Direction = Direction.North;
-    const clusters: GraphNode[][] = TextualDirections.cluster(nodes);
+    const clusters: Node[][] = TextualDirections.cluster(nodes);
     for (let i = 0, length = clusters.length; i < length; i++) {
       const currentManeuver = TextualDirections.determineManeuver(
         clusters[i][0],
@@ -88,8 +88,8 @@ export class TextualDirections {
   }
 
   // Organizes array of nodes into clusters, whereby each cluster represent nodes along the same segment
-  static cluster(nodes: GraphNode[]): GraphNode[][] {
-    const clusters: GraphNode[][] = [];
+  static cluster(nodes: Node[]): Node[][] {
+    const clusters: Node[][] = [];
     let previousEdgeDirection: string = "";
     for (let i = 0, length = nodes.length; i < length - 1; i++) {
       const currentNode = nodes[i],
@@ -114,7 +114,7 @@ export class TextualDirections {
   }
 
   // Determine whether a floor transition is needed, given two nodes
-  static needFloorTransition(from: GraphNode, to: GraphNode): boolean {
+  static needFloorTransition(from: Node, to: Node): boolean {
     return (
       (from.nodeType == "ELEV" && to.nodeType == "ELEV") ||
       (from.nodeType == "STAI" && to.nodeType == "STAI")
@@ -166,8 +166,8 @@ export class TextualDirections {
 
   // Determines what type of turn a person would need to make to navigate from one node to another
   static determineManeuver(
-    from: GraphNode,
-    to: GraphNode,
+    from: Node,
+    to: Node,
     orientation: Direction,
   ): string {
     const angle = TextualDirections.calculateAngleDegrees(from, to);
@@ -200,7 +200,7 @@ export class TextualDirections {
   }
 
   // Determines the direction of a node relative to another
-  static determineDirection(from: GraphNode, to: GraphNode): string {
+  static determineDirection(from: Node, to: Node): string {
     const angle = TextualDirections.calculateAngleDegrees(from, to);
     if (angle > -45 && angle < 45) return "Right";
     else if ((angle < -135 && angle >= -180) || (angle > 135 && angle <= 180))
@@ -210,16 +210,16 @@ export class TextualDirections {
   }
 
   // Calculates the angle between an edge and the x-axis
-  static calculateAngleDegrees(from: GraphNode, to: GraphNode): number {
-    const xDifference: number = parseInt(to.xcoord) - parseInt(from.xcoord);
-    const yDifference: number = parseInt(to.ycoord) - parseInt(from.ycoord);
+  static calculateAngleDegrees(from: Node, to: Node): number {
+    const xDifference: number = to.xcoord - from.xcoord;
+    const yDifference: number = to.ycoord - from.ycoord;
     return (Math.atan2(yDifference, xDifference) * 180) / Math.PI;
   }
 
   // Calculates the distance between two nodes
-  static calculateDistance(from: GraphNode, to: GraphNode): number {
-    const xDifference: number = parseInt(to.xcoord) - parseInt(from.xcoord);
-    const yDifference: number = parseInt(to.ycoord) - parseInt(from.ycoord);
+  static calculateDistance(from: Node, to: Node): number {
+    const xDifference: number = to.xcoord - from.xcoord;
+    const yDifference: number = to.ycoord - from.ycoord;
     const euclideanDistance = Math.sqrt(
       Math.pow(xDifference, 2) + Math.pow(yDifference, 2),
     );

@@ -40,6 +40,10 @@ router.get("/", async (req, res) => {
     algorithm as PathAlgorithm,
   );
 
+  if (path.length == 0) {
+    console.log("empty path");
+  }
+
   res.status(200).json(path);
 });
 

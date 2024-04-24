@@ -9,7 +9,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { IconButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon.ts";
-import CustomClearButtonSmall from "../CustomClearButtonSmall.tsx";
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -19,34 +18,24 @@ interface NavigationPaneProps {
   endNodeIDSetter: (id: string) => void;
   algorithm: string;
   algorithmSetter: (algorithm: string) => void;
+  onSwap: () => void;
   onSubmit: FormEventHandler;
-  onClear: FormEventHandler;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
-  // function reset(){
-  //   props.startNodeIDSetter('');
-  //   props.endNodeIDSetter('');
-  //
-  // }
-
   return (
     <div>
       <form
         onSubmit={props.onSubmit}
-        onReset={props.onClear}
-        className="flex flex-col gap-5 border-5 p-3 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col gap-5 border-5 p-4 bg-white rounded-2xl shadow-xl"
       >
-        <h2 className="text-2xl font-extralight text-secondary pl-2">
-          Navigate
-        </h2>
         <div className="flex gap-4">
-          <div className="flex flex-col text-[#012D5A]">
+          <div className="flex flex-col text-[#012D5A] gap-1 mt-1">
             <MyLocationIcon sx={IconStyles} />
             <MoreVertIcon sx={IconStyles} />
             <LocationOn sx={IconStyles} />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <NodeDropdown
               nodes={props.nodes}
               name="start"
@@ -81,12 +70,9 @@ function NavigationPane(props: NavigationPaneProps) {
             </div>
           </div>
           <div className="pt-[7%]">
-            <IconButton className="h-[40px]">
+            <IconButton className="h-[40px]" onClick={props.onSwap}>
               <SwapVertIcon />
             </IconButton>
-          </div>
-          <div className="flex justify-end mb-[-0.1rem]">
-            <CustomClearButtonSmall type="reset" />
           </div>
         </div>
       </form>
@@ -96,22 +82,28 @@ function NavigationPane(props: NavigationPaneProps) {
 
 const IconStyles = {
   color: DesignSystem.primaryColor,
-  fontSize: "xx-large",
+  fontSize: "1.5rem",
 } as const;
 
 const NodeDropdownStyles = {
-  width: "16vw",
+  width: "17vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
+  },
+  "&. MuiInputLabel-root": {
+    fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
 
 const AlgorithmDropdownStyles = {
-  width: "8vw",
+  width: "12vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
+  },
+  "&. MuiInputLabel-root": {
+    fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
 

@@ -18,18 +18,23 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
-  addingNode: boolean;
+  startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
+
+  const selectedNodeID = useContext(MapContext).selectedNodeID;
+  const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+  const selectedAction = useContext(MapContext).selectedAction;
+
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
-  const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
-  const [nodeRadii, setNodeRadii] = useState(new Map());
+  // const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
+  // const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -39,29 +44,6 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
-
-  useEffect(() => {
-    const initialColors = new Map();
-    tempNodes.forEach((node, nodeID) => {
-      initialColors.set(nodeID, MapStyling.nodeColor);
-    });
-    setNodeColors(initialColors);
-  }, [tempNodes]);
-
-  useEffect(() => {
-    const initialRadii = new Map();
-    tempNodes.forEach((node, nodeID) => {
-      initialRadii.set(nodeID, MapStyling.nodeRadius);
-    });
-    setNodeRadii(initialRadii);
-  }, [tempNodes]);
-  useEffect(() => {
-    setNodes(tempNodes);
-    const initialRadii = new Map();
-    tempNodes.forEach((node, nodeID) => {
-      initialRadii.set(nodeID, MapStyling.nodeRadius);
-    });
-  }, [tempNodes]);
 
   useEffect(() => {
     setNodes(tempNodes);
@@ -75,10 +57,10 @@ const MapEditImage = (props: {
 
       if (startNode && endNode) {
         tempCoords.push({
-          startX: parseInt(startNode.xcoord),
-          startY: parseInt(startNode.ycoord),
-          endX: parseInt(endNode.xcoord),
-          endY: parseInt(endNode.ycoord),
+          startX: startNode.xcoord,
+          startY: startNode.ycoord,
+          endX: endNode.xcoord,
+          endY: endNode.ycoord,
         });
       }
     }
@@ -114,7 +96,7 @@ const MapEditImage = (props: {
   ) {
     event.stopPropagation();
     props.onNodeClick(nodeID);
-    setSelectedNodeId(nodeID);
+    setSelectedNodeID(nodeID);
 
     if (flickeringNode === nodeID) {
       setFlickeringNode(null);
@@ -122,21 +104,21 @@ const MapEditImage = (props: {
       setFlickeringNode(nodeID);
     }
   }
-  function handleMouseEnter(nodeID: string) {
-    setNodeRadii((prevRadii) =>
-      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
-    );
-    setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
-  }
-
-  function handleMouseLeave(nodeID: string) {
-    setNodeRadii((prevRadii) =>
-      new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
-    );
-    setNodeColors((prevColors) =>
-      new Map(prevColors).set(nodeID, MapStyling.nodeColor),
-    ); // Reset color on mouse leave
-  }
+  // function handleMouseEnter(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
+  //   );
+  //   setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
+  // }
+  //
+  // function handleMouseLeave(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
+  //   );
+  //   setNodeColors((prevColors) =>
+  //     new Map(prevColors).set(nodeID, MapStyling.nodeColor),
+  //   ); // Reset color on mouse leave
+  // }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -145,10 +127,11 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
+
     setPosition({
       ...position,
-      x: parseInt(nodes.get(nodeID)!.xcoord),
-      y: parseInt(nodes.get(nodeID)!.ycoord),
+      x: nodes.get(nodeID)!.xcoord,
+      y: nodes.get(nodeID)!.ycoord,
       active: true,
       offset: {
         x: xOffset,
@@ -165,21 +148,23 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (position.active) {
+    if (position.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        parseFloat(updatedNode.xcoord) + (x - position.offset.x),
-      ).toString();
+        updatedNode.xcoord + (x - position.offset.x),
+      );
       updatedNode.ycoord = Math.round(
-        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
-      ).toString();
+        updatedNode.ycoord + (y - position.offset.y),
+      );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
   }
 
   return (
     //onClick={props.onMapClick}
-    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
+    <div
+      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+    >
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -194,71 +179,76 @@ const MapEditImage = (props: {
           pointerEvents: "none", // Ensures the overlay doesn't intercept mouse events
         }}
       ></div>
-      <TransformWrapper
-        initialScale={1}
-        doubleClick={{ disabled: true }}
-        panning={{ velocityDisabled: true, disabled: position.active }}
-      >
-        <MapZoomButtons />
-        <TransformComponent
-          wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
-          contentStyle={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
+      <div>
+        <TransformWrapper
+          initialScale={1}
+          doubleClick={{ disabled: true }}
+          panning={{ velocityDisabled: true, disabled: position.active }}
         >
-          <svg
-            viewBox="0 0 5000 3400"
-            height="100vh"
-            onPointerUp={() => {
-              setPosition({ ...position, active: false });
+          <MapZoomButtons />
+          <TransformComponent
+            wrapperStyle={{ width: "100%", height: "100%", paddingLeft: "3%" }}
+            contentStyle={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
             }}
-            onClick={props.onMapClick}
           >
-            <image href={map} />
-            {edgeCoords.map((edge, index) => (
-              <line
-                key={index}
-                className="edge"
-                x1={edge.startX}
-                x2={edge.endX}
-                y1={edge.startY}
-                y2={edge.endY}
-                stroke={MapStyling.edgeColor}
-                strokeWidth={MapStyling.edgeWidth}
-              />
-            ))}
-            {Array.from(nodes.values()).map((node) => (
-              <circle
-                key={node.nodeID}
-                className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                r={nodeRadii.get(node.nodeID) || MapStyling.nodeRadius}
-                cx={node.xcoord}
-                cy={node.ycoord}
-                onMouseEnter={() => handleMouseEnter(node.nodeID)}
-                onMouseLeave={() => handleMouseLeave(node.nodeID)}
-                onPointerDown={(e: React.PointerEvent<SVGCircleElement>) =>
-                  handlePointerDown(e, node.nodeID)
-                }
-                onPointerMove={(e: React.PointerEvent<SVGCircleElement>) =>
-                  handlePointerMove(e, node.nodeID)
-                }
-                fill={
-                  node.nodeID === selectedNodeId
-                    ? "red"
-                    : nodeColors.get(node.nodeID) || MapStyling.nodeColor
-                }
-                onClick={(e: React.MouseEvent<SVGCircleElement>) =>
-                  nodeClicked(e, node.nodeID)
-                }
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </svg>
-        </TransformComponent>
-      </TransformWrapper>
+            <svg
+              viewBox="0 0 5000 3400"
+              height="100vh"
+              onPointerUp={() => {
+                setPosition({ ...position, active: false });
+              }}
+              onClick={props.onMapClick}
+            >
+              <image href={map} />
+              {edgeCoords.map((edge, index) => (
+                <line
+                  key={index}
+                  className="edge"
+                  x1={edge.startX}
+                  x2={edge.endX}
+                  y1={edge.startY}
+                  y2={edge.endY}
+                  stroke={MapStyling.edgeColor}
+                  strokeWidth={MapStyling.edgeWidth}
+                />
+              ))}
+              {Array.from(nodes.values()).map((node) => (
+                <circle
+                  key={node.nodeID}
+                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
+                  r={MapStyling.nodeRadius}
+                  cx={node.xcoord}
+                  cy={node.ycoord}
+                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                  fill={
+                    selectedNodeID == node.nodeID
+                      ? MapStyling.edgeColor
+                      : MapStyling.nodeColor
+                  }
+                  onClick={(e) => nodeClicked(e, node.nodeID)}
+                  style={{ cursor: "pointer" }}
+                />
+              ))}
+              //This is rendering the line between the cursor and startNode
+              {props.startEdgeNodeID && (
+                <line
+                  x1={nodes.get(props.startEdgeNodeID)!.xcoord}
+                  y1={nodes.get(props.startEdgeNodeID)!.ycoord}
+                  x2={position.x}
+                  y2={position.y}
+                  stroke="red"
+                  strokeWidth="2"
+                />
+              )}
+            </svg>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
     </div>
   );
 };
