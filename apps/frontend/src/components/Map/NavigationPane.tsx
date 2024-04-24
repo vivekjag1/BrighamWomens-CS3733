@@ -52,11 +52,11 @@ function NavigationPane(props: NavigationPaneProps) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
-    <div className="w-[23vw] max-w-[22.5vw]">
+    <div className="w-[23vw] max-w-[22.5vw] z-40">
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}
-        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl z-40"
       >
         <div className="flex gap-4">
           <div className="flex flex-col gap-0">
