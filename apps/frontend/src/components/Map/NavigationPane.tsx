@@ -92,34 +92,37 @@ function NavigationPane(props: NavigationPaneProps) {
         className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl"
       >
         <div className="flex gap-4">
-          <div className="flex flex-col text-[#012D5A] gap-1 mt-1">
-            <MyLocationIcon sx={IconStyles} />
+          <div className="flex flex-col gap-0">
+            <div className="flex flex-row gap-4 items-center">
+              <MyLocationIcon sx={IconStyles} />
+              <NodeDropdown
+                nodes={props.nodes}
+                name="start"
+                label="Start Location"
+                sx={NodeDropdownStyles}
+                value={props.startNodeID}
+                onChange={(e, newValue) =>
+                  newValue && props.startNodeIDSetter(newValue!.id)
+                }
+              />
+            </div>
             <MoreVertIcon sx={IconStyles} />
-            <LocationOn sx={IconStyles} />
-          </div>
-          <div className="flex flex-col gap-4">
-            <NodeDropdown
-              nodes={props.nodes}
-              name="start"
-              label="Start Location"
-              sx={NodeDropdownStyles}
-              value={props.startNodeID}
-              onChange={(e, newValue) =>
-                newValue && props.startNodeIDSetter(newValue!.id)
-              }
-            />
-            <NodeDropdown
-              nodes={props.nodes}
-              name="end"
-              label="End Location"
-              sx={NodeDropdownStyles}
-              value={props.endNodeID}
-              onChange={(e, newValue) =>
-                newValue && props.endNodeIDSetter(newValue!.id)
-              }
-            />
-            <div className="flex justify-between">
-              <div className="flex-grow">
+            <div className="flex flex-row gap-4 items-center">
+              <LocationOn sx={IconStyles} />
+              <NodeDropdown
+                nodes={props.nodes}
+                name="end"
+                label="End Location"
+                sx={NodeDropdownStyles}
+                value={props.endNodeID}
+                onChange={(e, newValue) =>
+                  newValue && props.endNodeIDSetter(newValue!.id)
+                }
+              />
+            </div>
+
+            <div className="flex justify-between mt-4 ml-10">
+              <div className="flex-grow ">
                 <AlgorithmDropdown
                   sx={AlgorithmDropdownStyles}
                   value={props.algorithm}
