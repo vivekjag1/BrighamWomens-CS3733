@@ -18,7 +18,7 @@ export type EdgeCoordinates = {
 };
 
 const MapEditImage = (props: {
-  addingNode: boolean;
+  startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -28,6 +28,7 @@ const MapEditImage = (props: {
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+  const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -37,7 +38,7 @@ const MapEditImage = (props: {
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
-  const [draggedNodePosition, setDraggedNodePosition] = useState({
+  const [position, setPosition] = useState({
     x: 0,
     y: 0,
     active: false,
@@ -126,8 +127,9 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
-    setDraggedNodePosition({
-      ...draggedNodePosition,
+
+    setPosition({
+      ...position,
       x: nodes.get(nodeID)!.xcoord,
       y: nodes.get(nodeID)!.ycoord,
       active: true,
@@ -146,13 +148,13 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (draggedNodePosition.active) {
+    if (position.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - draggedNodePosition.offset.x),
+        updatedNode.xcoord + (x - position.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - draggedNodePosition.offset.y),
+        updatedNode.ycoord + (y - position.offset.y),
       );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
@@ -160,7 +162,9 @@ const MapEditImage = (props: {
 
   return (
     //onClick={props.onMapClick}
-    <div className={`z-0 relative ${props.addingNode ? "cursor-copy" : ""}`}>
+    <div
+      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+    >
       {/*  White Fade */}
       <div
         className={"z-10"}
@@ -179,10 +183,7 @@ const MapEditImage = (props: {
         <TransformWrapper
           initialScale={1}
           doubleClick={{ disabled: true }}
-          panning={{
-            velocityDisabled: true,
-            disabled: draggedNodePosition.active,
-          }}
+          panning={{ velocityDisabled: true, disabled: position.active }}
         >
           <MapZoomButtons />
           <TransformComponent
@@ -198,10 +199,7 @@ const MapEditImage = (props: {
               viewBox="0 0 5000 3400"
               height="100vh"
               onPointerUp={() => {
-                setDraggedNodePosition({
-                  ...draggedNodePosition,
-                  active: false,
-                });
+                setPosition({ ...position, active: false });
               }}
               onClick={props.onMapClick}
             >
@@ -236,6 +234,17 @@ const MapEditImage = (props: {
                   style={{ cursor: "pointer" }}
                 />
               ))}
+              //This is rendering the line between the cursor and startNode
+              {props.startEdgeNodeID && (
+                <line
+                  x1={nodes.get(props.startEdgeNodeID)!.xcoord}
+                  y1={nodes.get(props.startEdgeNodeID)!.ycoord}
+                  x2={position.x}
+                  y2={position.y}
+                  stroke="red"
+                  strokeWidth="2"
+                />
+              )}
             </svg>
           </TransformComponent>
         </TransformWrapper>
