@@ -59,7 +59,7 @@ function Map(props: mapProps) {
   }
 
   const polylineElements = polylines.map((polyline) => (
-    <DashedPolyline points={polyline} />
+    <DashedPolyline points={polyline} width={8} />
   ));
 
   const nodeElements = nodes.map((node) =>

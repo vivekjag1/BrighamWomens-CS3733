@@ -6,6 +6,7 @@ import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { Node } from "database";
 import DashedPolyline from "./DashedPolyline.tsx";
 import ElevatorPolyline from "./ElevatorPolyline.tsx";
+import { motion } from "framer-motion";
 
 interface StackedMapsProps {
   path: Node[];
@@ -26,7 +27,7 @@ function StackedMaps(props: StackedMapsProps) {
   console.log("floor paths", polylines2D);
 
   const polylines2DElements = polylines2D.map((polyline2D) => (
-    <DashedPolyline points={polyline2D} />
+    <DashedPolyline points={polyline2D} width={40} />
   ));
   const polylines3DElements = polylines3D.map((polyline3D) => (
     <ElevatorPolyline points={polyline3D} />
@@ -35,13 +36,29 @@ function StackedMaps(props: StackedMapsProps) {
   const startMarkerElement = (() => {
     const startNode: Point = getStartNodeCoords(props.path);
     return (
-      <circle cx={startNode.xcoord} cy={startNode.ycoord} fill="green" r="50" />
+      <motion.circle
+        cx={startNode.xcoord}
+        cy={startNode.ycoord}
+        fill="green"
+        r="20"
+        animate={{ scale: 2.5 }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+      />
     );
   })();
 
   const endMarkerElement = (() => {
     const endNode: Point = getEndNodeCoords(props.path);
-    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r="50" />;
+    return (
+      <motion.circle
+        cx={endNode.xcoord}
+        cy={endNode.ycoord}
+        fill="red"
+        r="20"
+        animate={{ scale: 2.5 }}
+        transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+      />
+    );
   })();
 
   return (

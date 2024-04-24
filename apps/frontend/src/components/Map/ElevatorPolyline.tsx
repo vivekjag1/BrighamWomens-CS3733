@@ -47,7 +47,7 @@ function ElevatorPolyline(props: ElevatorPolylineProps) {
         }}
       />
       <motion.polygon
-        fill="red"
+        fill="#012D5A"
         points="0,50 50,0 100,50 50,100"
         initial={{
           x: pointsArray[0]?.x - positionOffset,
@@ -57,7 +57,7 @@ function ElevatorPolyline(props: ElevatorPolylineProps) {
         transition={{
           repeat: Infinity,
           repeatType: "loop",
-          duration: 8 * pathLength * 0.4,
+          duration: 5 * pathLength * 0.4,
           ease: "linear",
           repeatDelay: 0,
         }}

@@ -3,6 +3,7 @@ import { DesignSystem } from "../../common/StylingCommon.ts";
 
 interface DashedPolylineProps {
   points: string;
+  width: number;
 }
 
 function DashedPolyline(props: DashedPolylineProps) {
@@ -11,7 +12,7 @@ function DashedPolyline(props: DashedPolylineProps) {
       points={props.points}
       fill="none"
       stroke={DesignSystem.primaryColor}
-      strokeWidth={30}
+      strokeWidth={props.width}
       strokeDasharray={25}
       initial={{ strokeDashoffset: 25 }}
       animate={{ strokeDashoffset: [25, -25] }}
