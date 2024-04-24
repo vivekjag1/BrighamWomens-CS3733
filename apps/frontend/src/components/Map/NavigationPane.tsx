@@ -85,7 +85,7 @@ function NavigationPane(props: NavigationPaneProps) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
-    <div>
+    <div className="w-[22.5vw] max-w-[22.5vw]">
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}

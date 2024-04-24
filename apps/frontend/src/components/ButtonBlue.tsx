@@ -10,7 +10,7 @@ const ToggleButtonStyles = {
   fontSize: "1.10rem",
   fontWeight: "normal",
   height: "6vh",
-  borderRadius: "10px",
+  borderRadius: "8px",
   "&:hover": {
     backgroundColor: DesignSystem.accentColor,
   },

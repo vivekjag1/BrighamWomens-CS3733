@@ -35,13 +35,13 @@ function StackedMaps(props: StackedMapsProps) {
   const startMarkerElement = (() => {
     const startNode: Point = getStartNodeCoords(props.path);
     return (
-      <circle cx={startNode.xcoord} cy={startNode.ycoord} fill="green" r="50" />
+      <circle cx={startNode.xcoord} cy={startNode.ycoord} fill="green" r="30" />
     );
   })();
 
   const endMarkerElement = (() => {
     const endNode: Point = getEndNodeCoords(props.path);
-    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r="50" />;
+    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r="30" />;
   })();
 
   return (
