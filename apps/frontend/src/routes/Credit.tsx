@@ -272,7 +272,7 @@ export default function Credit() {
                     </Link>
                     <h1 className="text-4xl flex-grow text-center mr-6">
                       {" "}
-                      CREDIT
+                      CREDITS
                     </h1>
                   </div>
                   <p style={{ color: "olive" }}>
