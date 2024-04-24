@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { ServiceRequest } from "database";
 import dayjs from "dayjs";
@@ -12,6 +11,8 @@ import CustomTextField from "./CustomTextField.tsx";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+
 import {
   Table,
   TableBody,
@@ -31,6 +32,7 @@ export function ServiceRequestGetter() {
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterBySearch, setFilterBySearch] = useState("");
+  const [filterByEmployee, setFilterByEmployee] = useState<string[]>([]);
   const [filterByPriority, setFilterByPriority] = useState<string[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByType, setFilterByType] = useState<string[]>([]);
@@ -112,15 +114,12 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.patch(
+      const response = await MakeProtectedPatchRequest(
         APIEndpoints.servicePutRequests,
         updateData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        token,
       );
+
       console.log("Status updated successfully", response.data);
       showToast("Status updated successfully!", "success");
     } catch (error) {
@@ -154,14 +153,10 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.patch(
+      const response = await MakeProtectedPatchRequest(
         APIEndpoints.servicePutRequests,
         updateData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        token,
       );
       console.log("Employee updated successfully", response.data);
       showToast("Assigned employee updated successfully!", "success");
@@ -191,6 +186,9 @@ export function ServiceRequestGetter() {
       );
     }
 
+    if (filterByEmployee.length) {
+      data = data.filter((item) => filterByEmployee.includes(item.assignedTo));
+    }
     if (filterByType.length) {
       data = data.filter((item) => filterByType.includes(item.type));
     }
@@ -229,6 +227,7 @@ export function ServiceRequestGetter() {
     setFilteredData(sortedData);
   }, [
     requestData,
+    filterByEmployee,
     filterByType,
     filterByPriority,
     filterByStatus,
@@ -337,6 +336,8 @@ export function ServiceRequestGetter() {
         </div>
         <div>
           <ServiceFilterDropdown
+            filterByEmployee={filterByEmployee}
+            setFilterByEmployee={setFilterByEmployee}
             filterByType={filterByType}
             setFilterByType={setFilterByType}
             filterByPriority={filterByPriority}
@@ -495,7 +496,7 @@ export function ServiceRequestGetter() {
                           handleStatusChange(e, request.serviceID)
                         }
                         onClick={(e) => e.stopPropagation()}
-                        className="border border-gray-300 rounded px-3 py-1 text-center"
+                        className="border bg-gray-50 border-gray-300 rounded px-3 py-1 text-center"
                       >
                         {statusOptions.map((option) => (
                           <option
@@ -571,12 +572,12 @@ export function ServiceRequestGetter() {
                         filterBySearch,
                       )}
                     </TableCell>
-                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                    <TableCell style={{ width: "20ch", maxWidth: "20ch" }}>
                       {request.description && request.description.trim() !== ""
-                        ? truncateString(request.description, 20)
+                        ? truncateString(request.description, 18)
                         : "N/A"}
                     </TableCell>
-                    <TableCell style={{ width: "25ch", maxWidth: "25ch" }}>
+                    <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
                       {/*{highlightSearchTerm(*/}
                       {/*  truncateString(request.assignedTo, 15),*/}
                       {/*  filterBySearch,*/}

@@ -9,6 +9,9 @@ import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useToast } from "../components/useToast.tsx";
 import MapEditToolBar from "../components/MapEditToolBar.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 
 const defaultFloor: number = 1;
 enum Action {
@@ -19,6 +22,7 @@ enum Action {
 }
 
 //merge changes to dev
+
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
@@ -72,22 +76,16 @@ function MapEdit() {
   };
 
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
-
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
-
   const { showToast } = useToast();
-
-  // const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
+  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
-
   const { getAccessTokenSilently } = useAuth0();
-  let token = "";
-
   useEffect(() => {
     const fetchData = async () => {
+      // const token = await getAccessTokenSilently();
       let activeFloorString;
-
       switch (activeFloor) {
         case -1:
           activeFloorString = "L1";
@@ -98,7 +96,6 @@ function MapEdit() {
         default:
           activeFloorString = activeFloor.toString();
       }
-
       try {
         const queryParams = {
           [NavigateAttributes.floorKey]: activeFloorString,
@@ -148,9 +145,10 @@ function MapEdit() {
     };
 
     fetchData();
-  }, [activeFloor]);
+  }, [activeFloor, getAccessTokenSilently]);
 
-  function updateNodeField(field: keyof Node, value: string) {
+  function updateNodeField(field: keyof Node, value: string | number) {
+    console.log("new value!", value);
     const node = nodes.get(selectedNodeID!);
     if (node) {
       updateNode({ ...node, [field]: value });
@@ -165,18 +163,16 @@ function MapEdit() {
     }
   }
 
-  // function addNode(node: Node) {
-  //   const tempNodes = new Map(nodes);
-  //   tempNodes.set(node.nodeID, node);
-  //   setNodes(tempNodes);
-  // }
-  //
   async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
+    console.log("testing", selectedNodeID);
+    setSelectedNodeID(undefined);
+    setCachedNode(undefined);
+    setNodeSaved(false);
     console.log(selectedNodeID);
 
     const selectedNodeEdges: Edge[] = edges.filter(
@@ -214,19 +210,6 @@ function MapEdit() {
     await axios.post(APIEndpoints.deleteNode, sendToDb);
   }
 
-  // function handleNodeClick(nodeID: string) {
-  //   if (cachedNode) {
-  //     if (cachedNode.nodeID == nodeID)
-  //       return; // same node pressed
-  //     else {
-  //       // different node pressed
-  //       if (!nodeSaved) updateNode(cachedNode);
-  //     }
-  //   }
-  //   setSelectedNodeID(nodeID);
-  //   setCachedNode(nodes.get(nodeID));
-  //   setNodeSaved(false);
-  // }
   function handleNodeClick(nodeID: string) {
     if (selectedAction === Action.CreateEdge) {
       if (!startEdgeNodeID) {
@@ -256,14 +239,10 @@ function MapEdit() {
       setNodeSaved(false);
     }
   }
+
   // function handleAddNodeButtonClicked() {
   //   setAddingNode(!addingNode);
   //   setAddingEdge(false);
-  // }
-  //
-  // function handleAddEdgeButtonClicked() {
-  //   setAddingEdge(!addingEdge);
-  //   setAddingNode(false);
   // }
 
   function handleSelectNodeSelected() {
@@ -284,46 +263,49 @@ function MapEdit() {
     if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
-      if (selectedNodeID && !nodeSaved) {
-        // Prompt user to save changes
-        //confirmSaveChanges(); // This function would handle the confirmation logic
-      } else {
-        // No unsaved changes or no node selected
-        setSelectedNodeID(undefined);
-        setNodeSaved(true); // Assume no changes need saving
+      // if node wasn't saved, revert node to cached version
+      if (cachedNode && !nodeSaved) {
+        updateNode(cachedNode);
       }
+
+      setSelectedNodeID(undefined);
+      setCachedNode(undefined);
+      setNodeSaved(false);
     }
   }
 
-  // function confirmSaveChanges() {
-  //   // This could be a modal or simple confirmation box
-  //   if (
-  //     window.confirm("You have unsaved changes. Would you like to save them?")
-  //   ) {
-  //     handleSave();
-  //   } else {
-  //     setSelectedNodeID(undefined);
-  //     setNodeSaved(true);
-  //   }
-  // }
-
   async function handleSave() {
-    token = await getAccessTokenSilently();
-    if (!selectedNodeID) return;
-    await axios
-      .patch(APIEndpoints.updateNodes, nodes.get(selectedNodeID), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        setNodeSaved(true);
-        showToast("Node updated successfully!", "success");
-      })
-      .catch(() => showToast("There was an issue updating this node", "error"));
+    const token = await getAccessTokenSilently();
+    if (nodes.get(selectedNodeID!)!.shortName === "") {
+      showToast("Please fill in a node ID!", "error");
+      return;
+    }
+
+    const node = nodes.get(selectedNodeID!);
+    console.log(node);
+    if (node!.nodeID.substring(0, 8) != "userNode") {
+      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
+    } else {
+      //cut first 8 characters
+
+      const numNodeRaw = await MakeProtectedGetRequest(
+        APIEndpoints.countNodes,
+        token,
+      );
+      const numNode = numNodeRaw.data["numNodes"] + 1;
+      console.log("raw", numNodeRaw.data["numNodes"]);
+      // setNumberOfNodes(numNode );
+      console.log(numNode);
+      node!.nodeID = node!.nodeID.substring(0, 8) + numNode;
+      console.log(node);
+      node!.xcoord = Math.round(node!.xcoord);
+      node!.ycoord = Math.round(node!.ycoord);
+
+      await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+    }
   }
 
-  const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -331,8 +313,8 @@ function MapEdit() {
       return;
     }
     const point = svg.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
+    point.x = Math.round(event.clientX);
+    point.y = Math.round(event.clientY);
 
     const matrix = svg.getScreenCTM();
     if (!matrix) {
@@ -341,14 +323,14 @@ function MapEdit() {
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
 
-    const xVal = x.toString();
-    const yVal = y.toString();
+    const xVal = x;
+    const yVal = y;
     const nodeID = userNodePrefix + numUserNodes;
     const floor = activeFloor;
     const building = "";
     const nodeType = "";
     const longName = "";
-    const shortName = nodeID;
+    const shortName = "";
 
     setNumUserNodes(numUserNodes + 1);
 
@@ -368,7 +350,6 @@ function MapEdit() {
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
     setSelectedNodeID(nodeID);
-    await axios.post(APIEndpoints.createNode, newNode);
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
@@ -420,20 +401,6 @@ function MapEdit() {
           />
         </MapContext.Provider>
       </div>
-      {/*<div className="absolute left-[2%] bottom-[2%] z-50">*/}
-      {/*  <AddElementToolTip*/}
-      {/*    onClicked={handleAddNodeButtonClicked}*/}
-      {/*    title="Create Node"*/}
-      {/*    selected={addingNode}*/}
-      {/*  />*/}
-      {/*</div>*/}
-      {/*<div className="absolute left-[2%] bottom-[9%] z-50">*/}
-      {/*  <AddElementToolTip*/}
-      {/*    onClicked={handleAddEdgeButtonClicked}*/}
-      {/*    title="Create Edge"*/}
-      {/*    selected={addingEdge}*/}
-      {/*  />*/}
-      {/*</div>*/}
     </div>
   );
 }

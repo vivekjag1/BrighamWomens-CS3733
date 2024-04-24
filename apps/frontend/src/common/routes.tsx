@@ -1,5 +1,5 @@
 import paths from "./paths.tsx";
-import Map from "../routes/Map.tsx";
+import Home from "../routes/Home.tsx";
 import MapEdit from "../routes/MapEdit.tsx";
 import PathTables from "../routes/MapData.tsx";
 import AboutUs from "../routes/AboutUs.tsx";
@@ -13,9 +13,10 @@ import SecurityForm from "../routes/services/SecurityForm.tsx";
 import ServicesTable from "../routes/ServicesTable.tsx";
 import EmployeeTable from "../routes/EmployeeTable.tsx";
 import AuthComp from "../components/AuthenticationComponent.tsx";
+import Map from "../routes/Map.tsx";
 
 const routes = [
-  { path: paths.HOME, element: <Map /> },
+  { path: paths.HOME, element: <Home /> },
   { path: paths.MAP_EDITOR, element: <AuthComp component={MapEdit} /> },
   { path: paths.MAP_DATA, element: <AuthComp component={PathTables} /> },
   { path: paths.ABOUT_US, element: <AuthComp component={AboutUs} /> },
@@ -40,6 +41,7 @@ const routes = [
   },
   { path: paths.SERVICE_LOG, element: <AuthComp component={ServicesTable} /> },
   { path: paths.EMPLOYEE_LOG, element: <AuthComp component={EmployeeTable} /> },
+  { path: "/home/oldHome", element: <Map /> },
 ];
 
 export default routes;

@@ -25,6 +25,7 @@ const MapEditImage = (props: {
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
   const tempNodes = useContext(MapContext).nodes;
+
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
   const selectedAction = useContext(MapContext).selectedAction;
@@ -32,6 +33,8 @@ const MapEditImage = (props: {
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
   //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   //console.log(tempNodes);
+  // const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
+  // const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
@@ -54,10 +57,10 @@ const MapEditImage = (props: {
 
       if (startNode && endNode) {
         tempCoords.push({
-          startX: parseInt(startNode.xcoord),
-          startY: parseInt(startNode.ycoord),
-          endX: parseInt(endNode.xcoord),
-          endY: parseInt(endNode.ycoord),
+          startX: startNode.xcoord,
+          startY: startNode.ycoord,
+          endX: endNode.xcoord,
+          endY: endNode.ycoord,
         });
       }
     }
@@ -95,14 +98,27 @@ const MapEditImage = (props: {
     props.onNodeClick(nodeID);
     setSelectedNodeID(nodeID);
 
-    // Toggle flickering effect
     if (flickeringNode === nodeID) {
       setFlickeringNode(null);
     } else {
       setFlickeringNode(nodeID);
     }
   }
-
+  // function handleMouseEnter(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
+  //   );
+  //   setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
+  // }
+  //
+  // function handleMouseLeave(nodeID: string) {
+  //   setNodeRadii((prevRadii) =>
+  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
+  //   );
+  //   setNodeColors((prevColors) =>
+  //     new Map(prevColors).set(nodeID, MapStyling.nodeColor),
+  //   ); // Reset color on mouse leave
+  // }
   function handlePointerDown(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -114,8 +130,8 @@ const MapEditImage = (props: {
 
     setPosition({
       ...position,
-      x: parseInt(nodes.get(nodeID)!.xcoord),
-      y: parseInt(nodes.get(nodeID)!.ycoord),
+      x: nodes.get(nodeID)!.xcoord,
+      y: nodes.get(nodeID)!.ycoord,
       active: true,
       offset: {
         x: xOffset,
@@ -135,11 +151,11 @@ const MapEditImage = (props: {
     if (position.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        parseFloat(updatedNode.xcoord) + (x - position.offset.x),
-      ).toString();
+        updatedNode.xcoord + (x - position.offset.x),
+      );
       updatedNode.ycoord = Math.round(
-        parseFloat(updatedNode.ycoord) + (y - position.offset.y),
-      ).toString();
+        updatedNode.ycoord + (y - position.offset.y),
+      );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
   }

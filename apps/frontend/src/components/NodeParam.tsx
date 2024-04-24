@@ -3,7 +3,7 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { SxProps, Theme } from "@mui/material";
 
 interface NodeParamProps {
-  value: string | undefined;
+  value: string | number | undefined;
   onChange?: (newValue: string) => void;
   label?: string;
   sx?: SxProps<Theme>;

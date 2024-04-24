@@ -104,12 +104,16 @@ const EmployeeDropdown = ({
         return (
           <Box
             component="li"
-            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            sx={{
+              textAlign: "start",
+              fontSize: ".9rem",
+              "& > img": { mr: 2, flexShrink: 0 },
+            }}
             {...props}
           >
             {employee && employee.profilePicture && (
               <img
-                className="w-10 h-10 rounded-full"
+                className="w-9 h-9 rounded-full"
                 loading="lazy"
                 src={`../../assets/employees/${employee.profilePicture}.jpeg`}
                 alt={`${option.label} profile`}

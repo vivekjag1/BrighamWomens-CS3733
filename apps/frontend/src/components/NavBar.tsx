@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/bwh-logo-shield.png";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
@@ -12,6 +12,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
+import { useIdleTimer } from "react-idle-timer";
+import { useToast } from "./useToast.tsx";
+import "../../src/styles/animatedUnderline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -19,6 +22,42 @@ function NavBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
+
+  const [remaining, setRemaining] = useState<number>(0);
+
+  const { showToast } = useToast();
+
+  const onIdle = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
+  const { getRemainingTime } = useIdleTimer({
+    onIdle,
+    timeout: 600_000,
+    throttle: 500,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemaining(Math.ceil(getRemainingTime() / 1000));
+    }, 500);
+    if (remaining <= 30 && remaining != 0) {
+      console.log("logging out in " + remaining);
+      showToast(
+        "You will be logged out in " + remaining + " seconds due to inactivity",
+        "warning",
+      );
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
   const handleSetIsCollapsed = () => {
     if (isCollapsed) {
       setIsCollapsed(false);
