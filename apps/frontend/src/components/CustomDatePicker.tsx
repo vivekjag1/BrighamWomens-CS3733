@@ -21,10 +21,28 @@ const CustomDatePicker: React.FC<DateTimePickerProps<Dayjs>> = (props) => {
           sx={{
             width: "25rem",
             padding: 0,
-            "& .MuiInputLabel-root.Mui-focused": {
+            "& *": { fontFamily: "Poppins, sans-serif" },
+            "& .MuiInputLabel-root": { fontFamily: "Poppins, sans-serif" },
+            "& .MuiOutlinedInput-root": { fontFamily: "Poppins, sans-serif" },
+            "& .MuiPickerStaticWrapper-staticWrapper": {
               fontFamily: "Poppins, sans-serif",
             },
-            "& .MuiOutlinedInput-root": { fontFamily: "Poppins, sans-serif" },
+            "& .MuiDateTimePickerToolbar-toolbar": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiPickersDay-day": { fontFamily: "Poppins, sans-serif" },
+            "& .MuiPickersDay-daySelected": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiPickersDay-dayDisabled": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiPickersYear-yearSelected": {
+              fontFamily: "Poppins, sans-serif",
+            },
+            "& .MuiPickersYear-yearDisabled": {
+              fontFamily: "Poppins, sans-serif",
+            },
           }}
         />
       </LocalizationProvider>
