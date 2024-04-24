@@ -11,14 +11,14 @@ import { motion } from "framer-motion";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import MapZoomButtons from "./MapZoomButtons.tsx";
 import { MapStyling } from "../common/StylingCommon.ts";
-import { PathNodesObject } from "common/src/Path.ts";
+import { PathType } from "common/src/Path.ts";
 
 function MapImage(props: {
   activeFloor: number;
   path: number[][];
   nodes: Node[];
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
-  pathNodeObject: PathNodesObject;
+  setPathNodeObject: Dispatch<SetStateAction<PathType>>;
+  pathNodeObject: PathType;
   setActiveFloor: Dispatch<SetStateAction<number>>;
 }) {
   const nodesData = props.nodes;

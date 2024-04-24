@@ -1,5 +1,7 @@
 import { useControls } from "react-zoom-pan-pinch";
 import { Button, ButtonGroup } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { DesignSystem } from "../../common/StylingCommon";
 
 function ZoomControls() {
@@ -34,10 +36,10 @@ function ZoomControls() {
         sx={buttonGroupStyles}
       >
         <Button sx={buttonStyles} onClick={() => zoomIn()}>
-          +
+          <AddIcon />
         </Button>
         <Button sx={buttonStyles} onClick={() => zoomOut()}>
-          -
+          <RemoveIcon />
         </Button>
       </ButtonGroup>
     </div>

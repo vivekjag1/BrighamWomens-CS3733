@@ -26,6 +26,9 @@ export class APIEndpoints {
   static readonly deleteNode: string = "/api/map/deletenode";
   static readonly fetchManagementToken: string = "/api/employee/getToken";
   static readonly countNodes: string = "/api/map/countNodes";
+  static readonly createEdge: string = "/api/map/createEdges";
+  static readonly createManyNodes: string = "/api/map/createManyNodes";
+  static readonly deleteManyNodes: string = "api/map/deleteManyNodes";
 }
 
 export class FileAttributes {

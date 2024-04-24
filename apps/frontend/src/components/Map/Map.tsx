@@ -17,6 +17,7 @@ interface mapProps {
   path: Node[];
   onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
+  updateGlowSequence: (selectedFloor: number) => void;
 }
 
 function Map(props: mapProps) {
@@ -120,6 +121,7 @@ function Map(props: mapProps) {
           y={ycoord}
           floor={nextFloor}
           onClick={props.onClick}
+          updateGlowSequence={props.updateGlowSequence}
         />,
       );
     }
@@ -136,6 +138,7 @@ function Map(props: mapProps) {
           y={ycoord}
           floor={nextFloor}
           onClick={props.onClick}
+          updateGlowSequence={props.updateGlowSequence}
         />,
       );
     }

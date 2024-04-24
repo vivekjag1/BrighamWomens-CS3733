@@ -54,6 +54,14 @@ function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [addedNodes, setAddedNodes] = useState<Map<string, Node>>(new Map());
+  const [updatedNodes, setUpdatedNodes] = useState<Map<string, Node>>(
+    new Map(),
+  );
+  const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
+  const [deletedNodes, setDeletedNodes] = useState<Map<string, Node>>(
+    new Map(),
+  );
 
   //const [addingNode, setAddingNode] = useState<boolean>(false);
   //const [addingEdge, setAddingEdge] = useState<boolean>(false);
@@ -163,31 +171,51 @@ function MapEdit() {
 
   function updateNode(node: Node) {
     const tempNodes = new Map(nodes);
+    const tempUpdatedNodes = new Map(updatedNodes);
     if (selectedNodeID) {
       tempNodes.set(selectedNodeID, node);
+      tempUpdatedNodes.set(selectedNodeID, node);
       setNodes(tempNodes);
+      setUpdatedNodes(tempUpdatedNodes);
     }
+    console.log(addedEdges);
+    console.log(deletedNodes);
+    console.log(addedNodes);
+    console.log(updatedNodes);
   }
 
   async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
+      const tempDeletedNodes = new Map(deletedNodes);
+      tempDeletedNodes.set(selectedNodeID, nodes.get(selectedNodeID)!);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
+      setDeletedNodes(tempDeletedNodes);
+
+      if (addedNodes.has(selectedNodeID)) {
+        const tempAddedNodes = new Map(addedNodes);
+        tempAddedNodes.delete(selectedNodeID);
+        setAddedNodes(tempAddedNodes);
+      }
+      if (updatedNodes.has(selectedNodeID)) {
+        const tempUpdatedNodes = new Map(updatedNodes);
+        tempUpdatedNodes.delete(selectedNodeID);
+        setUpdatedNodes(tempUpdatedNodes);
+      }
     }
-    console.log("testing", selectedNodeID);
+
     setSelectedNodeID(undefined);
     setCachedNode(undefined);
     setNodeSaved(false);
-    console.log(selectedNodeID);
 
     const selectedNodeEdges: Edge[] = edges.filter(
       (value) =>
         value.startNodeID == selectedNodeID ||
         value.endNodeID == selectedNodeID,
     );
-    console.log(selectedNodeEdges);
-    let tempRepairedEdges: Edge[] = [];
+
+    const tempRepairedEdges: Edge[] = [];
     const tempNeighborNodesIDs: string[] = [];
     for (let i = 0; i < selectedNodeEdges.length; i++) {
       if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
@@ -196,7 +224,7 @@ function MapEdit() {
         tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
       }
     }
-    console.log(tempNeighborNodesIDs);
+
     for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
       for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
         tempRepairedEdges.push({
@@ -206,14 +234,20 @@ function MapEdit() {
         });
       }
     }
-    console.log(tempRepairedEdges);
-    tempRepairedEdges = tempRepairedEdges.concat(edges);
-    setEdges(tempRepairedEdges);
 
-    const sendToDb = {
-      nodeID: selectedNodeID,
-    };
-    await axios.post(APIEndpoints.deleteNode, sendToDb);
+    const updatedTempEdges = tempRepairedEdges.concat(edges);
+    const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
+    setEdges(updatedTempEdges);
+    setAddedEdges(addedRepairedEdges);
+    console.log(addedEdges);
+    console.log(deletedNodes);
+    console.log(addedNodes);
+    console.log(updatedNodes);
+
+    // const sendToDb = {
+    //   nodeID: selectedNodeID,
+    // };
+    // await axios.post(APIEndpoints.deleteNode, sendToDb);
   }
 
   function handleNodeClick(nodeID: string) {
@@ -280,6 +314,44 @@ function MapEdit() {
     }
   }
 
+  async function handleSaveAll() {
+    const token = await getAccessTokenSilently();
+    const sendNodes = {
+      nodes: Array.from(addedNodes.values()),
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.createManyNodes,
+      sendNodes,
+      token,
+    );
+    const sendUpdatedNodes = {
+      nodes: Array.from(updatedNodes.values()),
+    };
+    await MakeProtectedPatchRequest(
+      APIEndpoints.updateNodes,
+      sendUpdatedNodes,
+      token,
+    );
+    const sendDeletedNodes = {
+      nodes: Array.from(deletedNodes.values()),
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.deleteNode,
+      sendDeletedNodes,
+      token,
+    );
+
+    const sendNewEdges = {
+      edges: addedEdges,
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.createEdge,
+      sendNewEdges,
+      token,
+    );
+    location.reload();
+  }
+
   async function handleSave() {
     const token = await getAccessTokenSilently();
     if (nodes.get(selectedNodeID!)!.shortName === "") {
@@ -290,7 +362,7 @@ function MapEdit() {
     const node = nodes.get(selectedNodeID!);
     console.log(node);
     if (node!.nodeID.substring(0, 8) != "userNode") {
-      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
+      //await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
     } else {
       //cut first 8 characters
 
@@ -307,7 +379,7 @@ function MapEdit() {
       node!.xcoord = Math.round(node!.xcoord);
       node!.ycoord = Math.round(node!.ycoord);
 
-      await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+      //await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
     }
   }
 
@@ -329,8 +401,8 @@ function MapEdit() {
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
 
-    const xVal = x;
-    const yVal = y;
+    const xVal = Math.round(x);
+    const yVal = Math.round(y);
     const nodeID = userNodePrefix + numUserNodes;
     const floor = activeFloor;
     const building = "";
@@ -355,11 +427,18 @@ function MapEdit() {
     const tempNodes = new Map(nodes);
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
+    const tempAddedNodes = new Map(addedNodes);
+    tempAddedNodes.set(newNode.nodeID, newNode);
+    setAddedNodes(tempAddedNodes);
     setSelectedNodeID(nodeID);
+    console.log(addedEdges);
+    console.log(deletedNodes);
+    console.log(addedNodes);
+    console.log(updatedNodes);
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
-    const edgeID = "";
+    const edgeID = startNodeID + "_" + endNodeID;
 
     setNumUserEdges(numUserEdges + 1);
 
@@ -370,11 +449,17 @@ function MapEdit() {
       endNodeID: endNodeID,
     };
 
-    const tempEdges: Edge[] = edges;
-    tempEdges.push(newEdge);
+    let tempEdges: Edge[] = [newEdge];
+    tempEdges = tempEdges.concat(edges);
     setEdges(tempEdges);
+    let tempAddedEdges = [newEdge];
+    tempAddedEdges = tempAddedEdges.concat(addedEdges);
+    setAddedEdges(tempAddedEdges);
+    console.log(addedEdges);
+    console.log(deletedNodes);
+    console.log(addedNodes);
+    console.log(updatedNodes);
   }
-
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
@@ -409,7 +494,7 @@ function MapEdit() {
       </div>
       <div className="fixed right-[20%] top-[2%] z-50 text-sm">
         <ButtonBlue
-          //onClick={SaveAll}
+          onClick={handleSaveAll}
           //disabled={!selectedNodeID}
           endIcon={<CheckIcon />}
           style={saveButtonStyles}

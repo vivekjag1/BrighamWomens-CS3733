@@ -19,7 +19,7 @@ function FloorSelector(props: floorSelectorProps) {
   const ToggleButtonGroupStyles = {
     backgroundColor: DesignSystem.primaryColor,
     borderRadius: "8px",
-    width: "6vh",
+    width: "5.5vh",
   } as const;
 
   const ToggleButtonStyles = {
@@ -27,7 +27,7 @@ function FloorSelector(props: floorSelectorProps) {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "1.10rem",
     fontWeight: "normal",
-    height: "6vh",
+    height: "5.5vh",
     borderRadius: "8px",
     "&:hover": {
       backgroundColor: DesignSystem.accentColor,
@@ -153,5 +153,4 @@ function getFloorsInPath(path: Node[]): number[] {
   }
   return relevantFloors;
 }
-
 export default FloorSelector;
