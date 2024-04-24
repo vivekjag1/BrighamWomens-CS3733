@@ -3,7 +3,11 @@ import axios from "axios";
 import { Node } from "database";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { getSegments } from "../common/PathUtilities.ts";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import {
+  TransformComponent,
+  TransformWrapper,
+  useControls,
+} from "react-zoom-pan-pinch";
 import Map from "../components/Map/Map.tsx";
 import NavigationPane from "../components/Map/NavigationPane.tsx";
 import ZoomControls from "../components/Map/ZoomControls.tsx";
@@ -77,12 +81,23 @@ function Home() {
   }
 
   // Resets pathfinding page
-  function handleReset() {
-    setActiveFloor(DEFAULT_FLOOR);
-    setPath(INITIAL_PATH);
-    setStartNode(INITIAL_PATH[0].nodeID);
-    setEndNodeID(INITIAL_PATH[0].nodeID);
-    setAlgorithm("A-Star");
+  function ResetButtonComponent() {
+    const { resetTransform } = useControls();
+
+    function handleReset() {
+      setActiveFloor(DEFAULT_FLOOR);
+      setPath(INITIAL_PATH);
+      setStartNode(INITIAL_PATH[0].nodeID);
+      setEndNodeID(INITIAL_PATH[0].nodeID);
+      setAlgorithm("A-Star");
+      resetTransform();
+    }
+
+    return (
+      <div className="absolute bottom-[2%] left-[1.5%]">
+        <ResetButton onClick={handleReset} />
+      </div>
+    );
   }
 
   // Swaps the start and end locations in navigation pane
@@ -133,6 +148,7 @@ function Home() {
             onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
           />
         </TransformComponent>
+        <ResetButtonComponent />
       </TransformWrapper>
       <div className="absolute top-[1%] left-[1%]">
         <NavigationPane
@@ -155,9 +171,6 @@ function Home() {
           updateGlowSequence={updateGlowSequence}
           glowSequence={glowSequence}
         />
-      </div>
-      <div className="absolute bottom-[2%] left-[1.5%]">
-        <ResetButton onClick={handleReset} />
       </div>
     </div>
   );
