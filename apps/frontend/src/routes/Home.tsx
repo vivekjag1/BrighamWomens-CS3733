@@ -18,6 +18,7 @@ function Home() {
   const [endNodeID, setEndNodeID] = useState(INITIAL_PATH[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
+  const [hasPath, setHasPath] = useState<boolean>(false);
 
   // Gets nodes from database to populate dropdowns and draw on map
   useEffect(() => {
@@ -62,6 +63,7 @@ function Home() {
         setPath(response.data);
         setActiveFloor(getFloorNumber(response.data[0].floor));
         setGlowSequence(getFloorSequence(response.data).slice(1));
+        setHasPath(true);
       })
       .catch(console.error);
   }
@@ -81,6 +83,7 @@ function Home() {
     setStartNode(INITIAL_PATH[0].nodeID);
     setEndNodeID(INITIAL_PATH[0].nodeID);
     setAlgorithm("A-Star");
+    setHasPath(false);
   }
 
   // Swaps the start and end locations in navigation pane
@@ -147,6 +150,7 @@ function Home() {
             onSwap={handleSwap}
             onSubmit={handleSubmit}
             onReset={handleReset}
+            hasPath={hasPath}
           />
         </div>
       </TransformWrapper>

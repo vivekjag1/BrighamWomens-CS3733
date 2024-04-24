@@ -1,4 +1,9 @@
-import { CSSProperties, FormEventHandler, SyntheticEvent } from "react";
+import {
+  CSSProperties,
+  FormEventHandler,
+  SyntheticEvent,
+  useState,
+} from "react";
 import { Node } from "database";
 import NodeDropdown from "./NodeDropdown.tsx";
 import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
@@ -12,12 +17,15 @@ import { DesignSystem } from "../../common/StylingCommon.ts";
 import { useControls } from "react-zoom-pan-pinch";
 import CustomClearButtonSmall from "../../components/CustomClearButtonSmall.tsx";
 import DirectionsCard from "../DirectionsCard.tsx";
+import CollapseImg from "../../../assets/collapse.svg";
+
 import {
   Directions,
   DirectionType,
   StatUnit,
   TripStat,
 } from "common/src/Path.ts";
+// import {set} from "husky";
 
 const fakeDirections: Directions[] = [
   {
@@ -63,6 +71,7 @@ interface NavigationPaneProps {
   onSwap: () => void;
   onSubmit: FormEventHandler;
   onReset: FormEventHandler;
+  hasPath: boolean;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
@@ -72,12 +81,14 @@ function NavigationPane(props: NavigationPaneProps) {
     resetTransform();
   }
 
+  const [collapsed, setCollapsed] = useState<boolean>(true);
+
   return (
     <div>
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}
-        className="flex flex-col gap-5 border-5 p-4 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl"
       >
         <div className="flex gap-4">
           <div className="flex flex-col text-[#012D5A] gap-1 mt-1">
@@ -131,9 +142,24 @@ function NavigationPane(props: NavigationPaneProps) {
           </div>
         </div>
         <div id="DirectionsCard">
-          <DirectionsCard directions={fakeDirections} stats={fakeStats} />
+          <DirectionsCard
+            directions={fakeDirections}
+            stats={fakeStats}
+            isCollapsed={collapsed}
+            setIsCollapsed={setCollapsed}
+            hasPath={props.hasPath}
+          />
         </div>
       </form>
+      <div
+        className={`absolute bottom-0 transform -translate-y-1/2 right-1/2 mb-[-26px] mr-[-12px]  ${props.hasPath ? "" : "hidden"}`}
+      >
+        <img
+          src={CollapseImg}
+          className={`cursor-pointer w-7 duration-500 ${collapsed ? "rotate-90" : "-rotate-90"}`}
+          onClick={() => setCollapsed(!collapsed)}
+        />
+      </div>
     </div>
   );
 }
