@@ -22,15 +22,15 @@ export enum DirectionType {
 export const DirectionMessages = new Map<DirectionType, string>([
   [DirectionType.Start, "Start at"],
   [DirectionType.End, "Arrived at"],
-  [DirectionType.Straight, "Go straight for"],
+  [DirectionType.Straight, "Continue"],
   [DirectionType.Left, "Turn left"],
   [DirectionType.SlightLeft, "Turn slight left"],
   [DirectionType.HairpinLeft, "Turn hairpin left"],
   [DirectionType.Right, "Turn right"],
   [DirectionType.SlightRight, "Turn slight right"],
   [DirectionType.HairpinRight, "Turn hairpin right"],
-  [DirectionType.Elevator, "Take the elevator to floor"],
-  [DirectionType.Stairs, "Take the stairs to floor"],
+  [DirectionType.Elevator, "Take"],
+  [DirectionType.Stairs, "Take"],
 ]);
 
 export type DirectionMessage = {
@@ -38,9 +38,10 @@ export type DirectionMessage = {
   msg: string;
 };
 
-enum StatUnit {
-  Mins,
-  Distance,
+export enum StatUnit {
+  Mins = "mins",
+  Arrival = "arrival",
+  Distance = "ft",
 }
 
 export type TripStat = {

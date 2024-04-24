@@ -1,176 +1,55 @@
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";
-import type { Node } from "database";
-import React, {
-  Dispatch,
-  FormEventHandler,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-import IconButton from "@mui/material/IconButton";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import LocationIcon from "@mui/icons-material/LocationOn";
-
-/*const initialState: PathNodesObject = {
-  startNode: "",
-  endNode: "",
-};*/
-
-const textFieldStyles = {
-  width: "17vw",
-};
-
-const defaultPathAlgorithm: PathAlgorithm = "A-Star";
-
-function DirectionsCard(props: {
-  onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
-  onReset: FormEventHandler;
-}) {
-  // Populates selection menu from database
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [pathAlgorithm, setPathAlgorithm] =
-    useState<string>(defaultPathAlgorithm);
-  //const [clickedNode, setClickedNode] = useState<GraphNode>();
-
-  function getNodeID(value: string): string {
-    const foundNode = nodes.find((node) => node.longName === value);
-    return foundNode ? foundNode.nodeID : "";
-  }
-
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes: Node[] = rawNodes.data;
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
-    }
-    getNodesFromDb().then();
-  }, []);
-
-  function swapLocations() {
-    const start = props.pathNodeObject.startNode;
-    props.setPathNodeObject({
-      startNode: props.pathNodeObject.endNode,
-      endNode: start,
-    });
-  }
-  /*function reset() {
-    props.setPathNodeObject(initialState);
-    setPathAlgorithm(defaultPathAlgorithm);
-  }*/
-
-  /*function setStartNodeLabel(): string {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.longName;
-    } else {
-      return pathNodeObject.startNode;
-    }
-  }
-  function setStartNodeValue() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.startNode);
-    }
-  }
-
-  function setEndNodeLabel() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.longName;
-    } else {
-      return pathNodeObject.endNode;
-    }
-  }
-  function setEndNodeValue() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.endNode);
-    }
-  }*/
-
-  return (
-    <div>
-      <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1 items-center">
-            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.startNode}
-              sx={textFieldStyles}
-              label="Start Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  startNode: newValue,
-                }))
-              }
-            />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.startLocationKey}`}
-              value={getNodeID(props.pathNodeObject.startNode)}
-            />
-          </div>
-          <MoreVertIcon style={{ color: "#012D5A" }} />
-          <div className="flex flex-row gap-1 items-center">
-            <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.endNode}
-              sx={textFieldStyles}
-              label="End Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  endNode: newValue,
-                }))
-              }
-            />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.endLocationKey}`}
-              value={getNodeID(props.pathNodeObject.endNode)}
-            />
-          </div>
-          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
-            <PathAlgorithmDropdown
-              value={pathAlgorithm}
-              sx={{ width: "10vw" }}
-              label="Algorithm"
-              onChange={setPathAlgorithm}
-            ></PathAlgorithmDropdown>
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.algorithmKey}`}
-              value={pathAlgorithm}
-            />
-            {/*<NavigateButton type="submit" className={"flex"} />*/}
-          </div>
-        </div>
-
-        <div className="flex flex-col ml-[0.2rem] items-center">
-          <div className="flex-grow flex justify-center items-center">
-            <IconButton onClick={swapLocations}>
-              <SwapVertIcon />
-            </IconButton>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default DirectionsCard;
+// import { useState } from "react";
+// import {
+//   DirectionMessage,
+//   Directions,
+//   DirectionType,
+//   TripStat,
+// } from "common/src/Path.ts";
+//
+// function DirectionsCard(props: Directions) {
+//   const [collapsed, setCollapsed] = useState<boolean>(true);
+//
+//   function TripStats(props: TripStat) {
+//     return (
+//       <div className="flex flex-col items-end">
+//         <h2 className="font-medium text-3xl">{props.stat}</h2>
+//         <h2>{props.unit}</h2>
+//       </div>
+//     );
+//   }
+//
+//   function DirectionStep(props: DirectionMessage) {
+//     return (
+//       <div className="flex flex-row items-start">
+//         <h2
+//           className={
+//             props.type == DirectionType.Start || props.type == DirectionType.End
+//               ? "font-bold"
+//               : ""
+//           }
+//         >
+//           {props.msg}
+//         </h2>
+//       </div>
+//     );
+//   }
+//
+//   return (
+//     <div className="mt-[3vh] flex">
+//       <div
+//         className={`flex flex-col gap-6 p-4 border-5 bg-white rounded-2xl shadow-xl transition-height ease-in-out duration-500 ${collapsed ? "max-h-[5.5rem]" : "max-h-[25rem]"}`}
+//         onClick={() => setCollapsed(!collapsed)}
+//         style={{ cursor: "pointer" }}
+//       >
+//         <div className="flex w-full justify-around">
+//           {props.stats.map(TripStats)}
+//         </div>
+//         <div className="flex flex-col gap-4 h-full overflow-y-auto">
+//           {props.directions.map(DirectionStep)}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+//
+// export default DirectionsCard;

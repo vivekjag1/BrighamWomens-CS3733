@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
+import { PathAlgorithm, PathType } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
@@ -32,8 +32,8 @@ const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
 function NavigateCard(props: {
   onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
+  pathNodeObject: PathType;
+  setPathNodeObject: Dispatch<SetStateAction<PathType>>;
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database

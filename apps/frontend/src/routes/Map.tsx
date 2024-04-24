@@ -4,15 +4,14 @@ import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
 import MapFloorSelect from "../components/MapFloorSelect.tsx";
 import type { Node } from "database";
-import { PathNodesObject } from "common/src/Path.ts";
+import { PathType } from "common/src/Path.ts";
 import StackedMaps from "../components/Map/StackedMaps.tsx";
 import MapImage from "../components/MapImage.tsx";
 
 function Map() {
   const [activeFloor, setActiveFloor] = useState<number>(DEFAULT_FLOOR);
 
-  const [pathNodeObject, setPathNodeObject] =
-    useState<PathNodesObject>(initialState);
+  const [pathNodeObject, setPathNodeObject] = useState<PathType>(initialState);
 
   // Retrieves path from current location to destination in the form of a list of a nodes
   const [path, setPath] = useState<number[][]>(pathInitialState);
@@ -124,7 +123,7 @@ const pathInitialState: number[][] = [
 
 const DEFAULT_FLOOR: number = 0;
 
-const initialState: PathNodesObject = {
+const initialState: PathType = {
   startNode: "",
   endNode: "",
 };

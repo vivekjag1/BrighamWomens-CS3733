@@ -3,6 +3,7 @@ import { PrismaClient } from "database";
 import { Graph } from "../../pathfinding/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
 import { PathAlgorithm } from "common/src/Path.ts";
+import { DirectionCreator } from "./TextualDirections.ts";
 
 const router: Router = express.Router();
 const prisma = new PrismaClient();
@@ -40,9 +41,9 @@ router.get("/", async (req, res) => {
     algorithm as PathAlgorithm,
   );
 
-  if (path.length == 0) {
-    console.log("empty path");
-  }
+  const directionCreator = new DirectionCreator(path);
+  directionCreator.getDirections();
+  console.log(directionCreator.getTripStats());
 
   res.status(200).json(path);
 });
