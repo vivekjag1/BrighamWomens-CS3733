@@ -69,7 +69,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > -1 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const handleDeleteEmployee = async (employee: Employee) => {
     const token = await getAccessTokenSilently();
@@ -405,7 +405,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                     <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
                       {employee.employeeID}
                     </TableCell>
-                    <TableCell style={{ width: "32ch", maxWidth: "32ch" }}>
+                    <TableCell style={{ width: "34ch", maxWidth: "34ch" }}>
                       <div className="flex items-center whitespace-nowrap">
                         <Avatar
                           src={`../../assets/employees/${employee.profilePicture}.jpeg`}
