@@ -87,7 +87,7 @@ export default function AboutUs() {
                       onClick={() => paths.CREDIT}
                       className="flex items-center flex-row"
                     >
-                      <span className="absolute right-[30px]"> Credit</span>
+                      <span className="absolute right-[30px]"> Credits</span>
                       <ArrowIosForwardComponent />
                     </Link>
                   </div>

@@ -471,8 +471,8 @@ const NodeTable = () => {
                           .map((node) => (
                             <TableRow
                               key={node.nodeID}
-                              hover
-                              style={{ cursor: "pointer" }}
+                              // hover
+                              // style={{ cursor: "pointer" }}
                               sx={{
                                 "& > td": {
                                   color: "#6B7280",
@@ -594,8 +594,8 @@ const NodeTable = () => {
                           .map((edge) => (
                             <TableRow
                               key={edge.edgeID}
-                              hover
-                              style={{ cursor: "pointer" }}
+                              // hover
+                              // style={{ cursor: "pointer" }}
                               sx={{
                                 "& > td": {
                                   color: "#6B7280",

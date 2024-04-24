@@ -1,172 +1,110 @@
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";
-import type { Node } from "database";
-import React, {
-  Dispatch,
-  FormEventHandler,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-import IconButton from "@mui/material/IconButton";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import LocationIcon from "@mui/icons-material/LocationOn";
+// import { useState } from "react";
+// import CollapseImg from "../../assets/collapse.svg";
+import StraightRoundedIcon from "@mui/icons-material/StraightRounded";
+import TurnLeftRoundedIcon from "@mui/icons-material/TurnLeftRounded";
+import UTurnLeftIcon from "@mui/icons-material/UTurnLeft";
+import UTurnRightIcon from "@mui/icons-material/UTurnRight";
+import TurnRightRoundedIcon from "@mui/icons-material/TurnRightRounded";
+import TurnSlightLeftRoundedIcon from "@mui/icons-material/TurnSlightLeftRounded";
+import TurnSlightRightRoundedIcon from "@mui/icons-material/TurnSlightRightRounded";
+import ElevatorIcon from "@mui/icons-material/Elevator";
+import StairsIcon from "@mui/icons-material/Stairs";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-/*const initialState: PathNodesObject = {
-  startNode: "",
-  endNode: "",
-};*/
-
-const textFieldStyles = {
-  width: "17vw",
-};
-
-const defaultPathAlgorithm: PathAlgorithm = "A-Star";
+import {
+  DirectionMessage,
+  Directions,
+  DirectionType,
+  TripStat,
+} from "common/src/Path.ts";
 
 function DirectionsCard(props: {
-  onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
-  onReset: FormEventHandler;
+  directions: Directions[];
+  stats: TripStat[];
+  isCollapsed: boolean;
+  setIsCollapsed: (state: boolean) => void;
+  hasPath: boolean;
 }) {
-  // Populates selection menu from database
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [pathAlgorithm, setPathAlgorithm] =
-    useState<string>(defaultPathAlgorithm);
-  //const [clickedNode, setClickedNode] = useState<GraphNode>();
-
-  function getNodeID(value: string): string {
-    const foundNode = nodes.find((node) => node.longName === value);
-    return foundNode ? foundNode.nodeID : "";
+  function TripStats(props: TripStat) {
+    return (
+      <div className="flex flex-col items-center">
+        <h2 className="font-medium text-3xl">{props.stat}</h2>
+        <h2>{props.unit}</h2>
+      </div>
+    );
   }
 
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes: Node[] = rawNodes.data;
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
+  function DirectionStep(props: DirectionMessage) {
+    let icon;
+    switch (props.type) {
+      case DirectionType.Start:
+        icon = <LocationOnIcon />;
+        break;
+      case DirectionType.End:
+        icon = <LocationOnIcon />;
+        break;
+      case DirectionType.Straight:
+        icon = <StraightRoundedIcon />;
+        break;
+      case DirectionType.Left:
+        icon = <TurnLeftRoundedIcon />;
+        break;
+      case DirectionType.SlightLeft:
+        icon = <TurnSlightLeftRoundedIcon />;
+        break;
+      case DirectionType.HairpinLeft:
+        icon = <UTurnLeftIcon />;
+        break;
+      case DirectionType.Right:
+        icon = <TurnRightRoundedIcon />;
+        break;
+      case DirectionType.SlightRight:
+        icon = <TurnSlightRightRoundedIcon />;
+        break;
+      case DirectionType.HairpinRight:
+        icon = <UTurnRightIcon />;
+        break;
+      case DirectionType.Elevator:
+        icon = <ElevatorIcon />;
+        break;
+      case DirectionType.Stairs:
+        icon = <StairsIcon />;
+        break;
+      default:
+        return null;
     }
-    getNodesFromDb().then();
-  }, []);
-
-  function swapLocations() {
-    const start = props.pathNodeObject.startNode;
-    props.setPathNodeObject({
-      startNode: props.pathNodeObject.endNode,
-      endNode: start,
-    });
+    return (
+      <div className="flex flex-row items-start">
+        {icon}
+        <h2
+          className={
+            props.type == DirectionType.Start || props.type == DirectionType.End
+              ? "font-bold"
+              : ""
+          }
+        >
+          {props.msg}
+        </h2>
+      </div>
+    );
   }
-  /*function reset() {
-    props.setPathNodeObject(initialState);
-    setPathAlgorithm(defaultPathAlgorithm);
-  }*/
-
-  /*function setStartNodeLabel(): string {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.longName;
-    } else {
-      return pathNodeObject.startNode;
-    }
-  }
-  function setStartNodeValue() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.startNode);
-    }
-  }
-
-  function setEndNodeLabel() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.longName;
-    } else {
-      return pathNodeObject.endNode;
-    }
-  }
-  function setEndNodeValue() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.endNode);
-    }
-  }*/
 
   return (
-    <div>
-      <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1 items-center">
-            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.startNode}
-              sx={textFieldStyles}
-              label="Start Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  startNode: newValue,
-                }))
-              }
-            />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.startLocationKey}`}
-              value={getNodeID(props.pathNodeObject.startNode)}
-            />
-          </div>
-          <MoreVertIcon style={{ color: "#012D5A" }} />
-          <div className="flex flex-row gap-1 items-center">
-            <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.endNode}
-              sx={textFieldStyles}
-              label="End Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  endNode: newValue,
-                }))
-              }
-            />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.endLocationKey}`}
-              value={getNodeID(props.pathNodeObject.endNode)}
-            />
-          </div>
-          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
-            <PathAlgorithmDropdown
-              value={pathAlgorithm}
-              sx={{ width: "10vw" }}
-              label="Algorithm"
-              onChange={setPathAlgorithm}
-            ></PathAlgorithmDropdown>
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.algorithmKey}`}
-              value={pathAlgorithm}
-            />
-            {/*<NavigateButton type="submit" className={"flex"} />*/}
-          </div>
+    <div
+      className={`h-full overflow-y-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[25rem]" : "max-h-[0]"} `}
+    >
+      <div
+        className={`mt-[1rem] border-5 bg-offwhite rounded-2xl shadow-xl flex flex-col gap-6 p-4 transition-height ease-in-out duration-500 ${props.isCollapsed ? "max-h-[5.5rem]" : "max-h-[25rem]"}`}
+        onClick={() => props.setIsCollapsed(!props.isCollapsed)}
+        style={{ cursor: "pointer" }}
+      >
+        <div className="flex w-full justify-around">
+          {props.stats.map(TripStats)}
         </div>
-
-        <div className="flex flex-col ml-[0.2rem] items-center">
-          <div className="flex-grow flex justify-center items-center">
-            <IconButton onClick={swapLocations}>
-              <SwapVertIcon />
-            </IconButton>
-          </div>
+        <div className="flex flex-col gap-4 h-full overflow-y-auto">
+          {props.directions.map((directionsAllFloors: Directions) =>
+            directionsAllFloors.directions.map(DirectionStep),
+          )}
         </div>
       </div>
     </div>

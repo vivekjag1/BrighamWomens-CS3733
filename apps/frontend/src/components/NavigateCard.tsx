@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
+import { PathAlgorithm, PathType } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
@@ -19,7 +19,7 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import ButtonBlue from "./ButtonBlue.tsx";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-/*const initialState: PathNodesObject = {
+/*const initialState: PathType = {
   startNode: "",
   endNode: "",
 };*/
@@ -32,8 +32,8 @@ const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
 function NavigateCard(props: {
   onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
+  pathNodeObject: PathType;
+  setPathNodeObject: Dispatch<SetStateAction<PathType>>;
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database
@@ -107,7 +107,7 @@ function NavigateCard(props: {
             <NodeDropdown
               value={props.pathNodeObject.endNode}
               sx={textFieldStyles}
-              label="End Location"
+              label="En"
               onChange={(newValue: string) =>
                 props.setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -125,7 +125,7 @@ function NavigateCard(props: {
             <PathAlgorithmDropdown
               value={pathAlgorithm}
               sx={{ width: "10vw" }}
-              label="Algorithm"
+              label="Algorithms"
               onChange={setPathAlgorithm}
             ></PathAlgorithmDropdown>
             <input
