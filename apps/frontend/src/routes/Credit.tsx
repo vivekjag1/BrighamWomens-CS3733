@@ -12,9 +12,31 @@ import paths from "../common/paths.tsx";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 import CreditCard from "../components/CreditCard.tsx";
-import webstormImage from "../../assets/webstormpics.png";
-import githubImage from "../../assets/githubpics.png";
-import taigaImage from "../../assets/taigapics.png";
+import webstormImage from "../../assets/creditpics/webstormpics.png";
+import githubImage from "../../assets/creditpics/githubpics.png";
+import taigaImage from "../../assets/creditpics/taigapics.png";
+import awsImage from "../../assets/creditpics/awspics.png";
+import cloudfareImage from "../../assets/creditpics/cloudfarepics.png";
+import dockerImage from "../../assets/creditpics/dockerpics.png";
+import typescriptImage from "../../assets/creditpics/typescriptpics.png";
+import reactImage from "../../assets/creditpics/reactpics.png";
+import yarnImage from "../../assets/creditpics/yarn.png";
+import nodeImage from "../../assets/creditpics/nodejspics.png";
+import turboImage from "../../assets/creditpics/turbopics.svg";
+import viteImage from "../../assets/creditpics/vitepics.jpg";
+import prettierImage from "../../assets/creditpics/prettierpics.png";
+import eslintImage from "../../assets/creditpics/eslintpics.jpg";
+import huskyImage from "../../assets/creditpics/huskypics.png";
+import tsnodeImage from "../../assets/creditpics/tsnodepics.png";
+import nodemonImage from "../../assets/creditpics/nodemonpics.png";
+import postgresqlImage from "../../assets/creditpics/postgresqlpics.png";
+import prismaImage from "../../assets/creditpics/prismapics.png";
+import expressjsImage from "../../assets/creditpics/expressjspics.png";
+import traefikImage from "../../assets/creditpics/traefikpics.png";
+import multerImage from "../../assets/creditpics/multerpics.png";
+import auth0Image from "../../assets/creditpics/auth0pics.png";
+import muiImage from "../../assets/creditpics/muipics.png";
+import tailwindImage from "../../assets/creditpics/tailwindpics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -45,133 +67,133 @@ const tools = [
   },
   {
     name: "AWS",
-    imageSrc: webstormImage,
+    imageSrc: awsImage,
     url: "https://aws.amazon.com",
     urlName: "AWS Link",
   },
   {
     name: "Cloud Flare ",
-    imageSrc: webstormImage,
+    imageSrc: cloudfareImage,
     url: "https://www.cloudflare.com/en-gb/",
     urlName: "Cloud Flare Link",
   },
   {
     name: "Docker ",
-    imageSrc: webstormImage,
+    imageSrc: dockerImage,
     url: "https://www.docker.com",
     urlName: "Docker Link",
   },
   {
     name: "Typescript ",
-    imageSrc: danielImage,
+    imageSrc: typescriptImage,
     url: "https://www.typescriptlang.org",
     urlName: "Typescript Link",
   },
   {
     name: "React ",
-    imageSrc: danielImage,
+    imageSrc: reactImage,
     url: "https://react.dev",
     urlName: "React Link",
   },
   {
     name: "Yarn ",
-    imageSrc: danielImage,
+    imageSrc: yarnImage,
     url: "https://yarnpkg.com",
     urlName: "Yarn Link",
   },
   {
     name: "Nodejs ",
-    imageSrc: danielImage,
+    imageSrc: nodeImage,
     url: "https://nodejs.org/en",
     urlName: "Nodejs Link",
   },
   {
     name: "Turbo ",
-    imageSrc: danielImage,
+    imageSrc: turboImage,
     url: "https://turbo.build",
     urlName: "Turbo Link",
   },
   {
     name: "Vite ",
-    imageSrc: danielImage,
+    imageSrc: viteImage,
     url: "https://vitest.dev",
     urlName: "Vite Link",
   },
   {
     name: "Prettier ",
-    imageSrc: danielImage,
+    imageSrc: prettierImage,
     url: "https://prettier.io",
     urlName: "Prettier Link",
   },
   {
     name: "ESlint ",
-    imageSrc: danielImage,
+    imageSrc: eslintImage,
     url: "https://eslint.org",
     urlName: "ESlint Link",
   },
   {
     name: "Husky ",
-    imageSrc: danielImage,
+    imageSrc: huskyImage,
     url: "https://typicode.github.io/husky/",
     urlName: "Husky Link",
   },
   {
     name: "Ts-Node ",
-    imageSrc: danielImage,
+    imageSrc: tsnodeImage,
     url: "https://typestrong.org/ts-node/docs/",
     urlName: "Ts-Node Link",
   },
   {
     name: "Nodemon ",
-    imageSrc: danielImage,
+    imageSrc: nodemonImage,
     url: "https://www.npmjs.com/package/nodemon",
     urlName: "Nodemon Link",
   },
   {
     name: "postgreSQL ",
-    imageSrc: danielImage,
+    imageSrc: postgresqlImage,
     url: " https://www.postgresql.org",
     urlName: "PostgreSQL Link",
   },
   {
     name: "prismaORM ",
-    imageSrc: danielImage,
+    imageSrc: prismaImage,
     url: "https://www.prisma.io",
     urlName: "PrismaORM Link",
   },
   {
     name: "expressjs ",
-    imageSrc: danielImage,
+    imageSrc: expressjsImage,
     url: "https://expressjs.com",
     urlName: "Expressjs Link",
   },
   {
     name: "traefik ",
-    imageSrc: danielImage,
+    imageSrc: traefikImage,
     url: "https://doc.traefik.io/traefik/",
     urlName: "Traefik Link",
   },
   {
     name: "Multer ",
-    imageSrc: danielImage,
+    imageSrc: multerImage,
     url: " https://www.npmjs.com/package/multer",
     urlName: "Multer Link",
   },
   {
     name: "Auth0 ",
-    imageSrc: danielImage,
+    imageSrc: auth0Image,
     url: "https://auth0.com/",
     urlName: "Auth0 Link",
   },
   {
     name: "Material UI",
-    imageSrc: danielImage,
+    imageSrc: muiImage,
     url: "https://mui.com",
     urlName: "Material UI Link",
   },
   {
     name: "Tailwind ",
-    imageSrc: danielImage,
+    imageSrc: tailwindImage,
     url: "https://tailwindcss.com",
     urlName: "Tailwind Link",
   },
