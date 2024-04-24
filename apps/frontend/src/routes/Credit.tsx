@@ -10,7 +10,6 @@ import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 import CreditCard from "../components/CreditCard.tsx";
 import webstormImage from "../../assets/creditpics/webstormpics.png";
 import githubImage from "../../assets/creditpics/githubpics.png";
@@ -41,6 +40,7 @@ import axiosImage from "../../assets/creditpics/axiospics.png";
 import bootstrapImage from "../../assets/creditpics/bootstrappics.png";
 import framerMotionImage from "../../assets/creditpics/framermotionpics.png";
 import flowbiteImage from "../../assets/creditpics/flowbitepics.png";
+import tanstakeImage from "../../assets/creditpics/tanstakepics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -227,9 +227,9 @@ const tools = [
   },
   {
     name: "Tan stake table ",
-    imageSrc: danielImage,
+    imageSrc: tanstakeImage,
     url: "https://tanstack.com/table/v8",
-    urlName: "Tan Stake Table",
+    urlName: "Tan Stake Link",
   },
 ];
 
@@ -295,74 +295,6 @@ export default function Credit() {
                       </div>
                     ))}
                   </div>
-                  Tools
-                  <br />
-                  <br />
-                  webstorm :https://www.jetbrains.com/webstorm/
-                  <br />
-                  github : https://github.com/
-                  <br />
-                  taiga : https://taiga.io/
-                  <br />
-                  AWS : https://aws.amazon.com/
-                  <br />
-                  cloud flare: https://www.cloudflare.com/en-gb/
-                  <br />
-                  docker : https://www.docker.com/
-                  <br />
-                  <br />
-                  Other stuff
-                  <br />
-                  Project
-                  <br />
-                  Typescript: https://www.typescriptlang.org/
-                  <br />
-                  react : https://react.dev/
-                  <br />
-                  yarn : https://yarnpkg.com/
-                  <br />
-                  nodejs : https://nodejs.org/en
-                  <br />
-                  turbo: https://turbo.build/
-                  <br />
-                  vite : https://vitest.dev/
-                  <br />
-                  Prettier : https://prettier.io/
-                  <br />
-                  eslint : https://eslint.org/
-                  <br />
-                  husky :https://typicode.github.io/husky/
-                  <br />
-                  ts-node: https://typestrong.org/ts-node/docs/
-                  <br />
-                  nodemon: https://www.npmjs.com/package/nodemon
-                  <br />
-                  postgreSQL : https://www.postgresql.org/
-                  <br />
-                  prismaORM : https://www.prisma.io/
-                  <br />
-                  expressjs : https://expressjs.com/
-                  <br />
-                  traefik : https://doc.traefik.io/traefik/
-                  <br />
-                  Multer: https://www.npmjs.com/package/multer
-                  <br />
-                  Auth0: https://www.npmjs.com/package/multer
-                  <br />
-                  material ui :https://mui.com/
-                  <br />
-                  tailwind: https://tailwindcss.com/
-                  <br />
-                  axios : https://www.npmjs.com/package/axios
-                  <br />
-                  bootstrap: https://getbootstrap.com/
-                  <br />
-                  framer motion:https://www.framer.com/motion/
-                  <br />
-                  flowbite: https://flowbite.com/
-                  <br />
-                  Tan stake table:https://tanstack.com/table/v8
-                  <br />
                   <div>
                     <br />
                     <p style={{ color: "#012D5A", textAlign: "center" }}>
