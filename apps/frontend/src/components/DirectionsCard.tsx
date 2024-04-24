@@ -1,5 +1,3 @@
-// import { useState } from "react";
-// import CollapseImg from "../../assets/collapse.svg";
 import StraightRoundedIcon from "@mui/icons-material/StraightRounded";
 import TurnLeftRoundedIcon from "@mui/icons-material/TurnLeftRounded";
 import UTurnLeftIcon from "@mui/icons-material/UTurnLeft";
@@ -9,12 +7,14 @@ import TurnSlightLeftRoundedIcon from "@mui/icons-material/TurnSlightLeftRounded
 import TurnSlightRightRoundedIcon from "@mui/icons-material/TurnSlightRightRounded";
 import ElevatorIcon from "@mui/icons-material/Elevator";
 import StairsIcon from "@mui/icons-material/Stairs";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import {
   DirectionMessage,
   Directions,
   DirectionType,
+  StatUnit,
   TripStat,
 } from "common/src/Path.ts";
 
@@ -25,20 +25,44 @@ function DirectionsCard(props: {
   setIsCollapsed: (state: boolean) => void;
   hasPath: boolean;
 }) {
-  function TripStats(props: TripStat) {
+  function TripStats(props: { stats: TripStat[] }) {
+    const minsStat = props.stats.find((stat) => stat.unit == StatUnit.Mins);
+    const arrivalTime = minsStat ? getArrivalTime(minsStat.value) : "";
+
     return (
-      <div className="flex flex-col items-center">
-        <h2 className="font-medium text-3xl">{props.stat}</h2>
-        <h2>{props.unit}</h2>
+      <div className="flex w-full justify-around">
+        {props.stats.map((stat, index) => (
+          <div className="flex flex-col items-end text-right">
+            <div key={index}>
+              <h2 className="font-medium text-3xl">
+                {stat.unit == StatUnit.Arrival ? arrivalTime : stat.value}
+              </h2>
+              <h2>{stat.unit}</h2>
+            </div>
+          </div>
+        ))}
       </div>
     );
+  }
+
+  function getArrivalTime(minToAdd: string) {
+    const currentTime = new Date();
+
+    const newTime = new Date(
+      currentTime.getTime() + parseInt(minToAdd) * 60000,
+    );
+
+    const hours = newTime.getHours().toString(); // Add leading zero if needed
+    const minutes = newTime.getMinutes().toString().padStart(2, "0"); // Add leading zero if needed
+
+    return `${hours}:${minutes}`;
   }
 
   function DirectionStep(props: DirectionMessage) {
     let icon;
     switch (props.type) {
       case DirectionType.Start:
-        icon = <LocationOnIcon />;
+        icon = <MyLocationIcon />;
         break;
       case DirectionType.End:
         icon = <LocationOnIcon />;
@@ -74,7 +98,7 @@ function DirectionsCard(props: {
         return null;
     }
     return (
-      <div className="flex flex-row items-start">
+      <div className="flex flex-row gap-2 items-start text-wrap">
         {icon}
         <h2
           className={
@@ -98,9 +122,7 @@ function DirectionsCard(props: {
         onClick={() => props.setIsCollapsed(!props.isCollapsed)}
         style={{ cursor: "pointer" }}
       >
-        <div className="flex w-full justify-around">
-          {props.stats.map(TripStats)}
-        </div>
+        <TripStats stats={props.stats} />
         <div className="flex flex-col gap-4 h-full overflow-y-auto">
           {props.directions.map((directionsAllFloors: Directions) =>
             directionsAllFloors.directions.map(DirectionStep),

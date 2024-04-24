@@ -39,13 +39,13 @@ export type DirectionMessage = {
 };
 
 export enum StatUnit {
-  Mins = "mins",
+  Mins = "min",
   Arrival = "arrival",
-  Distance = "ft",
+  Distance = "feet",
 }
 
 export type TripStat = {
-  stat: string;
+  value: string;
   unit: StatUnit;
 };
 

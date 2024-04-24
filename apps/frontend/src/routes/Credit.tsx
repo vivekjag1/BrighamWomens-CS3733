@@ -300,14 +300,12 @@ export default function Credit() {
                   <div>
                     <br />
                     <p style={{ color: "#012D5A", textAlign: "center" }}>
-                      {" "}
-                      "Thanks to Brigham and Womens Hospital and their
-                      represenative, Andrew Shin."{" "}
+                      Thanks to Brigham and Womens Hospital and their
+                      represenative, Andrew Shin
                     </p>
-                    <label className="animate-pulse">
-                      {" "}
+                    <label>
                       The B&WH maps and data used in this app are copyrighted
-                      and for educational use only.{" "}
+                      and for educational use only
                     </label>
                   </div>
                 </div>
