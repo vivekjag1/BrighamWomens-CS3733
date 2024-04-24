@@ -244,10 +244,10 @@ function MapEdit() {
     console.log(addedNodes);
     console.log(updatedNodes);
 
-    const sendToDb = {
-      nodeID: selectedNodeID,
-    };
-    await axios.post(APIEndpoints.deleteNode, sendToDb);
+    // const sendToDb = {
+    //   nodeID: selectedNodeID,
+    // };
+    // await axios.post(APIEndpoints.deleteNode, sendToDb);
   }
 
   function handleNodeClick(nodeID: string) {
@@ -314,10 +314,43 @@ function MapEdit() {
     }
   }
 
-  /*async function handleSaveAll(){
-      const token = await getAccessTokenSilently();
+  async function handleSaveAll() {
+    const token = await getAccessTokenSilently();
+    const sendNodes = {
+      nodes: Array.from(addedNodes.values()),
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.createManyNodes,
+      sendNodes,
+      token,
+    );
+    const sendUpdatedNodes = {
+      nodes: Array.from(updatedNodes.values()),
+    };
+    await MakeProtectedPatchRequest(
+      APIEndpoints.updateNodes,
+      sendUpdatedNodes,
+      token,
+    );
+    const sendDeletedNodes = {
+      nodes: Array.from(deletedNodes.values()),
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.deleteNode,
+      sendDeletedNodes,
+      token,
+    );
 
-  }*/
+    const sendNewEdges = {
+      edges: addedEdges,
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.createEdge,
+      sendNewEdges,
+      token,
+    );
+    location.reload();
+  }
 
   async function handleSave() {
     const token = await getAccessTokenSilently();
@@ -329,7 +362,7 @@ function MapEdit() {
     const node = nodes.get(selectedNodeID!);
     console.log(node);
     if (node!.nodeID.substring(0, 8) != "userNode") {
-      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
+      //await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
     } else {
       //cut first 8 characters
 
@@ -346,7 +379,7 @@ function MapEdit() {
       node!.xcoord = Math.round(node!.xcoord);
       node!.ycoord = Math.round(node!.ycoord);
 
-      await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+      //await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
     }
   }
 
@@ -368,8 +401,8 @@ function MapEdit() {
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
 
-    const xVal = x;
-    const yVal = y;
+    const xVal = Math.round(x);
+    const yVal = Math.round(y);
     const nodeID = userNodePrefix + numUserNodes;
     const floor = activeFloor;
     const building = "";
@@ -405,7 +438,7 @@ function MapEdit() {
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
-    const edgeID = "";
+    const edgeID = startNodeID + "_" + endNodeID;
 
     setNumUserEdges(numUserEdges + 1);
 
@@ -461,7 +494,7 @@ function MapEdit() {
       </div>
       <div className="absolute right-[10%] top-[2%] z-50">
         <ButtonBlue
-          //onClick={SaveAll}
+          onClick={handleSaveAll}
           //disabled={!selectedNodeID}
           endIcon={<CheckIcon />}
           style={saveButtonStyles}

@@ -2,12 +2,14 @@ import express, { Router } from "express";
 const router: Router = express.Router();
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
+import { Edge } from "database";
 
 router.post("/", async (req, res) => {
   try {
-    const edgeFromFrontEnd = req.body.edge;
+    const edgesFromFrontEnd: Edge[] = req.body.edges;
+    console.log(edgesFromFrontEnd);
     const createdEdge = await prisma.edge.createMany({
-      data: edgeFromFrontEnd,
+      data: edgesFromFrontEnd,
     });
     res.status(200).json({ edge: createdEdge });
   } catch {
