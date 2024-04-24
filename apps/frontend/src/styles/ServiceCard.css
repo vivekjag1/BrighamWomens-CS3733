@@ -1,0 +1,11 @@
+.scalingAnimation {
+  transition: transform 0.1s linear;
+}
+
+.scalingAnimation:hover {
+  transform: scale(1.075);
+}
+
+.scalingAnimation:active {
+  transform: scale(0.925);
+}
