@@ -146,7 +146,10 @@ function Home() {
             nodes={nodes}
             path={path}
             onNodeClick={handleNodeClick}
-            onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+            onClick={(selectedFloor: number) => {
+              setActiveFloor(selectedFloor);
+            }}
+            updateGlowSequence={updateGlowSequence}
           />
         </TransformComponent>
         <ResetButtonComponent />
