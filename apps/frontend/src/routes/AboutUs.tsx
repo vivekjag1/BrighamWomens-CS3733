@@ -4,6 +4,9 @@ import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 // import FormContainer from "../components/FormContainer.tsx";
 import mattImage from "../../assets/employees/matt-brown.jpeg";
+// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import Button from '@mui/material/Button';
+// import Tooltip from '@mui/material/Tooltip';
 // import taehaImage from '../../assets/people/Taeha.png';
 import andyImage from "../../assets/employees/andy-truong.jpeg";
 import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
@@ -15,9 +18,12 @@ import griffinImage from "../../assets/employees/griffin-brown.jpeg";
 import taehaImage from "../../assets/employees/taeha-song.jpeg";
 import wongImage from "../../assets/employees/wilsonwong.jpg";
 // import FormContainer from "../components/FormContainer.tsx";
-import EmployeeCard from "../components/EmployeeCard.tsx";
 import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
+import ArrowIosForwardComponent from "../components/ArrowComponent.tsx";
+import { Link } from "react-router-dom";
+import paths from "../common/paths.tsx";
+import EmployeeCard from "../components/EmployeeCard.tsx";
 
 const employees = [
   { name: "Daniel Gorbunov ", role: "Lead SWE", imageSrc: danielImage },
@@ -67,11 +73,24 @@ export default function AboutUs() {
                     flexDirection: "column",
                     alignItems: "center",
                     margin: "2rem",
+                    position: "relative",
                   }}
                   className="custom-form-container"
                 >
-                  <h1 className=" text-4xl"> About Us </h1>
-                  <br />
+                  {/*<div style={{ display: "flex", alignItems: "center" }}>*/}
+                  <div className="flex items-center justify-between w-full">
+                    <h1 className="text-4xl flex-grow text-center ml-6">
+                      About Us
+                    </h1>
+                    <Link
+                      to={paths.CREDIT}
+                      onClick={() => paths.CREDIT}
+                      className="flex items-center flex-row"
+                    >
+                      <span className="absolute right-[30px]"> Credit</span>
+                      <ArrowIosForwardComponent />
+                    </Link>
+                  </div>
                   <p style={{ color: "olive" }}>
                     {" "}
                     WPI Computer Science Department
