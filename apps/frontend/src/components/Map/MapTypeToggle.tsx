@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ToggleButton } from "@mui/material";
-/*import LayersIcon from '@mui/icons-material/Layers';*/
 import { DesignSystem } from "../../common/StylingCommon";
 
 interface mapTypeToggleProps {
@@ -19,7 +18,6 @@ function MapTypeToggle(props: mapTypeToggleProps) {
       }}
       onClick={props.setMapType}
     >
-      {/*<LayersIcon sx={iconStyles}/>*/}
       <label className="text-lg font-semibold">3D</label>
     </ToggleButton>
   );
@@ -39,11 +37,5 @@ const toggleButtonStyles = {
     color: DesignSystem.white,
   },
 } as const;
-
-/*
-const iconStyles = {
-  fontSize: "1.8rem"
-} as const;
-*/
 
 export default MapTypeToggle;

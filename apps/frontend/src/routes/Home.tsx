@@ -8,6 +8,7 @@ import Map from "../components/Map/Map.tsx";
 import NavigationPane from "../components/Map/NavigationPane.tsx";
 import ZoomControls from "../components/Map/ZoomControls.tsx";
 import FloorSelector from "../components/Map/FloorSelector.tsx";
+import MapTypeToggle from "../components/Map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 
 function Home() {
@@ -18,6 +19,7 @@ function Home() {
   const [endNodeID, setEndNodeID] = useState(INITIAL_PATH[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
+  const [mapType, setMapType] = useState("2D");
 
   // Gets nodes from database to populate dropdowns and draw on map
   useEffect(() => {
@@ -98,6 +100,10 @@ function Home() {
     }
   }
 
+  function handleMapChange() {
+    if (mapType == "2D") setMapType("3D");
+    else setMapType("2D");
+  }
   function setStartNode(id: string) {
     setStartNodeID(id);
   }
@@ -149,7 +155,6 @@ function Home() {
           />
         </div>
       </TransformWrapper>
-
       <div className="absolute bottom-[2%] right-[1.5%]">
         <FloorSelector
           activeFloor={activeFloor}
@@ -158,6 +163,9 @@ function Home() {
           updateGlowSequence={updateGlowSequence}
           glowSequence={glowSequence}
         />
+      </div>
+      <div className="absolute top-[2%] right-[1.5%]">
+        <MapTypeToggle setMapType={handleMapChange} />
       </div>
     </div>
   );
