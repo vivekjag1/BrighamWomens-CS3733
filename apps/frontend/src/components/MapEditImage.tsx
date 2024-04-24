@@ -224,7 +224,7 @@ const MapEditImage = (props: {
                   x1={nodes.get(props.startEdgeNodeID)!.xcoord}
                   y1={nodes.get(props.startEdgeNodeID)!.ycoord}
                   x2={position.x}
-                  y2={position.y} //Ask what the position variabl means and instead make a mouse pointer position variable
+                  y2={position.y}
                   stroke="red"
                   strokeWidth="2"
                 />
