@@ -6,13 +6,20 @@ interface floorMarkerProps {
   y: number;
   floor: string;
   onClick: (x: number) => void;
+  updateGlowSequence: (selectedFloor: number) => void;
 }
 
 function FloorMarkers(props: floorMarkerProps) {
   const floor: number = getFloorNumber(props.floor);
 
   return (
-    <g className="cursor-pointer" onClick={() => props.onClick(floor)}>
+    <g
+      className="cursor-pointer"
+      onClick={() => {
+        props.onClick(floor);
+        props.updateGlowSequence(getFloorNumber(props.floor));
+      }}
+    >
       <circle
         r="25"
         fill={DesignSystem.primaryColor}
