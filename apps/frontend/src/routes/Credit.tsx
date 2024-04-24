@@ -37,6 +37,10 @@ import multerImage from "../../assets/creditpics/multerpics.png";
 import auth0Image from "../../assets/creditpics/auth0pics.png";
 import muiImage from "../../assets/creditpics/muipics.png";
 import tailwindImage from "../../assets/creditpics/tailwindpics.png";
+import axiosImage from "../../assets/creditpics/axiospics.png";
+import bootstrapImage from "../../assets/creditpics/bootstrappics.png";
+import framerMotionImage from "../../assets/creditpics/framermotionpics.png";
+import flowbiteImage from "../../assets/creditpics/flowbitepics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -199,25 +203,25 @@ const tools = [
   },
   {
     name: "Axios ",
-    imageSrc: danielImage,
+    imageSrc: axiosImage,
     url: "https://www.npmjs.com/package/axios",
     urlName: "Axios Link",
   },
   {
     name: "Bootstrap ",
-    imageSrc: danielImage,
+    imageSrc: bootstrapImage,
     url: "https://getbootstrap.com",
     urlName: "Bootstrap Link",
   },
   {
     name: "Framer Motion ",
-    imageSrc: danielImage,
+    imageSrc: framerMotionImage,
     url: "https://www.framer.com/motion/",
     urlName: "Framer Motion Link",
   },
   {
     name: "Flowbite ",
-    imageSrc: danielImage,
+    imageSrc: flowbiteImage,
     url: "https://flowbite.com",
     urlName: "Flowbite Link",
   },
