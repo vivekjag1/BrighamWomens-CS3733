@@ -85,6 +85,7 @@ function Home() {
     setPath(INITIAL_PATH);
     setStartNode(INITIAL_PATH[0].nodeID);
     setEndNodeID(INITIAL_PATH[0].nodeID);
+    setGlowSequence([]);
     setAlgorithm("A-Star");
   }
 
@@ -122,8 +123,17 @@ function Home() {
 
   const mapElement =
     mapType == "3D" ? (
-      <div className="flexMap">
-        <StackedMaps path={path} />
+      <div>
+        <div className="flexMap">
+          <StackedMaps path={path} />
+        </div>
+        <div className="h-screen flex flex-col justify-center text-center text-secondary font-extrabold text-[2vw] absolute bottom-0 right-[13%]">
+          <h2 className="relative top-[-27%]">3</h2>
+          <h2 className="relative top-[-13%]">2</h2>
+          <h2>1</h2>
+          <h2 className="relative top-[12%]">L1</h2>
+          <h2 className="relative top-[27%]">L2</h2>
+        </div>
       </div>
     ) : (
       <Map

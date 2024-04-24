@@ -31,14 +31,26 @@ function StackedMaps(props: StackedMapsProps) {
     <DashedPolyline points={polyline3D} />
   ));
 
+  const startMarkerElement = (() => {
+    const startNode: Point = getStartNodeCoords(props.path);
+    return (
+      <circle cx={startNode.xcoord} cy={startNode.ycoord} fill="green" r="50" />
+    );
+  })();
+
+  const endMarkerElement = (() => {
+    const endNode: Point = getEndNodeCoords(props.path);
+    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r="50" />;
+  })();
+
   return (
     <svg
       viewBox="0 0 10000 11400"
       height="100vh"
-      transform="scale(2.125) translate(25, 12)"
+      transform="scale(2.125) translate(0, 12)"
     >
       <filter id="shadow">
-        <feDropShadow dx="80" dy="80" floodOpacity="0.8" />
+        <feDropShadow dx="90" dy="90" floodOpacity="0.9" />
       </filter>
       <image href={thirdFloor} x={0} y={0} filter="url(#shadow)" />
       <image
@@ -67,6 +79,8 @@ function StackedMaps(props: StackedMapsProps) {
       />
       {polylines2DElements}
       {polylines3DElements}
+      {startMarkerElement}
+      {endMarkerElement}
     </svg>
   );
 }
@@ -155,6 +169,14 @@ function getPoint(node: Node): Point {
     point.ycoord = node.ycoord;
   }
   return point;
+}
+
+function getStartNodeCoords(path: Node[]) {
+  return getPoint(path[0]);
+}
+
+function getEndNodeCoords(path: Node[]) {
+  return getPoint(path[path.length - 1]);
 }
 
 // Gets ONE polyline for a path
