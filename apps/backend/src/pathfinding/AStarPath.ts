@@ -65,8 +65,8 @@ export class AStarPath implements Path {
             }
           }
 
-          console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
-          console.log(path);
+          // console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
+          // console.log(path);
         } else {
           //get G, H, and F values of the child node
           const g: number =

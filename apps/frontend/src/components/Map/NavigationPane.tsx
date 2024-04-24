@@ -17,7 +17,7 @@ import { DesignSystem } from "../../common/StylingCommon.ts";
 import { useControls } from "react-zoom-pan-pinch";
 import CustomClearButtonSmall from "../../components/CustomClearButtonSmall.tsx";
 import DirectionsCard from "../DirectionsCard.tsx";
-import CollapseImg from "../../../assets/collapse.svg";
+import CollapseImg from "../../../assets/collapse-white.svg";
 
 import {
   Directions,
@@ -25,39 +25,6 @@ import {
   // StatUnit,
   TripStat,
 } from "common/src/Path.ts";
-
-// const fakeDirections: Directions[] = [
-//   {
-//     directions: [
-//       { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
-//       { type: DirectionType.Straight, msg: "Go straight 200 ft" },
-//       { type: DirectionType.Right, msg: "Turn right" },
-//       { type: DirectionType.Straight, msg: "Go straight 275 ft" },
-//       { type: DirectionType.Left, msg: "Turn left" },
-//       { type: DirectionType.Straight, msg: "Go straight 20 ft" },
-//       { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
-//     ],
-//     floor: "2",
-//   },
-//   {
-//     directions: [
-//       { type: DirectionType.Start, msg: "75 Francis Valet Drop-off" },
-//       { type: DirectionType.Straight, msg: "Go straight 200 ft" },
-//       { type: DirectionType.Right, msg: "Turn right" },
-//       { type: DirectionType.Straight, msg: "Go straight 275 ft" },
-//       { type: DirectionType.Left, msg: "Turn left" },
-//       { type: DirectionType.Straight, msg: "Go straight 20 ft" },
-//       { type: DirectionType.End, msg: "Connors Center Security Desk Floor 1" },
-//     ],
-//     floor: "3",
-//   },
-// ];
-//
-// const fakeStats: TripStat[] = [
-//   { stat: "3", unit: StatUnit.Mins },
-//   { stat: "9:36", unit: StatUnit.Arrival },
-//   { stat: "1500", unit: StatUnit.Distance },
-// ];
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -89,7 +56,7 @@ function NavigationPane(props: NavigationPaneProps) {
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}
-        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl"
+        className="flex flex-col border-5 p-4 bg-white rounded-2xl shadow-xl min-w-[25vw] max-w-[25vw]"
       >
         <div className="flex gap-4">
           <div className="flex flex-col gap-0">
@@ -187,13 +154,16 @@ const NodeDropdownStyles = {
 } as CSSProperties;
 
 const AlgorithmDropdownStyles = {
-  width: "8vw",
+  width: "9vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "0.8rem",
   },
   "&. MuiInputLabel-root": {
     fontFamily: DesignSystem.fontFamily,
+  },
+  "& .MuiSelect-icon": {
+    display: "none", // Hide the close icon
   },
 } as CSSProperties;
 

@@ -49,8 +49,8 @@ export class BFSPath implements Path {
         }
         //add starting node to path
         path.unshift(this.parentGraph.getNodeWithNodeID(startNodeID));
-        console.log("BFS Path (" + startNodeID + " -> " + endNodeID + "):");
-        console.log(path);
+        // console.log("BFS Path (" + startNodeID + " -> " + endNodeID + "):");
+        // console.log(path);
         searching = false;
       } else {
         //add this node to visited

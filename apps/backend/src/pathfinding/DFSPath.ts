@@ -49,8 +49,8 @@ export class DFSPath implements Path {
         }
         //add starting node to path
         path.unshift(this.parentGraph.getNodeWithNodeID(startNodeID!));
-        console.log("DFS Path (" + startNodeID + " -> " + endNodeID + "):");
-        console.log(path);
+        // console.log("DFS Path (" + startNodeID + " -> " + endNodeID + "):");
+        // console.log(path);
         searching = false;
       } else {
         //add this node to visited

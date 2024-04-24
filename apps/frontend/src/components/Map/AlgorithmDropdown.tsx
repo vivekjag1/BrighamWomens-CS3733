@@ -38,6 +38,7 @@ function AlgorithmDropdown(props: algorithmDropdownProps) {
           {option}
         </MenuItem>
       )}
+      clearIcon={null}
     />
   );
 }
@@ -45,7 +46,7 @@ function AlgorithmDropdown(props: algorithmDropdownProps) {
 const menuItemStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "0.9rem",
-  whiteSpace: "pre-wrap",
+  whiteSpace: "nowrap",
 } as const;
 
 const algorithms: PathAlgorithm[] = ["A-Star", "BFS", "DFS", "Dijkstra"];
