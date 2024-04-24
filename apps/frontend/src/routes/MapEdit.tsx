@@ -12,6 +12,8 @@ import MapEditToolBar from "../components/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+import ButtonBlue from "../components/ButtonBlue.tsx";
+import CheckIcon from "@mui/icons-material/Check";
 
 const defaultFloor: number = 1;
 enum Action {
@@ -154,6 +156,10 @@ function MapEdit() {
       updateNode({ ...node, [field]: value });
     }
   }
+
+  const saveButtonStyles = {
+    width: "8vw",
+  };
 
   function updateNode(node: Node) {
     const tempNodes = new Map(nodes);
@@ -400,6 +406,16 @@ function MapEdit() {
             CreateEdge={handleCreateEdgeSelected}
           />
         </MapContext.Provider>
+      </div>
+      <div className="absolute right-[10%] top-[2%] z-50">
+        <ButtonBlue
+          //onClick={SaveAll}
+          //disabled={!selectedNodeID}
+          endIcon={<CheckIcon />}
+          style={saveButtonStyles}
+        >
+          Save All
+        </ButtonBlue>
       </div>
     </div>
   );
