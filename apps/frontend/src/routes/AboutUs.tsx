@@ -79,10 +79,7 @@ export default function AboutUs() {
                 >
                   {/*<div style={{ display: "flex", alignItems: "center" }}>*/}
                   <div className="flex items-center justify-between w-full">
-                    <h1
-                      className="text-4xl flex-grow text-center"
-                      style={{ marginRight: "20px" }}
-                    >
+                    <h1 className="text-4xl flex-grow text-center ml-6">
                       About Us
                     </h1>
                     <Link
@@ -90,7 +87,7 @@ export default function AboutUs() {
                       onClick={() => paths.CREDIT}
                       className="flex items-center flex-row"
                     >
-                      <span> Credit</span>
+                      <span className="absolute right-[30px]"> Credit</span>
                       <ArrowIosForwardComponent />
                     </Link>
                   </div>

@@ -4,12 +4,12 @@ import * as React from "react";
 // import FormContainer from "../components/FormContainer.tsx";
 
 import { Link } from "react-router-dom";
-
+import ArrowBackIosIcon from "../components/ArrowbackIcon.tsx";
 // import taehaImage from '../../assets/people/Taeha.png';
 import background from "../../assets/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+// import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CreditCard from "../components/CreditCard.tsx";
 import webstormImage from "../../assets/creditpics/webstormpics.png";
 import githubImage from "../../assets/creditpics/githubpics.png";
@@ -268,11 +268,13 @@ export default function Credit() {
                       className="flex items-center flex-row"
                     >
                       <ArrowBackIosIcon />
-                      <span>About Us</span>
+                      <span className="absolute ml-5">About Us</span>
                     </Link>
-                    <h1 className="text-4xl flex-grow text-center"> CREDIT</h1>
+                    <h1 className="text-4xl flex-grow text-center mr-6">
+                      {" "}
+                      CREDIT
+                    </h1>
                   </div>
-                  <br />
                   <p style={{ color: "olive" }}>
                     {" "}
                     WPI Computer Science Department
