@@ -107,7 +107,7 @@ function NavigateCard(props: {
             <NodeDropdown
               value={props.pathNodeObject.endNode}
               sx={textFieldStyles}
-              label="End Location"
+              label="En"
               onChange={(newValue: string) =>
                 props.setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -125,7 +125,7 @@ function NavigateCard(props: {
             <PathAlgorithmDropdown
               value={pathAlgorithm}
               sx={{ width: "10vw" }}
-              label="Algorithm"
+              label="Algorithms"
               onChange={setPathAlgorithm}
             ></PathAlgorithmDropdown>
             <input
