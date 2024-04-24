@@ -155,18 +155,17 @@ function MapEdit() {
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
     }
-    console.log("testing", selectedNodeID);
+
     setSelectedNodeID(undefined);
     setCachedNode(undefined);
     setNodeSaved(false);
-    console.log(selectedNodeID);
 
     const selectedNodeEdges: Edge[] = edges.filter(
       (value) =>
         value.startNodeID == selectedNodeID ||
         value.endNodeID == selectedNodeID,
     );
-    console.log(selectedNodeEdges);
+
     let tempRepairedEdges: Edge[] = [];
     const tempNeighborNodesIDs: string[] = [];
     for (let i = 0; i < selectedNodeEdges.length; i++) {
@@ -176,7 +175,7 @@ function MapEdit() {
         tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
       }
     }
-    console.log(tempNeighborNodesIDs);
+
     for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
       for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
         tempRepairedEdges.push({
@@ -186,7 +185,7 @@ function MapEdit() {
         });
       }
     }
-    console.log(tempRepairedEdges);
+
     tempRepairedEdges = tempRepairedEdges.concat(edges);
     setEdges(tempRepairedEdges);
 
@@ -333,8 +332,8 @@ function MapEdit() {
       endNodeID: endNodeID,
     };
 
-    const tempEdges: Edge[] = edges;
-    tempEdges.push(newEdge);
+    let tempEdges: Edge[] = [newEdge];
+    tempEdges = tempEdges.concat(edges);
     setEdges(tempEdges);
   }
 

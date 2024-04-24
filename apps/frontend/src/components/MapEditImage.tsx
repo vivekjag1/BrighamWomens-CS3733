@@ -37,7 +37,7 @@ const MapEditImage = (props: {
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
-  const [position, setPosition] = useState({
+  const [draggedNodePosition, setDraggedNodePosition] = useState({
     x: 0,
     y: 0,
     active: false,
@@ -126,8 +126,8 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
-    setPosition({
-      ...position,
+    setDraggedNodePosition({
+      ...draggedNodePosition,
       x: nodes.get(nodeID)!.xcoord,
       y: nodes.get(nodeID)!.ycoord,
       active: true,
@@ -146,13 +146,13 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (position.active) {
+    if (draggedNodePosition.active) {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - position.offset.x),
+        updatedNode.xcoord + (x - draggedNodePosition.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - position.offset.y),
+        updatedNode.ycoord + (y - draggedNodePosition.offset.y),
       );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
@@ -179,7 +179,10 @@ const MapEditImage = (props: {
         <TransformWrapper
           initialScale={1}
           doubleClick={{ disabled: true }}
-          panning={{ velocityDisabled: true, disabled: position.active }}
+          panning={{
+            velocityDisabled: true,
+            disabled: draggedNodePosition.active,
+          }}
         >
           <MapZoomButtons />
           <TransformComponent
@@ -195,7 +198,10 @@ const MapEditImage = (props: {
               viewBox="0 0 5000 3400"
               height="100vh"
               onPointerUp={() => {
-                setPosition({ ...position, active: false });
+                setDraggedNodePosition({
+                  ...draggedNodePosition,
+                  active: false,
+                });
               }}
               onClick={props.onMapClick}
             >
