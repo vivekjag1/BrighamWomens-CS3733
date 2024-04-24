@@ -9,6 +9,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { IconButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon.ts";
+import { useControls } from "react-zoom-pan-pinch";
+import CustomClearButtonSmall from "../../components/CustomClearButtonSmall.tsx";
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -20,13 +22,21 @@ interface NavigationPaneProps {
   algorithmSetter: (algorithm: string) => void;
   onSwap: () => void;
   onSubmit: FormEventHandler;
+  onReset: FormEventHandler;
 }
 
 function NavigationPane(props: NavigationPaneProps) {
+  const { resetTransform } = useControls();
+
+  function reset() {
+    resetTransform();
+  }
+
   return (
     <div>
       <form
         onSubmit={props.onSubmit}
+        onReset={props.onReset}
         className="flex flex-col gap-5 border-5 p-4 bg-white rounded-2xl shadow-xl"
       >
         <div className="flex gap-4">
@@ -69,10 +79,15 @@ function NavigationPane(props: NavigationPaneProps) {
               <NavigationButton />
             </div>
           </div>
-          <div className="pt-[7%]">
-            <IconButton className="h-[40px]" onClick={props.onSwap}>
-              <SwapVertIcon />
-            </IconButton>
+          <div className="flex flex-col ml-[-0.8rem] items-center">
+            <div className="flex-grow flex justify-center items-center mt-[-0.5rem]">
+              <IconButton className="h-[40px]" onClick={props.onSwap}>
+                <SwapVertIcon />
+              </IconButton>
+            </div>
+            <div className="flex justify-end mb-[-0.1rem]">
+              <CustomClearButtonSmall onClick={reset} type="reset" />
+            </div>
           </div>
         </div>
       </form>
@@ -89,15 +104,17 @@ const NodeDropdownStyles = {
   width: "17vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
+    whiteSpace: "pre-wrap",
     fontSize: "0.8rem",
   },
   "&. MuiInputLabel-root": {
+    whiteSpace: "pre-wrap",
     fontFamily: DesignSystem.fontFamily,
   },
 } as CSSProperties;
 
 const AlgorithmDropdownStyles = {
-  width: "12vw",
+  width: "8vw",
   "& .MuiOutlinedInput-root": {
     fontFamily: DesignSystem.fontFamily,
     fontSize: "0.8rem",
