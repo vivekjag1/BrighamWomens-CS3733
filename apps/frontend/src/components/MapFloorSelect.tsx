@@ -64,59 +64,61 @@ function MapFloorSelect(props: {
     relevantFloors = [-2, -1, 1, 2, 3];
   }
   return (
-    <ToggleButtonGroup
-      orientation="vertical"
-      value={activeMap}
-      exclusive
-      onChange={handleChange}
-      sx={ToggleButtonGroupStyles}
-    >
-      <ToggleButton
-        onClick={() => props.onClick(3)}
-        value="3"
-        sx={ToggleButtonStyles}
-        selected={props.activeFloor === 3}
-        disabled={!relevantFloors.includes(3)}
+    <div className="fixed right-[2%] z-10" style={{ bottom: "calc(2%)" }}>
+      <ToggleButtonGroup
+        orientation="vertical"
+        value={activeMap}
+        exclusive
+        onChange={handleChange}
+        sx={ToggleButtonGroupStyles}
       >
-        3
-      </ToggleButton>
-      <ToggleButton
-        onClick={() => props.onClick(2)}
-        value="2"
-        sx={ToggleButtonStyles}
-        selected={props.activeFloor === 2}
-        disabled={!relevantFloors.includes(2)}
-      >
-        2
-      </ToggleButton>
-      <ToggleButton
-        onClick={() => props.onClick(1)}
-        value="1"
-        sx={ToggleButtonStyles}
-        selected={props.activeFloor === 1}
-        disabled={!relevantFloors.includes(1)}
-      >
-        1
-      </ToggleButton>
-      <ToggleButton
-        onClick={() => props.onClick(-1)}
-        value="-1"
-        sx={ToggleButtonStyles}
-        selected={props.activeFloor === -1}
-        disabled={!relevantFloors.includes(-1)}
-      >
-        L1
-      </ToggleButton>
-      <ToggleButton
-        onClick={() => props.onClick(-2)}
-        value="-2"
-        sx={ToggleButtonStyles}
-        selected={props.activeFloor === -2}
-        disabled={!relevantFloors.includes(-2)}
-      >
-        L2
-      </ToggleButton>
-    </ToggleButtonGroup>
+        <ToggleButton
+          onClick={() => props.onClick(3)}
+          value="3"
+          sx={ToggleButtonStyles}
+          selected={props.activeFloor === 3}
+          disabled={!relevantFloors.includes(3)}
+        >
+          3
+        </ToggleButton>
+        <ToggleButton
+          onClick={() => props.onClick(2)}
+          value="2"
+          sx={ToggleButtonStyles}
+          selected={props.activeFloor === 2}
+          disabled={!relevantFloors.includes(2)}
+        >
+          2
+        </ToggleButton>
+        <ToggleButton
+          onClick={() => props.onClick(1)}
+          value="1"
+          sx={ToggleButtonStyles}
+          selected={props.activeFloor === 1}
+          disabled={!relevantFloors.includes(1)}
+        >
+          1
+        </ToggleButton>
+        <ToggleButton
+          onClick={() => props.onClick(-1)}
+          value="-1"
+          sx={ToggleButtonStyles}
+          selected={props.activeFloor === -1}
+          disabled={!relevantFloors.includes(-1)}
+        >
+          L1
+        </ToggleButton>
+        <ToggleButton
+          onClick={() => props.onClick(-2)}
+          value="-2"
+          sx={ToggleButtonStyles}
+          selected={props.activeFloor === -2}
+          disabled={!relevantFloors.includes(-2)}
+        >
+          L2
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </div>
   );
 }
 
