@@ -38,8 +38,6 @@ const EmployeeTable = () => {
   };
 
   async function downloadFiles() {
-    console.log("called download files");
-
     const token = await getAccessTokenSilently();
     const retFromAPI = await MakeProtectedGetRequest(
       APIEndpoints.employeeDownload,
@@ -67,10 +65,8 @@ const EmployeeTable = () => {
           token,
         );
         if (res.status == 202) {
-          console.log("bad file");
           showToast("File(s) failed validation!", "error");
         } else {
-          console.log("success");
           await makeUsers();
           showToast("Employee data uploaded!", "success");
           setUploadTriggered(true);
@@ -91,7 +87,7 @@ const EmployeeTable = () => {
       const token = await getAccessTokenSilently();
       MakeProtectedGetRequest(APIEndpoints.makeEmployee, token);
     } catch (error) {
-      console.log("user already exists!");
+      console.error("user already exists!");
       return;
     }
   }

@@ -66,7 +66,6 @@ const NodeTable = () => {
       try {
         const res = await axios.get(APIEndpoints.mapGetNodes);
         setNodes(res.data);
-        console.log("Successfully got node data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching node data:", error);
       }
@@ -79,7 +78,6 @@ const NodeTable = () => {
       try {
         const res = await axios.get(APIEndpoints.mapGetEdges);
         setEdges(res.data);
-        console.log("Successfully got edge data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching edge data:", error);
       }
@@ -121,14 +119,11 @@ const NodeTable = () => {
   };
 
   async function downloadFiles() {
-    console.log("called  download files");
-
     const token = await getAccessTokenSilently();
     const retFromAPI = await MakeProtectedGetRequest(
       APIEndpoints.mapDownload,
       token,
     );
-    console.log("hello world");
 
     const nodeBlob = new Blob([retFromAPI.data[1]], {
       type: "text/csv;charset =utf-8",
@@ -159,10 +154,9 @@ const NodeTable = () => {
           token,
         );
         if (res.status == 202) {
-          console.log("bad file");
+          console.error("bad file");
           showToast("File(s) failed validation!", "error");
         } else {
-          console.log("success");
           showToast("Map data uploaded!", "success");
           location.reload();
         }

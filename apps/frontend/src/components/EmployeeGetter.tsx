@@ -39,6 +39,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const [filterByPosition, setFilterByPosition] = useState<string[]>([]);
   const [filterByRole, setFilterByRole] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<Employee[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRow, setSelectedRow] = useState<Employee | null>(null);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -54,7 +55,6 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const handleCloseModal = () => setOpenModal(false);
   const handleRowClick = (employee: Employee) => {
     setSelectedRow(employee);
-    console.log(selectedRow);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -81,15 +81,12 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
       ...prevEmployees,
       employee.employeeID,
     ]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const rateLeft = await MakeProtectedPostRequest(
       APIEndpoints.deleteEmployee,
       send,
       token,
     );
-    console.log(rateLeft.data.numLeft);
-    if (rateLeft.data.numLeft == 0) {
-      console.log("test");
-    }
   };
 
   const makeDeleteRequest = (employee: Employee) => {
@@ -121,8 +118,6 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
             : b.employeeID - a.employeeID;
         });
         setEmployeeData(sortedData);
-
-        console.log("Successfully got data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }

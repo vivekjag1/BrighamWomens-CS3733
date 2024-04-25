@@ -66,7 +66,6 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  console.log("delete");
   const { serviceID } = req.body.serviceID;
   try {
     await client.serviceRequest.delete({

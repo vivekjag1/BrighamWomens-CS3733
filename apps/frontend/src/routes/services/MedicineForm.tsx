@@ -73,7 +73,6 @@ export function MedicineForm() {
           token,
         );
         if (response.status === 200) {
-          console.log("Submission successful", response.data);
           // alert("Medicine Request sent!");
           showToast("Medicine Request sent!", "success");
           clear();

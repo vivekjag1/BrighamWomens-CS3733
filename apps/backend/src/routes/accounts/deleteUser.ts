@@ -5,17 +5,11 @@ import { PrismaClient } from "database";
 import { getManagementToken } from "./fetchManagementToken.ts";
 const prisma = new PrismaClient();
 // import { useAuth0 } from "@auth0/auth0-react";
-console.log("calling delete users");
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    console.log("i hate everything!");
     const token = await getManagementToken();
-    console.log(token);
-    console.log("making delete request");
-    console.log(req.body.user);
     const sentEmail = req.body.email;
-    console.log(sentEmail);
     const user = await axios.get(
       "https://dev-7eoh0ojk0tkfhypo.us.auth0.com/api/v2/users-by-email",
       {
@@ -29,9 +23,7 @@ router.post("/", async (req: Request, res: Response) => {
       },
     );
 
-    console.log(user.data[0]);
     const userID = user.data[0].user_id;
-    console.log(userID.user_id);
     await prisma.employee.deleteMany({
       where: {
         email: sentEmail,
@@ -47,7 +39,6 @@ router.post("/", async (req: Request, res: Response) => {
         },
       },
     );
-    console.log("that user was deleted", deleteUser.data);
     res.json({ numLeft: deleteUser.headers["x-ratelimit-remaining"] });
   } catch (error) {
     console.error(error);

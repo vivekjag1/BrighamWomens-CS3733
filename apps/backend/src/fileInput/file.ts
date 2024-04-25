@@ -111,6 +111,5 @@ export async function getEmployeesFromDB() {
     (employee) =>
       (employeesString += Object.values(employee).join(",") + "\r\n"),
   );
-  console.log(employeesString);
   return employeesString;
 }

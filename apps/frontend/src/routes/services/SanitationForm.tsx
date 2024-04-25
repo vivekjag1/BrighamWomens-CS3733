@@ -72,7 +72,6 @@ export function SanitationForm() {
           token,
         );
         if (response.status === 200) {
-          console.log("Submission successful", response.data);
           //alert("Sanitation Request sent!");
           showToast("Sanitation Request sent!", "success");
           clear();

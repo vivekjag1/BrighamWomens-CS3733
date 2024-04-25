@@ -100,8 +100,6 @@ function MapImage(props: {
 
   const [field, setField] = useState(1);
 
-  console.log(props.path);
-
   return (
     <div className={"z-0"} style={{ position: "relative" }}>
       {/*  White Fade */}
@@ -398,7 +396,6 @@ function getTextualDirections(path: number[][]) {
     }
   }
   textualPath.push("End at " + path[path.length - 1]);
-  console.log(textualPath);
   return textualPath;
 }
 

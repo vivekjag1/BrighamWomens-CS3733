@@ -94,9 +94,6 @@ export class AStarPath extends ComplexPath implements Path {
       numOfOpenNodes -= 1;
     }
 
-    if (searching) {
-      console.log("No A* path found");
-    }
     return path;
   }
 

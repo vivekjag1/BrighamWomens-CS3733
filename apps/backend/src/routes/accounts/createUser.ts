@@ -35,10 +35,7 @@ router.get("/", async (req: Request, res: Response) => {
       );
     }
     res.sendStatus(200);
-
-    console.log("users created!");
   } catch (error) {
-    console.log("Duplicate user!");
     res.sendStatus(400);
   }
 });

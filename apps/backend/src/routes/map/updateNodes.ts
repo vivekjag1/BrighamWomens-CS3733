@@ -6,7 +6,6 @@ import { Node } from "database";
 
 router.patch("/", async (req, res) => {
   const node: Node[] = req.body.nodes;
-  console.log(req.body);
   try {
     for (let i = 0; i < node.length; i++) {
       await prisma.node.update({

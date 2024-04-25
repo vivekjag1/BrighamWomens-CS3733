@@ -62,7 +62,6 @@ export function RoomForm() {
       roomReservation.serviceRequest.priority &&
       (!requiresEmployee || (requiresEmployee && assignedTo));
 
-    console.log(roomReservation);
     return isValid;
   };
 
@@ -77,7 +76,6 @@ export function RoomForm() {
           token,
         );
         if (response.status === 200) {
-          console.log("Submission successful");
           //alert("Room Reservation sent!");
           showToast("Room Reservation sent!", "success");
           clear();

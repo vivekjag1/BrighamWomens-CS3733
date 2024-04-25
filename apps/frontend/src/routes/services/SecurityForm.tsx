@@ -72,7 +72,6 @@ export function SecurityForm() {
           token,
         );
         if (response.status === 200) {
-          console.log("Submission successful", response.data);
           showToast("Security Request sent!", "success");
           clear();
         } else {

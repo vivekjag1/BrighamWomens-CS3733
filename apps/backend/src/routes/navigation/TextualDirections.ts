@@ -39,7 +39,6 @@ export function getDirections(nodes: Node[]): Directions[] {
 
   // Iterate over all nodes
   for (let nodeIndex = 0; nodeIndex < nodes.length - 1; nodeIndex++) {
-    console.log(nodeIndex);
     outputDirections[directionsIndex].directions.push(
       createDirectionMessage(
         nodes[nodeIndex],
@@ -73,14 +72,14 @@ export function getDirections(nodes: Node[]): Directions[] {
   return outputDirections;
 }
 
-export function printDirections(directionList: Directions[]) {
+/*export function printDirections(directionList: Directions[]) {
   directionList.forEach((dir) => {
     console.log("FLOOR: " + dir.floor);
     dir.directions.forEach((d, i) => {
       console.log("\t" + i + ". " + d.msg);
     });
   });
-}
+}*/
 
 // Return relevant trip stats for a path
 export function getTripStats(nodes: Node[]): TripStat[] {

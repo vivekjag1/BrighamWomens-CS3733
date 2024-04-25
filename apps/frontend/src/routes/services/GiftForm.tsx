@@ -71,7 +71,6 @@ export function GiftForm(): JSX.Element {
         );
 
         if (response.status === 200) {
-          console.log("Submission successful", response.data);
           //alert("Sanitation Request sent!");
           showToast("Gift Request sent!", "success");
           clear();

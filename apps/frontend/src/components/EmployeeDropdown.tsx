@@ -30,8 +30,6 @@ const EmployeeDropdown = ({
   // setEmployees(useEmployees);
   const employees = useEmployees();
 
-  console.log("employee list: ", employees);
-
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     newValue: { label: string } | null,

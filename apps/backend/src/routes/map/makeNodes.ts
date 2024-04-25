@@ -6,7 +6,6 @@ import { Node } from "database";
 
 router.post("/", async (req, res) => {
   const node: Node = req.body;
-  console.log(req.body);
   try {
     const createdNode = await prisma.node.createMany({ data: node });
     res.json({

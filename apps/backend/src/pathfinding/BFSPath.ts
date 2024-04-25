@@ -71,11 +71,6 @@ export class BFSPath implements Path {
       }
     }
 
-    //If no path found
-    if (searching) {
-      console.log("No BFS path found");
-    }
-
     return path;
   }
 

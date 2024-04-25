@@ -159,7 +159,6 @@ function MapEdit() {
   }, [activeFloor, getAccessTokenSilently]);
 
   function updateNodeField(field: keyof Node, value: string | number) {
-    console.log("new value!", value);
     const node = nodes.get(selectedNodeID!);
     if (node) {
       updateNode({ ...node, [field]: value });
@@ -179,10 +178,6 @@ function MapEdit() {
       setNodes(tempNodes);
       setUpdatedNodes(tempUpdatedNodes);
     }
-    console.log(addedEdges);
-    console.log(deletedNodes);
-    console.log(addedNodes);
-    console.log(updatedNodes);
   }
 
   async function deleteNode() {
@@ -240,10 +235,6 @@ function MapEdit() {
     const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
     setEdges(updatedTempEdges);
     setAddedEdges(addedRepairedEdges);
-    console.log(addedEdges);
-    console.log(deletedNodes);
-    console.log(addedNodes);
-    console.log(updatedNodes);
 
     // const sendToDb = {
     //   nodeID: selectedNodeID,
@@ -329,7 +320,7 @@ function MapEdit() {
       nodes: Array.from(updatedNodes.values()),
       //nodes: Array.from(updatedNodes.values()),
     };
-    console.log(updatedNodes);
+
     if (Array.from(updatedNodes.values()).length != 0) {
       await MakeProtectedPatchRequest(
         APIEndpoints.updateNodes,
@@ -370,7 +361,7 @@ function MapEdit() {
     // }
 
     const node = nodes.get(selectedNodeID!);
-    console.log(node);
+
     if (node!.nodeID.substring(0, 8) != "userNode") {
       //await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
     } else {
@@ -380,24 +371,17 @@ function MapEdit() {
         APIEndpoints.countNodes,
         token,
       );
-      console.log("nodes retrieved from API", numNodeRaw);
-      const numNode = numNodeRaw.data["numNodes"] + 1 + addedNodes.size;
-      console.log(addedNodes);
-      console.log("raw", numNodeRaw.data["numNodes"]);
+
       // setNumberOfNodes(numNode );
-      console.log(numNode);
+
       node!.nodeID =
         node!.nodeID.substring(0, 8) +
         (numNodeRaw.data["numNodes"] + addedNodes.size);
-      console.log(
-        "I hate life",
-        node!.nodeID.substring(0, 8) +
-          (numNodeRaw.data["numNodes"] + 1 + addedNodes.size),
-      );
+
       if (node!.shortName == "") {
         node!.shortName = node!.nodeID;
       }
-      console.log(node);
+
       node!.xcoord = Math.round(node!.xcoord);
       node!.ycoord = Math.round(node!.ycoord);
 
@@ -472,10 +456,6 @@ function MapEdit() {
     tempAddedNodes.set(newNode.nodeID, newNode);
     setAddedNodes(tempAddedNodes);
     setSelectedNodeID(nodeID);
-    console.log(addedEdges);
-    console.log(deletedNodes);
-    console.log(addedNodes);
-    console.log(updatedNodes);
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
@@ -496,10 +476,6 @@ function MapEdit() {
     let tempAddedEdges = [newEdge];
     tempAddedEdges = tempAddedEdges.concat(addedEdges);
     setAddedEdges(tempAddedEdges);
-    console.log(addedEdges);
-    console.log(deletedNodes);
-    console.log(addedNodes);
-    console.log(updatedNodes);
   }
   return (
     <div className="relative bg-offwhite">

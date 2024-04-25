@@ -68,7 +68,6 @@ export function MedicalDeviceForm() {
   async function submit() {
     const token = await getAccessTokenSilently();
 
-    console.log(validateForm());
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
@@ -78,7 +77,6 @@ export function MedicalDeviceForm() {
         );
 
         if (response.status === 200) {
-          console.log("Submission successful", response.data);
           showToast("Medical Device Request sent!", "success");
           clear();
         } else {

@@ -32,12 +32,9 @@ router.post(
       const edgeFile: Express.Multer.File[] = files[FileAttributes.edgeKey];
       if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 3)) {
         await checkDBStatus();
-        console.log("checkDBStatus done");
         await populateDatabases(nodeFile[0], edgeFile[0]);
-        console.log("Database populated");
         res.sendStatus(200);
       } else {
-        console.log("did not work");
         res.sendStatus(202);
       }
     } else {
@@ -59,16 +56,12 @@ async function populateDatabases(
   edgeFile: Express.Multer.File,
 ) {
   await populateNodeDB(readCSVFile(nodeFile.buffer.toString()));
-  console.log("nodes populated");
   await populateEdgeDB(readCSVFile(edgeFile.buffer.toString()));
-  console.log("edges populated");
 }
 
 export async function checkDBStatus() {
   await prisma.edge.deleteMany();
-  console.log("deleted edges");
   await prisma.node.deleteMany();
-  console.log("deleted nodes");
   // const nodes = await prisma.node.findMany();
   //   console.log("nodes recieved");
   //

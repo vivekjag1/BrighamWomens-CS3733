@@ -43,8 +43,6 @@ export class DijkstraPath extends ComplexPath implements Path {
           nextNodeInPath = parentsMap.get(nextNodeInPath.nodeID)!;
         }
         path.unshift(nextNodeInPath);
-        // console.log("Dijkstra (" + startNodeID + " -> " + endNodeID + "):");
-        // console.log(path);
       } else {
         const currentNodeDistance = distanceMap.get(currentNode.nodeID);
 

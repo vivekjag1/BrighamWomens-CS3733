@@ -76,8 +76,6 @@ export function ServiceRequestGetter() {
         },
       );
       setRequestData(sortedData);
-
-      console.log("Successfully got data from get request:", res.data);
     } catch (error) {
       console.error("Error fetching service requests:", error);
     }
@@ -91,6 +89,7 @@ export function ServiceRequestGetter() {
     const token = await getAccessTokenSilently();
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await MakeProtectedDeleteRequest(
         `${APIEndpoints.serviceGetRequests}/${serviceID}`,
         token,
@@ -98,10 +97,6 @@ export function ServiceRequestGetter() {
 
       setSelectedRow(null);
       showToast("Service Request deleted!", "error");
-      console.log(
-        `Service request with ID ${serviceID} deleted successfully`,
-        res,
-      );
       fetchData();
     } catch (error) {
       console.error(
@@ -140,12 +135,12 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await MakeProtectedPatchRequest(
         APIEndpoints.servicePutRequests,
         updateData,
         token,
       );
-      console.log("Status updated successfully", response.data);
       showToast("Status updated successfully!", "success");
     } catch (error) {
       console.error("Error updating status", error);
@@ -178,6 +173,7 @@ export function ServiceRequestGetter() {
 
     try {
       const token = await getAccessTokenSilently();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.patch(
         APIEndpoints.servicePutRequests,
         updateData,
@@ -187,7 +183,6 @@ export function ServiceRequestGetter() {
           },
         },
       );
-      console.log("Employee updated successfully", response.data);
       showToast("Assigned employee updated successfully!", "success");
     } catch (error) {
       console.error("Error updating assigned employee", error);
@@ -707,14 +702,12 @@ export function ServiceRequestGetter() {
                             value={
                               key.toLowerCase().includes("time") && value
                                 ? (() => {
-                                    console.log("Original value:", value);
                                     const estTime = dayjs
                                       .utc(value)
                                       .tz("America/New_York")
                                       .format(
                                         "ddd, DD MMM YYYY HH:mm:ss [GMT]",
                                       );
-                                    console.log("EST Time:", estTime);
                                     return estTime;
                                   })()
                                 : key === "description" &&

@@ -73,9 +73,7 @@ function Home() {
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
 
         setDirections(response.data.directions);
-        console.log(directions);
         setTripStats(response.data.tripStats);
-        console.log(tripStats);
 
         setGlowSequence(getFloorSequence(response.data.path).slice(1));
         setHasPath(true);

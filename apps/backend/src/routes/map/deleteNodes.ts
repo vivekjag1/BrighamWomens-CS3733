@@ -3,12 +3,11 @@ const router: Router = express.Router();
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
 import { Node } from "database";
-console.log("hello from backend");
+
 router.post("/", async (req, res) => {
   const nodes: Node[] = req.body.nodes;
   try {
     for (let i = 0; i < nodes.length; i++) {
-      console.log();
       const numEdges = await prisma.edge.findMany({
         where: {
           OR: [
@@ -27,7 +26,6 @@ router.post("/", async (req, res) => {
           },
         });
       }
-      console.log("the node id is", nodes[i].nodeID);
       const findNode = await prisma.node.findMany({
         where: {
           nodeID: nodes[i].nodeID,

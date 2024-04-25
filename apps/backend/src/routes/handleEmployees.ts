@@ -26,19 +26,14 @@ router.post(
   "/",
   upload.fields([{ name: "Employees", maxCount: 1 }]),
   async (req: Request, res: Response) => {
-    console.log("File: ");
     const files = req.files as UploadedFiles | undefined;
     if (files) {
-      console.log("inside if");
       const employeeFile: Express.Multer.File[] = files["Employees"];
       if (validateInput(employeeFile[0], 7)) {
         await checkDBStatus();
-        console.log("checkDBStatus done");
         await populateDatabases(employeeFile[0]);
-        console.log("Database populated");
         res.sendStatus(200);
       } else {
-        console.log("did not work");
         res.sendStatus(202);
       }
     } else {
@@ -52,21 +47,18 @@ function validateInput(
 ): boolean {
   const data = aFile.buffer.toString();
   const rows = data.split("\r\n").map((row) => row.split(","));
-  console.log("testing", rows[0].length);
   return rows[0].length == numExpected;
 }
 
 async function populateDatabases(employeeFile: Express.Multer.File) {
   await populateEmployeeDB(readEmployeeFile(employeeFile.buffer.toString()));
-  console.log("employees populated");
 }
 
 export async function checkDBStatus() {
   try {
     await prisma.employee.deleteMany();
-    console.log("deleted employees");
   } catch {
-    console.log("employee database empty");
+    console.error("employee database empty");
   }
 }
 

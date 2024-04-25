@@ -17,13 +17,11 @@ type Point = {
 };
 
 function StackedMaps(props: StackedMapsProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const polyline = getAPolyline(props.path);
   const segments: Node[][] = getSegments(props.path);
   const polylines2D = get2DPolylines(segments);
   const polylines3D = get3DPolylines(segments);
-  console.log("single polyline", polyline);
-  console.log("floor transitions", polylines3D);
-  console.log("floor paths", polylines2D);
 
   const polylines2DElements = polylines2D.map((polyline2D) => (
     <DashedPolyline points={polyline2D} width={10} />

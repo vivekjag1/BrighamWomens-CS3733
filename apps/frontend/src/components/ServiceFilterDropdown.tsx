@@ -107,7 +107,6 @@ function ServiceFilterDropdown({
             (employee: { profilePicture: string }) => employee.profilePicture,
           ),
         );
-        console.log("Successfully got data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }

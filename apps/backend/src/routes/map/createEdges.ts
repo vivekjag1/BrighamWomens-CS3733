@@ -37,10 +37,9 @@ router.post("/", async (req, res) => {
         });
       }
     }
-    console.log("edges from frontend", edgesFromFrontEnd);
     res.status(200).json({ message: "edges created!" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({ message: "Edge cannot be created!" });
   }
 });

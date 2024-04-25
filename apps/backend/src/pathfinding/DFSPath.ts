@@ -71,11 +71,6 @@ export class DFSPath implements Path {
       }
     }
 
-    //If no path found
-    if (searching) {
-      console.log("No DFS path found");
-    }
-
     return path;
   }
 
