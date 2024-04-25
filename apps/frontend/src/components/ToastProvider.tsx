@@ -1,20 +1,27 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 
 interface ToastContextType {
   showToast: (message: string, type: "success" | "error" | "warning") => void;
-  hideToast: () => void;
+  hideToast: (id: number) => void;
+}
+
+interface Toast {
+  id: number;
+  message: string;
+  type: "success" | "error" | "warning";
+  isVisible: boolean;
 }
 
 export const ToastContext = createContext<ToastContextType>({
   showToast: (message: string, type: "success" | "error" | "warning") => {
     console.error(
-      "showToast function called without a ToastProvider: ",
+      "showToast function called without a ToastProvider:",
       message,
       type,
     );
   },
-  hideToast: () => {
-    console.error("hideToast function called without a ToastProvider");
+  hideToast: (id: number) => {
+    console.error("hideToast function called without a ToastProvider", id);
   },
 });
 
@@ -39,54 +46,66 @@ const iconStyles = {
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isVisible, setToastVisible] = useState(false);
-  const [isFullyVisible, setIsFullyVisible] = useState(false);
-  const [message, setMessage] = useState("");
-  const [type, setType] = useState<"success" | "error" | "warning">("success");
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isVisible && isFullyVisible) {
-      timer = setTimeout(() => {
-        setIsFullyVisible(false);
+  const showToast = (
+    message: string,
+    type: "success" | "error" | "warning",
+  ) => {
+    const id = new Date().getTime();
+    if (toasts.length > 0 && message == toasts[toasts.length - 1].message) {
+      return;
+    } else {
+      setToasts((prevToasts) => [
+        { id, message, type, isVisible: true },
+        ...prevToasts,
+      ]);
+
+      setTimeout(() => {
+        setToasts((prevToasts) =>
+          prevToasts.map((toast) =>
+            toast.id === id ? { ...toast, isVisible: false } : toast,
+          ),
+        );
         setTimeout(() => {
-          setToastVisible(false);
-        }, 500);
+          setToasts((prevToasts) =>
+            prevToasts.filter((toast) => toast.id !== id),
+          );
+        }, 1500);
       }, 5000);
     }
-    return () => clearTimeout(timer);
-  }, [isVisible, isFullyVisible]);
-
-  const showToast = (msg: string, typ: "success" | "error" | "warning") => {
-    setMessage(msg);
-    setType(typ);
-    setToastVisible(true);
-    setTimeout(() => {
-      setIsFullyVisible(true);
-    }, 10);
   };
 
-  const hideToast = () => {
-    setIsFullyVisible(false);
+  const hideToast = (id: number) => {
+    setToasts((prevToasts) =>
+      prevToasts.map((toast) =>
+        toast.id === id ? { ...toast, isVisible: false } : toast,
+      ),
+    );
     setTimeout(() => {
-      setToastVisible(false);
-    }, 500);
+      setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+    }, 1500);
   };
 
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
       {children}
-      {isVisible && (
+      {toasts.map((toast, index) => (
         <div
-          className={`fixed top-5 right-5 z-50 transition-opacity duration-500 ease-in-out ${isFullyVisible ? "opacity-100" : "opacity-0"}`}
-          style={{ transition: "opacity 0.5s ease-in-out" }}
+          key={toast.id}
+          className="fixed right-5 z-50 transition-all duration-500 ease-in-out"
+          style={{
+            top: `${2 + 5 * index}rem`,
+            opacity: toast.isVisible ? 1 : 0,
+            width: "22rem",
+          }}
         >
           <div
-            className={`flex items-center max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow`}
+            className="flex items-center p-4 mb-4 text-gray-500 bg-white rounded-lg shadow"
             role="alert"
           >
             <div
-              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${iconStyles[type].svgClass} rounded-lg`}
+              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${iconStyles[toast.type].svgClass} rounded-lg`}
             >
               <svg
                 className="w-5 h-5"
@@ -95,18 +114,19 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path d={iconStyles[type].svgPath} />
+                <path d={iconStyles[toast.type].svgPath} />
               </svg>
               <span className="sr-only">Icon</span>
             </div>
-            <div className="ml-3 text-sm font-normal">{message}</div>
+            <div className="ml-3 text-sm font-normal" style={{ flex: 1 }}>
+              {toast.message}
+            </div>
             <button
               type="button"
-              className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
-              onClick={hideToast}
+              onClick={() => hideToast(toast.id)}
               aria-label="Close"
+              className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
             >
-              <span className="sr-only">Close</span>
               <svg
                 className="w-3 h-3"
                 aria-hidden="true"
@@ -122,7 +142,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
             </button>
           </div>
         </div>
-      )}
+      ))}
     </ToastContext.Provider>
   );
 };
