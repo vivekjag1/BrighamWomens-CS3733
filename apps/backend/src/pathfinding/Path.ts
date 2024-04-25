@@ -9,5 +9,3 @@ export interface Path {
   getPath(): Node[];
   createPath(startNodeID: string, endNodeID: string): Node[];
 }
-
-console.log;
