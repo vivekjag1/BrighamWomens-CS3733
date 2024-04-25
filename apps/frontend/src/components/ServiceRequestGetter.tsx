@@ -548,20 +548,19 @@ export function ServiceRequestGetter() {
                         position: "relative",
                         height: "auto",
                         padding: "10px",
-                        textAlign: "center",
+                        textAlign: "start",
                       }}
                     >
-                      {" "}
-                      {/* Added textAlign for center alignment */}
                       <div
                         style={{
                           position: "absolute",
                           top: "50%",
-                          left: "50%",
-                          transform: "translate(-50%, -50%)",
+                          transform: "translate(0%, -50%)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          left: 0,
+                          marginLeft: "18%",
                         }}
                       >
                         <div
@@ -607,10 +606,6 @@ export function ServiceRequestGetter() {
                         : "N/A"}
                     </TableCell>
                     <TableCell style={{ width: "30ch", maxWidth: "30ch" }}>
-                      {/*{highlightSearchTerm(*/}
-                      {/*  truncateString(request.assignedTo, 15),*/}
-                      {/*  filterBySearch,*/}
-                      {/*)}*/}
                       <div onClick={(e) => e.stopPropagation()}>
                         <EmployeeDropdown
                           value={request.assignedTo}
