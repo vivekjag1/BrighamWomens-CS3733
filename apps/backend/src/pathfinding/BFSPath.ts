@@ -44,8 +44,11 @@ export class BFSPath implements Path {
             path.unshift(this.parentGraph.getNodeWithNodeID(nextNode!));
             nextNode = this.getEndOfElevators(nextNode!, parentNodes);
           }
-          path.unshift(this.parentGraph.getNodeWithNodeID(nextNode!));
-          nextNode = parentNodes.get(<string>nextNode);
+
+          if (startNodeID != nextNode) {
+            path.unshift(this.parentGraph.getNodeWithNodeID(nextNode!));
+            nextNode = parentNodes.get(<string>nextNode);
+          }
         }
         //add starting node to path
         path.unshift(this.parentGraph.getNodeWithNodeID(startNodeID));
@@ -79,7 +82,11 @@ export class BFSPath implements Path {
     parentsMap: Map<string, string>,
   ): string {
     const nextNodeParent = parentsMap.get(nextNode)!;
-    if (this.parentGraph.getNodeWithNodeID(nextNodeParent).nodeType != "ELEV") {
+    if (nextNodeParent == undefined) {
+      return nextNode;
+    } else if (
+      this.parentGraph.getNodeWithNodeID(nextNodeParent).nodeType != "ELEV"
+    ) {
       return nextNode;
     }
     return this.getEndOfElevators(nextNodeParent, parentsMap);

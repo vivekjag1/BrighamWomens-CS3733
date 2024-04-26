@@ -70,6 +70,7 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setPath(response.data.path);
+        console.log(path);
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
 
         setDirections(response.data.directions);

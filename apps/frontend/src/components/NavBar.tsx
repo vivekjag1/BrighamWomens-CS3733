@@ -187,7 +187,6 @@ function NavBar() {
             </div>
           </Link>
         </div>
-
         {/* Navbar items */}
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
