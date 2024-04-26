@@ -218,21 +218,6 @@ const NodeTable = () => {
 
       setFilteredEdges(data);
     }
-    //
-    // if (filterByType.length) {
-    //     data = data.filter((item) => filterByType.includes(item.type));
-    // }
-    // if (filterByPriority.length) {
-    //     data = data.filter((item) => filterByPriority.includes(item.priority));
-    // }
-    // if (filterByStatus.length) {
-    //     data = data.filter((item) => filterByStatus.includes(item.status));
-    // }
-    // let sortedData = data.sort((a, b) => {
-    //     return sortOrder === "asc"
-    //         ? a.serviceID - b.serviceID
-    //         : b.serviceID - a.serviceID;
-    // });
   }, [
     filterBySearch,
     filteredNodes,
