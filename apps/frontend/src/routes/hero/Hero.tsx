@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import Banner from "../../components/Banner/Banner.tsx";
+import Banner from "../../components/banner/Banner.tsx";
 import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AttributionIcon from "@mui/icons-material/Attribution";

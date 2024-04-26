@@ -8,7 +8,7 @@ import { MapStyling } from "../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../routes/MapEdit.tsx";
 import { Node } from "database";
-import ZoomControls from "./Map/ZoomControls.tsx";
+import ZoomControls from "./map/ZoomControls.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
