@@ -7,6 +7,7 @@ import { useGraphNodes } from "./useGraphNodes.ts";
 interface NodeDropdownProps {
   value: string;
   onChange: (newValue: string) => void;
+  options: string[];
   label?: string;
   sx?: SxProps<Theme>;
   className?: string;
@@ -16,6 +17,7 @@ interface NodeDropdownProps {
 const NodeDropdown = ({
   value,
   onChange,
+  options,
   label,
   sx,
   className,
@@ -38,13 +40,14 @@ const NodeDropdown = ({
     <Autocomplete
       disablePortal
       id="combo-box-location"
-      options={nodes.map((node) => ({ label: node.longName }))}
+      options={options.map((option) => ({ label: option }))}
       sx={{
         ...sx,
         "& .MuiAutocomplete-input": {
           fontSize: ".8rem",
           whiteSpace: "pre-wrap",
           fontFamily: "Poppins, sans-serif",
+          height: "1.4rem",
         }, // smaller, wrap, poppins font
       }}
       className={className}

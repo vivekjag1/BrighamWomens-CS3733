@@ -1,5 +1,5 @@
 import CollapseImg from "../../assets/collapse-white.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import StraightRoundedIcon from "@mui/icons-material/StraightRounded";
 import TurnLeftRoundedIcon from "@mui/icons-material/TurnLeftRounded";
@@ -12,6 +12,7 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import StairsIcon from "@mui/icons-material/Stairs";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { motion } from "framer-motion";
 
 import {
   DirectionMessage,
@@ -21,7 +22,12 @@ import {
 
 function DirectionsCardFloor(props: Directions) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
+  const [containerHeight, setContainerHeight] = useState(0);
 
+  useEffect(() => {
+    setContainerHeight(document.getElementById("container")!.scrollHeight);
+    console.log(containerHeight);
+  }, [collapsed, containerHeight]);
   function DirectionStep(props: DirectionMessage) {
     let icon;
     switch (props.type) {
@@ -67,8 +73,8 @@ function DirectionsCardFloor(props: Directions) {
         <h2
           className={
             props.type == DirectionType.Start || props.type == DirectionType.End
-              ? "font-bold"
-              : ""
+              ? "font-bold pb-1"
+              : "pb-1"
           }
         >
           {props.msg}
@@ -91,13 +97,20 @@ function DirectionsCardFloor(props: Directions) {
             onClick={() => setCollapsed(!collapsed)}
           />
         </div>
-        <div
-          className={`pl-1 pr-1 transition-height ease-in-out duration-[700ms] ${collapsed ? "max-h-[0rem]" : "pt-1 pb-1 max-h-[500rem]"}`}
+        <motion.div
+          id="container"
+          className={`pl-1 pr-1`}
+          animate={{
+            maxHeight: collapsed ? 0 : containerHeight,
+            transition: { duration: 0.5 },
+          }}
+          style={{ overflow: "hidden" }}
         >
           {props.directions.map(DirectionStep)}
-        </div>
+        </motion.div>
       </div>
     </>
   );
 }
+
 export default DirectionsCardFloor;
