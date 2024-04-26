@@ -4,7 +4,7 @@ const paths = {
   MAP_EDITOR: "/home/edit",
   MAP_DATA: "/home/data",
   ABOUT_US: "/home/about",
-  CREDIT: "/home/credit",
+  CREDIT: "/home/credits",
   SERVICES: "/home/services",
   MEDICINE_DELIVERY: "/home/services/medicine-delivery",
   MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",

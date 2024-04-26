@@ -9,7 +9,7 @@ import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { EmployeeGetter } from "../components/EmployeeGetter.tsx";
-import ButtonBlue from "../components/ButtonBlue.tsx";
+import ButtonBlue from "../components/map-edit/ButtonBlue.tsx";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";

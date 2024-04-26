@@ -27,7 +27,7 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "./useToast.tsx";
-import ButtonBlue from "./ButtonBlue.tsx";
+import ButtonBlue from "./map-edit/ButtonBlue.tsx";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 

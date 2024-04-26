@@ -1,0 +1,13 @@
+.animate-tada {
+  transform: scale(0);
+  animation: tada 0.4s forwards;
+}
+
+@keyframes tada {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
