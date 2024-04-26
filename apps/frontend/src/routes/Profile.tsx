@@ -33,9 +33,18 @@ export default function Profile() {
                   />
                 </div>
               </CustomCardContent>
-              <div className="items-center">
-                <label className=" text-center">{user!.name}</label>
-                <br />
+              <div className=" flex flex-col relative">
+                <label
+                  className="w-full text-2xl font-bold text-center "
+                  style={{ color: "#012D5A" }}
+                >
+                  {user!.name}
+                </label>
+                <hr
+                  className="items-center "
+                  style={{ borderColor: "rgba(0, 0, 0, 0.5)" }}
+                />
+                <label className="text-xl text-center">Role</label>
                 <label className=" text-center">{user!.email}</label>
               </div>
             </div>
