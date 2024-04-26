@@ -17,7 +17,6 @@ import { DesignSystem } from "../../common/StylingCommon.ts";
 import { useControls } from "react-zoom-pan-pinch";
 import CustomClearButtonSmall from "../../components/CustomClearButtonSmall.tsx";
 import DirectionsCard from "../DirectionsCard.tsx";
-import CollapseImg from "../../../assets/collapse-white.svg";
 
 import {
   Directions,
@@ -122,15 +121,6 @@ function NavigationPane(props: NavigationPaneProps) {
           />
         </div>
       </form>
-      <div
-        className={`absolute bottom-0 transform -translate-y-1/2 right-1/2 mb-[-26px] mr-[-12px]  ${props.hasPath ? "" : "hidden"}`}
-      >
-        <img
-          src={CollapseImg}
-          className={`cursor-pointer w-7 duration-500 ${collapsed ? "rotate-90" : "-rotate-90"}`}
-          onClick={() => setCollapsed(!collapsed)}
-        />
-      </div>
     </div>
   );
 }
