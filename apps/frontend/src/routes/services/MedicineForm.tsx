@@ -17,6 +17,7 @@ import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
+import medicineImage from "../../../assets/medicinedelivery.jpg";
 
 const initialState: MedicineDeliveryObject = {
   medicineName: "",
@@ -98,10 +99,7 @@ export function MedicineForm() {
 
   return (
     <div className="bg-offwhite">
-      <FormContainer
-        imgPath={"../../../assets/medicinedelivery.jpg"}
-        alt={"Medicine Delivery"}
-      >
+      <FormContainer imgPath={medicineImage} alt={"Medicine Delivery"}>
         <div>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Medicine Service Request
