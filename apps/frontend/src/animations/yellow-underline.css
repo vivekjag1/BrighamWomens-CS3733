@@ -1,9 +1,9 @@
-.animatedUnderline {
+.animate-underline-yellow {
   position: relative;
   display: inline;
 }
 
-.animatedUnderline::after {
+.animate-underline-yellow::after {
   content: "";
   background-color: rgb(246 189 56);
   width: 100%;
@@ -15,6 +15,6 @@
   transition: transform 0.3s ease-in;
 }
 
-.animatedUnderline:hover::after {
+.animate-underline-yellow:hover::after {
   transform: scale(1);
 }

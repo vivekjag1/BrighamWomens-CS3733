@@ -7,8 +7,6 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AttributionIcon from "@mui/icons-material/Attribution";
 import paths from "../../common/paths.tsx";
 import "./Hero.css";
-import "./animatedUnderlineWhite.css";
-import "./animatedAbracadabra.css";
 
 function Hero() {
   const navigate = useNavigate();
@@ -43,7 +41,7 @@ function Hero() {
       {bannerElement}
       <div className="h-screen w-[65%] relative hero-hospital-image">
         <div className="h-full w-full flex items-center">
-          <div className="flex flex-col absolute left-[2%] animatedAbracadabra">
+          <div className="flex flex-col absolute left-[2%] animate-abracadabra">
             <h2 className="text-[3.5vw] text-white font-bold">Welcome</h2>
             <h2 className="text-[1.75vw] text-white font-light">
               Brigham & Women's Hospital
@@ -56,7 +54,7 @@ function Hero() {
         <div className="h-full flex items-end absolute bottom-[2%] left-[2%]">
           <div className="flex gap-[3vh]">
             <div
-              className="text-white cursor-pointer animatedUnderlineWhite"
+              className="text-white cursor-pointer animate-underline-white"
               onClick={() => navigate(paths.ABOUT_US)}
             >
               <Tooltip title="About Us" placement="top" arrow>
@@ -64,7 +62,7 @@ function Hero() {
               </Tooltip>
             </div>
             <div
-              className="text-white cursor-pointer animatedUnderlineWhite"
+              className="text-white cursor-pointer animate-underline-white"
               onClick={() => navigate(paths.CREDIT)}
             >
               <Tooltip title="Credits" placement="top" arrow>
@@ -79,7 +77,7 @@ function Hero() {
         onClick={() => navigate(paths.HOME)}
       >
         <div className="h-full w-full flex items-center">
-          <div className="flex flex-col absolute left-[3%] animatedAbracadabra hookText">
+          <div className="flex flex-col absolute left-[3%] animate-abracadabra hook">
             <h2 className="text-[3.5vw] text-white font-bold">Find your way</h2>
             <h2 className="text-[1.75vw] text-white font-light self-start">
               Tap here to enter

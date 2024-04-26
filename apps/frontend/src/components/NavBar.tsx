@@ -15,7 +15,7 @@ import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
-import "../../src/styles/animatedUnderline.css";
+import "../animations/yellow-underline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -105,7 +105,7 @@ function NavBar() {
     callback,
   }) => {
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animatedUnderline items-center overflow-hidden">
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animate-underline-yellow items-center overflow-hidden">
         <Link
           to={to}
           className="inline-block"

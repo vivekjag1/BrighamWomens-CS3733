@@ -1,11 +1,11 @@
-.scalingAnimation {
+.service-request {
   transition: transform 0.1s linear;
 }
 
-.scalingAnimation:hover {
+.service-request:hover {
   transform: scale(1.075);
 }
 
-.scalingAnimation:active {
+.service-request:active {
   transform: scale(0.925);
 }

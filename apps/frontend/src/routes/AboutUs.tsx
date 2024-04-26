@@ -1,4 +1,3 @@
-import "../styles/ServicesCard.css";
 import * as React from "react";
 import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";

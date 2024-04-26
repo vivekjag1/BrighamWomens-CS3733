@@ -1,10 +1,6 @@
-.animatedAbracadabra {
+.animate-abracadabra {
   opacity: 0;
   animation: abracadabra 2s forwards;
-}
-
-.hookText {
-  animation-delay: 1s;
 }
 
 @keyframes abracadabra {

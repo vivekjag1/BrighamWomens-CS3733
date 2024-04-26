@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import medicineIcon from "../../assets/medicine-icon.svg";
-import securityIcon from "../../assets/security-icon.svg";
-import roomIcon from "../../assets/room-icon.svg";
-import sanitationIcon from "../../assets/sanitation-icon.svg";
-import deviceIcon from "../../assets/device-icon.svg";
-import ServiceCard from "../components/ServiceCard.tsx";
-import paths from "../common/paths.tsx";
-import giftIcon from "../../assets/gift_delivery.svg";
+import medicineIcon from "../../../assets/medicine-icon.svg";
+import securityIcon from "../../../assets/security-icon.svg";
+import roomIcon from "../../../assets/room-icon.svg";
+import sanitationIcon from "../../../assets/sanitation-icon.svg";
+import deviceIcon from "../../../assets/device-icon.svg";
+import ServiceCard from "../../components/service-card/ServiceCard.tsx";
+import paths from "../../common/paths.tsx";
+import giftIcon from "../../../assets/gift_delivery.svg";
+import "./ServiceSelection.css";
 
-function Services() {
+function ServiceSelection() {
   return (
     <div className="bg-offwhite h-screen">
       <div className="flex flex-col items-center gap-8 ">
@@ -25,7 +26,7 @@ function Services() {
         <div className="flex justify-center gap-8 ">
           <Link
             to={paths.MEDICINE_DELIVERY}
-            className=" serviceCard medicineDelivery ]  "
+            className="service-request animate-tada"
           >
             <ServiceCard
               imgPath={medicineIcon}
@@ -35,7 +36,7 @@ function Services() {
           </Link>
           <Link
             to={paths.MEDICAL_DEVICE_DELIVERY}
-            className="serviceCard medicalDelivery"
+            className="service-request medical-device-delivery animate-tada"
           >
             <ServiceCard
               imgPath={deviceIcon}
@@ -43,14 +44,17 @@ function Services() {
               label="Medical Devices"
             />
           </Link>
-          <Link to={paths.ROOM_RESERVATION} className="serviceCard reserveRoom">
+          <Link
+            to={paths.ROOM_RESERVATION}
+            className="service-request room-reservation animate-tada"
+          >
             <ServiceCard imgPath={roomIcon} alt="room icon" label="Rooms" />
           </Link>
         </div>
         <div className="flex justify-center gap-8">
           <Link
             to={paths.SANITATION_REQUEST}
-            className="serviceCard sanitationRequest"
+            className="service-request sanitation-request animate-tada"
           >
             <ServiceCard
               imgPath={sanitationIcon}
@@ -60,7 +64,7 @@ function Services() {
           </Link>
           <Link
             to={paths.SECURITY_REQUEST}
-            className="serviceCard securityRequest"
+            className="service-request security-request animate-tada"
           >
             <ServiceCard
               imgPath={securityIcon}
@@ -68,7 +72,10 @@ function Services() {
               label="Security"
             />
           </Link>
-          <Link to={paths.GIFT_DELIVERY} className="serviceCard giftDelivery">
+          <Link
+            to={paths.GIFT_DELIVERY}
+            className="animate-tada service-request gift-delivery"
+          >
             <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
           </Link>
         </div>
@@ -77,4 +84,4 @@ function Services() {
   );
 }
 
-export default Services;
+export default ServiceSelection;

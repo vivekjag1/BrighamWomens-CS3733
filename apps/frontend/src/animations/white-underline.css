@@ -1,9 +1,9 @@
-.animatedUnderlineWhite {
+.animate-underline-white {
   position: relative;
   display: inline;
 }
 
-.animatedUnderlineWhite::after {
+.animate-underline-white::after {
   content: "";
   background-color: white;
   width: 100%;
@@ -15,6 +15,6 @@
   transition: transform 0.3s ease-in;
 }
 
-.animatedUnderlineWhite:hover::after {
+.animate-underline-white:hover::after {
   transform: scale(1);
 }
