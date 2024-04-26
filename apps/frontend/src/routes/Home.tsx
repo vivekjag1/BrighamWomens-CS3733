@@ -13,6 +13,7 @@ import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/Map/StackedMaps.tsx";
 import "../../src/components/Map/styles/StackedMaps.css";
 import { Directions, TripStat } from "common/src/Path.ts";
+import QRCodeInsert from "../components/QRCodeInsert.tsx";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -225,6 +226,14 @@ function Home() {
             hasPath={hasPath}
             directions={directions}
             tripStats={tripStats}
+          />
+        </div>
+        <div className="absolute bottom-[1%] left-[1%] z-40">
+          <QRCodeInsert
+            hasPath={hasPath}
+            startNodeID={startNodeID}
+            endNodeID={endNodeID}
+            algorithm={algorithm}
           />
         </div>
       </TransformWrapper>
