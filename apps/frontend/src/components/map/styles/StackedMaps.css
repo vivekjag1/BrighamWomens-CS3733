@@ -1,0 +1,28 @@
+.flexMap {
+  width: fit-content;
+  transform: rotateX(62deg) rotateZ(20deg) skewX(165deg);
+  transition: transform 0.1s;
+}
+
+/*.pulse {
+    animation: pulsate 1s linear infinite;
+    transition: transform 0.5s linear;
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.5);
+    }
+}*/
+
+/*
+.flexMap:hover {
+  filter: drop-shadow(10px 10px 0px #b88900);
+}
+*/
