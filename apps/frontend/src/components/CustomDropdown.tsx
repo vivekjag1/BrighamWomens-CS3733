@@ -2,9 +2,8 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { MenuItem, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useGraphNodes } from "./useGraphNodes.ts";
 
-interface NodeDropdownProps {
+interface CustomDropdownProps {
   value: string;
   onChange: (newValue: string) => void;
   options: string[];
@@ -14,7 +13,7 @@ interface NodeDropdownProps {
   disabled?: boolean;
 }
 
-const NodeDropdown = ({
+const CustomDropdown = ({
   value,
   onChange,
   options,
@@ -22,9 +21,7 @@ const NodeDropdown = ({
   sx,
   className,
   disabled,
-}: NodeDropdownProps) => {
-  const nodes = useGraphNodes();
-
+}: CustomDropdownProps) => {
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     newValue: { label: string } | null,
@@ -32,7 +29,7 @@ const NodeDropdown = ({
     onChange(newValue ? newValue.label : "");
   };
 
-  const selectedValue = nodes.find((node) => node.longName === value)
+  const selectedValue = options.find((option) => option === value)
     ? { label: value }
     : null;
 
@@ -86,4 +83,4 @@ const NodeDropdown = ({
   );
 };
 
-export default NodeDropdown;
+export default CustomDropdown;

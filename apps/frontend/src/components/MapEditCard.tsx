@@ -12,6 +12,21 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import CustomDropdown from "./CustomDropdown.tsx";
 
+const nodeTypes = [
+  "HALL",
+  "DEPT",
+  "CONF",
+  "ELEV",
+  "EXIT",
+  "INFO",
+  "LABS",
+  "REST",
+  "RETL",
+  "STAI",
+  "SERV",
+  "BATH",
+];
+
 const textFieldStyles_large = {
   width: "16vw",
 };
@@ -67,16 +82,16 @@ function MapEditCard(props: {
               value={
                 nodes.get(selectedNodeID ?? "")?.nodeType
                   ? nodes.get(selectedNodeID ?? "")!.nodeType
-                  : "P"
+                  : ""
               }
               onChange={(value) => {
                 props.updateNode("nodeType", value);
               }}
-              options={["HALL", "ROOM", "OTHER"]}
+              options={nodeTypes}
               sx={textFieldStyles_small}
               label="Type"
               className=""
-              disabled={false}
+              disabled={nodes.get(selectedNodeID!) == undefined}
             />
             <NodeParam
               value={nodes?.get(selectedNodeID ?? "")?.floor}
