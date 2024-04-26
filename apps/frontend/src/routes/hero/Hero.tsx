@@ -73,9 +73,8 @@ function Hero() {
       >
         <div className="h-full w-full flex items-center">
           <div className="flex flex-col absolute left-[5%] animatedAbracadabra hookText">
-            <h2 className="text-[8vh] text-white font-bold">Lost?</h2>
             <h2 className="text-[8vh] text-white font-bold">Find your way</h2>
-            <h2 className="text-[2.5vh] text-white font-light self-start">
+            <h2 className="text-[3vh] text-white font-light self-start">
               Tap here to enter
             </h2>
           </div>
