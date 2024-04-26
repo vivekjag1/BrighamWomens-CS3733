@@ -27,6 +27,9 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "./useToast.tsx";
+import ButtonBlue from "./ButtonBlue.tsx";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 interface EmployeeGetterProps {
   uploadTriggered: boolean;
@@ -46,13 +49,13 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [openModal, setOpenModal] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState(false);
   const [currentEmployeeDelete, setEmployeeDelete] =
     React.useState<Employee | null>(null);
   const [employeesDeleted, setEmployeesDeleted] = React.useState<number[]>([]);
+  const [fileModal, setFileModal] = useState<boolean>(false);
   const { showToast } = useToast();
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+
   const handleRowClick = (employee: Employee) => {
     setSelectedRow(employee);
   };
@@ -92,7 +95,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
   const makeDeleteRequest = (employee: Employee) => {
     handleDeleteEmployee(employee).then().catch(console.error);
     showToast("Employee successfully deleted!", "success");
-    handleCloseModal();
+    setDeleteModal(false);
   };
 
   useEffect(() => {
@@ -224,6 +227,14 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
         <label htmlFor="table-search" className="sr-only">
           Search
         </label>
+        <div>
+          <ButtonBlue
+            endIcon={<CloudDownloadIcon />}
+            onClick={() => setFileModal(true)}
+          >
+            Download Data
+          </ButtonBlue>
+        </div>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
             <svg
@@ -350,7 +361,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                   },
                 }}
               >
-                <TableCell>
+                <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
                   Employee ID
                   <button
                     onClick={() => SortOrder()}
@@ -366,12 +377,20 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                     </svg>
                   </button>
                 </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Position</TableCell>
+                <TableCell style={{ width: "34ch", maxWidth: "34ch" }}>
+                  Name
+                </TableCell>
+                <TableCell style={{ width: "18ch", maxWidth: "18ch" }}>
+                  Username
+                </TableCell>
+                <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                  Position
+                </TableCell>
                 {authorizedStatus && (
                   <>
-                    <TableCell>Role</TableCell>
+                    <TableCell style={{ width: "15ch", maxWidth: "15ch" }}>
+                      Role
+                    </TableCell>
                     <TableCell>
                       <span className="sr-only">Edit</span>
                     </TableCell>
@@ -442,7 +461,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                         <TableCell>
                           <DeleteForeverIcon
                             onClick={() => {
-                              handleOpenModal();
+                              setDeleteModal(true);
                               setEmployeeDelete(employee);
                             }}
                             className="text-red-500 mb-1 hover:text-red-700"
@@ -488,8 +507,8 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
           </Table>
         </TableContainer>
         <Modal
-          open={openModal}
-          onClose={handleCloseModal}
+          open={deleteModal}
+          onClose={() => setDeleteModal(false)}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -525,7 +544,7 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
                     fontFamily: "Poppins, sans-serif",
                   }}
                   endIcon={<ClearIcon />}
-                  onClick={() => handleCloseModal()}
+                  onClick={() => setDeleteModal(false)}
                 >
                   CANCEL
                 </Button>
@@ -551,81 +570,95 @@ export function EmployeeGetter({ uploadTriggered }: EmployeeGetterProps) {
             </CardContent>
           </Card>
         </Modal>
+        <Modal
+          open={fileModal}
+          onClose={() => setFileModal(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Card
+            sx={{
+              borderRadius: 2,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              "&:focus": {
+                outline: "none",
+                border: "none",
+                boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
+              },
+            }}
+            className="drop-shadow-2xl px-5 pb-2 w-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CardContent>
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                onClick={() => setFileModal(false)}
+              >
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              <h1
+                className={`text-md font-semibold mb-4 text-secondary text-center`}
+              >
+                File Management
+              </h1>
+              <div className="flex flex-col m-5">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="small_size"
+                >
+                  Small file input
+                </label>
+                <input
+                  className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                  id="default_size"
+                  type="file"
+                />
+                <div className="flex items-center justify-center w-full mb-5">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Click to upload</span>{" "}
+                        or drag and drop
+                      </p>
+                      {/*<p className="text-xs text-gray-500 dark:text-gray-400">CSV</p>*/}
+                    </div>
+                    <input id="dropzone-file" type="file" className="hidden" />
+                  </label>
+                </div>
+                <ButtonBlue component="label" endIcon={<FileUploadIcon />}>
+                  TEST BUTTON
+                </ButtonBlue>
+              </div>
+            </CardContent>
+          </Card>
+        </Modal>
       </Paper>
-      {/*<table className="mx-auto text-sm text-center rtl:text-right text-gray-500 shadow-md mb-10">*/}
-      {/*  <thead className="text-xs text-gray-50 uppercase bg-secondary">*/}
-      {/*    <tr>*/}
-      {/*      <th scope="col" className="px-6 py-3 w-[18ch]">*/}
-      {/*        Employee ID*/}
-      {/*        <button*/}
-      {/*          onClick={() => SortOrder()}*/}
-      {/*          className="hover:text-blue-700"*/}
-      {/*        >*/}
-      {/*          <svg*/}
-      {/*            className="w-3 h-3 ml-1"*/}
-      {/*            aria-hidden="true"*/}
-      {/*            fill="currentColor"*/}
-      {/*            viewBox="0 0 24 20"*/}
-      {/*          >*/}
-      {/*            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />*/}
-      {/*          </svg>*/}
-      {/*        </button>*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3">*/}
-      {/*        Name*/}
-      {/*      </th>*/}
-
-      {/*      <th scope="col" className="px-6 py-3 w-[18ch]">*/}
-      {/*        Username*/}
-      {/*      </th>*/}
-      {/*      <th scope="col" className="px-6 py-3 w-[15ch]">*/}
-      {/*        Position*/}
-      {/*      </th>*/}
-      {/*      {authorizedStatus && (*/}
-      {/*        <>*/}
-      {/*          <th scope="col" className="px-6 py-3 w-[18ch]">*/}
-      {/*            Password*/}
-      {/*          </th>*/}
-
-      {/*          <th scope="col" className="px-6 py-3 w-[15ch]">*/}
-      {/*            Role*/}
-      {/*          </th>*/}
-      {/*        </>*/}
-      {/*      )}*/}
-      {/*    </tr>*/}
-      {/*  </thead>*/}
-      {/*  <tbody>*/}
-      {/*    {filteredData.map((employee) => (*/}
-      {/*      <tr*/}
-      {/*        className="bg-white border-b h-16 hover:bg-gray-100"*/}
-      {/*        key={employee.employeeID}*/}
-      {/*        onClick={() => handleRowClick(employee)}*/}
-      {/*      >*/}
-      {/*        <td className="px-6 py-4">{employee.employeeID}</td>*/}
-      {/*        <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">*/}
-      {/*          <img*/}
-      {/*            className="w-10 h-10 rounded-full"*/}
-      {/*            src={`../../assets/employees/${employee.profilePicture}.jpeg`}*/}
-      {/*            alt={`${employee.name} image`}*/}
-      {/*          />*/}
-      {/*          <div className="ps-3">*/}
-      {/*            <div className="text-base font-semibold">*/}
-      {/*              {highlightSearchTerm(employee.name, filterBySearch)}*/}
-      {/*            </div>*/}
-      {/*          </div>*/}
-      {/*        </td>*/}
-      {/*        <td>{highlightSearchTerm(employee.userName, filterBySearch)}</td>*/}
-      {/*        <td>{highlightSearchTerm(employee.position, filterBySearch)}</td>*/}
-      {/*        {authorizedStatus && (*/}
-      {/*          <>*/}
-      {/*            <td>{employee.password}</td>*/}
-      {/*            <td>{highlightSearchTerm(employee.role, filterBySearch)}</td>*/}
-      {/*          </>*/}
-      {/*        )}*/}
-      {/*      </tr>*/}
-      {/*    ))}*/}
-      {/*  </tbody>*/}
-      {/*</table>*/}
     </div>
   );
 }
