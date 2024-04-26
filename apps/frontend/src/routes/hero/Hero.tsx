@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import Banner from "../../components/Banner/Banner.tsx";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AttributionIcon from "@mui/icons-material/Attribution";
+import paths from "../../common/paths.tsx";
 import "./Hero.css";
 import "./animatedUnderlineWhite.css";
 import "./animatedAbracadabra.css";
-import "./animatedPulse.css";
-import { useNavigate } from "react-router-dom";
-import paths from "../../common/paths.tsx";
-import { AnimatePresence, motion } from "framer-motion";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import AttributionIcon from "@mui/icons-material/Attribution";
-import Tooltip from "@mui/material/Tooltip";
 
 function Hero() {
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date().toLocaleString());
   const [bannerOpen, setBannerOpen] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setInterval(() => {
@@ -44,7 +43,7 @@ function Hero() {
       {bannerElement}
       <div className="h-screen w-[65%] relative hero-hospital-image">
         <div className="h-full w-full flex items-center">
-          <div className="flex flex-col absolute left-[5%] animatedAbracadabra">
+          <div className="flex flex-col absolute left-[2%] animatedAbracadabra">
             <h2 className="text-[3.5vw] text-white font-bold">Welcome</h2>
             <h2 className="text-[1.75vw] text-white font-light">
               Brigham & Women's Hospital
@@ -80,7 +79,7 @@ function Hero() {
         onClick={() => navigate(paths.HOME)}
       >
         <div className="h-full w-full flex items-center">
-          <div className="flex flex-col absolute left-[5%] animatedAbracadabra hookText">
+          <div className="flex flex-col absolute left-[3%] animatedAbracadabra hookText">
             <h2 className="text-[3.5vw] text-white font-bold">Find your way</h2>
             <h2 className="text-[1.75vw] text-white font-light self-start">
               Tap here to enter
