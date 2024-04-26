@@ -7,14 +7,9 @@ import "./animatedPulse.css";
 import { useNavigate } from "react-router-dom";
 import paths from "../../common/paths.tsx";
 import { AnimatePresence, motion } from "framer-motion";
-
-const bannerChildren: JSX.Element = (
-  <p>
-    <span className="font-bold">Disclaimer: </span>This is a project for WPI CS
-    3733 Software Engineering (Prof. Wong) and is not the actual Brigham &
-    Women's Hospital Website.
-  </p>
-);
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AttributionIcon from "@mui/icons-material/Attribution";
+import Tooltip from "@mui/material/Tooltip";
 
 function Hero() {
   const [date, setDate] = useState(new Date().toLocaleString());
@@ -28,7 +23,7 @@ function Hero() {
     }, 1000);
     setTimeout(() => {
       setBannerOpen(false);
-    }, 8000);
+    }, 7500);
   }, []);
 
   const bannerElement = (
@@ -50,29 +45,33 @@ function Hero() {
       <div className="h-screen w-[65%] relative hero-hospital-image">
         <div className="h-full w-full flex items-center">
           <div className="flex flex-col absolute left-[5%] animatedAbracadabra">
-            <h2 className="text-[8vh] text-white font-bold">Welcome</h2>
-            <h2 className="text-[3vh] text-white font-light">
+            <h2 className="text-[3.5vw] text-white font-bold">Welcome</h2>
+            <h2 className="text-[1.75vw] text-white font-light">
               Brigham & Women's Hospital
             </h2>
           </div>
-          <h2 className="self-start absolute top-[2%] left-[2%] text-[3vh] text-white font-light">
+          <h2 className="self-start absolute top-[2%] left-[2%] text-[1.75vw] text-white font-light">
             {date}
           </h2>
         </div>
         <div className="h-full flex items-end absolute bottom-[2%] left-[2%]">
-          <div className="flex gap-[6vh]">
-            <h2
-              className="text-[3vh] text-white font-light cursor-pointer animatedUnderlineWhite"
+          <div className="flex gap-[3vh]">
+            <div
+              className="text-white cursor-pointer animatedUnderlineWhite"
               onClick={() => navigate(paths.ABOUT_US)}
             >
-              About Us
-            </h2>
-            <h2
-              className="text-[3vh] text-white font-light cursor-pointer animatedUnderlineWhite"
+              <Tooltip title="About Us" placement="top" arrow>
+                <InfoOutlinedIcon sx={iconStyles} />
+              </Tooltip>
+            </div>
+            <div
+              className="text-white cursor-pointer animatedUnderlineWhite"
               onClick={() => navigate(paths.CREDIT)}
             >
-              Credits
-            </h2>
+              <Tooltip title="Credits" placement="top" arrow>
+                <AttributionIcon sx={iconStyles} />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -82,8 +81,8 @@ function Hero() {
       >
         <div className="h-full w-full flex items-center">
           <div className="flex flex-col absolute left-[5%] animatedAbracadabra hookText">
-            <h2 className="text-[8vh] text-white font-bold">Find your way</h2>
-            <h2 className="text-[3vh] text-white font-light self-start">
+            <h2 className="text-[3.5vw] text-white font-bold">Find your way</h2>
+            <h2 className="text-[1.75vw] text-white font-light self-start">
               Tap here to enter
             </h2>
           </div>
@@ -92,5 +91,17 @@ function Hero() {
     </div>
   );
 }
+
+const iconStyles = {
+  fontSize: "3rem",
+} as const;
+
+const bannerChildren: JSX.Element = (
+  <p className="text-[0.8vw]">
+    <span className="font-bold">Disclaimer: </span>This is a project for WPI CS
+    3733 Software Engineering (Prof. Wong) and is not the actual Brigham &
+    Women's Hospital Website.
+  </p>
+);
 
 export default Hero;
