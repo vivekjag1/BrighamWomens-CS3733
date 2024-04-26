@@ -1,5 +1,5 @@
 import CollapseImg from "../../assets/collapse-white.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import StraightRoundedIcon from "@mui/icons-material/StraightRounded";
 import TurnLeftRoundedIcon from "@mui/icons-material/TurnLeftRounded";
@@ -22,12 +22,7 @@ import {
 
 function DirectionsCardFloor(props: Directions) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
-  const [containerHeight, setContainerHeight] = useState(0);
 
-  useEffect(() => {
-    setContainerHeight(document.getElementById("container")!.scrollHeight);
-    console.log(containerHeight);
-  }, [collapsed, containerHeight]);
   function DirectionStep(props: DirectionMessage) {
     let icon;
     switch (props.type) {
@@ -101,8 +96,13 @@ function DirectionsCardFloor(props: Directions) {
           id="container"
           className={`pl-1 pr-1`}
           animate={{
-            maxHeight: collapsed ? 0 : containerHeight,
-            transition: { duration: 0.5 },
+            height: collapsed ? 0 : "auto",
+            transition: {
+              type: "tween",
+              stiffness: 100,
+              damping: 20,
+              duration: 0.7,
+            },
           }}
           style={{ overflow: "hidden" }}
         >
