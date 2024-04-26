@@ -1,0 +1,18 @@
+.animatedAbracadabra {
+  opacity: 0;
+  animation: abracadabra 2s forwards;
+}
+
+.hookText {
+  animation-delay: 1s;
+}
+
+@keyframes abracadabra {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

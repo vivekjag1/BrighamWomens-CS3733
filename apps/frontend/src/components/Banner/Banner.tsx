@@ -13,7 +13,7 @@ function Banner(props: BannerProps) {
       initial={{ y: "-100%" }}
       animate={{
         y: "1vh",
-        transition: { type: "spring", delay: 1, stiffness: 30, duration: 1 },
+        transition: { type: "spring", delay: 2.5, stiffness: 30, duration: 1 },
       }}
       exit={{
         y: "-100%",

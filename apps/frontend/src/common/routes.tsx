@@ -19,8 +19,8 @@ const routes = [
   { path: paths.HOME, element: <Home /> },
   { path: paths.MAP_EDITOR, element: <AuthComp component={MapEdit} /> },
   { path: paths.MAP_DATA, element: <AuthComp component={PathTables} /> },
-  { path: paths.ABOUT_US, element: <AuthComp component={AboutUs} /> },
-  { path: paths.CREDIT, element: <AuthComp component={Credit} /> },
+  { path: paths.ABOUT_US, element: <AboutUs /> },
+  { path: paths.CREDIT, element: <Credit /> },
   { path: paths.SERVICES, element: <AuthComp component={Services} /> },
   {
     path: paths.MEDICINE_DELIVERY,
