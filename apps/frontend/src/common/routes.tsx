@@ -14,6 +14,7 @@ import ServicesTable from "../routes/ServicesTable.tsx";
 import EmployeeTable from "../routes/EmployeeTable.tsx";
 import AuthComp from "../components/AuthenticationComponent.tsx";
 import Credit from "../routes/Credit.tsx";
+import MobileDirections from "../routes/MobileDirections.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Home /> },
@@ -42,6 +43,10 @@ const routes = [
   },
   { path: paths.SERVICE_LOG, element: <AuthComp component={ServicesTable} /> },
   { path: paths.EMPLOYEE_LOG, element: <AuthComp component={EmployeeTable} /> },
+  {
+    path: paths.MOBILE_DIRECTIONS,
+    element: <AuthComp component={MobileDirections} />,
+  },
 ];
 
 export default routes;
