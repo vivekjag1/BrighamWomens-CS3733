@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Card, CardContent, styled } from "@mui/material";
-import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+// import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -11,6 +12,8 @@ const CustomCardContent = styled(CardContent)({
 });
 
 export default function Profile() {
+  const { user } = useAuth0();
+
   return (
     <div className="bg-offwhite h-screen">
       <div className="flex justify-center">
@@ -24,12 +27,17 @@ export default function Profile() {
               <CustomCardContent>
                 <div className="w-full h-full flex justify-center ">
                   <img
-                    className="w-40 h-40 object-cover rounded-full flex justify-center"
-                    src={josephImage}
-                    alt="Joseph Cardarelli"
+                    className="w-60 h-60 object-cover rounded-full flex justify-center"
+                    src={user!.picture}
+                    alt="User photo"
                   />
                 </div>
               </CustomCardContent>
+              <div className="items-center">
+                <label className=" text-center">{user!.name}</label>
+                <br />
+                <label className=" text-center">{user!.email}</label>
+              </div>
             </div>
           </Card>
         </div>
