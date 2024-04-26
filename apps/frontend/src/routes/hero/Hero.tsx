@@ -42,7 +42,7 @@ function Hero() {
         <div className="h-full w-full flex items-center">
           <div className="flex flex-col absolute left-[5%] animatedAbracadabra">
             <h2 className="text-[8vh] text-white font-bold">Welcome</h2>
-            <h2 className="text-[5vh] text-white font-light">
+            <h2 className="text-[4vh] text-white font-light">
               Brigham & Women's Hospital
             </h2>
           </div>
