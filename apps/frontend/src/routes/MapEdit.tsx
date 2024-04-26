@@ -278,9 +278,9 @@ function MapEdit() {
     setSelectedAction(Action.CreateEdge);
     setStartEdgeNodeID(undefined);
   }
-  /*function handleDeleteNodeSelected() {
+  function handleDeleteNodeSelected() {
     setSelectedAction(Action.DeleteNode);
-  }*/
+  }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
     if (selectedAction === Action.CreateNode) {
@@ -498,6 +498,7 @@ function MapEdit() {
             MoveNode={handleMoveNodeSelected}
             CreateNode={handleCreateNodeSelected}
             CreateEdge={handleCreateEdgeSelected}
+            DeleteNode={handleDeleteNodeSelected}
           />
         </MapContext.Provider>
       </div>

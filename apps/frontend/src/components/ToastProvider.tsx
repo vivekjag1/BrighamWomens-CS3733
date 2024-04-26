@@ -53,7 +53,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
     type: "success" | "error" | "warning",
   ) => {
     const id = new Date().getTime();
-    if (toasts.length > 0 && message == toasts[toasts.length - 1].message) {
+    if (toasts.length > 0 && message == toasts[0].message) {
       return;
     } else {
       setToasts((prevToasts) => [

@@ -10,6 +10,7 @@ import { MapContext } from "../routes/MapEdit.tsx";
 import { useContext } from "react";
 import { DesignSystem } from "../common/StylingCommon.ts";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ToggleButtonStyles = {
   color: DesignSystem.white,
@@ -38,6 +39,7 @@ export default function ToggleButtons(props: {
   MoveNode: () => void;
   CreateNode: () => void;
   CreateEdge: () => void;
+  DeleteNode: () => void;
 }) {
   const [alignment, setAlignment] = React.useState<string | null>("left");
 
@@ -121,6 +123,22 @@ export default function ToggleButtons(props: {
             sx={ToggleButtonStyles}
           >
             <TimelineIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Delete Node"
+          placement="bottom"
+          arrow
+        >
+          <ToggleButton
+            value="deleteNode"
+            aria-label="right aligned"
+            onClick={props.DeleteNode}
+            selected={selectedAction.toString() == "DeleteNode"}
+            sx={ToggleButtonStyles}
+          >
+            <DeleteIcon />
           </ToggleButton>
         </Tooltip>
       </ToggleButtonGroup>
