@@ -16,7 +16,7 @@ const bannerChildren: JSX.Element = (
 );
 
 function Hero() {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toLocaleString());
   const [bannerOpen, setBannerOpen] = useState(true);
   const navigate = useNavigate();
 
