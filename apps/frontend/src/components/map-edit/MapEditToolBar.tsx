@@ -6,9 +6,9 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
-import { MapContext } from "../routes/MapEdit.tsx";
+import { MapContext } from "../../routes/MapEdit.tsx";
 import { useContext } from "react";
-import { DesignSystem } from "../common/StylingCommon.ts";
+import { DesignSystem } from "../../common/StylingCommon.ts";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import DeleteIcon from "@mui/icons-material/Delete";
 

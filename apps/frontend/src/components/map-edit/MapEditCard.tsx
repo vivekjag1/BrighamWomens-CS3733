@@ -3,11 +3,11 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
-import NodeParam from "./NodeParam.tsx";
-import { MapContext } from "../routes/MapEdit.tsx";
+import NodeParam from "../NodeParam.tsx";
+import { MapContext } from "../../routes/MapEdit.tsx";
 import CustomSaveButton from "./ButtonBlue.tsx";
 import { Node } from "database";
-import CustomDeleteButton from "./CustomDeleteButton.tsx";
+import CustomDeleteButton from "../CustomDeleteButton.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 

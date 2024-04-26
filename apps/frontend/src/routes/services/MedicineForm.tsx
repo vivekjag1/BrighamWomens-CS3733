@@ -13,7 +13,7 @@ import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import ButtonBlue from "../../components/ButtonBlue.tsx";
+import ButtonBlue from "../../components/map-edit/ButtonBlue.tsx";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";

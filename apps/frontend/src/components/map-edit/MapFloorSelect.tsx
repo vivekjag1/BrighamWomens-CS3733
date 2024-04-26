@@ -1,6 +1,6 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useState } from "react";
-import { DesignSystem } from "../common/StylingCommon";
+import { DesignSystem } from "../../common/StylingCommon.ts";
 
 // const styles = {
 //   color: "white",

@@ -1,14 +1,14 @@
-import lowerLevel2 from "../../assets/maps/00_thelowerlevel2.png";
-import lowerLevel1 from "../../assets/maps/00_thelowerlevel1.png";
-import firstFloor from "../../assets/maps/01_thefirstfloor.png";
-import secondFloor from "../../assets/maps/02_thesecondfloor.png";
-import thirdFloor from "../../assets/maps/03_thethirdfloor.png";
+import lowerLevel2 from "../../../assets/maps/00_thelowerlevel2.png";
+import lowerLevel1 from "../../../assets/maps/00_thelowerlevel1.png";
+import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
+import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
+import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { MapStyling } from "../common/StylingCommon.ts";
+import { MapStyling } from "../../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
-import { MapContext } from "../routes/MapEdit.tsx";
+import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
-import ZoomControls from "./map/ZoomControls.tsx";
+import ZoomControls from "../map/ZoomControls.tsx";
 
 export type EdgeCoordinates = {
   startX: number;

@@ -16,7 +16,7 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
 import LocationIcon from "@mui/icons-material/LocationOn";
-import ButtonBlue from "./ButtonBlue.tsx";
+import ButtonBlue from "./map-edit/ButtonBlue.tsx";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
 /*const initialState: PathType = {
