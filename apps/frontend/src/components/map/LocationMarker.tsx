@@ -21,7 +21,7 @@ function LocationMarker(props: LocationMarkerProps) {
           type="translate"
           begin="0s"
           dur="1s"
-          values="0 0; 0 -10; 0 0"
+          values="0 .5; 0 0; 0 -1; 0 -2; 0 -5; 0 -10; 0 -5; 0 -2; 0 -1; 0 0; 0 .5;"
           repeatCount="indefinite"
         />
       </g>

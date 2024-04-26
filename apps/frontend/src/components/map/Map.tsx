@@ -10,6 +10,7 @@ import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
 import FloorMarkers from "./FloorMarkers.tsx";
 import { useToast } from "../useToast.tsx";
+// import {isFirstRun} from "vitest";
 
 interface mapProps {
   activeFloor: number;
@@ -36,6 +37,7 @@ function Map(props: mapProps) {
     ycoord?: number;
     floor?: string;
   };
+
   const lastIndex = props.path.length - 1;
   const { showToast } = useToast();
   if (props.path.length == 0) {
@@ -58,12 +60,26 @@ function Map(props: mapProps) {
     };
   }
 
+  function isPathNode(node: Node): boolean {
+    return props.path.some((pathNode) => pathNode.nodeID === node.nodeID);
+  }
+
+  function isStartNode(node: Node): boolean {
+    return node.nodeID == startNode.nodeID;
+  }
+
+  function isEndNode(node: Node): boolean {
+    return node.nodeID == endNode.nodeID;
+  }
+
   const polylineElements = polylines.map((polyline) => (
     <DashedPolyline points={polyline} width={8} />
   ));
 
   const nodeElements = nodes.map((node) =>
-    node.xcoord != 0 && node.ycoord != 0 ? (
+    node.xcoord != 0 &&
+    node.ycoord != 0 &&
+    (!isPathNode(node) || isStartNode(node) || isEndNode(node)) ? (
       <ClickableCircle
         x={node.xcoord}
         y={node.ycoord}
@@ -110,7 +126,7 @@ function Map(props: mapProps) {
     const elements: JSX.Element[] = [];
     let xcoord: number = 0;
     let ycoord: number = 0;
-    if (segment[0].nodeID != startNode.nodeID) {
+    if (!isStartNode(segment[0])) {
       xcoord = segment[0].xcoord;
       ycoord = segment[0].ycoord;
       const indexSegmentStart: number = props.path.indexOf(segment[0]);
@@ -125,7 +141,7 @@ function Map(props: mapProps) {
         />,
       );
     }
-    if (segment[segment.length - 1].nodeID != endNode.nodeID) {
+    if (!isEndNode(segment[segment.length - 1])) {
       xcoord = segment[segment.length - 1].xcoord;
       ycoord = segment[segment.length - 1].ycoord;
       const indexSegmentEnd: number = props.path.indexOf(
