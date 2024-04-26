@@ -9,7 +9,7 @@
 // import StairsIcon from "@mui/icons-material/Stairs";
 // import MyLocationIcon from "@mui/icons-material/MyLocation";
 // import LocationOnIcon from "@mui/icons-material/LocationOn";
-//import DirectionsCardFloor from "./DirectionsCardFloor";
+import DirectionsCardFloor from "./DirectionsCardFloor";
 
 import {
   //DirectionMessage,
@@ -155,9 +155,13 @@ function DirectionsCard(props: {
       </div>
       <div>
         <div className="flex flex-col items-center">
-          {/*{props.directions.map(*/}
-          {/*    <DirectionsCardFloor />*/}
-          {/*)}*/}
+          {props.directions.map((directions, index) => (
+            <DirectionsCardFloor
+              key={index}
+              floor={directions.floor}
+              directions={directions.directions}
+            />
+          ))}
         </div>
       </div>
     </div>

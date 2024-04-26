@@ -1,8 +1,3 @@
-import {
-  DirectionMessage,
-  Directions,
-  DirectionType,
-} from "common/src/Path.ts";
 import CollapseImg from "../../assets/collapse-white.svg";
 import { useState } from "react";
 
@@ -17,6 +12,12 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import StairsIcon from "@mui/icons-material/Stairs";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+import {
+  DirectionMessage,
+  Directions,
+  DirectionType,
+} from "common/src/Path.ts";
 
 function DirectionsCardFloor(props: Directions) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
