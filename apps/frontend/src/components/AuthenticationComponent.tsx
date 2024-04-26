@@ -1,7 +1,7 @@
 import React from "react";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import "../styles/Hero.css";
-import "../styles/Hero.css";
+import "../routes/Hero/Hero.css";
+import "../routes/Hero/Hero.css";
 interface AuthGuardProps {
   component: React.ComponentType;
 }

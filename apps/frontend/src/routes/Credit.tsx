@@ -6,7 +6,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "../components/ArrowbackIcon.tsx";
 // import taehaImage from '../../assets/people/Taeha.png';
-import background from "../../assets/bwh-exterior-default.png";
+import background from "../../assets/hero/bwh-exterior-default.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
 // import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
