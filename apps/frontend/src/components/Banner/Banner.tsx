@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import ExitButton from "./ExitButton.tsx";
+/*import ExitButton from "./ExitButton.tsx";*/
 
 interface BannerProps {
-  onClick: () => void;
   children: JSX.Element;
 }
 
@@ -21,7 +20,7 @@ function Banner(props: BannerProps) {
       }}
     >
       {props.children}
-      <ExitButton onClick={props.onClick} />
+      {/* <ExitButton onClick={props.onClick} />*/}
     </motion.div>
   );
 }

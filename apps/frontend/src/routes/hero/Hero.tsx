@@ -6,6 +6,7 @@ import "./animatedAbracadabra.css";
 import "./animatedPulse.css";
 import { useNavigate } from "react-router-dom";
 import paths from "../../common/paths.tsx";
+import { AnimatePresence, motion } from "framer-motion";
 
 const bannerChildren: JSX.Element = (
   <p>
@@ -25,14 +26,22 @@ function Hero() {
       const date = new Date();
       setDate(date.toLocaleString());
     }, 1000);
+    setTimeout(() => {
+      setBannerOpen(false);
+    }, 8000);
   }, []);
 
-  const bannerElement = bannerOpen && (
-    <div className="absolute top-0 left-0 w-full flex justify-center items-center h-[15vh]">
-      <Banner onClick={() => setBannerOpen(!bannerOpen)}>
-        {bannerChildren}
-      </Banner>
-    </div>
+  const bannerElement = (
+    <AnimatePresence>
+      {bannerOpen && (
+        <motion.div
+          key="banner"
+          className="absolute top-0 left-0 w-full flex justify-center items-center h-[15vw]"
+        >
+          <Banner>{bannerChildren}</Banner>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 
   return (
@@ -42,7 +51,7 @@ function Hero() {
         <div className="h-full w-full flex items-center">
           <div className="flex flex-col absolute left-[5%] animatedAbracadabra">
             <h2 className="text-[8vh] text-white font-bold">Welcome</h2>
-            <h2 className="text-[4vh] text-white font-light">
+            <h2 className="text-[3vh] text-white font-light">
               Brigham & Women's Hospital
             </h2>
           </div>
