@@ -17,6 +17,8 @@ import {
   StatUnit,
   TripStat,
 } from "common/src/Path.ts";
+import { useState } from "react";
+import CollapseImg from "../../assets/collapse-white.svg";
 
 function DirectionsCard(props: {
   directions: Directions[];
@@ -32,8 +34,8 @@ function DirectionsCard(props: {
     return (
       <div className="flex w-full justify-around">
         {props.stats.map((stat, index) => (
-          <div className="flex flex-col items-end text-right">
-            <div key={index}>
+          <div className="flex flex-col ">
+            <div key={index} className="flex flex-col items-center">
               <h2 className="font-medium text-3xl">
                 {stat.unit == StatUnit.Arrival ? arrivalTime : stat.value}
               </h2>
@@ -56,6 +58,33 @@ function DirectionsCard(props: {
     const minutes = newTime.getMinutes().toString().padStart(2, "0"); // Add leading zero if needed
 
     return `${hours}:${minutes}`;
+  }
+
+  function DirectionFloor(props: Directions) {
+    const [collapsed, setCollapsed] = useState<boolean>(true);
+
+    return (
+      <>
+        <div className={`shadow-md rounded-2xl w-[90%] overflow-hidden m-1`}>
+          <div
+            className={`relative border-5 bg-offwhite rounded-t-2xl flex flex-row p-3 w-full`}
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <h2>Floor {props.floor}</h2>
+            <img
+              src={CollapseImg}
+              className={`absolute right-5 cursor-pointer w-7 duration-[700ms] ${collapsed ? "rotate-90" : "-rotate-90"}`}
+              onClick={() => setCollapsed(!collapsed)}
+            />
+          </div>
+          <div
+            className={`pl-1 pr-1 transition-height ease-in-out duration-[700ms] ${collapsed ? "max-h-[0rem]" : "pt-1 pb-1 max-h-[500rem]"}`}
+          >
+            {props.directions.map(DirectionStep)}
+          </div>
+        </div>
+      </>
+    );
   }
 
   function DirectionStep(props: DirectionMessage) {
@@ -114,19 +143,20 @@ function DirectionsCard(props: {
   }
 
   return (
+    // rounded-2xl shadow-xl transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[50%]" : "max-h-[0]"}
     <div
-      className={`h-full rounded-2xl shadow-xl overflow-y-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[25rem]" : "max-h-[0]"} `}
+      className={`mt-[1rem] overflow-y-auto overflow-x-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
     >
       <div
-        className={`mt-[1rem] border-5 bg-offwhite rounded-2xl shadow-xl flex flex-col gap-6 p-4 transition-height ease-in-out duration-500 ${props.isCollapsed ? "max-h-[5.5rem]" : "max-h-[25rem]"}`}
+        className={`flex flex-col items-center m-[1rem] border-5 bg-offwhite rounded-2xl shadow-xl p-4 w-[90%] overflow-hidden`}
         onClick={() => props.setIsCollapsed(!props.isCollapsed)}
         style={{ cursor: "pointer" }}
       >
         <TripStats stats={props.stats} />
-        <div className="flex flex-col gap-4 h-full overflow-y-auto">
-          {props.directions.map((directionsAllFloors: Directions) =>
-            directionsAllFloors.directions.map(DirectionStep),
-          )}
+      </div>
+      <div>
+        <div className="flex flex-col items-center">
+          {props.directions.map(DirectionFloor)}
         </div>
       </div>
     </div>
