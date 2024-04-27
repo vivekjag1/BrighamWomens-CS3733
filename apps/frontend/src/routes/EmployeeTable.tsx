@@ -57,6 +57,7 @@ const EmployeeTable = () => {
     employeesLink.href = URL.createObjectURL(employeesBlob); //create links
     employeesLink.download = "Employees"; //name files
     employeesLink.click(); //open them;
+    showToast("Employee data downloaded!", "success");
   }
 
   async function uploadFiles() {
