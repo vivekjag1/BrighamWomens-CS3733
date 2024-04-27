@@ -47,6 +47,7 @@ const NodeTable = () => {
   const [filterByBuilding, setFilterByBuilding] = useState<string[]>([]);
   const [filterByType, setFilterByType] = useState<string[]>([]);
   const [filterByEdgeType, setFilterByEdgeType] = useState<string[]>([]);
+  const [dataUpdated, setDataUpdated] = useState<boolean>(false);
   const [fileModal, setFileModal] = useState<boolean>(false);
   const { showToast } = useToast();
 
@@ -78,7 +79,7 @@ const NodeTable = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [dataUpdated]);
 
   useEffect(() => {
     async function fetchData() {
@@ -90,7 +91,7 @@ const NodeTable = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [dataUpdated]);
 
   useEffect(() => {
     if (nodeTableButtonRef.current) {
@@ -128,6 +129,7 @@ const NodeTable = () => {
     edgeLink.download = "Edges";
     nodeLink.click(); //open them
     edgeLink.click();
+    showToast("Map data downloaded!", "success");
   }
 
   const fileChange = (event: React.BaseSyntheticEvent) => {
@@ -135,9 +137,9 @@ const NodeTable = () => {
     if (!file) return;
 
     const fileName = file.name.toLowerCase();
-    if (fileName.includes("node")) {
+    if (fileName.toLowerCase().includes("node")) {
       setNodeFile(file);
-    } else if (fileName.includes("edge")) {
+    } else if (fileName.toLowerCase().includes("edge")) {
       setEdgeFile(file);
     } else {
       setFileModal(false);
@@ -166,7 +168,7 @@ const NodeTable = () => {
           showToast("File(s) failed validation!", "error");
         } else {
           showToast("Map data uploaded!", "success");
-          location.reload();
+          setDataUpdated(true);
         }
       } else {
         showToast("One or more map files are missing!", "error");
