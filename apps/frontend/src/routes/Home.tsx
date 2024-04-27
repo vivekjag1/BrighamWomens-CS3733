@@ -191,6 +191,7 @@ function Home() {
     ) : (
       <div className="absolute top-[2%] left-[45%]">
         <PathTrail
+          activeFloor={activeFloor}
           floorSequence={floorSequence}
           onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
         />
