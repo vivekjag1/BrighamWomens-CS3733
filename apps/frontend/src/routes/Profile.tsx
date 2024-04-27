@@ -4,6 +4,7 @@ import { Card, CardContent, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import ButtonBlue from "../components/ButtonBlue.tsx";
+import background from "../../assets/bwh-exterior-default.png";
 
 const CustomCollapse = Collapse as React.FC<CollapseProps>;
 
@@ -24,6 +25,10 @@ export default function Profile() {
 
   return (
     <div className="bg-offwhite h-screen">
+      <div
+        className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center blur-sm"
+        style={{ backgroundImage: `url(${background})` }}
+      ></div>
       <div className="flex justify-center">
         {/*First profile section*/}
         <div className="flex flex-col">
@@ -80,11 +85,11 @@ export default function Profile() {
               className="shadow-xl drop-shadow m-4"
               sx={{ borderRadius: "20px" }}
             >
-              <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
-                <h1 className="w-full text-2xl font-bold text-center ">
+              <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
+                <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                   {" "}
                   Completed Service Requests
-                  <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                  <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                 </h1>
                 <CustomCardContent> </CustomCardContent>
               </div>
@@ -96,11 +101,11 @@ export default function Profile() {
               className="shadow-xl drop-shadow m-4"
               sx={{ borderRadius: "20px" }}
             >
-              <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
-                <h1 className="w-full text-2xl font-bold text-center ">
+              <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
+                <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                   {" "}
                   Pending Service Requests
-                  <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                  <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                 </h1>
                 <CustomCardContent></CustomCardContent>
               </div>
