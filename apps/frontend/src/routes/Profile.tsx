@@ -2,7 +2,8 @@ import * as React from "react";
 import { Card, CardContent, styled } from "@mui/material";
 // import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Collapse, Button, CollapseProps } from "@mui/material";
+import { Collapse, CollapseProps } from "@mui/material";
+import ButtonBlue from "../components/ButtonBlue.tsx";
 
 const CustomCollapse = Collapse as React.FC<CollapseProps>;
 
@@ -59,49 +60,52 @@ export default function Profile() {
                 <div className="inline-flex items-center justify-center w-full">
                   <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
                 </div>
-
-                <>
-                  <Button onClick={toggleOpen}>Open Collapse</Button>
-                  {/* Use CustomCollapse instead of Collapse */}
-                </>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <ButtonBlue
+                    onClick={toggleOpen}
+                    style={{ width: "8rem" }}
+                    className={"justify-items-center"}
+                  >
+                    View Requests
+                  </ButtonBlue>
+                </div>
               </div>
             </div>
           </Card>
         </div>
 
         <div className="flex flex-col ">
-          <Card
-            className="shadow-xl drop-shadow m-4"
-            sx={{ borderRadius: "20px" }}
-          >
-            <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
-              <h1 className="w-full text-2xl font-bold text-center ">
-                {" "}
-                Completed Service Requests
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-              </h1>
-              <CustomCardContent>
-                {" "}
-                <CustomCollapse in={open}>
-                  <Card className="my-4 mx-auto w-8/12">dadsfsadlkgjh</Card>
-                </CustomCollapse>
-              </CustomCardContent>
-            </div>
-          </Card>
+          <CustomCollapse in={open}>
+            <Card
+              className="shadow-xl drop-shadow m-4"
+              sx={{ borderRadius: "20px" }}
+            >
+              <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
+                <h1 className="w-full text-2xl font-bold text-center ">
+                  {" "}
+                  Completed Service Requests
+                  <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                </h1>
+                <CustomCardContent> </CustomCardContent>
+              </div>
+            </Card>
+          </CustomCollapse>
 
-          <Card
-            className="shadow-xl drop-shadow m-4"
-            sx={{ borderRadius: "20px" }}
-          >
-            <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
-              <h1 className="w-full text-2xl font-bold text-center ">
-                {" "}
-                Pending Service Requests
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-              </h1>
-              <CustomCardContent></CustomCardContent>
-            </div>
-          </Card>
+          <CustomCollapse in={open}>
+            <Card
+              className="shadow-xl drop-shadow m-4"
+              sx={{ borderRadius: "20px" }}
+            >
+              <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
+                <h1 className="w-full text-2xl font-bold text-center ">
+                  {" "}
+                  Pending Service Requests
+                  <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                </h1>
+                <CustomCardContent></CustomCardContent>
+              </div>
+            </Card>
+          </CustomCollapse>
         </div>
       </div>
     </div>
