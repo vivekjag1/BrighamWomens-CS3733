@@ -24,7 +24,12 @@ function QRCodeInsert(props: {
   useEffect(() => {
     async function getURL() {
       let imgUrl: string = "";
-      await QRCode.toDataURL(mobileURL.href).then((res) => (imgUrl = res));
+      await QRCode.toDataURL(mobileURL.href, {
+        color: {
+          dark: DesignSystem.primaryColor,
+          light: "#0000",
+        },
+      }).then((res) => (imgUrl = res));
       return imgUrl;
     }
     getURL().then((res) => setImgUrl(res));
