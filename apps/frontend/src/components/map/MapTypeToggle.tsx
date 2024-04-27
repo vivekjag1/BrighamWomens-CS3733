@@ -26,7 +26,7 @@ function MapTypeToggle(props: mapTypeToggleProps) {
       }}
       onClick={props.setMapType}
     >
-      <label className="text-lg font-semibold">
+      <label className="text-lg font-semibold" style={{ cursor: "pointer" }}>
         {props.mapType == "3D" ? "2D" : "3D"}
       </label>
     </ToggleButton>

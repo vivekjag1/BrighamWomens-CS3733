@@ -2,25 +2,22 @@ import { useControls } from "react-zoom-pan-pinch";
 import { Button, ButtonGroup } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { DesignSystem } from "../../common/StylingCommon";
+import { ButtonStyling, DesignSystem } from "../../common/StylingCommon";
 
 function ZoomControls() {
   const { zoomIn, zoomOut } = useControls();
   const buttonGroupStyles = {
-    borderRadius: "10px",
+    borderRadius: "6px",
   } as const;
 
   const buttonStyles = {
     backgroundColor: DesignSystem.primaryColor,
     color: DesignSystem.white,
-    fontFamily: DesignSystem.fontFamily,
-    fontSize: "1.25rem",
-    fontWeight: "normal",
     width: "5.5vh",
     height: "5.5vh",
-    borderRadius: "8px",
+    borderRadius: "6px",
     "&:hover": {
-      backgroundColor: DesignSystem.accentColor,
+      backgroundColor: ButtonStyling.blueButtonHover,
     },
   } as const;
 

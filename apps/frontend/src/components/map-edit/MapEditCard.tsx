@@ -48,7 +48,7 @@ function MapEditCard(props: {
   const selectedNodeID = useContext(MapContext).selectedNodeID;
 
   return (
-    <div>
+    <div className="w-[23vw]">
       <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
         <div className="flex flex-col gap-[1rem]">
           <div className="flex gap-1 items-center">

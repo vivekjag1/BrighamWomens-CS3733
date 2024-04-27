@@ -3,7 +3,7 @@ import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
 import MapEditImage from "../components/map-edit/MapEditImage.tsx";
-import MapFloorSelect from "../components/map-edit/MapFloorSelect.tsx";
+import FloorSelector from "../components/map-edit/FloorSelector.tsx";
 import MapEditCard from "../components/map-edit/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -479,7 +479,7 @@ function MapEdit() {
           onMapClick={handleMapClick}
         />
       </MapContext.Provider>
-      <div className="absolute left-[1%] top-[2%]">
+      <div className="absolute left-[1%] top-[1%]">
         <MapContext.Provider value={contextValue}>
           <MapEditCard
             onSave={handleSave}
@@ -489,7 +489,7 @@ function MapEdit() {
         </MapContext.Provider>
       </div>
       <div className="absolute right-[1.5%] bottom-[2%]">
-        <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
+        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
       <div className="absolute left-[45%] bottom-[2%] z-50">
         <MapContext.Provider value={contextValue}>

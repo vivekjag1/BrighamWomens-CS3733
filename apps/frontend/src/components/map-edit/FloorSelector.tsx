@@ -1,47 +1,31 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useState } from "react";
-import { DesignSystem } from "../../common/StylingCommon.ts";
-
-// const styles = {
-//   color: "white",
-//   width: "40px",
-//   height: "35px",
-//   fontWeight: "light",
-//   borderRadius: "5px",
-//   "&:hover": {
-//     backgroundColor: ButtonStyling.blueButtonHover,
-//   },
-//   "&.Mui-selected, &.Mui-selected:hover": {
-//     backgroundColor: ButtonStyling.blueButtonClicked,
-//     color: "white",
-//     fontWeight: "bold",
-//   },
-// } as const;
+import { ButtonStyling, DesignSystem } from "../../common/StylingCommon.ts";
 
 const ToggleButtonStyles = {
   color: DesignSystem.white,
   fontFamily: DesignSystem.fontFamily,
-  fontSize: "1.10rem",
-  fontWeight: "normal",
+  fontSize: "1.25rem",
+  fontWeight: "light",
   height: "5.5vh",
-  width: "5.5vh",
-  borderRadius: "8px",
+  borderRadius: "6px",
   "&:hover": {
-    backgroundColor: DesignSystem.accentColor,
+    backgroundColor: ButtonStyling.blueButtonHover,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: DesignSystem.accentColor,
-    color: "#FFFFFF",
+    backgroundColor: ButtonStyling.blueButtonClicked,
+    color: "white",
+    fontWeight: "medium",
   },
 } as const;
 
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
-  borderRadius: "8px",
+  borderRadius: "6px",
   width: "5.5vh",
 } as const;
 
-function MapFloorSelect(props: {
+function FloorSelector(props: {
   activeFloor: number;
   onClick: (x: number) => void;
   path?: number[][];
@@ -147,4 +131,4 @@ function MapFloorSelect(props: {
   );
 }
 
-export default MapFloorSelect;
+export default FloorSelector;

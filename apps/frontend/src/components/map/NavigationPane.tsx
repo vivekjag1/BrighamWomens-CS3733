@@ -7,7 +7,6 @@ import {
 import { Node } from "database";
 import NodeDropdown from "./NodeDropdown.tsx";
 import AlgorithmDropdown from "./AlgorithmDropdown.tsx";
-import NavigationButton from "./NavigationButton.tsx";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOn from "@mui/icons-material/LocationOn";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -25,6 +24,8 @@ import {
   TripStat,
 } from "common/src/Path.ts";
 import CollapseImg from "../../../assets/collapse-white.svg";
+import ButtonBlue from "../ButtonBlue.tsx";
+import NavigationIcon from "@mui/icons-material/Navigation";
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -52,7 +53,7 @@ function NavigationPane(props: NavigationPaneProps) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
-    <div className="w-[23vw] max-w-[22.5vw] z-40">
+    <div className="w-[23vw] z-40">
       <form
         onSubmit={props.onSubmit}
         onReset={props.onReset}
@@ -98,7 +99,9 @@ function NavigationPane(props: NavigationPaneProps) {
                   }
                 />
               </div>
-              <NavigationButton />
+              <ButtonBlue type="submit" endIcon={<NavigationIcon />}>
+                GO
+              </ButtonBlue>
             </div>
           </div>
           <div className="flex flex-col ml-[-0.8rem] items-center">
