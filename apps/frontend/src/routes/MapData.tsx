@@ -272,8 +272,8 @@ const NodeTable = () => {
   const getButtonClasses = (tabName: string): string => {
     return `inline-block w-full p-2 text-md hover:underline ${
       activeTab === tabName
-        ? "text-white border-[#012D5A] border-2 bg-secondary"
-        : "border-white border-2"
+        ? "text-secondary border-[#012D5A] border-b-[.15rem]"
+        : "border-white border-b-2"
     } focus:outline-none`;
   };
 
