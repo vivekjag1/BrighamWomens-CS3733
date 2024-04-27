@@ -10,6 +10,22 @@ import { Node } from "database";
 import CustomDeleteButton from "../CustomDeleteButton.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import CustomDropdown from "./CustomDropdown.tsx";
+
+const nodeTypes = [
+  "HALL",
+  "DEPT",
+  "CONF",
+  "ELEV",
+  "EXIT",
+  "INFO",
+  "LABS",
+  "REST",
+  "RETL",
+  "STAI",
+  "SERV",
+  "BATH",
+];
 
 const textFieldStyles_large = {
   width: "16vw",
@@ -62,11 +78,20 @@ function MapEditCard(props: {
           </div>
           <div className="flex gap-1 items-center">
             <InfoIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeParam
-              value={nodes?.get(selectedNodeID ?? "")?.nodeType}
+            <CustomDropdown
+              value={
+                nodes.get(selectedNodeID ?? "")?.nodeType
+                  ? nodes.get(selectedNodeID ?? "")!.nodeType
+                  : ""
+              }
+              onChange={(value) => {
+                props.updateNode("nodeType", value);
+              }}
+              options={nodeTypes}
               sx={textFieldStyles_small}
               label="Type"
-              editable={false}
+              className=""
+              disabled={nodes.get(selectedNodeID!) == undefined}
             />
             <NodeParam
               value={nodes?.get(selectedNodeID ?? "")?.floor}
