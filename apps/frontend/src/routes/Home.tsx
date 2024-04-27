@@ -264,11 +264,12 @@ function Home() {
           />
         </div>
         {hasPath ? QRCodeElement : <></>}
+        <div className="absolute top-[2%] right-[1.5%]">
+          <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
+        </div>
       </TransformWrapper>
       {floorSelectorElement}
-      <div className="absolute top-[2%] right-[1.5%]">
-        <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
-      </div>
+
       {pathTrailElement}
     </div>
   );

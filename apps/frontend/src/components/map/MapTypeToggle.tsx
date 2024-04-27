@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ToggleButton } from "@mui/material";
 import { DesignSystem } from "../../common/StylingCommon";
+import { useControls } from "react-zoom-pan-pinch";
 
 interface mapTypeToggleProps {
   mapType: string;
@@ -8,6 +9,11 @@ interface mapTypeToggleProps {
 }
 function MapTypeToggle(props: mapTypeToggleProps) {
   const [selected, setSelected] = useState(false);
+  const { resetTransform } = useControls();
+
+  function swap() {
+    resetTransform();
+  }
 
   return (
     <ToggleButton
@@ -16,6 +22,7 @@ function MapTypeToggle(props: mapTypeToggleProps) {
       selected={selected}
       onChange={() => {
         setSelected(!selected);
+        swap();
       }}
       onClick={props.setMapType}
     >
