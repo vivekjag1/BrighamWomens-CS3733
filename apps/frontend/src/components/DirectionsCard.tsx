@@ -42,20 +42,27 @@ function DirectionsCard(props: {
       currentTime.getTime() + parseInt(minToAdd) * 60000,
     );
 
-    const hours = newTime.getHours().toString(); // Add leading zero if needed
-    const minutes = newTime.getMinutes().toString().padStart(2, "0"); // Add leading zero if needed
+    let hours = newTime.getHours();
+    const minutes = newTime.getMinutes().toString().padStart(2, "0"); // padding with 0
 
-    return `${hours}:${minutes}`;
+    // 12-hour time adjustment
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours == 0) {
+      hours = 12;
+    }
+
+    return `${hours.toString()}:${minutes}`;
   }
 
   return (
     <div
-      className={`flex flex-col gap-2 items-center bg-offwhite shadow-md p-2 mt-[1rem] rounded-2xl overflow-hidden transition-height ease-in-out duration-500 
-      ${props.hasPath ? "max-h-[60vh]" : "max-h-[0] hidden"}
+      className={`flex flex-col items-center bg-offwhite shadow-md rounded-2xl overflow-hidden transition-height ease-in-out duration-500 
+      ${props.hasPath ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}
       `}
     >
       <div
-        className={`flex flex-col items-center bg-white rounded-2xl shadow-md p-3 w-[100%] ${props.hasPath ? "max-h-[60vh]" : "max-h-[0] hidden"}`}
+        className={`flex flex-col items-center bg-white rounded-2xl shadow-md w-[100%] ${props.hasPath ? "max-h-[60vh] p-3" : "max-h-[0] p-0"}`}
         onClick={() => {
           if (props.setIsCollapsed) props.setIsCollapsed(!props.isCollapsed);
         }}
@@ -64,9 +71,9 @@ function DirectionsCard(props: {
         <TripStats stats={props.stats} />
       </div>
       <div
-        className={`overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh] hidden" : "max-h-[60vh]"}`}
+        className={`overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[60vh]"}`}
       >
-        <div className={`flex flex-col items-start gap-2 mb-[0.5rem]`}>
+        <div className={`flex flex-col items-start gap-2 mt-2 mb-[0.5rem]`}>
           {props.directions.map((directions, index) => (
             <DirectionsCardFloor
               key={index}

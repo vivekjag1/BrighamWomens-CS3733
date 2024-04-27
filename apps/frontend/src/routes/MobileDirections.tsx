@@ -43,17 +43,17 @@ function MobileDirections() {
   }, []);
 
   return (
-    <div className="h-screen m-5 mt-[2.5rem] mb-[2.5rem] align-center justify-center">
-      <div className="max-w-screen bg-offwhite p-2 rounded-2xl">
+    <div className="m-5 mt-[1rem] mb-[1rem] align-center justify-center">
+      <div className="bg-offwhite p-2 rounded-2xl">
         <div className="flex flex-row w-full bg-white rounded-2xl shadow-md p-3">
           <div className="flex flex-row gap-4 justify-start">
             <img className="h-[57px]" src={logo} alt="Logo" />
-            <div className="flex flex-col justify-start">
+            <div className="flex flex-col flex-grow justify-start">
               <h2
                 style={{
                   fontWeight: 500,
                 }}
-                className={"whitespace-nowrap"}
+                className={"whitespace-wrap"}
               >
                 Brigham & Women's Hospital
               </h2>
@@ -61,7 +61,7 @@ function MobileDirections() {
                 style={{
                   fontWeight: 200,
                 }}
-                className={"text-2xl whitespace-nowrap"}
+                className={"text-2xl whitespace-wrap"}
               >
                 Directions
               </h2>
