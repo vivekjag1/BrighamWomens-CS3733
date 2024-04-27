@@ -2,13 +2,12 @@ import React, { createContext, useEffect, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
-import MapEditImage from "../components/MapEditImage.tsx";
-import MapFloorSelect from "../components/MapFloorSelect.tsx";
-import MapEditCard from "../components/MapEditCard.tsx";
+import MapEditImage from "../components/map-edit/MapEditImage.tsx";
+import MapFloorSelect from "../components/map-edit/MapFloorSelect.tsx";
+import MapEditCard from "../components/map-edit/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
-// import { useToast } from "../components/useToast.tsx";
-import MapEditToolBar from "../components/MapEditToolBar.tsx";
+import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
@@ -96,7 +95,6 @@ function MapEdit() {
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     const fetchData = async () => {
-      // const token = await getAccessTokenSilently();
       let activeFloorString;
       switch (activeFloor) {
         case -1:
@@ -171,6 +169,7 @@ function MapEdit() {
   };
 
   function updateNode(node: Node) {
+    console.log("inside updateNode");
     const tempNodes = new Map(nodes);
     const tempUpdatedNodes = new Map(updatedNodes);
     if (selectedNodeID) {
@@ -236,11 +235,6 @@ function MapEdit() {
     const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
     setEdges(updatedTempEdges);
     setAddedEdges(addedRepairedEdges);
-
-    // const sendToDb = {
-    //   nodeID: selectedNodeID,
-    // };
-    // await axios.post(APIEndpoints.deleteNode, sendToDb);
   }
 
   function handleNodeClick(nodeID: string) {
@@ -255,8 +249,6 @@ function MapEdit() {
       if (!startEdgeNodeID) {
         setStartEdgeNodeID(nodeID);
       } else {
-        //const endNodeID = nodeID;
-        //Create an edge logic goes here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         setStartEdgeNodeID(undefined);
       }
     } else {
@@ -272,11 +264,6 @@ function MapEdit() {
       setNodeSaved(false);
     }
   }
-
-  // function handleAddNodeButtonClicked() {
-  //   setAddingNode(!addingNode);
-  //   setAddingEdge(false);
-  // }
 
   function handleSelectNodeSelected() {
     setSelectedAction(Action.SelectNode);
@@ -312,9 +299,6 @@ function MapEdit() {
 
   async function handleSaveAll() {
     const token = await getAccessTokenSilently();
-    // const sendNodes = {
-    //   nodes: Array.from(addedNodes.values()),
-    // };
     await MakeProtectedPostRequest(
       APIEndpoints.createNode,
       Array.from(addedNodes.values()),
@@ -358,16 +342,20 @@ function MapEdit() {
   }
 
   async function handleSave() {
+    console.log("inside handle save!");
+    console.log("nodes that have been updated", updatedNodes);
     const token = await getAccessTokenSilently();
-    // if (nodes.get(selectedNodeID!)!.shortName === "") {
-    //   showToast("Please fill in a short name!", "error");
-    //   return;
-    // }
 
     const node = nodes.get(selectedNodeID!);
 
     if (node!.nodeID.substring(0, 8) != "userNode") {
-      //await MakeProtectedPatchRequest(APIEndpoints.updateNodes, node!, token);
+      const sendToBackend: Node[] = [];
+      sendToBackend.push(node!);
+      console.log(node);
+      const send = {
+        nodes: sendToBackend,
+      };
+      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, send, token);
     } else {
       //cut first 8 characters
 
