@@ -3,6 +3,7 @@ import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect, useState } from "react";
 import { Directions, TripStat } from "common/src/Path.ts";
 import DirectionsCard from "../components/DirectionsCard.tsx";
+import logo from "../../assets/bwh-logo-shield.png";
 
 function MobileDirections() {
   const [directions, setDirections] = useState<Directions[]>([]);
@@ -45,6 +46,26 @@ function MobileDirections() {
 
   return (
     <div>
+      <div className="flex mt-[2.5rem] text-secondary justify-center">
+        <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
+        <h2
+          style={{
+            fontWeight: 500,
+          }}
+          className={"text-2xl whitespace-nowrap self-center"}
+        >
+          Mobile
+        </h2>
+        <span>&nbsp;</span> {/* Add space */}
+        <h2
+          style={{
+            fontWeight: 100,
+          }}
+          className={"text-2xl whitespace-nowrap self-center"}
+        >
+          Directions
+        </h2>
+      </div>
       <DirectionsCard
         directions={directions}
         stats={tripStats}
