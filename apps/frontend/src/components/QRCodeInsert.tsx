@@ -15,9 +15,9 @@ function QRCodeInsert(props: {
   let mobileURL: URL;
   if (props.hasPath) {
     mobileURL = new URL(paths.MOBILE_DIRECTIONS, window.location.origin);
-    mobileURL.searchParams.append("startNodeID", props.startNodeID);
-    mobileURL.searchParams.append("endNodeID", props.endNodeID);
-    mobileURL.searchParams.append("algorithm", props.algorithm);
+    mobileURL.searchParams.append("start", props.startNodeID);
+    mobileURL.searchParams.append("end", props.endNodeID);
+    mobileURL.searchParams.append("algo", props.algorithm);
     console.log(mobileURL.href);
   }
 
