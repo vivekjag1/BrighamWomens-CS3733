@@ -4,7 +4,7 @@ import { Card, CardContent, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import ButtonBlue from "../components/ButtonBlue.tsx";
-import background from "../../assets/bwh-exterior-default.png";
+import background from "../../assets/hero/bwh-exterior-default.png";
 
 const CustomCollapse = Collapse as React.FC<CollapseProps>;
 
