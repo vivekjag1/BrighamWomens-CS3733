@@ -57,6 +57,7 @@ const EmployeeTable = () => {
     employeesLink.href = URL.createObjectURL(employeesBlob); //create links
     employeesLink.download = "Employees"; //name files
     employeesLink.click(); //open them;
+    showToast("Employee data downloaded!", "success");
   }
 
   async function uploadFiles() {
@@ -78,7 +79,6 @@ const EmployeeTable = () => {
           showToast("Employee data uploaded!", "success");
           setUploadTriggered(true);
           setTimeout(() => setUploadTriggered(false), 500);
-          location.reload();
         }
       } else {
         showToast("Employee file missing!", "error");
