@@ -186,14 +186,15 @@ function Home() {
     );
 
   const pathTrailElement =
-    mapType == "3D" || path[0].nodeID == "" ? (
+    mapType == "3D" || path[0].nodeID == "" || areOnSameFloor(path) ? (
       <></>
     ) : (
-      <div className="absolute top-[2%] left-[45%]">
+      <div className="absolute top-[1%] left-[50%]">
         <PathTrail
           activeFloor={activeFloor}
           floorSequence={floorSequence}
           onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+          updateGlowSequence={updateGlowSequence}
         />
       </div>
     );
@@ -264,6 +265,18 @@ const contentStyles = {
   justifyContent: "center",
 } as const;
 
+// Determines whether all the nodes along the path are on the same floor
+function areOnSameFloor(path: Node[]): boolean {
+  let onSameFloor: boolean = true;
+  const currentFloor = path[0].floor;
+  for (let i = 0, length = path.length; i < length; i++) {
+    if (currentFloor != path[i].floor) {
+      onSameFloor = false;
+      return onSameFloor;
+    }
+  }
+  return onSameFloor;
+}
 // Gets sequence of floors one must traverse through along a path
 function getFloorSequence(path: Node[]) {
   const floorSequence: number[] = [];
