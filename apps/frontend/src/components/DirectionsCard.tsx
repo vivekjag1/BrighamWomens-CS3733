@@ -50,17 +50,19 @@ function DirectionsCard(props: {
 
   return (
     <div
-      className={`mt-[1rem] overflow-y-auto overflow-x-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
+      className={`mt-[1rem] overflow-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
     >
       <div
-        className={`flex flex-col items-center m-[1rem] border-5 bg-offwhite rounded-2xl shadow-xl p-4 w-[90%] overflow-hidden`}
+        className={`flex flex-col items-center m-[1rem] border-5 bg-offwhite rounded-2xl drop-shadow-lg p-4 w-[90%] overflow-hidden`}
         onClick={() => props.setIsCollapsed(!props.isCollapsed)}
         style={{ cursor: "pointer" }}
       >
         <TripStats stats={props.stats} />
       </div>
-      <div>
-        <div className="flex flex-col items-center">
+      <div
+        className={`overflow-y-auto transition-height ease-in-out duration-500 ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[50vh]"}`}
+      >
+        <div className={`flex flex-col items-center`}>
           {props.directions.map((directions, index) => (
             <DirectionsCardFloor
               key={index}

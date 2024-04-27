@@ -10,6 +10,7 @@ interface NodeDropdownProps {
   label?: string;
   sx?: SxProps<Theme>;
   className?: string;
+  disabled?: boolean;
 }
 
 const NodeDropdown = ({
@@ -18,6 +19,7 @@ const NodeDropdown = ({
   label,
   sx,
   className,
+  disabled,
 }: NodeDropdownProps) => {
   const nodes = useGraphNodes();
 
@@ -48,6 +50,7 @@ const NodeDropdown = ({
       className={className}
       value={selectedValue}
       onChange={handleChange}
+      disabled={disabled}
       renderInput={(params) => (
         <TextField
           {...params}

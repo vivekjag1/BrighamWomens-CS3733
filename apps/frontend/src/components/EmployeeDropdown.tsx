@@ -1,8 +1,20 @@
 import React from "react";
 import Autocomplete /*, { createFilterOptions }*/ from "@mui/material/Autocomplete";
-import { Box, SxProps, Theme } from "@mui/material";
+import { Avatar, Box, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
+import mattImage from "../../assets/employees/matt-brown.jpeg";
+import andyImage from "../../assets/employees/andy-truong.jpeg";
+import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
+import ademImage from "../../assets/employees/adem.jpeg";
+import suliImage from "../../assets/employees/sulaiman.jpeg";
+import frankyImage from "../../assets/employees/franky.jpeg";
+import colinImage from "../../assets/employees/colin.jpeg";
+import griffinImage from "../../assets/employees/griffin-brown.jpeg";
+import taehaImage from "../../assets/employees/taeha-song.jpeg";
+import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
+import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+import wongImage from "../../assets/employees/wilsonwong.jpg";
 // import {EmployeeType} from "common/src/EmployeeType.ts";
 
 interface EmployeeDropdownProps {
@@ -15,6 +27,21 @@ interface EmployeeDropdownProps {
   disableClearable?: boolean;
   // employees: EmployeeType[];
 }
+
+const definedEmployees = [
+  { name: "Daniel Gorbunov ", imageSrc: danielImage },
+  { name: "Matthew Brown", imageSrc: mattImage },
+  { name: "Andy Truong", imageSrc: andyImage },
+  { name: "Vivek Jagadeesh", imageSrc: vivekImage },
+  { name: "Mohamed Adem Djadid", imageSrc: ademImage },
+  { name: "Sulaiman Moukheiber ", imageSrc: suliImage },
+  { name: "Francesco Di Mise", imageSrc: frankyImage },
+  { name: "Colin Masucci", imageSrc: colinImage },
+  { name: "Griffin Brown", imageSrc: griffinImage },
+  { name: "Taeha Song", imageSrc: taehaImage },
+  { name: "Joseph Cardarelli", imageSrc: josephImage },
+  { name: "Wilson Wong", imageSrc: wongImage },
+];
 
 const EmployeeDropdown = ({
   value,
@@ -52,6 +79,13 @@ const EmployeeDropdown = ({
       : value
         ? options.find((option) => option.label === value) || null
         : null;
+
+  function getEmployeeImageSrc(employeeName: string) {
+    const employee = definedEmployees.find(
+      (definedEmployee) => definedEmployee.name.trim() === employeeName.trim(),
+    );
+    return employee ? employee.imageSrc : undefined;
+  }
 
   return (
     <Autocomplete
@@ -105,17 +139,30 @@ const EmployeeDropdown = ({
             sx={{
               textAlign: "start",
               fontSize: ".9rem",
-              "& > img": { mr: 2, flexShrink: 0 },
+              // "& > img": { mr: 2, flexShrink: 0 },
             }}
             {...props}
           >
-            {employee && employee.profilePicture && (
-              <img
-                className="w-9 h-9 rounded-full"
-                loading="lazy"
-                src={`../../assets/employees/${employee.profilePicture}.jpeg`}
-                alt={`${option.label} profile`}
-              />
+            {/*{employee && employee.profilePicture && (*/}
+            {/*  <img*/}
+            {/*    className="w-9 h-9 rounded-full"*/}
+            {/*    loading="lazy"*/}
+            {/*    src={`../../assets/employees/${employee.profilePicture}.jpeg`}*/}
+            {/*    alt={`${option.label} profile`}*/}
+            {/*  />*/}
+            {/*)}*/}
+            {employee && (
+              <Avatar
+                {...(getEmployeeImageSrc(employee.name)
+                  ? { src: getEmployeeImageSrc(employee.name) }
+                  : {})}
+                alt={`${employee.name} image`}
+                sx={{
+                  marginRight: 1,
+                }}
+              >
+                {employee.name.charAt(0)}
+              </Avatar>
             )}
             {option.label}
           </Box>

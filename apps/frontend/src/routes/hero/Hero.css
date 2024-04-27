@@ -1,0 +1,32 @@
+@import "../../animations/abracadabra.css";
+@import "../../animations/white-underline.css";
+
+.hero-hospital-image {
+  background-image: linear-gradient(
+      180deg,
+      rgba(0, 41, 76, 0.75),
+      rgba(0, 41, 76, 0.75)
+    ),
+    url("../../../assets/hero/bwh-exterior-default.png");
+  background-size: cover;
+}
+
+.hero-map-image {
+  background-image: linear-gradient(
+      180deg,
+      rgba(38, 71, 107, 0.75),
+      rgba(38, 71, 107, 0.75)
+    ),
+    url("../../../assets/hero/01_thefirstfloor.png");
+  background-size: cover;
+  background-position: top 10% left 50%;
+  transition: width 2s;
+}
+
+.hero-map-image:hover {
+  width: 170%;
+}
+
+.hook {
+  animation-delay: 1s;
+}
