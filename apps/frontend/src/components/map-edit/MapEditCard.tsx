@@ -10,7 +10,7 @@ import { Node } from "database";
 import CustomDeleteButton from "../CustomDeleteButton.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import CustomDropdown from "./CustomDropdown.tsx";
+import CustomDropdown from "../CustomDropdown.tsx";
 
 const nodeTypes = [
   "HALL",

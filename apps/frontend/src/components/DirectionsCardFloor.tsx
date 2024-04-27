@@ -98,7 +98,7 @@ function DirectionsCardFloor(props: Directions) {
           animate={{
             height: collapsed ? 0 : "auto",
             transition: {
-              type: "tween",
+              type: "linear",
               stiffness: 100,
               damping: 20,
               duration: 0.7,
