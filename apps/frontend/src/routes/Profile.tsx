@@ -34,18 +34,24 @@ export default function Profile() {
                 </div>
               </CustomCardContent>
               <div className=" flex flex-col relative">
-                <label
-                  className="w-full text-2xl font-bold text-center "
+                <p
+                  className="w-full text-2xl font-bold text-center p-1 "
                   style={{ color: "#012D5A" }}
                 >
                   {user!.name}
-                </label>
-                <hr
-                  className="items-center "
-                  style={{ borderColor: "rgba(0, 0, 0, 0.5)" }}
-                />
+                </p>
+                <div className="inline-flex items-center justify-center w-full">
+                  <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
+                  <div className="absolute px-2 -translate-x-1/2 bg-white left-1/2 dark:bg-gray-900">
+                    <span className="shrink px-1 pb-1 "> Information</span>
+                  </div>
+                </div>
                 <label className="text-xl text-center">Role</label>
                 <label className=" text-center">{user!.email}</label>
+
+                <div className="inline-flex items-center justify-center w-full">
+                  <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
+                </div>
               </div>
             </div>
           </Card>
@@ -57,7 +63,12 @@ export default function Profile() {
             sx={{ borderRadius: "20px" }}
           >
             <div className="w-[50vw] h-[45vh] bg-white rounded-[30px]">
-              <CustomCardContent>Quadrant 2 Content</CustomCardContent>
+              <h1 className="w-full text-2xl font-bold text-center ">
+                {" "}
+                Completed Service Requests
+              </h1>
+              <hr className="pl-96 pr-96 " />
+              <CustomCardContent></CustomCardContent>
             </div>
           </Card>
 
