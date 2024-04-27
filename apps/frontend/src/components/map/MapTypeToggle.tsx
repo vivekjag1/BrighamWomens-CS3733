@@ -13,6 +13,11 @@ function MapTypeToggle(props: mapTypeToggleProps) {
 
   function swap() {
     resetTransform();
+
+    setTimeout(() => {
+      props.setMapType();
+      setSelected(!selected);
+    }, 250);
   }
 
   return (
@@ -20,11 +25,12 @@ function MapTypeToggle(props: mapTypeToggleProps) {
       value="3DYes"
       sx={toggleButtonStyles}
       selected={selected}
-      onChange={() => {
-        setSelected(!selected);
+      onClick={() => {
         swap();
+
+        // setSelected(!selected);
       }}
-      onClick={props.setMapType}
+      // onClick={props.setMapType}
     >
       <label className="text-lg font-semibold" style={{ cursor: "pointer" }}>
         {props.mapType == "3D" ? "2D" : "3D"}
