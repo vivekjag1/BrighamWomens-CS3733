@@ -12,6 +12,7 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import StairsIcon from "@mui/icons-material/Stairs";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { motion } from "framer-motion";
 
 import {
   DirectionMessage,
@@ -67,8 +68,8 @@ function DirectionsCardFloor(props: Directions) {
         <h2
           className={
             props.type == DirectionType.Start || props.type == DirectionType.End
-              ? "font-bold"
-              : ""
+              ? "font-bold pb-1"
+              : "pb-1"
           }
         >
           {props.msg}
@@ -91,13 +92,25 @@ function DirectionsCardFloor(props: Directions) {
             onClick={() => setCollapsed(!collapsed)}
           />
         </div>
-        <div
-          className={`pl-1 pr-1 transition-height ease-in-out duration-[700ms] ${collapsed ? "max-h-[0rem]" : "pt-1 pb-1 max-h-[500rem]"}`}
+        <motion.div
+          id="container"
+          className={`pl-1 pr-1`}
+          animate={{
+            height: collapsed ? 0 : "auto",
+            transition: {
+              type: "linear",
+              stiffness: 100,
+              damping: 20,
+              duration: 0.7,
+            },
+          }}
+          style={{ overflow: "hidden" }}
         >
           {props.directions.map(DirectionStep)}
-        </div>
+        </motion.div>
       </div>
     </>
   );
 }
+
 export default DirectionsCardFloor;

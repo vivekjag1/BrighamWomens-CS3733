@@ -1,18 +1,19 @@
 import { FormEvent, useState, useEffect } from "react";
 import axios from "axios";
 import { Node } from "database";
+import { Directions, TripStat } from "common/src/Path.ts";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { getSegments } from "../common/PathUtilities.ts";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import Map from "../components/Map/Map.tsx";
-import NavigationPane from "../components/Map/NavigationPane.tsx";
-import ZoomControls from "../components/Map/ZoomControls.tsx";
-import FloorSelector from "../components/Map/FloorSelector.tsx";
-import MapTypeToggle from "../components/Map/MapTypeToggle.tsx";
+import Map from "../components/map/Map.tsx";
+import NavigationPane from "../components/map/NavigationPane.tsx";
+import ZoomControls from "../components/map/ZoomControls.tsx";
+import FloorSelector from "../components/map/FloorSelector.tsx";
+import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
-import StackedMaps from "../components/Map/StackedMaps.tsx";
-import "../../src/components/Map/styles/StackedMaps.css";
-import { Directions, TripStat } from "common/src/Path.ts";
+import StackedMaps from "../components/map/StackedMaps.tsx";
+import "../components/map/styles/StackedMaps.css";
+/*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -70,6 +71,7 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setPath(response.data.path);
+        console.log(path);
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
 
         setDirections(response.data.directions);
@@ -231,6 +233,9 @@ function Home() {
       <div className="absolute top-[2%] right-[1.5%]">
         <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
       </div>
+      {/*<div className="absolute top-[2%] left-[45%]">
+        <PathTrail floorSequence={glowSequence} />
+      </div>*/}
     </div>
   );
 }

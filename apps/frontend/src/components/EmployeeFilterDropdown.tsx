@@ -64,7 +64,7 @@ function EmployeeFilterDropdown({
   return (
     <FormControl
       size="small"
-      sx={{ minWidth: 240, fontFamily: "Poppins, sans-serif" }}
+      sx={{ minWidth: 180, fontFamily: "Poppins, sans-serif" }}
     >
       <Select
         multiple
@@ -76,7 +76,7 @@ function EmployeeFilterDropdown({
           </div>
         )}
         displayEmpty
-        className="bg-gray-50 h-10"
+        className="bg-gray-50 h-[2.35rem]"
         sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
         <MenuItem onClick={() => toggleSubMenu("position")}>

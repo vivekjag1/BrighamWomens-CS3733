@@ -1,0 +1,14 @@
+.animate-abracadabra {
+  opacity: 0;
+  animation: abracadabra 2s forwards;
+}
+
+@keyframes abracadabra {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
