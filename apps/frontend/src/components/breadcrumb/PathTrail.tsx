@@ -6,13 +6,17 @@ import { DesignSystem } from "../../common/StylingCommon.ts";
 interface pathTrailProps {
   floorSequence: number[];
   onClick: (x: number) => void;
+  updateGlowSequence: (x: number) => void;
 }
 
 function PathTrail(props: pathTrailProps) {
   const floorSequenceElements = props.floorSequence.map((floor, index) => (
     <div className="flex">
       <button
-        onClick={() => props.onClick(floor)}
+        onClick={() => {
+          props.onClick(floor);
+          props.updateGlowSequence(floor);
+        }}
         className={`rounded-lg transition duration-20 ease-in-out transform active:scale-75 hover:scale-110 focus:scale-125`}
       >
         {getFloorString(floor)}

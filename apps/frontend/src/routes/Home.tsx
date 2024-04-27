@@ -193,6 +193,7 @@ function Home() {
         <PathTrail
           floorSequence={floorSequence}
           onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+          updateGlowSequence={updateGlowSequence}
         />
       </div>
     );
