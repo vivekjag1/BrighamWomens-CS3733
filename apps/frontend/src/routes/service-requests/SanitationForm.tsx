@@ -17,7 +17,7 @@ import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import giftPlaceholder from "../../../assets/hospitalsanitation.jpg";
 import ButtonRed from "../../components/ButtonRed.tsx";
-import ButtonBlue from "../../components/map-edit/ButtonBlue.tsx";
+import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 

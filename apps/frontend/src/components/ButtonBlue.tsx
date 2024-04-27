@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { ButtonProps } from "@mui/material/Button";
-import { ButtonStyling } from "../../common/StylingCommon.ts";
+import { ButtonStyling } from "../common/StylingCommon.ts";
 import React from "react";
 
 const styles = {

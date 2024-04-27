@@ -11,7 +11,7 @@ import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
-import ButtonBlue from "../components/map-edit/ButtonBlue.tsx";
+import ButtonBlue from "../components/ButtonBlue.tsx";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
 

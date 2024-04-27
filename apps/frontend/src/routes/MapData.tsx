@@ -8,7 +8,7 @@ import { useToast } from "../components/useToast.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { APIEndpoints, FileAttributes } from "common/src/APICommon.ts";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
-import ButtonBlue from "../components/map-edit/ButtonBlue.tsx";
+import ButtonBlue from "../components/ButtonBlue.tsx";
 import { Edge, Node } from "database";
 import {
   Table,

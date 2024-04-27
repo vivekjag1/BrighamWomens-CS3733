@@ -5,7 +5,7 @@ import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "../NodeParam.tsx";
 import { MapContext } from "../../routes/MapEdit.tsx";
-import CustomSaveButton from "./ButtonBlue.tsx";
+import CustomSaveButton from "../ButtonBlue.tsx";
 import { Node } from "database";
 import CustomDeleteButton from "../CustomDeleteButton.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
