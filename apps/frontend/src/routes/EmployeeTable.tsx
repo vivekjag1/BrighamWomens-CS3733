@@ -79,7 +79,6 @@ const EmployeeTable = () => {
           showToast("Employee data uploaded!", "success");
           setUploadTriggered(true);
           setTimeout(() => setUploadTriggered(false), 500);
-          location.reload();
         }
       } else {
         showToast("Employee file missing!", "error");
