@@ -153,14 +153,13 @@ export function EmployeeGetter({
       }
     }
     fetchData();
-  }, [getAccessTokenSilently, sortOrder]);
+  }, [getAccessTokenSilently, sortOrder, uploadTriggered]);
 
   useEffect(() => {
     let data = employeeData;
 
     if (uploadTriggered) {
       setEmployeesDeleted([]);
-      location.reload();
     } else {
       if (employeesDeleted.length > 0) {
         data = employeeData.filter(
