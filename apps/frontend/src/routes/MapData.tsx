@@ -178,9 +178,8 @@ const NodeTable = () => {
   }
 
   useEffect(() => {
-    let data = nodes;
-
     if (activeTab == "node") {
+      let data = nodes;
       if (filterBySearch) {
         data = data.filter(
           (item) =>
@@ -206,7 +205,6 @@ const NodeTable = () => {
       if (filterByType.length) {
         data = data.filter((item) => filterByType.includes(item.nodeType));
       }
-      console.log("dsadsa");
       setFilteredNodes(data);
     } else {
       let data = edges;
@@ -223,10 +221,14 @@ const NodeTable = () => {
               .includes(filterBySearch.toLowerCase()) ||
             item.endNodeID.toLowerCase().includes(filterBySearch.toLowerCase()),
         );
+      }
+      if (filterByEdgeType.length) {
         console.log(filterByEdgeType);
-        if (filterByEdgeType.length) {
-          data = data.filter((item) => filterByEdgeType.includes(item.edgeID));
-        }
+        data = data.filter((item) =>
+          filterByEdgeType.some((filterType) =>
+            item.edgeID.includes(filterType),
+          ),
+        );
       }
 
       setFilteredEdges(data);
