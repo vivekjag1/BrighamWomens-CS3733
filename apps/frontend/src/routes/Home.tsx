@@ -41,6 +41,7 @@ function Home() {
       setNodes(graphNodes);
       return graphNodes;
     }
+
     getNodesFromDb().then();
   }, []);
 
@@ -184,6 +185,15 @@ function Home() {
       </div>
     );
 
+  const pathTrailElement =
+    mapType == "3D" || path[0].nodeID == "" ? (
+      <></>
+    ) : (
+      <div className="absolute top-[2%] left-[45%]">
+        <PathTrail floorSequence={floorSequence} />
+      </div>
+    );
+
   return (
     <div className="relative bg-offwhite z-0">
       <div
@@ -232,9 +242,7 @@ function Home() {
       <div className="absolute top-[2%] right-[1.5%]">
         <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
       </div>
-      <div className="absolute top-[2%] left-[45%]">
-        <PathTrail floorSequence={floorSequence} />
-      </div>
+      {pathTrailElement}
     </div>
   );
 }
