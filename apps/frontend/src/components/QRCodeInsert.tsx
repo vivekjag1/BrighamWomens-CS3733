@@ -32,14 +32,17 @@ function QRCodeInsert(props: {
 
   if (props.hasPath) {
     return (
-      <img
-        style={{
-          border: "5px solid",
-          boxShadow: "5px 5px 5px",
-          color: DesignSystem.primaryColor,
-        }}
-        src={imgUrl}
-      ></img>
+      <a href={mobileURL!.toString()} target="_blank">
+        <img
+          alt="qrcode"
+          style={{
+            border: "5px solid",
+            boxShadow: "5px 5px 5px",
+            color: DesignSystem.primaryColor,
+          }}
+          src={imgUrl}
+        ></img>
+      </a>
     );
   }
   return <></>;
