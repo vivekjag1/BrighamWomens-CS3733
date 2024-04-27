@@ -38,7 +38,7 @@ const MapEditImage = (props: {
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;
-  const [position, setPosition] = useState({
+  const [draggablePosition, setDraggablePosition] = useState({
     x: 0,
     y: 0,
     active: false,
@@ -128,8 +128,8 @@ const MapEditImage = (props: {
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
 
-    setPosition({
-      ...position,
+    setDraggablePosition({
+      ...draggablePosition,
       x: nodes.get(nodeID)!.xcoord,
       y: nodes.get(nodeID)!.ycoord,
       active: true,
@@ -148,13 +148,13 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - bbox.left;
     const y = e.clientY - bbox.top;
-    if (position.active && selectedAction.toString() == "MoveNode") {
+    if (draggablePosition.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - position.offset.x),
+        updatedNode.xcoord + (x - draggablePosition.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - position.offset.y),
+        updatedNode.ycoord + (y - draggablePosition.offset.y),
       );
       setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
     }
@@ -183,7 +183,10 @@ const MapEditImage = (props: {
         <TransformWrapper
           initialScale={1}
           doubleClick={{ disabled: true }}
-          panning={{ velocityDisabled: true, disabled: position.active }}
+          panning={{
+            velocityDisabled: true,
+            disabled: draggablePosition.active,
+          }}
         >
           <div className="absolute bottom-[31%] right-[1.5%] z-10">
             <ZoomControls />
@@ -201,7 +204,7 @@ const MapEditImage = (props: {
               viewBox="0 0 5000 3400"
               height="100vh"
               onPointerUp={() => {
-                setPosition({ ...position, active: false });
+                setDraggablePosition({ ...draggablePosition, active: false });
               }}
               onClick={props.onMapClick}
             >
@@ -241,8 +244,8 @@ const MapEditImage = (props: {
                 <line
                   x1={nodes.get(props.startEdgeNodeID)!.xcoord}
                   y1={nodes.get(props.startEdgeNodeID)!.ycoord}
-                  x2={position.x}
-                  y2={position.y}
+                  x2={draggablePosition.x}
+                  y2={draggablePosition.y}
                   stroke="red"
                   strokeWidth="2"
                 />

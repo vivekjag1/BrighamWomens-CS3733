@@ -24,7 +24,7 @@ import {
   // StatUnit,
   TripStat,
 } from "common/src/Path.ts";
-import CollapseImg from "../../../assets/collapse.svg";
+import CollapseImg from "../../../assets/collapse-white.svg";
 
 interface NavigationPaneProps {
   nodes: Node[];
@@ -126,7 +126,7 @@ function NavigationPane(props: NavigationPaneProps) {
           >
             <img
               src={CollapseImg}
-              className={`cursor-pointer w-7 duration-500 ${collapsed ? "rotate-90" : "-rotate-90"}`}
+              className={`cursor-pointer w-7 duration-700 ${collapsed ? "rotate-90" : "-rotate-90"}`}
               onClick={() => setCollapsed(!collapsed)}
             />
           </div>

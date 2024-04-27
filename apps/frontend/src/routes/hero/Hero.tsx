@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Banner from "../../components/banner/Banner.tsx";
 import Tooltip from "@mui/material/Tooltip";
+import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AttributionIcon from "@mui/icons-material/Attribution";
 import paths from "../../common/paths.tsx";
@@ -53,6 +54,14 @@ function Hero() {
         </div>
         <div className="h-full flex items-end absolute bottom-[2%] left-[2%]">
           <div className="flex gap-[3vh]">
+            <div
+              className="text-white cursor-pointer animate-underline-white"
+              onClick={() => navigate(paths.MAP_DATA)}
+            >
+              <Tooltip title="Login" placement="top" arrow>
+                <AccountCircleOutlined sx={iconStyles} />
+              </Tooltip>
+            </div>
             <div
               className="text-white cursor-pointer animate-underline-white"
               onClick={() => navigate(paths.ABOUT_US)}
