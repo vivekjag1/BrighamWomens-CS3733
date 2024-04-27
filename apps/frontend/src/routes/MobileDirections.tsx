@@ -43,27 +43,29 @@ function MobileDirections() {
   }, []);
 
   return (
-    <div className="h-screen m-10 mt-[2.5rem] mb-[2.5rem] align-center justify-center">
-      <div className="flex flex-rowtext-secondary max-w-screen">
-        <div className="flex flex-row gap-4 justify-start">
-          <img className="h-[57px]" src={logo} alt="Logo" />
-          <div className="flex flex-col justify-start">
-            <h2
-              style={{
-                fontWeight: 500,
-              }}
-              className={"whitespace-nowrap"}
-            >
-              Brigham & Women's Hospital
-            </h2>
-            <h2
-              style={{
-                fontWeight: 200,
-              }}
-              className={"text-2xl whitespace-nowrap"}
-            >
-              Directions
-            </h2>
+    <div className="h-screen m-5 mt-[2.5rem] mb-[2.5rem] align-center justify-center">
+      <div className="max-w-screen bg-offwhite p-2 rounded-2xl">
+        <div className="flex flex-row w-full bg-white rounded-2xl shadow-md p-3">
+          <div className="flex flex-row gap-4 justify-start">
+            <img className="h-[57px]" src={logo} alt="Logo" />
+            <div className="flex flex-col justify-start">
+              <h2
+                style={{
+                  fontWeight: 500,
+                }}
+                className={"whitespace-nowrap"}
+              >
+                Brigham & Women's Hospital
+              </h2>
+              <h2
+                style={{
+                  fontWeight: 200,
+                }}
+                className={"text-2xl whitespace-nowrap"}
+              >
+                Directions
+              </h2>
+            </div>
           </div>
         </div>
       </div>
@@ -71,9 +73,6 @@ function MobileDirections() {
         directions={directions}
         stats={tripStats}
         isCollapsed={false}
-        setIsCollapsed={() => {
-          console.log;
-        }}
         hasPath={true}
       />
     </div>

@@ -12,7 +12,7 @@ function DirectionsCard(props: {
   directions: Directions[];
   stats: TripStat[];
   isCollapsed: boolean;
-  setIsCollapsed: (state: boolean) => void;
+  setIsCollapsed?: (state: boolean) => void;
   hasPath: boolean;
 }) {
   function TripStats(props: { stats: TripStat[] }) {
@@ -50,17 +50,21 @@ function DirectionsCard(props: {
 
   return (
     <div
-      className={`flex flex-col gap-2 items-center overflow-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
+      className={`flex flex-col gap-2 items-center bg-offwhite shadow-md p-2 mt-[1rem] rounded-2xl overflow-hidden transition-height ease-in-out duration-500 
+      ${props.hasPath ? "max-h-[60vh]" : "max-h-[0] hidden"}
+      `}
     >
       <div
-        className={`flex flex-col mt-[1rem] items-center bg-offwhite rounded-2xl shadow-md p-3 w-[100%] overflow-hidden`}
-        onClick={() => props.setIsCollapsed(!props.isCollapsed)}
+        className={`flex flex-col items-center bg-white rounded-2xl shadow-md p-3 w-[100%] ${props.hasPath ? "max-h-[60vh]" : "max-h-[0] hidden"}`}
+        onClick={() => {
+          if (props.setIsCollapsed) props.setIsCollapsed(!props.isCollapsed);
+        }}
         style={{ cursor: "pointer" }}
       >
         <TripStats stats={props.stats} />
       </div>
       <div
-        className={`overflow-y-auto transition-height ease-in-out duration-500 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[50vh]"}`}
+        className={`overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh] hidden" : "max-h-[60vh]"}`}
       >
         <div className={`flex flex-col items-start gap-2 mb-[0.5rem]`}>
           {props.directions.map((directions, index) => (
