@@ -9,7 +9,7 @@ import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import GroupsIcon from "@mui/icons-material/Groups";
+// import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
@@ -241,15 +241,15 @@ function NavBar() {
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
-          <NavbarItem
-            to={paths.ABOUT_US}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={GroupsIcon}
-            label="About"
-            labelLight="Us"
-            collapsed={isHidingNavBarInfo}
-          />
+          {/*<NavbarItem*/}
+          {/*  to={paths.ABOUT_US}*/}
+          {/*  activePage={activePage}*/}
+          {/*  setActivePage={setActivePage}*/}
+          {/*  Icon={GroupsIcon}*/}
+          {/*  label="About"*/}
+          {/*  labelLight="Us"*/}
+          {/*  collapsed={isHidingNavBarInfo}*/}
+          {/*/>*/}
         </div>
 
         {/* Sign out */}
