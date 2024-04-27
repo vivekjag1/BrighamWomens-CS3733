@@ -49,7 +49,7 @@ function StackedMaps(props: StackedMapsProps) {
       transform="scale(2.125) translate(0, 12)"
     >
       <filter id="shadow">
-        <feDropShadow dx="90" dy="90" floodOpacity="0.9" />
+        <feDropShadow dx="90" dy="90" floodOpacity="0.2" />
       </filter>
       <image href={thirdFloor} x={0} y={0} filter="url(#shadow)" />
       <image
