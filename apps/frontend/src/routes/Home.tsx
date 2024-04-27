@@ -13,6 +13,7 @@ import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/map/StackedMaps.tsx";
 import "../components/map/styles/StackedMaps.css";
+import PathTrail from "../components/breadcrumb/PathTrail.tsx";
 import QRCodeInsert from "../components/QRCodeInsert.tsx";
 import QRCodeButton from "../components/map/QRCodeButton.tsx";
 /*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
@@ -25,6 +26,7 @@ function Home() {
   const [endNodeID, setEndNodeID] = useState(INITIAL_PATH[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
+  const [floorSequence, setFloorSequence] = useState<number[]>([]);
   const [mapType, setMapType] = useState("2D");
   const [hasPath, setHasPath] = useState<boolean>(false);
   const [displayQRCode, setDisplayQRCode] = useState<boolean>(false);
@@ -43,6 +45,7 @@ function Home() {
       setNodes(graphNodes);
       return graphNodes;
     }
+
     getNodesFromDb().then();
   }, []);
 
@@ -74,13 +77,11 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setPath(response.data.path);
-        console.log(path);
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
-
         setDirections(response.data.directions);
         setTripStats(response.data.tripStats);
-
         setGlowSequence(getFloorSequence(response.data.path).slice(1));
+        setFloorSequence(getFloorSequence(response.data.path));
         setHasPath(true);
       })
       .catch(console.error);
@@ -205,6 +206,20 @@ function Home() {
     </div>
   );
 
+  const pathTrailElement =
+    mapType == "3D" || path[0].nodeID == "" || areOnSameFloor(path) ? (
+      <></>
+    ) : (
+      <div className="absolute top-[1%] left-[50%]">
+        <PathTrail
+          activeFloor={activeFloor}
+          floorSequence={floorSequence}
+          onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+          updateGlowSequence={updateGlowSequence}
+        />
+      </div>
+    );
+
   return (
     <div className="relative bg-offwhite z-0">
       <div
@@ -254,9 +269,7 @@ function Home() {
       <div className="absolute top-[2%] right-[1.5%]">
         <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
       </div>
-      {/*<div className="absolute top-[2%] left-[45%]">
-        <PathTrail floorSequence={glowSequence} />
-      </div>*/}
+      {pathTrailElement}
     </div>
   );
 }
@@ -274,7 +287,19 @@ const contentStyles = {
   justifyContent: "center",
 } as const;
 
-// Gets sequence of floor one must traverse through along a path
+// Determines whether all the nodes along the path are on the same floor
+function areOnSameFloor(path: Node[]): boolean {
+  let onSameFloor: boolean = true;
+  const currentFloor = path[0].floor;
+  for (let i = 0, length = path.length; i < length; i++) {
+    if (currentFloor != path[i].floor) {
+      onSameFloor = false;
+      return onSameFloor;
+    }
+  }
+  return onSameFloor;
+}
+// Gets sequence of floors one must traverse through along a path
 function getFloorSequence(path: Node[]) {
   const floorSequence: number[] = [];
   const segments: Node[][] = getSegments(path);
