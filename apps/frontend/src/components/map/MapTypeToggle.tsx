@@ -21,21 +21,13 @@ function MapTypeToggle(props: mapTypeToggleProps) {
   }
 
   return (
-    <ToggleButton
-      value="3DYes"
-      sx={toggleButtonStyles}
-      selected={selected}
-      onClick={() => {
-        swap();
-
-        // setSelected(!selected);
-      }}
-      // onClick={props.setMapType}
-    >
-      <label className="text-lg font-semibold" style={{ cursor: "pointer" }}>
-        {props.mapType == "3D" ? "2D" : "3D"}
-      </label>
-    </ToggleButton>
+    <div onClick={swap}>
+      <ToggleButton value="3DYes" sx={toggleButtonStyles} selected={selected}>
+        <label className="text-lg font-bold" style={{ cursor: "pointer" }}>
+          {props.mapType == "3D" ? "2D" : "3D"}
+        </label>
+      </ToggleButton>
+    </div>
   );
 }
 
@@ -44,7 +36,7 @@ const toggleButtonStyles = {
   height: "6vh",
   backgroundColor: DesignSystem.primaryColor,
   color: DesignSystem.white,
-  borderRadius: "8px",
+  borderRadius: "6px",
   transition: "transform 0.1s linear",
   "&.MuiToggleButton-root:hover": {
     backgroundColor: DesignSystem.accentColor,
@@ -54,7 +46,7 @@ const toggleButtonStyles = {
     transform: "scale(0.8)",
   },
   "&.Mui-selected": {
-    backgroundColor: DesignSystem.accentColor,
+    backgroundColor: DesignSystem.primaryColor,
     color: DesignSystem.white,
   },
 } as const;

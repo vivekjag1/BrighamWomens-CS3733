@@ -190,21 +190,20 @@ function Home() {
       </div>
     );
 
-  const QRCodeElement = displayQRCode ? (
-    <div className="absolute bottom-[3.5%] right-[8%] z-40">
-      <QRCodeInsert
-        hasPath={hasPath}
-        startNodeID={startNodeID}
-        endNodeID={endNodeID}
-        algorithm={algorithm}
-        setDisplayQRCode={setDisplayQRCode}
-      />
-    </div>
-  ) : (
-    <div className="absolute top-[10%] right-[1.5%] z-40">
-      <QRCodeButton setDisplayQRCode={setDisplayQRCode} />
-    </div>
-  );
+  const QRCodeElement = () =>
+    displayQRCode ? (
+      <div className="absolute bottom-[2.8%] right-[8%] z-40">
+        <QRCodeInsert
+          hasPath={hasPath}
+          startNodeID={startNodeID}
+          endNodeID={endNodeID}
+          algorithm={algorithm}
+          setDisplayQRCode={setDisplayQRCode}
+        />
+      </div>
+    ) : (
+      <></>
+    );
 
   const pathTrailElement =
     mapType == "3D" || path[0].nodeID == "" || areOnSameFloor(path) ? (
@@ -263,7 +262,19 @@ function Home() {
             tripStats={tripStats}
           />
         </div>
-        {hasPath ? QRCodeElement : <></>}
+        {hasPath ? (
+          <>
+            <div className="absolute top-[10%] right-[1.5%] z-40">
+              <QRCodeButton
+                displayQrCode={displayQRCode}
+                setDisplayQRCode={setDisplayQRCode}
+              />
+            </div>
+            <QRCodeElement />
+          </>
+        ) : (
+          <></>
+        )}
         <div className="absolute top-[2%] right-[1.5%]">
           <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
         </div>
