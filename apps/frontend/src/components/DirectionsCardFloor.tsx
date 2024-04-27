@@ -80,12 +80,12 @@ function DirectionsCardFloor(props: Directions) {
 
   return (
     <>
-      <div className={`shadow-md rounded-2xl w-[90%] overflow-hidden m-1`}>
+      <div className={`shadow-md rounded-2xl w-[95%] overflow-hidden`}>
         <div
-          className={`relative border-5 bg-offwhite rounded-t-2xl flex flex-row p-3 w-full`}
+          className={`relative bg-offwhite rounded-t-2xl flex flex-row p-3 w-full`}
           onClick={() => setCollapsed(!collapsed)}
         >
-          <h2>Floor {props.floor}</h2>
+          <h2 className={"font-normal"}>Floor {props.floor} </h2>
           <img
             src={CollapseImg}
             className={`absolute right-5 cursor-pointer w-7 duration-[700ms] ${collapsed ? "rotate-90" : "-rotate-90"}`}

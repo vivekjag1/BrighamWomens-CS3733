@@ -24,7 +24,7 @@ import {
   // StatUnit,
   TripStat,
 } from "common/src/Path.ts";
-import CollapseImg from "../../../assets/collapse.svg";
+import CollapseImg from "../../../assets/collapse-white.svg";
 
 interface NavigationPaneProps {
   nodes: Node[];

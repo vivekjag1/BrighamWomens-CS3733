@@ -45,26 +45,29 @@ function MobileDirections() {
   });
 
   return (
-    <div>
-      <div className="flex mt-[2.5rem] text-secondary justify-center">
-        <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
-        <h2
-          style={{
-            fontWeight: 500,
-          }}
-          className={"text-2xl whitespace-nowrap self-center"}
-        >
-          Mobile
-        </h2>
-        <span>&nbsp;</span> {/* Add space */}
-        <h2
-          style={{
-            fontWeight: 100,
-          }}
-          className={"text-2xl whitespace-nowrap self-center"}
-        >
-          Directions
-        </h2>
+    <div className="h-screen m-10 mt-[2.5rem] mb-[2.5rem] align-center justify-center">
+      <div className="flex flex-rowtext-secondary max-w-screen">
+        <div className="flex flex-row gap-4 justify-start">
+          <img className="h-[57px]" src={logo} alt="Logo" />
+          <div className="flex flex-col justify-start">
+            <h2
+              style={{
+                fontWeight: 500,
+              }}
+              className={"whitespace-nowrap"}
+            >
+              Brigham & Women's Hospital
+            </h2>
+            <h2
+              style={{
+                fontWeight: 200,
+              }}
+              className={"text-2xl whitespace-nowrap"}
+            >
+              Directions
+            </h2>
+          </div>
+        </div>
       </div>
       <DirectionsCard
         directions={directions}

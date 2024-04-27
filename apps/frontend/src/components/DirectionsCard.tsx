@@ -22,12 +22,12 @@ function DirectionsCard(props: {
     return (
       <div className="flex w-full justify-around">
         {props.stats.map((stat, index) => (
-          <div className="flex flex-col ">
-            <div key={index} className="flex flex-col items-center">
-              <h2 className="font-medium text-3xl">
+          <div className="flex flex-col">
+            <div key={index} className="flex flex-col items-end">
+              <h2 className="font-normal text-3xl">
                 {stat.unit == StatUnit.Arrival ? arrivalTime : stat.value}
               </h2>
-              <h2>{stat.unit}</h2>
+              <h2 className="font-light">{stat.unit}</h2>
             </div>
           </div>
         ))}
@@ -50,19 +50,19 @@ function DirectionsCard(props: {
 
   return (
     <div
-      className={`mt-[1rem] overflow-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
+      className={`flex flex-col gap-2 items-center overflow-hidden transition-height ease-in-out duration-500 ${props.hasPath ? "max-h-[70vh]" : "max-h-[0]"}`}
     >
       <div
-        className={`flex flex-col items-center m-[1rem] border-5 bg-offwhite rounded-2xl drop-shadow-lg p-4 w-[90%] overflow-hidden`}
+        className={`flex flex-col mt-[1rem] items-center bg-offwhite rounded-2xl shadow-md p-3 w-[100%] overflow-hidden`}
         onClick={() => props.setIsCollapsed(!props.isCollapsed)}
         style={{ cursor: "pointer" }}
       >
         <TripStats stats={props.stats} />
       </div>
       <div
-        className={`overflow-y-auto transition-height ease-in-out duration-500 ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[50vh]"}`}
+        className={`overflow-y-auto transition-height ease-in-out duration-500 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[50vh]"}`}
       >
-        <div className={`flex flex-col items-center`}>
+        <div className={`flex flex-col items-start gap-2 mb-[0.5rem]`}>
           {props.directions.map((directions, index) => (
             <DirectionsCardFloor
               key={index}
