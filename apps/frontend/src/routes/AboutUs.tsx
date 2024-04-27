@@ -6,7 +6,6 @@ import mattImage from "../../assets/employees/matt-brown.jpeg";
 // import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // import Button from '@mui/material/Button';
 // import Tooltip from '@mui/material/Tooltip';
-// import taehaImage from '../../assets/people/Taeha.png';
 import andyImage from "../../assets/employees/andy-truong.jpeg";
 import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
 import ademImage from "../../assets/employees/adem.jpeg";
