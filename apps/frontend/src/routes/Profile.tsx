@@ -67,7 +67,7 @@ export default function Profile() {
                 {" "}
                 Completed Service Requests
               </h1>
-              <hr className="pl-96 pr-96 " />
+              <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
               <CustomCardContent></CustomCardContent>
             </div>
           </Card>
