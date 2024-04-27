@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   ListItemIcon,
   Button,
+  Box,
 } from "@mui/material";
 import {
   ExpandMore,
@@ -83,7 +84,7 @@ function NodeFilterDropdown({
   return (
     <FormControl
       size="small"
-      sx={{ minWidth: 240, fontFamily: "Poppins, sans-serif" }}
+      sx={{ minWidth: 176, fontFamily: "Poppins, sans-serif" }}
     >
       <Select
         multiple
@@ -95,7 +96,7 @@ function NodeFilterDropdown({
           </div>
         )}
         displayEmpty
-        className="bg-gray-50 h-10"
+        className="bg-gray-50 h-[2.4rem]"
         sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
         <MenuItem onClick={() => toggleSubMenu("floor")}>
@@ -181,29 +182,37 @@ function NodeFilterDropdown({
             primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
           />
         </MenuItem>
-        {openSubMenu === "type" &&
-          types.map((type) => (
-            <MenuItem
-              key={type}
-              value={type}
-              sx={{ pl: 3 }}
-              onClick={() =>
-                handleFilterChange(type, filterByType, setFilterByType)
-              }
-            >
-              <Checkbox
-                size="small"
-                checked={filterByType.includes(type)}
-                onChange={() =>
+
+        <Box
+          sx={{
+            maxHeight: 300,
+            overflow: "auto",
+          }}
+        >
+          {openSubMenu === "type" &&
+            types.map((type) => (
+              <MenuItem
+                key={type}
+                value={type}
+                sx={{ pl: 3 }}
+                onClick={() =>
                   handleFilterChange(type, filterByType, setFilterByType)
                 }
-              />
-              <ListItemText
-                primary={type}
-                primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
-              />
-            </MenuItem>
-          ))}
+              >
+                <Checkbox
+                  size="small"
+                  checked={filterByType.includes(type)}
+                  onChange={() =>
+                    handleFilterChange(type, filterByType, setFilterByType)
+                  }
+                />
+                <ListItemText
+                  primary={type}
+                  primaryTypographyProps={{ fontFamily: "Poppins, sans-serif" }}
+                />
+              </MenuItem>
+            ))}
+        </Box>
 
         <hr className="mx-auto w-4/5" />
         <MenuItem

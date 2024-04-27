@@ -129,7 +129,7 @@ function ServiceFilterDropdown({
           </div>
         )}
         displayEmpty
-        className="bg-gray-50 h-10"
+        className="bg-gray-50 h-[2.4rem]"
         sx={{ fontFamily: "Poppins, sans-serif", borderRadius: 2 }}
       >
         <MenuItem onClick={() => toggleSubMenu("employee")}>
