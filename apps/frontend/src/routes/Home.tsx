@@ -13,6 +13,9 @@ import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/map/StackedMaps.tsx";
 import "../components/map/styles/StackedMaps.css";
+import { Directions, TripStat } from "common/src/Path.ts";
+import QRCodeInsert from "../components/QRCodeInsert.tsx";
+import QRCodeButton from "../components/map/QRCodeButton.tsx";
 /*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
 
 function Home() {
@@ -25,6 +28,7 @@ function Home() {
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
   const [mapType, setMapType] = useState("2D");
   const [hasPath, setHasPath] = useState<boolean>(false);
+  const [displayQRCode, setDisplayQRCode] = useState<boolean>(false);
   const [directions, setDirections] = useState<Directions[]>([]);
   const [tripStats, setTripStats] = useState<TripStat[]>([]);
 
@@ -100,6 +104,7 @@ function Home() {
     setGlowSequence([]);
     setAlgorithm("A-Star");
     setHasPath(false);
+    setDisplayQRCode(false);
   }
 
   // Swaps the start and end locations in navigation pane
@@ -185,6 +190,22 @@ function Home() {
       </div>
     );
 
+  const QRCodeElement = displayQRCode ? (
+    <div className="absolute bottom-[3.5%] right-[8%] z-40">
+      <QRCodeInsert
+        hasPath={hasPath}
+        startNodeID={startNodeID}
+        endNodeID={endNodeID}
+        algorithm={algorithm}
+        setDisplayQRCode={setDisplayQRCode}
+      />
+    </div>
+  ) : (
+    <div className="absolute top-[10%] right-[1.5%] z-40">
+      <QRCodeButton setDisplayQRCode={setDisplayQRCode} />
+    </div>
+  );
+
   return (
     <div className="relative bg-offwhite z-0">
       <div
@@ -228,6 +249,7 @@ function Home() {
             tripStats={tripStats}
           />
         </div>
+        {hasPath ? QRCodeElement : <></>}
       </TransformWrapper>
       {floorSelectorElement}
       <div className="absolute top-[2%] right-[1.5%]">

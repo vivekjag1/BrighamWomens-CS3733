@@ -63,13 +63,13 @@ function DirectionsCardFloor(props: Directions) {
         return null;
     }
     return (
-      <div className="flex flex-row gap-2 items-start text-wrap">
+      <div className="flex flex-row bg-white p-2 gap-2 items-center text-wrap">
         {icon}
         <h2
           className={
             props.type == DirectionType.Start || props.type == DirectionType.End
-              ? "font-bold pb-1"
-              : "pb-1"
+              ? "font-medium text-sm"
+              : "font-light text-sm"
           }
         >
           {props.msg}
@@ -79,37 +79,34 @@ function DirectionsCardFloor(props: Directions) {
   }
 
   return (
-    <>
-      <div className={`shadow-md rounded-2xl w-[90%] overflow-hidden m-1`}>
-        <div
-          className={`relative border-5 bg-offwhite rounded-t-2xl flex flex-row p-3 w-full`}
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <h2>Floor {props.floor}</h2>
-          <img
-            src={CollapseImg}
-            className={`absolute right-5 cursor-pointer w-7 duration-[700ms] ${collapsed ? "rotate-90" : "-rotate-90"}`}
-            onClick={() => setCollapsed(!collapsed)}
-          />
-        </div>
-        <motion.div
-          id="container"
-          className={`pl-1 pr-1`}
-          animate={{
-            height: collapsed ? 0 : "auto",
-            transition: {
-              type: "linear",
-              stiffness: 100,
-              damping: 20,
-              duration: 0.7,
-            },
-          }}
-          style={{ overflow: "hidden" }}
-        >
-          {props.directions.map(DirectionStep)}
-        </motion.div>
+    <div className={`shadow-md rounded-2xl w-[98%] overflow-hidden`}>
+      <div
+        className={`relative bg-white rounded-t-2xl flex flex-row p-3 w-full`}
+        onClick={() => setCollapsed(!collapsed)}
+        style={{ cursor: "pointer" }}
+      >
+        <h2 className={"font-normal"}>Floor {props.floor} </h2>
+        <img
+          src={CollapseImg}
+          className={`absolute right-5 cursor-pointer w-7 duration-[700ms] ${collapsed ? "rotate-90" : "-rotate-90"}`}
+        />
       </div>
-    </>
+      <motion.div
+        id="container"
+        animate={{
+          height: collapsed ? 0 : "auto",
+          transition: {
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            duration: 0.7,
+          },
+        }}
+        style={{ overflow: "hidden" }}
+      >
+        {props.directions.map(DirectionStep)}
+      </motion.div>
+    </div>
   );
 }
 
