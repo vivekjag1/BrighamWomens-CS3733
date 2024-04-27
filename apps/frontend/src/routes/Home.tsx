@@ -195,6 +195,7 @@ function Home() {
         startNodeID={startNodeID}
         endNodeID={endNodeID}
         algorithm={algorithm}
+        setDisplayQRCode={setDisplayQRCode}
       />
     </div>
   ) : (

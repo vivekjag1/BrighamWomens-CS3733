@@ -35,14 +35,12 @@ function MobileDirections() {
         .then((response) => {
           setDirections(response.data.directions);
           setTripStats(response.data.tripStats);
-          console.log(directions);
-          console.log(tripStats);
         })
         .catch(console.error);
     }
 
     getPath();
-  });
+  }, []);
 
   return (
     <div className="h-screen m-10 mt-[2.5rem] mb-[2.5rem] align-center justify-center">

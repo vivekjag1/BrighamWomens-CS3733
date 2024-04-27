@@ -8,6 +8,7 @@ function QRCodeInsert(props: {
   endNodeID: string;
   algorithm: string;
   hasPath: boolean;
+  setDisplayQRCode: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   //const canvas = document.getElementById('canvas');
   const [imgUrl, setImgUrl] = useState<string>("");
@@ -46,6 +47,7 @@ function QRCodeInsert(props: {
             color: DesignSystem.primaryColor,
           }}
           src={imgUrl}
+          onClick={() => props.setDisplayQRCode(false)}
         ></img>
       </a>
     );
