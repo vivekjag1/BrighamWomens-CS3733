@@ -43,6 +43,7 @@ const EmployeeTable = () => {
   };
 
   async function downloadFiles() {
+    setFileModal(false);
     const token = await getAccessTokenSilently();
     const retFromAPI = await MakeProtectedGetRequest(
       APIEndpoints.employeeDownload,
@@ -113,9 +114,6 @@ const EmployeeTable = () => {
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="flex flex-column sm:flex-row flex-wrap space-y-2 sm:space-y-0 items-center justify-between pb-2">
-                <label htmlFor="table-search" className="sr-only">
-                  Search
-                </label>
                 {authorizedStatus && (
                   <div>
                     <ButtonBlue
@@ -127,6 +125,9 @@ const EmployeeTable = () => {
                     </ButtonBlue>
                   </div>
                 )}
+                <label htmlFor="table-search" className="sr-only">
+                  Search
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                     <svg
