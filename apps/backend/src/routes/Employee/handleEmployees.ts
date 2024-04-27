@@ -3,8 +3,8 @@ import multer from "multer";
 //import { FileAttributes } from "common/src/APICommon.ts";
 import { PrismaClient, Employee } from "database";
 const prisma = new PrismaClient();
-import { readEmployeeFile } from "../fileInput/file.ts";
-import client from "../bin/database-connection.ts";
+import { readEmployeeFile } from "../../fileInput/file.ts";
+import client from "../../bin/database-connection.ts";
 // import { EmployeeType } from "common/src/EmployeeType.ts";
 
 const router: Router = express.Router();

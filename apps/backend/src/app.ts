@@ -20,12 +20,14 @@ import securityRequest from "./routes/securityRequest.ts";
 import { auth } from "express-oauth2-jwt-bearer";
 import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
 import updateNodes from "./routes/map/updateNodes.ts";
-import handleEmployees from "./routes/handleEmployees.ts";
-import employeeDownload from "./routes/employeeDownload.ts";
+import handleEmployees from "./routes/Employee/handleEmployees.ts";
+import employeeDownload from "./routes/Employee/employeeDownload.ts";
 import makeNodes from "./routes/map/makeNodes.ts";
 import deleteNodes from "./routes/map/deleteNodes.ts";
 import countNodes from "./routes/map/CountNodes.ts";
 import createEdges from "./routes/map/createEdges.ts";
+import findEmployee from "./routes/Employee/findEmployee.ts";
+
 const app: Express = express(); // Setup the backend
 import createMultipleNodes from "./routes/map/createMutlipleNodes.ts";
 
@@ -81,8 +83,8 @@ app.use(APIEndpoints.makeEmployee, createUser);
 app.use(APIEndpoints.countNodes, countNodes);
 app.use(APIEndpoints.createEdge, createEdges);
 app.use(APIEndpoints.createManyNodes, createMultipleNodes);
-// app.use(APIEndpoints.deleteManyNodes, deleteManyNodes);
-// app.use(APIEndpoints.createNode, createNode);
+app.use(APIEndpoints.fetchUser, findEmployee);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

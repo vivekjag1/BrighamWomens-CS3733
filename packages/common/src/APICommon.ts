@@ -28,7 +28,8 @@ export class APIEndpoints {
   static readonly countNodes: string = "/api/map/countNodes";
   static readonly createEdge: string = "/api/map/createEdges";
   static readonly createManyNodes: string = "/api/map/createManyNodes";
-  static readonly deleteManyNodes: string = "api/map/deleteManyNodes";
+  static readonly deleteManyNodes: string = "/api/map/deleteManyNodes";
+  static readonly fetchUser: string = "/api/employee/getUser";
 }
 
 export class FileAttributes {

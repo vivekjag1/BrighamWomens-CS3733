@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Card, CardContent, styled } from "@mui/material";
-// import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
-import ButtonBlue from "../components/ButtonBlue.tsx";
-import background from "../../assets/hero/bwh-exterior-default.png";
+// import { useProfile } from "../useProfile.ts";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import { useEffect } from "react";
 
 const CustomCollapse = Collapse as React.FC<CollapseProps>;
 
@@ -17,18 +18,42 @@ const CustomCardContent = styled(CardContent)({
 });
 
 export default function Profile() {
-  const { user } = useAuth0();
+  const [open] = React.useState(true);
+  const { getAccessTokenSilently, user } = useAuth0();
+  const [role, setRole] = React.useState<string>();
+  const [position, setPosition] = React.useState<string>();
+  // const [employee, setEmployee] = useState<Employee>();
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const token = await getAccessTokenSilently();
+        if (!user) {
+          console.log("no user");
+          return;
+        } else console.log(user);
 
-  const [open, setOpen] = React.useState(false);
+        const userData = {
+          userName: user!.name,
+        };
+        const res = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
+        setRole(res.data.role);
+        setPosition(res.data.position);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    }
+    getUser();
+  }, [getAccessTokenSilently, user]);
 
-  const toggleOpen = () => setOpen((cur) => !cur);
+  // console.log(emp);
 
+  // console.log(emp.position);
   return (
     <div className="bg-offwhite h-screen">
-      <div
-        className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center blur-sm"
-        style={{ backgroundImage: `url(${background})` }}
-      ></div>
       <div className="flex justify-center">
         {/*First profile section*/}
         <div className="flex flex-col">
@@ -36,7 +61,7 @@ export default function Profile() {
             className="shadow-xl drop-shadow m-4"
             sx={{ borderRadius: "20px" }}
           >
-            <div className="w-[20vw] h-[94vh] bg-white rounded-[30px] ">
+            <div className="w-[20vw] h-[94vh] bg-white rounded-[30px]">
               <CustomCardContent>
                 <div className="w-full h-full flex justify-center ">
                   <img
@@ -56,23 +81,22 @@ export default function Profile() {
                 <div className="inline-flex items-center justify-center w-full">
                   <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
                   <div className="absolute px-2 -translate-x-1/2 bg-white left-1/2 dark:bg-gray-900">
-                    <span className="shrink px-1 pb-1 "> Information</span>
+                    <span className="shrink px-1 pb-1 color:red">
+                      {" "}
+                      Information
+                    </span>
                   </div>
                 </div>
-                <label className="text-xl text-center">Role</label>
+                <label className="text-xl text-center">
+                  {" "}
+                  Account type: {role}
+                </label>
+                <label className="text-xl text-center">
+                  Position: {position}
+                </label>
                 <label className=" text-center">{user!.email}</label>
-
                 <div className="inline-flex items-center justify-center w-full">
                   <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
-                </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <ButtonBlue
-                    onClick={toggleOpen}
-                    style={{ width: "8rem" }}
-                    className={"justify-items-center"}
-                  >
-                    View Requests
-                  </ButtonBlue>
                 </div>
               </div>
             </div>
@@ -91,7 +115,21 @@ export default function Profile() {
                   Completed Service Requests
                   <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                 </h1>
-                <CustomCardContent> </CustomCardContent>
+                <CustomCardContent>
+                  {/*<PieChart*/}
+                  {/*  series={[*/}
+                  {/*    {*/}
+                  {/*      data: [*/}
+                  {/*        { id: 0, value: 10, label: 'series A' },*/}
+                  {/*        { id: 1, value: 15, label: 'series B' },*/}
+                  {/*        { id: 2, value: 20, label: 'series C' },*/}
+                  {/*      ],*/}
+                  {/*    },*/}
+                  {/*  ]}*/}
+                  {/*  width={400}*/}
+                  {/*  height={200}*/}
+                  {/*/>*/}
+                </CustomCardContent>
               </div>
             </Card>
           </CustomCollapse>
