@@ -28,7 +28,7 @@ function QRCodeInsert(props: {
       await QRCode.toDataURL(mobileURL.href, {
         color: {
           dark: DesignSystem.primaryColor,
-          light: "#0000",
+          light: "#FFF",
         },
       }).then((res) => (imgUrl = res));
       return imgUrl;
@@ -38,18 +38,16 @@ function QRCodeInsert(props: {
 
   if (props.hasPath) {
     return (
-      <a href={mobileURL!.toString()} target="_blank">
-        <img
-          alt="qrcode"
-          style={{
-            border: "5px solid",
-            boxShadow: "5px 5px 5px",
-            color: DesignSystem.primaryColor,
-          }}
-          src={imgUrl}
-          onClick={() => props.setDisplayQRCode(false)}
-        ></img>
-      </a>
+      <img
+        alt="qrcode"
+        style={{
+          border: "5px solid",
+          boxShadow: "5px 5px 5px",
+          color: DesignSystem.primaryColor,
+        }}
+        src={imgUrl}
+        onClick={() => props.setDisplayQRCode(false)}
+      ></img>
     );
   }
   return <></>;

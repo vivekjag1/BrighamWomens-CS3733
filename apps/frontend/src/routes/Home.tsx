@@ -13,7 +13,6 @@ import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/map/StackedMaps.tsx";
 import "../components/map/styles/StackedMaps.css";
-import { Directions, TripStat } from "common/src/Path.ts";
 import QRCodeInsert from "../components/QRCodeInsert.tsx";
 import QRCodeButton from "../components/map/QRCodeButton.tsx";
 /*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
