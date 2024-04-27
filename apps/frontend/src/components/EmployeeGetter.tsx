@@ -27,12 +27,40 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "./useToast.tsx";
 
+import andyImage from "../../assets/employees/andy-truong.jpeg";
+import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
+import ademImage from "../../assets/employees/adem.jpeg";
+import suliImage from "../../assets/employees/sulaiman.jpeg";
+import frankyImage from "../../assets/employees/franky.jpeg";
+import colinImage from "../../assets/employees/colin.jpeg";
+import griffinImage from "../../assets/employees/griffin-brown.jpeg";
+import taehaImage from "../../assets/employees/taeha-song.jpeg";
+import wongImage from "../../assets/employees/wilsonwong.jpg";
+import mattImage from "../../assets/employees/matt-brown.jpeg";
+import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
+import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+
 interface EmployeeGetterProps {
   uploadTriggered: boolean;
   filterBySearch: string;
   filterByPosition: string[];
   filterByRole: string[];
 }
+
+const definedEmployees = [
+  { name: "Daniel Gorbunov ", imageSrc: danielImage },
+  { name: "Matthew Brown", imageSrc: mattImage },
+  { name: "Andy Truong", imageSrc: andyImage },
+  { name: "Vivek Jagadeesh", imageSrc: vivekImage },
+  { name: "Mohamed Adem Djadid", imageSrc: ademImage },
+  { name: "Sulaiman Moukheiber ", imageSrc: suliImage },
+  { name: "Francesco Di Mise", imageSrc: frankyImage },
+  { name: "Colin Masucci", imageSrc: colinImage },
+  { name: "Griffin Brown", imageSrc: griffinImage },
+  { name: "Taeha Song", imageSrc: taehaImage },
+  { name: "Joseph Cardarelli", imageSrc: josephImage },
+  { name: "Wilson Wong", imageSrc: wongImage },
+];
 
 export function EmployeeGetter({
   uploadTriggered,
@@ -208,6 +236,13 @@ export function EmployeeGetter({
     }
   };
 
+  function getEmployeeImageSrc(employeeName: string) {
+    const employee = definedEmployees.find(
+      (definedEmployee) => definedEmployee.name.trim() === employeeName.trim(),
+    );
+    return employee ? employee.imageSrc : undefined;
+  }
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer className="shadow-md">
@@ -287,9 +322,13 @@ export function EmployeeGetter({
                   <TableCell style={{ width: "35ch", maxWidth: "35ch" }}>
                     <div className="flex items-center whitespace-nowrap">
                       <Avatar
-                        src={`../../assets/employees/${employee.profilePicture}.jpeg`}
+                        {...(getEmployeeImageSrc(employee.name)
+                          ? { src: getEmployeeImageSrc(employee.name) }
+                          : {})}
                         alt={`${employee.name} image`}
-                      />
+                      >
+                        {employee.name.charAt(0)}
+                      </Avatar>
                       <Typography
                         component="div"
                         variant="body2"
