@@ -2,27 +2,26 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { MenuItem, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useGraphNodes } from "./useGraphNodes.ts";
 
-interface NodeDropdownProps {
+interface CustomDropdownProps {
   value: string;
   onChange: (newValue: string) => void;
+  options: string[];
   label?: string;
   sx?: SxProps<Theme>;
   className?: string;
   disabled?: boolean;
 }
 
-const NodeDropdown = ({
+const CustomDropdown = ({
   value,
   onChange,
+  options,
   label,
   sx,
   className,
   disabled,
-}: NodeDropdownProps) => {
-  const nodes = useGraphNodes();
-
+}: CustomDropdownProps) => {
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     newValue: { label: string } | null,
@@ -30,7 +29,7 @@ const NodeDropdown = ({
     onChange(newValue ? newValue.label : "");
   };
 
-  const selectedValue = nodes.find((node) => node.longName === value)
+  const selectedValue = options.find((option) => option === value)
     ? { label: value }
     : null;
 
@@ -38,13 +37,14 @@ const NodeDropdown = ({
     <Autocomplete
       disablePortal
       id="combo-box-location"
-      options={nodes.map((node) => ({ label: node.longName }))}
+      options={options.map((option) => ({ label: option }))}
       sx={{
         ...sx,
         "& .MuiAutocomplete-input": {
           fontSize: ".8rem",
           whiteSpace: "pre-wrap",
           fontFamily: "Poppins, sans-serif",
+          height: "1.4rem",
         }, // smaller, wrap, poppins font
       }}
       className={className}
@@ -83,4 +83,4 @@ const NodeDropdown = ({
   );
 };
 
-export default NodeDropdown;
+export default CustomDropdown;
