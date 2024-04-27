@@ -13,7 +13,7 @@ import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
 import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/map/StackedMaps.tsx";
 import "../components/map/styles/StackedMaps.css";
-/*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
+import PathTrail from "../components/breadcrumb/PathTrail.tsx";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -23,6 +23,7 @@ function Home() {
   const [endNodeID, setEndNodeID] = useState(INITIAL_PATH[0].nodeID);
   const [algorithm, setAlgorithm] = useState("A-Star");
   const [glowSequence, setGlowSequence] = useState<number[]>([]);
+  const [floorSequence, setFloorSequence] = useState<number[]>([]);
   const [mapType, setMapType] = useState("2D");
   const [hasPath, setHasPath] = useState<boolean>(false);
   const [directions, setDirections] = useState<Directions[]>([]);
@@ -71,13 +72,11 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setPath(response.data.path);
-        console.log(path);
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
-
         setDirections(response.data.directions);
         setTripStats(response.data.tripStats);
-
         setGlowSequence(getFloorSequence(response.data.path).slice(1));
+        setFloorSequence(getFloorSequence(response.data.path));
         setHasPath(true);
       })
       .catch(console.error);
@@ -233,9 +232,9 @@ function Home() {
       <div className="absolute top-[2%] right-[1.5%]">
         <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
       </div>
-      {/*<div className="absolute top-[2%] left-[45%]">
-        <PathTrail floorSequence={glowSequence} />
-      </div>*/}
+      <div className="absolute top-[2%] left-[45%]">
+        <PathTrail floorSequence={floorSequence} />
+      </div>
     </div>
   );
 }
@@ -253,7 +252,7 @@ const contentStyles = {
   justifyContent: "center",
 } as const;
 
-// Gets sequence of floor one must traverse through along a path
+// Gets sequence of floors one must traverse through along a path
 function getFloorSequence(path: Node[]) {
   const floorSequence: number[] = [];
   const segments: Node[][] = getSegments(path);

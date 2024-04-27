@@ -6,13 +6,13 @@ interface breadcrumbProps {
 function Breadcrumb(props: breadcrumbProps) {
   return (
     <motion.div
-      className="flex justify-center items-center gap-4 w-[200px] h-[50px] border border-gray-200 rounded-lg bg-gray-50"
+      className="flex justify-center items-center h-[2.5vw] border border-gray-200 rounded-lg bg-gray-50 p-6 drop-shadow-lg"
       initial={{ scaleX: 0, transformOrigin: "center" }}
       animate={{ scaleX: 1 }}
       transition={{ duration: 1, ease: "easeInOut", delay: 0.5 }}
     >
       <motion.div
-        className="flex justify-center items-center gap-4"
+        className="flex justify-center items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
