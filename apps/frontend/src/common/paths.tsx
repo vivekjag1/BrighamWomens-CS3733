@@ -14,7 +14,7 @@ const paths = {
   SECURITY_REQUEST: "/home/services/security-request",
   SERVICE_LOG: "/home/services/data",
   EMPLOYEE_LOG: "/home/employee/data",
-  MOBILE_DIRECTIONS: "/home/mobile",
+  MOBILE_DIRECTIONS: "/mobile",
 };
 
 export default paths;

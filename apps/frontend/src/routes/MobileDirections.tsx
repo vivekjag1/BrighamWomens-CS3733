@@ -2,6 +2,7 @@ import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect, useState } from "react";
 import { Directions, TripStat } from "common/src/Path.ts";
+import DirectionsCard from "../components/DirectionsCard.tsx";
 
 function MobileDirections() {
   const [directions, setDirections] = useState<Directions[]>([]);
@@ -42,7 +43,19 @@ function MobileDirections() {
     getPath();
   });
 
-  return <div></div>;
+  return (
+    <div>
+      <DirectionsCard
+        directions={directions}
+        stats={tripStats}
+        isCollapsed={false}
+        setIsCollapsed={() => {
+          console.log;
+        }}
+        hasPath={true}
+      />
+    </div>
+  );
 }
 
 export default MobileDirections;
