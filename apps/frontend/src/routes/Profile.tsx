@@ -3,6 +3,8 @@ import { Button, Card, CardContent, TextField, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect } from "react";
 import { Employee } from "database";
@@ -73,6 +75,24 @@ export default function Profile() {
     await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
     showToast("Password Changed!", "success");
   };
+
+  // const getAllServiceReqs = async () => {
+  //   const token = await getAccessTokenSilently();
+  //   const requests = await MakeProtectedGetRequest(
+  //     APIEndpoints.serviceGetRequests,
+  //     token,
+  //   );
+  //   return requests.data;
+  // };
+  //take it away colin!
+  // const filterServiceReqs = async () => {
+  //   const allRequests = await getAllServiceReqs();
+  //   const filteredServiceReqs = allRequests.filter((employee: Employee) => {
+  //     user!.name === employee.name;
+  //   });
+  //   return filteredServiceReqs;
+  // };
+
   // const [employee, setEmployee] = useState<Employee>();
   useEffect(() => {
     async function getUser() {
