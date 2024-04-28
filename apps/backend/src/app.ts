@@ -7,6 +7,7 @@ import mapDownload from "./routes/map/mapDownload.ts";
 import pathfindingAPI from "./routes/navigation/navigate.ts";
 import deleteUser from "./routes/accounts/deleteUser.ts";
 import createUser from "./routes/accounts/createUser.ts";
+import changePassword from "./routes/accounts/changePassword.ts";
 
 import handleServiceRequests from "./routes/handleServiceRequest.ts";
 import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
@@ -84,6 +85,7 @@ app.use(APIEndpoints.countNodes, countNodes);
 app.use(APIEndpoints.createEdge, createEdges);
 app.use(APIEndpoints.createManyNodes, createMultipleNodes);
 app.use(APIEndpoints.fetchUser, findEmployee);
+app.use(APIEndpoints.changePassword, changePassword);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

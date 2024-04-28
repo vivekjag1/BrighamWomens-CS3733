@@ -30,6 +30,7 @@ export class APIEndpoints {
   static readonly createManyNodes: string = "/api/map/createManyNodes";
   static readonly deleteManyNodes: string = "/api/map/deleteManyNodes";
   static readonly fetchUser: string = "/api/employee/getUser";
+  static readonly changePassword: string = "/api/employee/changePassword";
 }
 
 export class FileAttributes {
