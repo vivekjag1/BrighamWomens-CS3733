@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getFloorNumber } from "../../common/PathUtilities.ts";
 import { Node } from "database";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
-import { DesignSystem } from "../../common/StylingCommon";
+import { ButtonStyling, DesignSystem } from "../../common/StylingCommon";
 import "./styles/FloorSelector.css";
 
 interface floorSelectorProps {
@@ -18,23 +18,24 @@ function FloorSelector(props: floorSelectorProps) {
   const [activeMap, setActiveMap] = useState(0);
   const ToggleButtonGroupStyles = {
     backgroundColor: DesignSystem.primaryColor,
-    borderRadius: "8px",
+    borderRadius: "6px",
     width: "5.5vh",
   } as const;
 
   const ToggleButtonStyles = {
     color: DesignSystem.white,
     fontFamily: DesignSystem.fontFamily,
-    fontSize: "1.10rem",
-    fontWeight: "normal",
+    fontSize: "1.25rem",
+    fontWeight: "light",
     height: "5.5vh",
-    borderRadius: "8px",
+    borderRadius: "6px",
     "&:hover": {
-      backgroundColor: DesignSystem.accentColor,
+      backgroundColor: ButtonStyling.blueButtonHover,
     },
     "&.Mui-selected, &.Mui-selected:hover": {
-      backgroundColor: DesignSystem.accentColor,
-      color: "#FFFFFF",
+      backgroundColor: ButtonStyling.blueButtonClicked,
+      color: "white",
+      fontWeight: "medium",
     },
   } as const;
 
@@ -53,12 +54,12 @@ function FloorSelector(props: floorSelectorProps) {
           sx={ToggleButtonStyles}
           value="3"
           disabled={!relevantFloors.includes(3)}
-          selected={props.activeFloor === 3}
+          selected={props.activeFloor == 3}
           onClick={() => {
             props.onClick(3);
             props.updateGlowSequence(3);
           }}
-          className={props.glowSequence[0] === 3 ? "pulseAnimation" : ""}
+          className={props.glowSequence[0] == 3 ? "pulseAnimation" : ""}
         >
           3
         </ToggleButton>
@@ -72,12 +73,12 @@ function FloorSelector(props: floorSelectorProps) {
           }}
           value="2"
           disabled={!relevantFloors.includes(2)}
-          selected={props.activeFloor === 2}
+          selected={props.activeFloor == 2}
           onClick={() => {
             props.onClick(2);
             props.updateGlowSequence(2);
           }}
-          className={props.glowSequence[0] === 2 ? "pulseAnimation" : ""}
+          className={props.glowSequence[0] == 2 ? "pulseAnimation" : ""}
         >
           2
         </ToggleButton>
@@ -91,12 +92,12 @@ function FloorSelector(props: floorSelectorProps) {
           }}
           value="1"
           disabled={!relevantFloors.includes(1)}
-          selected={props.activeFloor === 1}
+          selected={props.activeFloor == 1}
           onClick={() => {
             props.onClick(1);
             props.updateGlowSequence(1);
           }}
-          className={props.glowSequence[0] === 1 ? "pulseAnimation" : ""}
+          className={props.glowSequence[0] == 1 ? "pulseAnimation" : ""}
         >
           1
         </ToggleButton>
@@ -110,12 +111,12 @@ function FloorSelector(props: floorSelectorProps) {
           }}
           value="-1"
           disabled={!relevantFloors.includes(-1)}
-          selected={props.activeFloor === -1}
+          selected={props.activeFloor == -1}
           onClick={() => {
             props.onClick(-1);
             props.updateGlowSequence(-1);
           }}
-          className={props.glowSequence[0] === -1 ? "pulseAnimation" : ""}
+          className={props.glowSequence[0] == -1 ? "pulseAnimation" : ""}
         >
           L1
         </ToggleButton>
@@ -129,12 +130,12 @@ function FloorSelector(props: floorSelectorProps) {
           }}
           value="-2"
           disabled={!relevantFloors.includes(-2)}
-          selected={props.activeFloor === -2}
+          selected={props.activeFloor == -2}
           onClick={() => {
             props.onClick(-2);
             props.updateGlowSequence(-2);
           }}
-          className={props.glowSequence[0] === -2 ? "pulseAnimation" : ""}
+          className={props.glowSequence[0] == -2 ? "pulseAnimation" : ""}
         >
           L2
         </ToggleButton>

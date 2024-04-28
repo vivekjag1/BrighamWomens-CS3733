@@ -8,7 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { useContext } from "react";
-import { DesignSystem } from "../../common/StylingCommon.ts";
+import { ButtonStyling, DesignSystem } from "../../common/StylingCommon.ts";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -17,21 +17,21 @@ const ToggleButtonStyles = {
   fontFamily: DesignSystem.fontFamily,
   fontSize: "1.10rem",
   fontWeight: "normal",
-  height: "5vh",
-  width: "5vh",
-  borderRadius: "10px",
+  height: "5.5vh",
+  width: "5.5vh",
+  borderRadius: "6px",
   "&:hover": {
-    backgroundColor: DesignSystem.accentColor,
+    backgroundColor: ButtonStyling.blueButtonHover,
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: DesignSystem.accentColor,
-    color: "#FFFFFF",
+    backgroundColor: ButtonStyling.blueButtonClicked,
+    color: "white",
   },
 } as const;
 
 const ToggleButtonGroupStyles = {
   backgroundColor: DesignSystem.primaryColor,
-  borderRadius: "10px",
+  borderRadius: "6px",
 } as const;
 
 export default function ToggleButtons(props: {

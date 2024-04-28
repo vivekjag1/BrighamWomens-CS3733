@@ -15,6 +15,7 @@ const paths = {
   SERVICE_LOG: "/home/services/data",
   EMPLOYEE_LOG: "/home/employee/data",
   PROFILE: "/home/profile",
+  MOBILE_DIRECTIONS: "/mobile",
 };
 
 export default paths;
