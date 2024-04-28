@@ -262,8 +262,8 @@ export default function Credit() {
                 >
                   <div className="flex items-center justify-between w-full">
                     <Link
-                      to={paths.ABOUT_US}
-                      onClick={() => paths.ABOUT_US}
+                      to={paths.ABOUT}
+                      onClick={() => paths.ABOUT}
                       className="flex items-center flex-row"
                     >
                       <ArrowBackIosIcon />

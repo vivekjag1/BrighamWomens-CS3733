@@ -81,8 +81,8 @@ export default function AboutUs() {
                       About Us
                     </h1>
                     <Link
-                      to={paths.CREDIT}
-                      onClick={() => paths.CREDIT}
+                      to={paths.CREDITS}
+                      onClick={() => paths.CREDITS}
                       className="flex items-center flex-row"
                     >
                       <span className="absolute right-[30px]"> Credits</span>

@@ -79,7 +79,7 @@ function Hero() {
           <div className="flex gap-[3vh]">
             <div
               className="text-white cursor-pointer animate-underline-white"
-              onClick={() => navigate(paths.MAP_DATA)}
+              onClick={() => navigate(paths.PROFILE)}
             >
               <Tooltip title="Login" placement="top" arrow>
                 <LoginIcon sx={iconStyles} />
@@ -87,7 +87,7 @@ function Hero() {
             </div>
             <div
               className="text-white cursor-pointer animate-underline-white"
-              onClick={() => navigate(paths.ABOUT_US)}
+              onClick={() => navigate(paths.ABOUT)}
             >
               <Tooltip title="About" placement="top" arrow>
                 <InfoIcon sx={iconStyles} />
