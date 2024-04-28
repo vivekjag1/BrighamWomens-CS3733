@@ -7,8 +7,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
+// import PersonIcon from '@mui/icons-material/Person';
 // import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
@@ -19,6 +18,7 @@ import "../animations/yellow-underline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
@@ -74,14 +74,14 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
-  const handleLogout = () => {
-    // logout({returnTo: window.location.origin} );
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
+  // const handleLogout = () => {
+  //   // logout({returnTo: window.location.origin} );
+  //   logout({
+  //     logoutParams: {
+  //       returnTo: window.location.origin,
+  //     },
+  //   });
+  // };
 
   interface NavbarItemProps {
     to: string;
@@ -141,6 +141,29 @@ function NavBar() {
             style={{ transformOrigin: "center" }}
           ></span>
         </Link>
+      </div>
+    );
+  };
+
+  const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
+    return (
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
+        <div className="flex flex-row text-white items-center justify-center">
+          <img
+            className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4"
+            src={user?.image}
+            alt="user profile picture"
+          />
+          <h2
+            style={{
+              opacity: collapsed ? 0 : 100,
+              fontWeight: 500,
+            }}
+            className="text-lg whitespace-nowrap"
+          >
+            {user?.name}
+          </h2>
+        </div>
       </div>
     );
   };
@@ -241,43 +264,19 @@ function NavBar() {
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
-          {/*<NavbarItem*/}
-          {/*  to={paths.ABOUT_US}*/}
-          {/*  activePage={activePage}*/}
-          {/*  setActivePage={setActivePage}*/}
-          {/*  Icon={GroupsIcon}*/}
-          {/*  label="About"*/}
-          {/*  labelLight="Us"*/}
-          {/*  collapsed={isHidingNavBarInfo}*/}
-          {/*/>*/}
         </div>
 
         {/* Sign out */}
         {isAuthenticated ? (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.HERO}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LogoutIcon}
-                label={"Sign out"}
-                collapsed={isHidingNavBarInfo}
-                callback={handleLogout}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         ) : (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.MAP_DATA}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LoginIcon}
-                label={"Sign in"}
-                collapsed={isHidingNavBarInfo}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         )}
