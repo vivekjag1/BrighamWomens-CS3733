@@ -87,6 +87,7 @@ function MapEdit() {
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
+
   useEffect(() => {
     const fetchData = async () => {
       let activeFloorString;
@@ -333,19 +334,28 @@ function MapEdit() {
   }
 
   async function handleRevertAll() {
-    // const queryParams =
-    // const lastSaveNodes = await axios.get(APIEndpoints.mapGetNodes);
-    // const lastSaveEdges = await axios.get(APIEndpoints.mapGetEdges);
-    //
-    //
-    // const restoreNodes:Map<string, Node> = new Map();
-    //
-    // for(let i = 0; i < lastSaveNodes.data.length; i++){
-    //   restoreNodes.set(lastSaveNodes.data[i].nodeID, lastSaveNodes.data[i]);
-    // }
-    //
-    // setNodes(restoreNodes);
-    // setEdges(lastSaveEdges.data);
+    const queryParams = {
+      [NavigateAttributes.floorKey]: activeFloor.toString(),
+    };
+    const params = new URLSearchParams(queryParams);
+    const nodeURL = new URL(APIEndpoints.mapGetNodes, window.location.origin);
+    const edgeURL = new URL(APIEndpoints.mapGetEdges, window.location.origin);
+
+    nodeURL.search = params.toString();
+
+    const lastSaveNodes: Node[] = (await axios.get(nodeURL.toString())).data;
+    const lastSavedEdges: Edge[] = (await axios.get(edgeURL.toString())).data;
+    console.log(lastSaveNodes);
+    console.log(lastSavedEdges);
+
+    const restoreNodes: Map<string, Node> = new Map();
+
+    for (let i = 0; i < lastSaveNodes.length; i++) {
+      restoreNodes.set(lastSaveNodes[i].nodeID, lastSaveNodes[i]);
+    }
+
+    setNodes(restoreNodes);
+    setEdges(lastSavedEdges);
   }
 
   function handleUndo() {
