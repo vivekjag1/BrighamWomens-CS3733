@@ -59,7 +59,6 @@ function MapEdit() {
     new Map(),
   );
   const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
-  const [deletedNodes] = useState<Map<string, Node>>(new Map());
 
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
@@ -83,8 +82,6 @@ function MapEdit() {
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
   const { showToast } = useToast();
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
-  const [nodeSaved, setNodeSaved] = useState<boolean>(false);
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -203,7 +200,6 @@ function MapEdit() {
       }
 
       setSelectedNodeID(nodeID);
-      setNodeSaved(false);
     }
   }
 
@@ -227,8 +223,6 @@ function MapEdit() {
     //de-render the node
     if (nodeID) {
       const temporaryNodes = new Map(nodes);
-      const tempDeletedNodes = new Map(deletedNodes);
-      tempDeletedNodes.set(nodeID, nodes.get(nodeID)!);
       temporaryNodes.delete(nodeID);
       setNodes(temporaryNodes);
       const selectedNodeEdges: Edge[] = edges.filter(
@@ -273,19 +267,7 @@ function MapEdit() {
     if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
-      // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
-      }
-      // if(selectedAction === Action.DeleteNode){
-      //   removeNode();
-      //
-      //
-      // }
-
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
     }
   }
 
@@ -296,6 +278,10 @@ function MapEdit() {
       Array.from(addedNodes.values()),
       token,
     );
+    // console.log(addedNodes);
+    addedNodes.clear();
+    // console.log(addedNodes);
+
     const sendUpdatedNodes = {
       nodes: Array.from(updatedNodes.values()),
       //nodes: Array.from(updatedNodes.values()),
@@ -309,6 +295,8 @@ function MapEdit() {
       );
     }
 
+    updatedNodes.clear();
+
     const sendDeletedNodes = {
       nodes: nodesForDeletion,
     };
@@ -317,6 +305,8 @@ function MapEdit() {
       sendDeletedNodes,
       token,
     );
+
+    setNodesForDeletion([]);
 
     const sendNewEdges = {
       edges: addedEdges,
@@ -329,6 +319,8 @@ function MapEdit() {
         token,
       );
     }
+
+    setAddedEdges([]);
 
     showToast("Changes Saved!", "success");
   }
