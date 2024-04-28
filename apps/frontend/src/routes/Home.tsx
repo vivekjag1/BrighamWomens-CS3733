@@ -209,14 +209,12 @@ function Home() {
     mapType == "3D" || path[0].nodeID == "" || areOnSameFloor(path) ? (
       <></>
     ) : (
-      <div className="absolute top-[1%] left-[50%]">
-        <PathTrail
-          activeFloor={activeFloor}
-          floorSequence={floorSequence}
-          onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
-          updateGlowSequence={updateGlowSequence}
-        />
-      </div>
+      <PathTrail
+        activeFloor={activeFloor}
+        floorSequence={floorSequence}
+        onClick={(selectedFloor: number) => setActiveFloor(selectedFloor)}
+        updateGlowSequence={updateGlowSequence}
+      />
     );
 
   return (
@@ -280,8 +278,9 @@ function Home() {
         </div>
       </TransformWrapper>
       {floorSelectorElement}
-
-      {pathTrailElement}
+      <div className="absolute top-[1%] left-[50%] translate-x-[-50%]">
+        {pathTrailElement}
+      </div>
     </div>
   );
 }
