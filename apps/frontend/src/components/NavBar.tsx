@@ -7,6 +7,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+
 // import Fab from "@mui/material/Fab";
 import { Card, CardContent } from "@mui/material";
 // import PersonIcon from '@mui/icons-material/Person';
@@ -17,7 +18,8 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
-import ButtonRed from "./ButtonRed.tsx";
+import ButtonBlue from "./ButtonBlue.tsx";
+// import ButtonRed from "./ButtonRed.tsx";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -161,9 +163,11 @@ function NavBar() {
         <Card className="mb-4" style={{ color: "#F6BD39" }}>
           <CardContent>
             <Link to={paths.PROFILE}>
-              <label className="flex text-center text-2xl">View Profile</label>
+              <ButtonBlue className="flex text-center text-2xl ">
+                View Profile
+              </ButtonBlue>
             </Link>
-            <ButtonRed onClick={handleLogout}>Log Out</ButtonRed>
+            <ButtonBlue onClick={handleLogout}>Log Out</ButtonBlue>
           </CardContent>
         </Card>
 
