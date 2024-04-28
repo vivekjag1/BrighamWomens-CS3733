@@ -333,7 +333,19 @@ function MapEdit() {
   }
 
   async function handleRevertAll() {
-    console.log();
+    // const queryParams =
+    // const lastSaveNodes = await axios.get(APIEndpoints.mapGetNodes);
+    // const lastSaveEdges = await axios.get(APIEndpoints.mapGetEdges);
+    //
+    //
+    // const restoreNodes:Map<string, Node> = new Map();
+    //
+    // for(let i = 0; i < lastSaveNodes.data.length; i++){
+    //   restoreNodes.set(lastSaveNodes.data[i].nodeID, lastSaveNodes.data[i]);
+    // }
+    //
+    // setNodes(restoreNodes);
+    // setEdges(lastSaveEdges.data);
   }
 
   function handleUndo() {
