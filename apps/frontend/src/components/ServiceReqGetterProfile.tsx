@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-//import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { Employee, ServiceRequest } from "database";
 import dayjs from "dayjs";
@@ -22,7 +21,6 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-//import EmployeeDropdown from "./EmployeeDropdown.tsx";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
 
@@ -33,11 +31,7 @@ export function ServiceReqGetterProfile(props: {
 }) {
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  //const [filterBySearch, setFilterBySearch] = useState("");
   const [filterByEmployee, setFilterByEmployee] = useState<string[]>([]);
-  //const [filterByPriority, setFilterByPriority] = useState<string[]>([]);
-  //const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
-  //const [filterByType, setFilterByType] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
   const [priorityOrder, setPriorityOrder] = useState<"desc" | "asc" | "">("");
   const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
@@ -149,48 +143,6 @@ export function ServiceReqGetterProfile(props: {
     }
   }
 
-  // const handleEmployeeChange = async (
-  //   newAssignedTo: string,
-  //   serviceID: number,
-  // ) => {
-  //   const updatedRequests = requestData.map((request) => {
-  //     if (request.serviceID === serviceID) {
-  //       return {
-  //         ...request,
-  //         assignedTo: newAssignedTo,
-  //         status: newAssignedTo !== "Unassigned" ? "Assigned" : "Unassigned",
-  //       };
-  //     }
-  //     return request;
-  //   });
-  //
-  //   setRequestData(updatedRequests);
-  //
-  //   const updateData = {
-  //     serviceID: serviceID,
-  //     assignedTo: newAssignedTo,
-  //     ...(newAssignedTo !== "Unassigned" && { status: "Assigned" }),
-  //   };
-  //
-  //   try {
-  //     const token = await getAccessTokenSilently();
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //     const response = await axios.patch(
-  //       APIEndpoints.servicePutRequests,
-  //       updateData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     );
-  //     showToast("Assigned employee updated successfully!", "success");
-  //   } catch (error) {
-  //     console.error("Error updating assigned employee", error);
-  //     showToast("Failed to update assigned employee!", "error");
-  //   }
-  // };
-
   useEffect(() => {
     let data = requestData;
 
@@ -230,13 +182,6 @@ export function ServiceReqGetterProfile(props: {
 
     setFilteredData(sortedData);
   }, [props.employee, requestData, filterByEmployee, sortOrder, priorityOrder]);
-
-  // function truncateString(str: string, num: number) {
-  //   if (str.length <= num) {
-  //     return str;
-  //   }
-  //   return str.slice(0, num) + "...";
-  // }
 
   const handleRowClick = (request: ServiceRequest) => {
     setSelectedRow(request);
@@ -416,44 +361,6 @@ export function ServiceReqGetterProfile(props: {
                         </span>
                       </div>
                     </TableCell>
-
-                    {/*<TableCell style={{ width: "15ch", maxWidth: "15ch" }}>*/}
-                    {/*  {truncateString(request.requestingUsername, 15)}*/}
-                    {/*</TableCell>*/}
-                    {/*<TableCell style={{ width: "15ch", maxWidth: "15ch" }}>*/}
-                    {/*  {truncateString(request.location, 15)}*/}
-                    {/*</TableCell>*/}
-                    {/*<TableCell style={{ width: "20ch", maxWidth: "20ch" }}>*/}
-                    {/*  {request.description && request.description.trim() !== ""*/}
-                    {/*    ? truncateString(request.description, 18)*/}
-                    {/*    : "N/A"}*/}
-                    {/*</TableCell>*/}
-                    {/*<TableCell style={{ width: "30ch", maxWidth: "30ch" }}>*/}
-                    {/*  <div onClick={(e) => e.stopPropagation()}>*/}
-                    {/*    <EmployeeDropdown*/}
-                    {/*      value={request.assignedTo}*/}
-                    {/*      onChange={(newAssignedTo) =>*/}
-                    {/*        handleEmployeeChange(*/}
-                    {/*          newAssignedTo,*/}
-                    {/*          request.serviceID,*/}
-                    {/*        )*/}
-                    {/*      }*/}
-                    {/*      disableClearable={true}*/}
-                    {/*      disabled={false}*/}
-                    {/*    />*/}
-                    {/*  </div>*/}
-                    {/*</TableCell>*/}
-                    {/*<TableCell style={{ width: "15ch", maxWidth: "15ch" }}>*/}
-                    {/*  {truncateString(*/}
-                    {/*    dayjs*/}
-                    {/*      .tz(*/}
-                    {/*        request.requestedTime.toString(),*/}
-                    {/*        "America/New_York",*/}
-                    {/*      )*/}
-                    {/*      .toString(),*/}
-                    {/*    16,*/}
-                    {/*  )}*/}
-                    {/*</TableCell>*/}
                   </TableRow>
                 ))}
               {emptyRows > 0 && (
