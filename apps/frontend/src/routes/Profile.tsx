@@ -18,6 +18,7 @@ import Modal from "@mui/material/Modal";
 import { ClearIcon } from "@mui/x-date-pickers/icons";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
+import { ServiceRequestGetter } from "../components/ServiceRequestGetter.tsx";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -339,6 +340,7 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col ">
+            {/*Charts Sections*/}
             <CustomCollapse in={open}>
               <Card
                 className="shadow-xl drop-shadow m-4"
@@ -347,7 +349,7 @@ export default function Profile() {
                 <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
-                    Completed Service Requests
+                    Charts and Graphs
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent></CustomCardContent>
@@ -355,6 +357,7 @@ export default function Profile() {
               </Card>
             </CustomCollapse>
 
+            {/*Table Section*/}
             <CustomCollapse in={open}>
               <Card
                 className="shadow-xl drop-shadow m-4"
@@ -363,11 +366,13 @@ export default function Profile() {
                 <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
-                    Pending Service Requests
+                    Personal Service Requests
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
 
-                  <CustomCardContent></CustomCardContent>
+                  <CustomCardContent>
+                    <ServiceRequestGetter />
+                  </CustomCardContent>
                 </div>
               </Card>
             </CustomCollapse>
