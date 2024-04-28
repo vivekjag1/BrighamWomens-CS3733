@@ -15,6 +15,7 @@ const CustomCollapse = Collapse as React.FC<CollapseProps>;
 import Modal from "@mui/material/Modal";
 import { ClearIcon } from "@mui/x-date-pickers/icons";
 import CheckIcon from "@mui/icons-material/Check";
+import { useToast } from "../components/useToast.tsx";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -25,6 +26,8 @@ const CustomCardContent = styled(CardContent)({
 });
 
 export default function Profile() {
+  const { showToast } = useToast();
+
   const { logout } = useAuth0();
   const handleLogout = () => {
     logout({
@@ -52,8 +55,10 @@ export default function Profile() {
     const token = await getAccessTokenSilently();
     const account = {
       email: user!.email,
+      userName: user!.name,
     };
     await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, account, token);
+    showToast("Account deleted!", "success");
     handleLogout();
   };
 
@@ -63,8 +68,10 @@ export default function Profile() {
     const tempPW = {
       newPass: password,
       userID: user!.sub,
+      userName: user!.name,
     };
     await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
+    showToast("Password Changed!", "success");
   };
   // const [employee, setEmployee] = useState<Employee>();
   useEffect(() => {
