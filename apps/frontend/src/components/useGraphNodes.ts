@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { createNodes } from "common/src/GraphCommon.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 
 export const useGraphNodes = () => {
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
 
   useEffect(() => {
     async function fetchNodes() {
       const response = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(response.data);
+      let graphNodes: Node[] = response.data;
       graphNodes = graphNodes.filter((node) => node.nodeType !== "HALL");
       graphNodes.sort((a, b) => a.longName.localeCompare(b.longName));
       setNodes(graphNodes);

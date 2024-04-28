@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/bwh-logo-shield.png";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MapIcon from "@mui/icons-material/Map";
@@ -9,9 +9,13 @@ import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+// import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
+import { useIdleTimer } from "react-idle-timer";
+import { useToast } from "./useToast.tsx";
+import "../animations/yellow-underline.css";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -19,6 +23,41 @@ function NavBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
+
+  const [remaining, setRemaining] = useState<number>(0);
+
+  const { showToast } = useToast();
+
+  const onIdle = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
+  const { getRemainingTime } = useIdleTimer({
+    onIdle,
+    timeout: 600_000,
+    throttle: 500,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemaining(Math.ceil(getRemainingTime() / 1000));
+    }, 500);
+    if (remaining <= 30 && remaining != 0) {
+      showToast(
+        "You will be logged out in " + remaining + " seconds due to inactivity",
+        "warning",
+      );
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
   const handleSetIsCollapsed = () => {
     if (isCollapsed) {
       setIsCollapsed(false);
@@ -66,7 +105,7 @@ function NavBar() {
     callback,
   }) => {
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animatedUnderline items-center overflow-hidden">
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animate-underline-yellow items-center overflow-hidden">
         <Link
           to={to}
           className="inline-block"
@@ -117,10 +156,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link
-            to={paths.ABOUT_US}
-            onClick={() => setActivePage(paths.ABOUT_US)}
-          >
+          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -151,7 +187,6 @@ function NavBar() {
             </div>
           </Link>
         </div>
-
         {/* Navbar items */}
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
@@ -206,6 +241,15 @@ function NavBar() {
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
+          {/*<NavbarItem*/}
+          {/*  to={paths.ABOUT_US}*/}
+          {/*  activePage={activePage}*/}
+          {/*  setActivePage={setActivePage}*/}
+          {/*  Icon={GroupsIcon}*/}
+          {/*  label="About"*/}
+          {/*  labelLight="Us"*/}
+          {/*  collapsed={isHidingNavBarInfo}*/}
+          {/*/>*/}
         </div>
 
         {/* Sign out */}

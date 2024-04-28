@@ -3,6 +3,7 @@ import { PrismaClient } from "database";
 import { Graph } from "../../pathfinding/Graph.ts";
 import { NavigateAttributes } from "common/src/APICommon.ts";
 import { PathAlgorithm } from "common/src/Path.ts";
+import { getDirections, getTripStats } from "./TextualDirections.ts";
 
 const router: Router = express.Router();
 const prisma = new PrismaClient();
@@ -40,17 +41,16 @@ router.get("/", async (req, res) => {
     algorithm as PathAlgorithm,
   );
 
-  const pathAsCoords: number[][] = [];
-  for (let i = 0; i < path.length; i++) {
-    pathAsCoords.push([
-      +path[i].xcoord,
-      +path[i].ycoord,
-      Graph.getNumFromFloor(path[i].floor),
-    ]);
-  }
-  console.log(pathAsCoords);
+  const directions = getDirections(path);
+  const tripStats = getTripStats(path);
 
-  res.status(200).json(pathAsCoords);
+  const responseData = {
+    path: path,
+    directions: directions,
+    tripStats: tripStats,
+  };
+
+  res.status(200).json(responseData);
 });
 
 export default router;

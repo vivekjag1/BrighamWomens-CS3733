@@ -21,8 +21,6 @@ export const useEmployees = () => {
           a.name.localeCompare(b.name),
         );
         setEmployees(sortedData);
-
-        console.log("Successfully got data from get request:", res.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }

@@ -1,6 +1,6 @@
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
+import type { Node } from "database";
 import React, {
   Dispatch,
   FormEventHandler,
@@ -8,23 +8,21 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { createNodes } from "common/src/GraphCommon.ts";
 import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
+import { PathAlgorithm, PathType } from "common/src/Path.ts";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import ButtonBlue from "./ButtonBlue.tsx";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-const initialState: PathNodesObject = {
+/*const initialState: PathType = {
   startNode: "",
   endNode: "",
-};
+};*/
 
 const textFieldStyles = {
   width: "17vw",
@@ -34,12 +32,12 @@ const defaultPathAlgorithm: PathAlgorithm = "A-Star";
 
 function NavigateCard(props: {
   onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
+  pathNodeObject: PathType;
+  setPathNodeObject: Dispatch<SetStateAction<PathType>>;
   onReset: FormEventHandler;
 }) {
   // Populates selection menu from database
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
   const [pathAlgorithm, setPathAlgorithm] =
     useState<string>(defaultPathAlgorithm);
 
@@ -52,7 +50,7 @@ function NavigateCard(props: {
     //get the nodes from the db
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
+      let graphNodes: Node[] = rawNodes.data;
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),
@@ -70,10 +68,10 @@ function NavigateCard(props: {
       endNode: start,
     });
   }
-  function reset() {
+  /* function reset() {
     props.setPathNodeObject(initialState);
     setPathAlgorithm(defaultPathAlgorithm);
-  }
+  }*/
 
   return (
     <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
@@ -109,7 +107,7 @@ function NavigateCard(props: {
             <NodeDropdown
               value={props.pathNodeObject.endNode}
               sx={textFieldStyles}
-              label="End Location"
+              label="En"
               onChange={(newValue: string) =>
                 props.setPathNodeObject((currentPathNode) => ({
                   ...currentPathNode,
@@ -127,7 +125,7 @@ function NavigateCard(props: {
             <PathAlgorithmDropdown
               value={pathAlgorithm}
               sx={{ width: "10vw" }}
-              label="Algorithm"
+              label="Algorithms"
               onChange={setPathAlgorithm}
             ></PathAlgorithmDropdown>
             <input
@@ -150,9 +148,6 @@ function NavigateCard(props: {
             <IconButton onClick={swapLocations}>
               <SwapVertIcon />
             </IconButton>
-          </div>
-          <div className="flex justify-end mb-[-0.1rem]">
-            <CustomClearButtonSmall onClick={reset} type="reset" />
           </div>
         </div>
       </form>

@@ -2,21 +2,38 @@ import React, { createContext, useEffect, useState } from "react";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
 import { Node, Edge } from "database";
 import axios from "axios";
-import MapEditImage from "../components/MapEditImage.tsx";
-import MapFloorSelect from "../components/MapFloorSelect.tsx";
-import MapEditCard from "../components/MapEditCard.tsx";
+import MapEditImage from "../components/map-edit/MapEditImage.tsx";
+import FloorSelector from "../components/map-edit/FloorSelector.tsx";
+import MapEditCard from "../components/map-edit/MapEditCard.tsx";
 import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
+import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+import ButtonBlue from "../components/ButtonBlue.tsx";
+import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
-import AddNodeToolTip from "../components/AddNodeToolTip.tsx";
 
 const defaultFloor: number = 1;
+enum Action {
+  SelectNode = "SelectNode",
+  MoveNode = "MoveNode",
+  CreateNode = "CreateNode",
+  CreateEdge = "CreateEdge",
+  DeleteNode = "DeleteNode",
+}
+
+//merge changes to dev
 
 type MapData = {
   nodes: Map<string, Node>;
   setNodes: React.Dispatch<React.SetStateAction<Map<string, Node>>>;
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
+  selectedNodeID: string | undefined;
+  setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedAction: Action;
 };
 
 export const MapContext = createContext<MapData>({
@@ -26,6 +43,10 @@ export const MapContext = createContext<MapData>({
   edges: [],
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
+  selectedNodeID: undefined,
+  // eslint-disable-next-line no-empty-function
+  setSelectedNodeID: () => {},
+  selectedAction: Action.SelectNode,
 });
 
 const userNodePrefix = "userNode";
@@ -34,30 +55,47 @@ function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [addedNodes, setAddedNodes] = useState<Map<string, Node>>(new Map());
+  const [updatedNodes, setUpdatedNodes] = useState<Map<string, Node>>(
+    new Map(),
+  );
+  const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
+  const [deletedNodes, setDeletedNodes] = useState<Map<string, Node>>(
+    new Map(),
+  );
 
-  const [addingNode, setAddingNode] = useState<boolean>(false);
-
-  const contextValue = { nodes, setNodes, edges, setEdges };
-
-  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
+  //const [addingNode, setAddingNode] = useState<boolean>(false);
+  //const [addingEdge, setAddingEdge] = useState<boolean>(false);
+  const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedNodeID, setSelectedNodeID] = useState<string | undefined>(
     undefined,
   );
+  const [selectedAction, setSelectedAction] = useState<Action>(
+    Action.SelectNode,
+  );
 
+  const contextValue = {
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    selectedNodeID,
+    setSelectedNodeID,
+    selectedAction,
+  };
+
+  const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
-
+  const [numUserEdges, setNumUserEdges] = useState<number>(1);
   const { showToast } = useToast();
-
-  // const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
+  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
   const [nodeSaved, setNodeSaved] = useState<boolean>(false);
-
   const { getAccessTokenSilently } = useAuth0();
-  let token = "";
-
   useEffect(() => {
     const fetchData = async () => {
       let activeFloorString;
-
       switch (activeFloor) {
         case -1:
           activeFloorString = "L1";
@@ -68,7 +106,6 @@ function MapEdit() {
         default:
           activeFloorString = activeFloor.toString();
       }
-
       try {
         const queryParams = {
           [NavigateAttributes.floorKey]: activeFloorString,
@@ -118,124 +155,235 @@ function MapEdit() {
     };
 
     fetchData();
-  }, [activeFloor]);
+  }, [activeFloor, getAccessTokenSilently]);
 
-  function updateNodeField(field: keyof Node, value: string) {
+  function updateNodeField(field: keyof Node, value: string | number) {
     const node = nodes.get(selectedNodeID!);
     if (node) {
       updateNode({ ...node, [field]: value });
     }
   }
 
+  const saveButtonStyles = {
+    width: "10vw",
+  };
+
   function updateNode(node: Node) {
+    console.log("inside updateNode");
     const tempNodes = new Map(nodes);
+    const tempUpdatedNodes = new Map(updatedNodes);
     if (selectedNodeID) {
       tempNodes.set(selectedNodeID, node);
+      tempUpdatedNodes.set(selectedNodeID, node);
       setNodes(tempNodes);
+      setUpdatedNodes(tempUpdatedNodes);
     }
   }
 
-  // function addNode(node: Node) {
-  //   const tempNodes = new Map(nodes);
-  //   tempNodes.set(node.nodeID, node);
-  //   setNodes(tempNodes);
-  // }
-  //
-  function deleteNode() {
+  async function deleteNode() {
     if (selectedNodeID) {
       const tempNodes = new Map(nodes);
+      const tempDeletedNodes = new Map(deletedNodes);
+      tempDeletedNodes.set(selectedNodeID, nodes.get(selectedNodeID)!);
       tempNodes.delete(selectedNodeID);
       setNodes(tempNodes);
-    }
-  }
+      setDeletedNodes(tempDeletedNodes);
 
-  // function handleNodeClick(nodeID: string) {
-  //   if (cachedNode) {
-  //     if (cachedNode.nodeID == nodeID)
-  //       return; // same node pressed
-  //     else {
-  //       // different node pressed
-  //       if (!nodeSaved) updateNode(cachedNode);
-  //     }
-  //   }
-  //   setSelectedNodeID(nodeID);
-  //   setCachedNode(nodes.get(nodeID));
-  //   setNodeSaved(false);
-  // }
-  function handleNodeClick(nodeID: string) {
-    if (selectedNodeID) {
-      // Update the node if changes were not saved
-      const unsavedNode = nodes.get(selectedNodeID);
-      if (unsavedNode) {
-        updateNode(unsavedNode);
+      if (addedNodes.has(selectedNodeID)) {
+        const tempAddedNodes = new Map(addedNodes);
+        tempAddedNodes.delete(selectedNodeID);
+        setAddedNodes(tempAddedNodes);
+      }
+      if (updatedNodes.has(selectedNodeID)) {
+        const tempUpdatedNodes = new Map(updatedNodes);
+        tempUpdatedNodes.delete(selectedNodeID);
+        setUpdatedNodes(tempUpdatedNodes);
       }
     }
 
-    setSelectedNodeID(nodeID);
+    setSelectedNodeID(undefined);
+    setCachedNode(undefined);
     setNodeSaved(false);
-  }
-  function handleAddNodeButtonClicked() {
-    setAddingNode(!addingNode);
+
+    const selectedNodeEdges: Edge[] = edges.filter(
+      (value) =>
+        value.startNodeID == selectedNodeID ||
+        value.endNodeID == selectedNodeID,
+    );
+
+    const tempRepairedEdges: Edge[] = [];
+    const tempNeighborNodesIDs: string[] = [];
+    for (let i = 0; i < selectedNodeEdges.length; i++) {
+      if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
+      } else {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
+      }
+    }
+
+    for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
+      for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
+        tempRepairedEdges.push({
+          edgeID: tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j],
+          startNodeID: tempNeighborNodesIDs[i],
+          endNodeID: tempNeighborNodesIDs[j],
+        });
+      }
+    }
+
+    const updatedTempEdges = tempRepairedEdges.concat(edges);
+    const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
+    setEdges(updatedTempEdges);
+    setAddedEdges(addedRepairedEdges);
   }
 
-  // function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
-  //   if (addingNode) {
-  //     handleCreateNode(event);
-  //   } else {
-  //     // if node wasn't saved, revert node to cached version
-  //     if (cachedNode && !nodeSaved) {
-  //       updateNode(cachedNode);
-  //     }
-  //
-  //     setSelectedNodeID(undefined);
-  //     setCachedNode(undefined);
-  //     setNodeSaved(false);
-  //   }
-  // }
+  function handleNodeClick(nodeID: string) {
+    if (selectedAction === Action.CreateEdge) {
+      if (!startEdgeNodeID) {
+        setStartEdgeNodeID(nodeID);
+      } else {
+        handleCreateEdge(startEdgeNodeID, nodeID);
+        setStartEdgeNodeID(undefined);
+      }
+    } else if (selectedAction === Action.CreateNode) {
+      if (!startEdgeNodeID) {
+        setStartEdgeNodeID(nodeID);
+      } else {
+        setStartEdgeNodeID(undefined);
+      }
+    } else {
+      if (selectedNodeID) {
+        // Update the node if changes were not saved
+        const unsavedNode = nodes.get(selectedNodeID);
+        if (unsavedNode) {
+          updateNode(unsavedNode);
+        }
+      }
+
+      setSelectedNodeID(nodeID);
+      setNodeSaved(false);
+    }
+  }
+
+  function handleSelectNodeSelected() {
+    setSelectedAction(Action.SelectNode);
+  }
+  function handleMoveNodeSelected() {
+    setSelectedAction(Action.MoveNode);
+  }
+  function handleCreateNodeSelected() {
+    setSelectedAction(Action.CreateNode);
+  }
+  function handleCreateEdgeSelected() {
+    setSelectedAction(Action.CreateEdge);
+    setStartEdgeNodeID(undefined);
+  }
+  function handleDeleteNodeSelected() {
+    setSelectedAction(Action.DeleteNode);
+  }
+
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
-    if (addingNode) {
+    if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
-      if (selectedNodeID && !nodeSaved) {
-        // Prompt user to save changes
-        confirmSaveChanges(); // This function would handle the confirmation logic
-      } else {
-        // No unsaved changes or no node selected
-        setSelectedNodeID(undefined);
-        setNodeSaved(true); // Assume no changes need saving
+      // if node wasn't saved, revert node to cached version
+      if (cachedNode && !nodeSaved) {
+        updateNode(cachedNode);
       }
+
+      setSelectedNodeID(undefined);
+      setCachedNode(undefined);
+      setNodeSaved(false);
     }
   }
 
-  function confirmSaveChanges() {
-    // This could be a modal or simple confirmation box
-    if (
-      window.confirm("You have unsaved changes. Would you like to save them?")
-    ) {
-      handleSave();
-    } else {
-      setSelectedNodeID(undefined);
-      setNodeSaved(true);
+  async function handleSaveAll() {
+    const token = await getAccessTokenSilently();
+    await MakeProtectedPostRequest(
+      APIEndpoints.createNode,
+      Array.from(addedNodes.values()),
+      token,
+    );
+    const sendUpdatedNodes = {
+      nodes: Array.from(updatedNodes.values()),
+      //nodes: Array.from(updatedNodes.values()),
+    };
+
+    if (Array.from(updatedNodes.values()).length != 0) {
+      await MakeProtectedPatchRequest(
+        APIEndpoints.updateNodes,
+        sendUpdatedNodes,
+        token,
+      );
     }
+
+    const sendDeletedNodes = {
+      nodes: Array.from(deletedNodes.values()),
+    };
+    await MakeProtectedPostRequest(
+      APIEndpoints.deleteNode,
+      sendDeletedNodes,
+      token,
+    );
+
+    const sendNewEdges = {
+      edges: addedEdges,
+    };
+
+    if (Array.from(addedEdges.values()).length != 0) {
+      await MakeProtectedPostRequest(
+        APIEndpoints.createEdge,
+        sendNewEdges,
+        token,
+      );
+    }
+
+    showToast("Changes Saved!", "success");
   }
 
   async function handleSave() {
-    token = await getAccessTokenSilently();
-    if (!selectedNodeID) return;
-    await axios
-      .patch(APIEndpoints.updateNodes, nodes.get(selectedNodeID), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        setNodeSaved(true);
-        showToast("Node updated successfully!", "success");
-      })
-      .catch(() => showToast("There was an issue updating this node", "error"));
+    console.log("inside handle save!");
+    console.log("nodes that have been updated", updatedNodes);
+    const token = await getAccessTokenSilently();
+
+    const node = nodes.get(selectedNodeID!);
+
+    if (node!.nodeID.substring(0, 8) != "userNode") {
+      const sendToBackend: Node[] = [];
+      sendToBackend.push(node!);
+      console.log(node);
+      const send = {
+        nodes: sendToBackend,
+      };
+      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, send, token);
+    } else {
+      //cut first 8 characters
+
+      const numNodeRaw = await MakeProtectedGetRequest(
+        APIEndpoints.countNodes,
+        token,
+      );
+
+      // setNumberOfNodes(numNode );
+
+      node!.nodeID =
+        node!.nodeID.substring(0, 8) +
+        (numNodeRaw.data["numNodes"] + addedNodes.size);
+
+      if (node!.shortName == "") {
+        node!.shortName = node!.nodeID;
+      }
+
+      node!.xcoord = Math.round(node!.xcoord);
+      node!.ycoord = Math.round(node!.ycoord);
+
+      //await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
+    }
   }
 
-  const handleCreateNode = (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
+    const token = await getAccessTokenSilently();
+
     // Get coordinates of the click relative to the SVG element
     const svg = (event.target as SVGSVGElement | null)?.ownerSVGElement;
     if (!svg) {
@@ -243,8 +391,8 @@ function MapEdit() {
       return;
     }
     const point = svg.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
+    point.x = Math.round(event.clientX);
+    point.y = Math.round(event.clientY);
 
     const matrix = svg.getScreenCTM();
     if (!matrix) {
@@ -252,14 +400,18 @@ function MapEdit() {
       return;
     }
     const { x, y } = point.matrixTransform(matrix.inverse());
-
-    const xVal = x.toString();
-    const yVal = y.toString();
-    const nodeID = userNodePrefix + numUserNodes;
+    const numNodeRaw = await MakeProtectedGetRequest(
+      APIEndpoints.countNodes,
+      token,
+    );
+    const xVal = Math.round(x);
+    const yVal = Math.round(y);
+    const nodeID =
+      userNodePrefix + (addedNodes.size + numNodeRaw.data["numNodes"] + 1);
     const floor = activeFloor;
     const building = "";
     const nodeType = "";
-    const longName = "";
+    const longName = nodeID;
     const shortName = nodeID;
 
     setNumUserNodes(numUserNodes + 1);
@@ -277,36 +429,88 @@ function MapEdit() {
     };
 
     const tempNodes = new Map(nodes);
+    if (newNode.building == "") {
+      newNode.building = "default building";
+    }
+    if (newNode.nodeType) {
+      newNode.nodeType = "created node";
+    }
+    if (newNode.longName == "") {
+      newNode.longName = newNode.nodeID;
+    }
+    if (newNode.shortName == "") {
+      newNode.shortName = newNode.nodeID;
+    }
+
     tempNodes.set(newNode.nodeID, newNode);
     setNodes(tempNodes);
+    const tempAddedNodes = new Map(addedNodes);
+    tempAddedNodes.set(newNode.nodeID, newNode);
+    setAddedNodes(tempAddedNodes);
     setSelectedNodeID(nodeID);
   };
 
+  function handleCreateEdge(startNodeID: string, endNodeID: string) {
+    const edgeID = startNodeID + "_" + endNodeID;
+
+    setNumUserEdges(numUserEdges + 1);
+
+    // Add new node to the nodes array
+    const newEdge = {
+      edgeID: edgeID,
+      startNodeID: startNodeID,
+      endNodeID: endNodeID,
+    };
+
+    let tempEdges: Edge[] = [newEdge];
+    tempEdges = tempEdges.concat(edges);
+    setEdges(tempEdges);
+    let tempAddedEdges = [newEdge];
+    tempAddedEdges = tempAddedEdges.concat(addedEdges);
+    setAddedEdges(tempAddedEdges);
+  }
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
         <MapEditImage
-          addingNode={addingNode}
+          startEdgeNodeID={startEdgeNodeID}
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
         />
       </MapContext.Provider>
-      <div className="absolute left-[1%] top-[2%]">
+      <div className="absolute left-[1%] top-[1%]">
         <MapContext.Provider value={contextValue}>
           <MapEditCard
-            selectedNodeID={selectedNodeID}
             onSave={handleSave}
             updateNode={updateNodeField}
             deleteNode={deleteNode}
           />
         </MapContext.Provider>
       </div>
-      <div className="fixed right-[2%] bottom-[2%]">
-        <MapFloorSelect activeFloor={activeFloor} onClick={setActiveFloor} />
+      <div className="absolute right-[1.5%] bottom-[2%]">
+        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[2%] bottom-[2%] z-50">
-        <AddNodeToolTip onClicked={handleAddNodeButtonClicked} />
+      <div className="absolute left-[45%] bottom-[2%] z-50">
+        <MapContext.Provider value={contextValue}>
+          <MapEditToolBar
+            SelectNode={handleSelectNodeSelected}
+            MoveNode={handleMoveNodeSelected}
+            CreateNode={handleCreateNodeSelected}
+            CreateEdge={handleCreateEdgeSelected}
+            DeleteNode={handleDeleteNodeSelected}
+          />
+        </MapContext.Provider>
+      </div>
+      <div className="absolute left-[2%] bottom-[2%] z-50 text-sm">
+        <ButtonBlue
+          onClick={handleSaveAll}
+          //disabled={!selectedNodeID}
+          endIcon={<CheckIcon />}
+          style={saveButtonStyles}
+        >
+          Save All
+        </ButtonBlue>
       </div>
     </div>
   );

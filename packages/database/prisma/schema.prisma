@@ -11,8 +11,8 @@ datasource db {
 
 model Node {
   nodeID        String @id
-  xcoord        String
-  ycoord        String
+  xcoord        Int
+  ycoord        Int
   floor         String
   building      String
   nodeType      String
@@ -67,42 +67,42 @@ model MedicineDelivery {
   medicineName      String
   dosage            String
   patientName       String
-  serviceRequest    ServiceRequest @relation(fields: [medicineRequestID], references: [serviceID])
+  serviceRequest    ServiceRequest @relation(fields: [medicineRequestID], references: [serviceID], onDelete: Cascade)
 }
 
 model SecurityService {
   securityID     Int            @id
   securityType   String
   numberPeople   Int
-  serviceRequest ServiceRequest @relation(fields: [securityID], references: [serviceID])
+  serviceRequest ServiceRequest @relation(fields: [securityID], references: [serviceID], onDelete: Cascade)
 }
 
 model SanitationService {
   sanitationID      Int            @id
   sanitationType    String
   requiredEquipment String
-  serviceRequest    ServiceRequest @relation(fields: [sanitationID], references: [serviceID])
+  serviceRequest    ServiceRequest @relation(fields: [sanitationID], references: [serviceID], onDelete: Cascade)
 }
 
 model RoomScheduling {
   reservationID     Int            @id
   reservationReason String
   endTime           DateTime
-  serviceRequest    ServiceRequest @relation(fields: [reservationID], references: [serviceID])
+  serviceRequest    ServiceRequest @relation(fields: [reservationID], references: [serviceID], onDelete: Cascade)
 }
 
 model DeviceDelivery {
   deliveryID     Int            @id
   deviceType     String
   quantity       Int
-  serviceRequest ServiceRequest @relation(fields: [deliveryID], references: [serviceID])
+  serviceRequest ServiceRequest @relation(fields: [deliveryID], references: [serviceID], onDelete: Cascade)
 }
 
 model GiftDelivery {
   giftID         Int            @id
   giftType       String
   senderNote     String
-  serviceRequest ServiceRequest @relation(fields: [giftID], references: [serviceID])
+  serviceRequest ServiceRequest @relation(fields: [giftID], references: [serviceID], onDelete: Cascade)
 }
 
 model Employee {

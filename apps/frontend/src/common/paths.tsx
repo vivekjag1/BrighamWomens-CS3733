@@ -4,6 +4,7 @@ const paths = {
   MAP_EDITOR: "/home/edit",
   MAP_DATA: "/home/data",
   ABOUT_US: "/home/about",
+  CREDIT: "/home/credits",
   SERVICES: "/home/services",
   MEDICINE_DELIVERY: "/home/services/medicine-delivery",
   MEDICAL_DEVICE_DELIVERY: "/home/services/medical-device",
@@ -13,6 +14,8 @@ const paths = {
   SECURITY_REQUEST: "/home/services/security-request",
   SERVICE_LOG: "/home/services/data",
   EMPLOYEE_LOG: "/home/employee/data",
+  PROFILE: "/home/profile",
+  MOBILE_DIRECTIONS: "/mobile",
 };
 
 export default paths;

@@ -7,7 +7,6 @@ const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response): Promise<void> {
   const request: RoomReservationType = req.body;
-  console.log(req.body);
   try {
     await prisma.roomScheduling.create({
       data: {

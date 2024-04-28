@@ -1,177 +1,86 @@
-import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import axios from "axios";
-import { GraphNode } from "common/src/GraphNode.ts";
-import React, {
-  Dispatch,
-  FormEventHandler,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { createNodes } from "common/src/GraphCommon.ts";
-import NodeDropdown from "./NodeDropdown.tsx";
-import { PathAlgorithm, PathNodesObject } from "common/src/Path.ts";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-import IconButton from "@mui/material/IconButton";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PathAlgorithmDropdown from "./PathAlgorithmDropdown.tsx";
-import CustomClearButtonSmall from "./CustomClearButtonSmall.tsx";
-import LocationIcon from "@mui/icons-material/LocationOn";
+import DirectionsCardFloor from "./DirectionsCardFloor";
 
-const initialState: PathNodesObject = {
-  startNode: "",
-  endNode: "",
-};
-
-const textFieldStyles = {
-  width: "17vw",
-};
-
-const defaultPathAlgorithm: PathAlgorithm = "A-Star";
+import {
+  //DirectionMessage,
+  Directions,
+  //DirectionType,
+  StatUnit,
+  TripStat,
+} from "common/src/Path.ts";
 
 function DirectionsCard(props: {
-  onSubmit: FormEventHandler;
-  pathNodeObject: PathNodesObject;
-  setPathNodeObject: Dispatch<SetStateAction<PathNodesObject>>;
-  onReset: FormEventHandler;
+  directions: Directions[];
+  stats: TripStat[];
+  isCollapsed: boolean;
+  setIsCollapsed?: (state: boolean) => void;
+  hasPath: boolean;
 }) {
-  // Populates selection menu from database
-  const [nodes, setNodes] = useState<GraphNode[]>([]);
-  const [pathAlgorithm, setPathAlgorithm] =
-    useState<string>(defaultPathAlgorithm);
-  //const [clickedNode, setClickedNode] = useState<GraphNode>();
+  function TripStats(props: { stats: TripStat[] }) {
+    const minsStat = props.stats.find((stat) => stat.unit == StatUnit.Mins);
+    const arrivalTime = minsStat ? getArrivalTime(minsStat.value) : "";
 
-  function getNodeID(value: string): string {
-    const foundNode = nodes.find((node) => node.longName === value);
-    return foundNode ? foundNode.nodeID : "";
-  }
-
-  useEffect(() => {
-    //get the nodes from the db
-    async function getNodesFromDb() {
-      const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
-      let graphNodes = createNodes(rawNodes.data);
-      graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
-      graphNodes = graphNodes.sort((a, b) =>
-        a.longName.localeCompare(b.longName),
-      );
-      setNodes(graphNodes);
-      return graphNodes;
-    }
-    getNodesFromDb().then();
-  }, []);
-
-  function swapLocations() {
-    const start = props.pathNodeObject.startNode;
-    props.setPathNodeObject({
-      startNode: props.pathNodeObject.endNode,
-      endNode: start,
-    });
-  }
-  function reset() {
-    props.setPathNodeObject(initialState);
-    setPathAlgorithm(defaultPathAlgorithm);
+    return (
+      <div className="flex w-full justify-around">
+        {props.stats.map((stat, index) => (
+          <div className="flex flex-col">
+            <div key={index} className="flex flex-col items-end">
+              <h2 className="font-normal text-3xl">
+                {stat.unit == StatUnit.Arrival ? arrivalTime : stat.value}
+              </h2>
+              <h2 className="font-light">{stat.unit}</h2>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
-  /*function setStartNodeLabel(): string {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.longName;
-    } else {
-      return pathNodeObject.startNode;
-    }
-  }
-  function setStartNodeValue() {
-    if (props.clickedNodeStart) {
-      return props.clickedNodeStart.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.startNode);
-    }
-  }
+  function getArrivalTime(minToAdd: string) {
+    const currentTime = new Date();
 
-  function setEndNodeLabel() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.longName;
-    } else {
-      return pathNodeObject.endNode;
+    const newTime = new Date(
+      currentTime.getTime() + parseInt(minToAdd) * 60000,
+    );
+
+    let hours = newTime.getHours();
+    const minutes = newTime.getMinutes().toString().padStart(2, "0"); // padding with 0
+
+    // 12-hour time adjustment
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours == 0) {
+      hours = 12;
     }
+
+    return `${hours.toString()}:${minutes}`;
   }
-  function setEndNodeValue() {
-    if (props.clickedNodeEnd) {
-      return props.clickedNodeEnd.nodeID;
-    } else {
-      return getNodeID(pathNodeObject.endNode);
-    }
-  }*/
 
   return (
-    <div>
-      <div className="border-5 flex p-4 bg-white rounded-2xl shadow-xl">
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1 items-center">
-            <MyLocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.startNode}
-              sx={textFieldStyles}
-              label="Start Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  startNode: newValue,
-                }))
-              }
+    <div
+      className={`flex flex-col items-center bg-offwhite shadow-md rounded-2xl overflow-hidden transition-height ease-in-out duration-500 
+      ${props.hasPath ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}
+      `}
+    >
+      <div
+        className={`flex flex-col items-center bg-white rounded-2xl shadow-md w-[100%] ${props.hasPath ? "max-h-[60vh] p-3" : "max-h-[0] p-0"}`}
+        onClick={() => {
+          if (props.setIsCollapsed) props.setIsCollapsed(!props.isCollapsed);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        <TripStats stats={props.stats} />
+      </div>
+      <div
+        className={`overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[60vh]"}`}
+      >
+        <div className={`flex flex-col items-start gap-2 mt-2 mb-[0.5rem]`}>
+          {props.directions.map((directions, index) => (
+            <DirectionsCardFloor
+              key={index}
+              floor={directions.floor}
+              directions={directions.directions}
             />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.startLocationKey}`}
-              value={getNodeID(props.pathNodeObject.startNode)}
-            />
-          </div>
-          <MoreVertIcon style={{ color: "#012D5A" }} />
-          <div className="flex flex-row gap-1 items-center">
-            <LocationIcon style={{ color: "#012D5A", marginRight: "5" }} />
-            <NodeDropdown
-              value={props.pathNodeObject.endNode}
-              sx={textFieldStyles}
-              label="End Location"
-              onChange={(newValue: string) =>
-                props.setPathNodeObject((currentPathNode) => ({
-                  ...currentPathNode,
-                  endNode: newValue,
-                }))
-              }
-            />
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.endLocationKey}`}
-              value={getNodeID(props.pathNodeObject.endNode)}
-            />
-          </div>
-          <div className="ml-[2rem] flex flex-row mt-4 justify-between">
-            <PathAlgorithmDropdown
-              value={pathAlgorithm}
-              sx={{ width: "10vw" }}
-              label="Algorithm"
-              onChange={setPathAlgorithm}
-            ></PathAlgorithmDropdown>
-            <input
-              type="hidden"
-              name={`${NavigateAttributes.algorithmKey}`}
-              value={pathAlgorithm}
-            />
-            {/*<NavigateButton type="submit" className={"flex"} />*/}
-          </div>
-        </div>
-
-        <div className="flex flex-col ml-[0.2rem] items-center">
-          <div className="flex-grow flex justify-center items-center">
-            <IconButton onClick={swapLocations}>
-              <SwapVertIcon />
-            </IconButton>
-          </div>
-          <div className="flex justify-end mb-[-0.1rem]">
-            <CustomClearButtonSmall onClick={reset} type="reset" />
-          </div>
+          ))}
         </div>
       </div>
     </div>

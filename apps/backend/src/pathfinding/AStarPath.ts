@@ -1,27 +1,25 @@
 import { Path } from "./Path.ts";
 import { Graph } from "./Graph.ts";
-import { GraphNode } from "common/src/GraphNode.ts";
+import { Node } from "database";
+import { ComplexPath } from "./ComplexPath.ts";
 
-export class AStarPath implements Path {
+export class AStarPath extends ComplexPath implements Path {
   startNodeID: string;
   endNodeID: string;
   parentGraph: Graph;
-  path: GraphNode[];
+  path: Node[];
 
   constructor(startNodeID: string, endNodeID: string, parentGraph: Graph) {
+    super(startNodeID, endNodeID, parentGraph);
     this.startNodeID = startNodeID;
     this.endNodeID = endNodeID;
     this.parentGraph = parentGraph;
     this.path = this.createPath(startNodeID, endNodeID);
   }
 
-  getPath(): GraphNode[] {
-    return this.path;
-  }
-
   //Returns the shortest path between startNode and endNode using the A* algorithm
-  public createPath(startNodeID: string, endNodeID: string): GraphNode[] {
-    const path: GraphNode[] = [];
+  public createPath(startNodeID: string, endNodeID: string): Node[] {
+    const path: Node[] = [];
     const searchList: AStarNode[] = [new AStarNode(startNodeID, null, 0, 0)];
     let numOfOpenNodes: number = 1;
     let searching: boolean = true;
@@ -65,8 +63,8 @@ export class AStarPath implements Path {
             }
           }
 
-          console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
-          console.log(path);
+          // console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
+          // console.log(path);
         } else {
           //get G, H, and F values of the child node
           const g: number =
@@ -96,25 +94,7 @@ export class AStarPath implements Path {
       numOfOpenNodes -= 1;
     }
 
-    if (searching) {
-      console.log("No A* path found");
-    }
     return path;
-  }
-
-  public distanceBetweenNodes(a: string, b: string): number {
-    const nodeA: GraphNode = this.parentGraph.getNodeWithNodeID(a);
-    const nodeB: GraphNode = this.parentGraph.getNodeWithNodeID(b);
-    if (nodeA.nodeType == "ELEV" && nodeB.nodeType == "ELEV") {
-      return 1000;
-    }
-    if (nodeA.nodeType == "STAI" && nodeB.nodeType == "STAI") {
-      return 2000;
-    }
-    return Math.sqrt(
-      Math.pow(nodeB._xcoord - nodeA._xcoord, 2) +
-        Math.pow(nodeB._ycoord - nodeA._ycoord, 2),
-    );
   }
 
   public getSmallestF(input: AStarNode[]): AStarNode {

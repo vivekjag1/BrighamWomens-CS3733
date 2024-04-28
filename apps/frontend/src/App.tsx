@@ -1,9 +1,9 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import paths from "./common/paths.tsx";
 import routes from "./common/routes.tsx";
 import Layout from "./components/Layout.tsx";
-import Hero from "./routes/Hero.tsx";
+import Hero from "./routes/hero/Hero.tsx";
+import MobileDirections from "./routes/MobileDirections.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +15,10 @@ function App() {
       path: paths.HOME,
       element: <Layout />,
       children: routes,
+    },
+    {
+      path: paths.MOBILE_DIRECTIONS,
+      element: <MobileDirections />,
     },
   ]);
 

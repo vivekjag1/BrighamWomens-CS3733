@@ -6,6 +6,7 @@ export class APIEndpoints {
   static readonly serviceGetRequests: string = "/api/service/getRequests";
   static readonly servicePostRequests: string = "/api/service/postRequests";
   static readonly servicePutRequests: string = "/api/service/putRequests";
+  static readonly serviceDeleteRequests: string = "api/service/deleteRequests";
   static readonly servicePostSecurityRequest: string =
     "/api/service/post/security";
   static readonly navigationRequest: string = "/api/navigation/get";
@@ -22,6 +23,14 @@ export class APIEndpoints {
   static readonly deleteEmployee: string = "/api/employee/delete";
   static readonly makeEmployee: string = "/api/employee/create";
   static readonly createNode: string = "/api/map/createnode";
+  static readonly deleteNode: string = "/api/map/deletenode";
+  static readonly fetchManagementToken: string = "/api/employee/getToken";
+  static readonly countNodes: string = "/api/map/countNodes";
+  static readonly createEdge: string = "/api/map/createEdges";
+  static readonly createManyNodes: string = "/api/map/createManyNodes";
+  static readonly deleteManyNodes: string = "/api/map/deleteManyNodes";
+  static readonly fetchUser: string = "/api/employee/getUser";
+  static readonly changePassword: string = "/api/employee/changePassword";
 }
 
 export class FileAttributes {

@@ -65,4 +65,33 @@ router.patch("/", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  const { serviceID } = req.body.serviceID;
+  try {
+    await client.serviceRequest.delete({
+      where: { serviceID: serviceID },
+    });
+
+    res.json({ message: "Service request deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting service request:", error);
+    res.status(400).json({ message: "Error deleting service request" });
+  }
+});
+
+router.delete("/:serviceID", async (req, res) => {
+  const serviceID = +req.params.serviceID;
+
+  try {
+    await client.serviceRequest.delete({
+      where: { serviceID: serviceID },
+    });
+
+    res.json({ message: "Service request deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting service request:", error);
+    res.status(500).json({ message: "Error deleting service request" });
+  }
+});
+
 export default router;
