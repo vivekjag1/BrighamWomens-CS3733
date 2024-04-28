@@ -14,6 +14,7 @@ import ServicesTable from "../routes/ServicesTable.tsx";
 import EmployeeTable from "../routes/EmployeeTable.tsx";
 import AuthComp from "../components/AuthenticationComponent.tsx";
 import Credit from "../routes/Credit.tsx";
+import Profile from "../routes/Profile.tsx";
 
 const routes = [
   { path: paths.HOME, element: <Home /> },
@@ -22,6 +23,8 @@ const routes = [
   { path: paths.ABOUT_US, element: <AboutUs /> },
   { path: paths.CREDIT, element: <Credit /> },
   { path: paths.SERVICES, element: <AuthComp component={ServiceSelection} /> },
+  { path: paths.PROFILE, element: <AuthComp component={Profile} /> },
+
   {
     path: paths.MEDICINE_DELIVERY,
     element: <AuthComp component={MedicineForm} />,
