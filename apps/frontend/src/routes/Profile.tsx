@@ -3,6 +3,8 @@ import { Button, Card, CardContent, TextField, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect } from "react";
 import { Employee } from "database";
@@ -15,6 +17,8 @@ const CustomCollapse = Collapse as React.FC<CollapseProps>;
 import Modal from "@mui/material/Modal";
 import { ClearIcon } from "@mui/x-date-pickers/icons";
 import CheckIcon from "@mui/icons-material/Check";
+import { useToast } from "../components/useToast.tsx";
+import { ServiceRequestGetter } from "../components/ServiceRequestGetter.tsx";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -25,6 +29,8 @@ const CustomCardContent = styled(CardContent)({
 });
 
 export default function Profile() {
+  const { showToast } = useToast();
+
   const { logout } = useAuth0();
   const handleLogout = () => {
     logout({
@@ -52,8 +58,10 @@ export default function Profile() {
     const token = await getAccessTokenSilently();
     const account = {
       email: user!.email,
+      userName: user!.name,
     };
     await MakeProtectedPostRequest(APIEndpoints.deleteEmployee, account, token);
+    showToast("Account deleted!", "success");
     handleLogout();
   };
 
@@ -63,9 +71,29 @@ export default function Profile() {
     const tempPW = {
       newPass: password,
       userID: user!.sub,
+      userName: user!.name,
     };
     await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
+    showToast("Password Changed!", "success");
   };
+
+  // const getAllServiceReqs = async () => {
+  //   const token = await getAccessTokenSilently();
+  //   const requests = await MakeProtectedGetRequest(
+  //     APIEndpoints.serviceGetRequests,
+  //     token,
+  //   );
+  //   return requests.data;
+  // };
+  //take it away colin!
+  // const filterServiceReqs = async () => {
+  //   const allRequests = await getAllServiceReqs();
+  //   const filteredServiceReqs = allRequests.filter((employee: Employee) => {
+  //     user!.name === employee.name;
+  //   });
+  //   return filteredServiceReqs;
+  // };
+
   // const [employee, setEmployee] = useState<Employee>();
   useEffect(() => {
     async function getUser() {
@@ -312,6 +340,7 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col ">
+            {/*Charts Sections*/}
             <CustomCollapse in={open}>
               <Card
                 className="shadow-xl drop-shadow m-4"
@@ -320,7 +349,7 @@ export default function Profile() {
                 <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
-                    Completed Service Requests
+                    Charts and Graphs
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent></CustomCardContent>
@@ -328,6 +357,7 @@ export default function Profile() {
               </Card>
             </CustomCollapse>
 
+            {/*Table Section*/}
             <CustomCollapse in={open}>
               <Card
                 className="shadow-xl drop-shadow m-4"
@@ -336,11 +366,13 @@ export default function Profile() {
                 <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
-                    Pending Service Requests
+                    Personal Service Requests
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
 
-                  <CustomCardContent></CustomCardContent>
+                  <CustomCardContent>
+                    <ServiceRequestGetter />
+                  </CustomCardContent>
                 </div>
               </Card>
             </CustomCollapse>
