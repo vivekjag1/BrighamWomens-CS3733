@@ -3,11 +3,12 @@ import { DesignSystem } from "../../common/StylingCommon";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 
 function QRCodeButton(props: {
+  displayQrCode: boolean;
   setDisplayQRCode: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div>
-      <Button sx={buttonStyles} onClick={() => props.setDisplayQRCode(true)}>
+    <div onClick={() => props.setDisplayQRCode(!props.displayQrCode)}>
+      <Button sx={buttonStyles}>
         <QrCodeScannerIcon
           style={{
             width: "100%",
@@ -25,7 +26,7 @@ const buttonStyles = {
   height: "6vh",
   backgroundColor: DesignSystem.primaryColor,
   color: DesignSystem.white,
-  borderRadius: "8px",
+  borderRadius: "6px",
   transition: "transform 0.1s linear",
   "&.MuiButton-root:hover": {
     backgroundColor: DesignSystem.accentColor,
