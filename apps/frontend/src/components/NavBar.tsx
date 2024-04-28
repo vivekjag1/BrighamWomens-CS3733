@@ -7,8 +7,8 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import Fab from "@mui/material/Fab";
-
+// import Fab from "@mui/material/Fab";
+import { Card, CardContent } from "@mui/material";
 // import PersonIcon from '@mui/icons-material/Person';
 // import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -17,6 +17,7 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
+import ButtonRed from "./ButtonRed.tsx";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -29,6 +30,13 @@ function NavBar() {
   const [remaining, setRemaining] = useState<number>(0);
 
   const { showToast } = useToast();
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   const onIdle = () => {
     logout({
@@ -150,11 +158,15 @@ function NavBar() {
   const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
-        <Link to={paths.PROFILE}>
-          <Fab variant="extended" className="mt-4 text-center">
-            <label className="flex justify-items-end">View Profile</label>
-          </Fab>
-        </Link>
+        <Card className="mb-4" style={{ color: "#F6BD39" }}>
+          <CardContent>
+            <Link to={paths.PROFILE}>
+              <label className="flex text-center text-2xl">View Profile</label>
+            </Link>
+            <ButtonRed onClick={handleLogout}>Log Out</ButtonRed>
+          </CardContent>
+        </Card>
+
         <div className="flex flex-row text-white items-center justify-center">
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4"
