@@ -29,7 +29,7 @@ function StartEndMarker(props: startEndMarkerProps) {
   );
 }
 
-const xOffset: number = -132;
+const xOffset: number = -135;
 const yOffset: number = -165;
 
 export default StartEndMarker;
