@@ -21,6 +21,15 @@ import "../animations/yellow-underline.css";
 import ButtonBlue from "./ButtonBlue.tsx";
 // import ButtonRed from "./ButtonRed.tsx";
 
+//
+// import {
+//   Collapse,
+//   Button,
+//   Card,
+//   Typography,
+//   CardBody,
+// } from "@material-tailwind/react";
+
 function NavBar() {
   const { isAuthenticated } = useAuth0();
   const { user } = useAuth0();
@@ -158,16 +167,28 @@ function NavBar() {
   };
 
   const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
+    //
+    //   export default function CollapseDefault() {
+    //     const [open, setOpen] = React.useState(false);
+    //
+    //     const toggleOpen = () => setOpen((cur) => !cur);
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
         <Card className="mb-4" style={{ color: "#F6BD39" }}>
-          <CardContent>
-            <Link to={paths.PROFILE}>
-              <ButtonBlue className="flex text-center text-2xl ">
+          <CardContent className="flex flex-col gap-4">
+            <Link to={paths.PROFILE} className="w-full">
+              {" "}
+              {/* Ensure both buttons have the same width */}
+              <ButtonBlue className="flex text-center text-2xl w-full">
                 View Profile
               </ButtonBlue>
             </Link>
-            <ButtonBlue onClick={handleLogout}>Log Out</ButtonBlue>
+            <ButtonBlue
+              onClick={handleLogout}
+              className="flex text-center text-2xl w-full"
+            >
+              Log Out
+            </ButtonBlue>
           </CardContent>
         </Card>
 
