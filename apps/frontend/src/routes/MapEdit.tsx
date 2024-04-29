@@ -259,15 +259,9 @@ function MapEdit() {
           const reversedEdgeID: string =
             tempNeighborNodesIDs[j] + "_" + tempNeighborNodesIDs[i];
           const edgesWithEdgeID = edges.filter(
-            (value) => value.edgeID == edgeID,
+            (value) => value.edgeID == edgeID || value.edgeID == reversedEdgeID,
           );
-          const edgesWithReversedEdgeID = edges.filter(
-            (value) => value.edgeID == reversedEdgeID,
-          );
-          if (
-            edgesWithEdgeID.length == 0 &&
-            edgesWithReversedEdgeID.length == 0
-          ) {
+          if (edgesWithEdgeID.length == 0) {
             tempRepairedEdges.push({
               edgeID: edgeID,
               startNodeID: tempNeighborNodesIDs[i],
