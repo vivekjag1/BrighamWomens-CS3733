@@ -167,40 +167,53 @@ function NavBar() {
   };
 
   const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
+    const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
+
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
-        <Card className="mb-4" style={{ color: "#F6BD39" }}>
-          <CardContent className="flex flex-col gap-4">
-            <Link to={paths.PROFILE} className="w-full">
-              {" "}
-              <ButtonBlue className="flex text-center text-2xl w-full">
-                View Profile
+        <div
+          className={`z-[10] transition-height ease-in-out duration-500 ${showProfileMenu ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}`}
+        >
+          <Card className="mb-4" style={{ color: "#F6BD39" }}>
+            <CardContent className="flex flex-col gap-4">
+              <Link to={paths.PROFILE} className="w-full">
+                {" "}
+                <ButtonBlue className="flex text-center text-2xl w-full">
+                  View Profile
+                </ButtonBlue>
+              </Link>
+              <ButtonBlue
+                onClick={handleLogout}
+                className="flex text-center text-2xl w-full"
+              >
+                Log Out
               </ButtonBlue>
-            </Link>
-            <ButtonBlue
-              onClick={handleLogout}
-              className="flex text-center text-2xl w-full"
-            >
-              Log Out
-            </ButtonBlue>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
 
-        <div className="flex flex-row text-white items-center justify-center">
-          <img
-            className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4"
-            src={user?.image}
-            alt="user profile picture"
-          />
-          <h2
-            style={{
-              opacity: collapsed ? 0 : 100,
-              fontWeight: 500,
+        <div>
+          <div
+            className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
+            onClick={() => {
+              setShowProfileMenu(!showProfileMenu);
             }}
-            className="text-lg whitespace-nowrap"
           >
-            {user?.name}
-          </h2>
+            <img
+              className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
+              src={user?.image}
+              alt="user profile picture"
+            />
+            <h2
+              style={{
+                opacity: collapsed ? 0 : 100,
+                fontWeight: 500,
+              }}
+              className="text-lg whitespace-nowrap z-[100] "
+            >
+              {user?.name}
+            </h2>
+          </div>
         </div>
       </div>
     );
