@@ -14,6 +14,9 @@ import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import ButtonBlue from "../components/ButtonBlue.tsx";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
+import UndoRedoButton from "../components/map-edit/UndoRedoButton.tsx";
+import ButtonRed from "../components/ButtonRed.tsx";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const defaultFloor: number = 1;
 enum Action {
@@ -60,9 +63,7 @@ function MapEdit() {
     new Map(),
   );
   const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
-  const [deletedNodes, setDeletedNodes] = useState<Map<string, Node>>(
-    new Map(),
-  );
+  const [deletedNodes] = useState<Map<string, Node>>(new Map());
 
   //const [addingNode, setAddingNode] = useState<boolean>(false);
   //const [addingEdge, setAddingEdge] = useState<boolean>(false);
@@ -166,6 +167,7 @@ function MapEdit() {
 
   const saveButtonStyles = {
     width: "10vw",
+    height: "5.5vh",
   };
 
   function updateNode(node: Node) {
@@ -178,63 +180,6 @@ function MapEdit() {
       setNodes(tempNodes);
       setUpdatedNodes(tempUpdatedNodes);
     }
-  }
-
-  async function deleteNode() {
-    if (selectedNodeID) {
-      const tempNodes = new Map(nodes);
-      const tempDeletedNodes = new Map(deletedNodes);
-      tempDeletedNodes.set(selectedNodeID, nodes.get(selectedNodeID)!);
-      tempNodes.delete(selectedNodeID);
-      setNodes(tempNodes);
-      setDeletedNodes(tempDeletedNodes);
-
-      if (addedNodes.has(selectedNodeID)) {
-        const tempAddedNodes = new Map(addedNodes);
-        tempAddedNodes.delete(selectedNodeID);
-        setAddedNodes(tempAddedNodes);
-      }
-      if (updatedNodes.has(selectedNodeID)) {
-        const tempUpdatedNodes = new Map(updatedNodes);
-        tempUpdatedNodes.delete(selectedNodeID);
-        setUpdatedNodes(tempUpdatedNodes);
-      }
-    }
-
-    setSelectedNodeID(undefined);
-    setCachedNode(undefined);
-    setNodeSaved(false);
-
-    const selectedNodeEdges: Edge[] = edges.filter(
-      (value) =>
-        value.startNodeID == selectedNodeID ||
-        value.endNodeID == selectedNodeID,
-    );
-
-    const tempRepairedEdges: Edge[] = [];
-    const tempNeighborNodesIDs: string[] = [];
-    for (let i = 0; i < selectedNodeEdges.length; i++) {
-      if (selectedNodeEdges[i].startNodeID == selectedNodeID) {
-        tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
-      } else {
-        tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
-      }
-    }
-
-    for (let i = 0; i < tempNeighborNodesIDs.length; i++) {
-      for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
-        tempRepairedEdges.push({
-          edgeID: tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j],
-          startNodeID: tempNeighborNodesIDs[i],
-          endNodeID: tempNeighborNodesIDs[j],
-        });
-      }
-    }
-
-    const updatedTempEdges = tempRepairedEdges.concat(edges);
-    const addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
-    setEdges(updatedTempEdges);
-    setAddedEdges(addedRepairedEdges);
   }
 
   function handleNodeClick(nodeID: string) {
@@ -341,44 +286,16 @@ function MapEdit() {
     showToast("Changes Saved!", "success");
   }
 
-  async function handleSave() {
-    console.log("inside handle save!");
-    console.log("nodes that have been updated", updatedNodes);
-    const token = await getAccessTokenSilently();
+  async function handleRevertAll() {
+    console.log();
+  }
 
-    const node = nodes.get(selectedNodeID!);
+  function handleUndo() {
+    console.log();
+  }
 
-    if (node!.nodeID.substring(0, 8) != "userNode") {
-      const sendToBackend: Node[] = [];
-      sendToBackend.push(node!);
-      console.log(node);
-      const send = {
-        nodes: sendToBackend,
-      };
-      await MakeProtectedPatchRequest(APIEndpoints.updateNodes, send, token);
-    } else {
-      //cut first 8 characters
-
-      const numNodeRaw = await MakeProtectedGetRequest(
-        APIEndpoints.countNodes,
-        token,
-      );
-
-      // setNumberOfNodes(numNode );
-
-      node!.nodeID =
-        node!.nodeID.substring(0, 8) +
-        (numNodeRaw.data["numNodes"] + addedNodes.size);
-
-      if (node!.shortName == "") {
-        node!.shortName = node!.nodeID;
-      }
-
-      node!.xcoord = Math.round(node!.xcoord);
-      node!.ycoord = Math.round(node!.ycoord);
-
-      //await MakeProtectedPostRequest(APIEndpoints.createNode, node!, token);
-    }
+  function handleRedo() {
+    console.log();
   }
 
   const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
@@ -481,17 +398,14 @@ function MapEdit() {
       </MapContext.Provider>
       <div className="absolute left-[1%] top-[1%]">
         <MapContext.Provider value={contextValue}>
-          <MapEditCard
-            onSave={handleSave}
-            updateNode={updateNodeField}
-            deleteNode={deleteNode}
-          />
+          <MapEditCard updateNode={updateNodeField} />
         </MapContext.Provider>
       </div>
       <div className="absolute right-[1.5%] bottom-[2%]">
         <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="absolute left-[45%] bottom-[2%] z-50">
+      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[2%]">
+        <UndoRedoButton undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={handleSelectNodeSelected}
@@ -501,8 +415,6 @@ function MapEdit() {
             DeleteNode={handleDeleteNodeSelected}
           />
         </MapContext.Provider>
-      </div>
-      <div className="absolute left-[2%] bottom-[2%] z-50 text-sm">
         <ButtonBlue
           onClick={handleSaveAll}
           //disabled={!selectedNodeID}
@@ -511,6 +423,14 @@ function MapEdit() {
         >
           Save All
         </ButtonBlue>
+        <ButtonRed
+          onClick={handleRevertAll}
+          //disabled={!selectedNodeID}
+          endIcon={<ClearIcon />}
+          style={saveButtonStyles}
+        >
+          Revert All
+        </ButtonRed>
       </div>
     </div>
   );

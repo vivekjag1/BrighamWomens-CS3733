@@ -7,8 +7,10 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
+
+// import Fab from "@mui/material/Fab";
+import { Card, CardContent } from "@mui/material";
+// import PersonIcon from '@mui/icons-material/Person';
 // import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
@@ -16,9 +18,21 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
+import ButtonBlue from "./ButtonBlue.tsx";
+// import ButtonRed from "./ButtonRed.tsx";
+
+//
+// import {
+//   Collapse,
+//   Button,
+//   Card,
+//   Typography,
+//   CardBody,
+// } from "@material-tailwind/react";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
@@ -27,6 +41,13 @@ function NavBar() {
   const [remaining, setRemaining] = useState<number>(0);
 
   const { showToast } = useToast();
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   const onIdle = () => {
     logout({
@@ -74,14 +95,14 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
-  const handleLogout = () => {
-    // logout({returnTo: window.location.origin} );
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
+  // const handleLogout = () => {
+  //   // logout({returnTo: window.location.origin} );
+  //   logout({
+  //     logoutParams: {
+  //       returnTo: window.location.origin,
+  //     },
+  //   });
+  // };
 
   interface NavbarItemProps {
     to: string;
@@ -141,6 +162,59 @@ function NavBar() {
             style={{ transformOrigin: "center" }}
           ></span>
         </Link>
+      </div>
+    );
+  };
+
+  const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
+    const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
+
+    return (
+      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
+        <div
+          className={`z-[10] transition-height ease-in-out duration-500 ${showProfileMenu ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}`}
+        >
+          <Card className="mb-4" style={{ color: "#F6BD39" }}>
+            <CardContent className="flex flex-col gap-4">
+              <Link to={paths.PROFILE} className="w-full">
+                {" "}
+                <ButtonBlue className="flex text-center text-2xl w-full">
+                  View Profile
+                </ButtonBlue>
+              </Link>
+              <ButtonBlue
+                onClick={handleLogout}
+                className="flex text-center text-2xl w-full"
+              >
+                Log Out
+              </ButtonBlue>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div>
+          <div
+            className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
+            onClick={() => {
+              setShowProfileMenu(!showProfileMenu);
+            }}
+          >
+            <img
+              className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
+              src={user?.image}
+              alt="user profile picture"
+            />
+            <h2
+              style={{
+                opacity: collapsed ? 0 : 100,
+                fontWeight: 500,
+              }}
+              className="text-lg whitespace-nowrap z-[100] "
+            >
+              {user?.name}
+            </h2>
+          </div>
+        </div>
       </div>
     );
   };
@@ -241,43 +315,19 @@ function NavBar() {
             labelLight="Data"
             collapsed={isHidingNavBarInfo}
           />
-          {/*<NavbarItem*/}
-          {/*  to={paths.ABOUT_US}*/}
-          {/*  activePage={activePage}*/}
-          {/*  setActivePage={setActivePage}*/}
-          {/*  Icon={GroupsIcon}*/}
-          {/*  label="About"*/}
-          {/*  labelLight="Us"*/}
-          {/*  collapsed={isHidingNavBarInfo}*/}
-          {/*/>*/}
         </div>
 
         {/* Sign out */}
         {isAuthenticated ? (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.HERO}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LogoutIcon}
-                label={"Sign out"}
-                collapsed={isHidingNavBarInfo}
-                callback={handleLogout}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         ) : (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.MAP_DATA}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LoginIcon}
-                label={"Sign in"}
-                collapsed={isHidingNavBarInfo}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         )}
