@@ -16,7 +16,6 @@ import "../components/map/styles/StackedMaps.css";
 import PathTrail from "../components/breadcrumb/PathTrail.tsx";
 import QRCodeInsert from "../components/QRCodeInsert.tsx";
 import QRCodeButton from "../components/map/QRCodeButton.tsx";
-/*import PathTrail from "../components/breadcrumb/PathTrail.tsx";*/
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
