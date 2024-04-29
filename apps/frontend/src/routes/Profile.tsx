@@ -4,7 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 // import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-
 import { APIEndpoints } from "common/src/APICommon.ts";
 import { useEffect } from "react";
 import { Employee } from "database";
@@ -19,6 +18,7 @@ import { ClearIcon } from "@mui/x-date-pickers/icons";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
 import { ServiceReqGetterProfile } from "../components/ServiceReqGetterProfile.tsx";
+import ElementHighlights from "../components/ElementHighlights.tsx";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -352,7 +352,9 @@ export default function Profile() {
                     Charts and Graphs
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
-                  <CustomCardContent></CustomCardContent>
+                  <CustomCardContent>
+                    <ElementHighlights />
+                  </CustomCardContent>
                 </div>
               </Card>
             </CustomCollapse>
