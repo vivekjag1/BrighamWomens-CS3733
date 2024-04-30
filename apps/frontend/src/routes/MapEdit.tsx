@@ -166,8 +166,8 @@ function MapEdit() {
 
   // Update/create edge in edges useState
   function updateEdge(edge: Edge) {
-    const newEdges: Edge[] = edges;
-    newEdges.push(edge);
+    let newEdges: Edge[] = [edge];
+    newEdges = newEdges.concat(edges);
     setEdges(newEdges);
   }
 
