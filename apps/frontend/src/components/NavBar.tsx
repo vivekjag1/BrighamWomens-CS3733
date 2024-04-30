@@ -26,6 +26,7 @@ function NavBar() {
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
 
   const [remaining, setRemaining] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authorizedStatus, setStatus] = useState<boolean>(false);
 
   const { showToast } = useToast();
@@ -208,7 +209,7 @@ function NavBar() {
             label="Map"
             collapsed={isHidingNavBarInfo}
           />
-          {authorizedStatus && (
+          {isAuthenticated && (
             <>
               <NavbarItem
                 to={paths.MAP_EDITOR}
