@@ -26,7 +26,6 @@ const MapEditImage = (props: {
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
-  const tempNodes = useContext(MapContext).nodes;
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
@@ -36,8 +35,9 @@ const MapEditImage = (props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  // eslint-disable-next-line prefer-const
-  let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
+   
+  const nodes = useContext(MapContext).nodes;
+  const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
   const [draggablePosition, setDraggablePosition] = useState({
     x: 0,
@@ -45,10 +45,6 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
-
-  useEffect(() => {
-    setNodes(tempNodes);
-  }, [tempNodes]);
 
   useEffect(() => {
     const tempCoords: EdgeCoordinates[] = [];
@@ -149,6 +145,13 @@ const MapEditImage = (props: {
     el.setPointerCapture(e.pointerId);
   }
 
+  // Update/create node in nodes useState
+  function updateNode(nodeID: string, node: Node) {
+    const newNodes: Map<string, Node> = new Map(nodes);
+    newNodes.set(node.nodeID, node);
+    setNodes(newNodes);
+  }
+
   function handlePointerMove(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
@@ -164,7 +167,8 @@ const MapEditImage = (props: {
       updatedNode.ycoord = Math.round(
         updatedNode.ycoord + (y - draggablePosition.offset.y),
       );
-      setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
+
+      updateNode(nodeID, updatedNode);
     }
   }
 
