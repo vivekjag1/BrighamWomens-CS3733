@@ -3,6 +3,26 @@ export class APIEndpoints {
   static readonly mapDownload: string = "/api/map/download";
   static readonly mapGetNodes: string = "/api/map/getNodes";
   static readonly mapGetEdges: string = "/api/map/getEdges";
+
+  static readonly serviceGetRequests: string = "/api/service/getRequests";
+  static readonly servicePostRequests: string = "/api/service/postRequests";
+  static readonly servicePutRequests: string = "/api/service/putRequests";
+  static readonly serviceDeleteRequests: string = "api/service/deleteRequests";
+  static readonly servicePostSecurityRequest: string =
+    "/api/service/post/security";
+  static readonly navigationRequest: string = "/api/navigation/get";
+  static readonly sanitationPostRequests: string =
+    "/api/service/sanitationPostRequests";
+  static readonly foodDeliveryservicePostRequests: string =
+    "/api/service/foodDeliveryservicePostRequests";
+  static readonly giftPostRequests: string = "/api/service/giftPostRequests";
+  static readonly roomReservation: string = "/api/service/room-reservation";
+  static readonly medicalDeviceDelivery: string =
+    "/api/service/postMedicalDevice";
+  static readonly updateNodes: string = "/api/map/updateNodes";
+  static readonly employeePostRequest: string = "/api/employee/postRequests";
+  static readonly employeeGetRequest: string = "/api/employee/getRequests";
+
   static readonly getMapOnFloor: string = "/api/map/get";
   static readonly updateMapOnFloor: string = "/api/map/update";
   static readonly getNumberNodes: string = "/api/map/getNumNodes";
@@ -20,8 +40,6 @@ export class APIEndpoints {
   static readonly roomRequest: string = "/api/service/room";
   static readonly deviceRequest: string = "/api/service/device";
 
-  static readonly employeePostRequest: string = "/api/employee/post";
-  static readonly employeeGetRequest: string = "/api/employee/get";
   static readonly employeeDownload: string = "/api/employee/download";
   static readonly deleteEmployee: string = "/api/employee/delete";
   static readonly makeEmployee: string = "/api/employee/create";

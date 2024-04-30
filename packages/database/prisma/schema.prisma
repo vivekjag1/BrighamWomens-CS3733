@@ -33,24 +33,25 @@ model Edge {
 }
 
 model ServiceRequest {
-  serviceID          Int                @id @default(autoincrement())
-  type               ServiceType // establish as the parent entity
-  location           String
-  description        String?
-  requestingUsername String
-  enteredTime        DateTime           @default(now())
-  updatedTime        DateTime           @default(now())
-  requestedTime      DateTime
-  priority           String
-  status             String
-  assignedTo         String
-  medicineDelivery   MedicineDelivery?
-  SecurityService    SecurityService?
-  SanitationService  SanitationService?
-  RoomScheduling     RoomScheduling?
-  DeviceDelivery     DeviceDelivery?
-  GiftDelivery       GiftDelivery?
-  ITRequest          ITRequest?
+  serviceID           Int                  @id @default(autoincrement())
+  type                ServiceType // establish as the parent entity
+  location            String
+  description         String?
+  requestingUsername  String
+  enteredTime         DateTime             @default(now())
+  updatedTime         DateTime             @default(now())
+  requestedTime       DateTime
+  priority            String
+  status              String
+  assignedTo          String
+  medicineDelivery    MedicineDelivery?
+  SecurityService     SecurityService?
+  SanitationService   SanitationService?
+  RoomScheduling      RoomScheduling?
+  DeviceDelivery      DeviceDelivery?
+  GiftDelivery        GiftDelivery?
+  ITRequest           ITRequest?
+  FoodDeliveryService FoodDeliveryService?
   // establish an is-a by saying a service request can have medicine delivery fields. This way we can get info on medicineDelivery from service request
 }
 
@@ -62,6 +63,7 @@ enum ServiceType {
   DeviceDelivery
   GiftDelivery
   ITRequest
+  FoodDeliveryService
 }
 
 model MedicineDelivery {
@@ -111,6 +113,12 @@ model ITRequest {
   ITRequestID    Int            @id
   problemType    String
   serviceRequest ServiceRequest @relation(fields: [ITRequestID], references: [serviceID], onDelete: Cascade)
+}
+
+model FoodDeliveryService {
+  foodRequestID  Int            @id
+  order          String
+  serviceRequest ServiceRequest @relation(fields: [foodRequestID], references: [serviceID], onDelete: Cascade)
 }
 
 model Employee {
