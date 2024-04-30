@@ -35,7 +35,7 @@ const MapEditImage = (props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-   
+
   const nodes = useContext(MapContext).nodes;
   const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
