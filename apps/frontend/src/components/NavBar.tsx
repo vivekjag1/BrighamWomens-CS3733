@@ -16,7 +16,7 @@ import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
-
+import LoginIcon from "@mui/icons-material/Login";
 function NavBar() {
   const { isAuthenticated } = useAuth0();
   const { user } = useAuth0();
@@ -148,57 +148,64 @@ function NavBar() {
 
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
-      <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1.5rem]  items-center overflow-hidden">
+      <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1rem]  items-center overflow-hidden">
         {showProfileMenu && (
           <>
             <div>
-              <Card className=" mb-[1rem]" style={{ color: "#F6BD39" }}>
-                <CardContent className="flex flex-col gap-2">
-                  <Link to={paths.PROFILE} className="w-full ">
-                    {" "}
-                    <ButtonBlue className="flex text-center text-2xl w-full ">
-                      View Profile
-                    </ButtonBlue>
-                  </Link>
-                  <ButtonRed
-                    onClick={handleLogout}
-                    sx={{
-                      display: "flex",
-                      textAlign: "center",
-                      fontSize: "2xl",
-                      width: "full",
-                      padding: "0.5",
-                      backgroundColor: "red",
-                      fontFamily: "poppins, sans-serif",
-                    }}
-                  >
-                    Log Out
-                  </ButtonRed>
-                </CardContent>
-              </Card>
+              {!isHidingNavBarInfo && (
+                <Card className=" mb-[1rem]" style={{ color: "#F6BD39" }}>
+                  <CardContent className="flex flex-col gap-2">
+                    <Link to={paths.PROFILE} className="w-full ">
+                      {" "}
+                      <ButtonBlue className="flex text-center text-2xl w-full ">
+                        View Profile
+                      </ButtonBlue>
+                    </Link>
+                    <ButtonRed
+                      onClick={handleLogout}
+                      sx={{
+                        display: "flex",
+                        textAlign: "center",
+                        fontSize: "2xl",
+                        width: "full",
+                        padding: "0.5",
+                        backgroundColor: "red",
+                        fontFamily: "poppins, sans-serif",
+                      }}
+                    >
+                      Log Out
+                    </ButtonRed>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </>
         )}
         <div>
           <div
-            className="flex flex-row text-white items-center justify-center z-[100] bg-secondary "
+            className="flex flex-row text-white items-center  z-[100] bg-secondary "
             onClick={toggleProfileView}
           >
-            {}
-            <img
-              className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
-              src={user?.picture}
-              alt="user profile picture"
-            />
-            <h2
-              style={{
-                opacity: props.collapsed ? 0 : 100,
-                fontWeight: 500,
-              }}
-              className="text-lg whitespace-nowrap z-[100] "
-            >
-              {user?.name}
-            </h2>
+            {isAuthenticated ? (
+              <div className="flex flex-row items-center">
+                <img
+                  className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
+                  src={user?.picture}
+                  alt="user profile picture"
+                />
+                <h2
+                  style={{
+                    opacity: props.collapsed ? 0 : 100,
+                    fontWeight: 500,
+                  }}
+                  className="text-lg whitespace-nowrap z-[100] "
+                >
+                  {user?.given_name}
+                </h2>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
@@ -316,6 +323,22 @@ function NavBar() {
               <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
+        )}
+        {!isAuthenticated ? (
+          <div className="relative flex flex-col flex-grow justify-end">
+            <div className="flex flex-col">
+              <NavbarItem
+                to={paths.MAP_DATA}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={LoginIcon}
+                label={"Sign in"}
+                collapsed={isHidingNavBarInfo}
+              />
+            </div>
+          </div>
+        ) : (
+          <></>
         )}
 
         {/* Collapse Button */}
