@@ -1,7 +1,6 @@
 import { Node } from "database";
 
 // Holds functions that may be necessary in the manipulation of Node[]
-
 // Gets the floor number corresponding to the string representation of the floor
 export function getFloorNumber(floor: string): number {
   switch (floor) {
