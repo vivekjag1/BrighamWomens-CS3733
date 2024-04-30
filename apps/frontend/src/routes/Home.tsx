@@ -45,7 +45,6 @@ function Home() {
       setNodes(graphNodes);
       return graphNodes;
     }
-
     getNodesFromDb().then();
   }, []);
 
@@ -77,6 +76,7 @@ function Home() {
       .get(url.toString())
       .then(function (response) {
         setPath(response.data.path);
+
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
         setDirections(response.data.directions);
         setTripStats(response.data.tripStats);
@@ -103,6 +103,7 @@ function Home() {
   }
 
   function handleReset() {
+    console.log("inside handleReset");
     setActiveFloor(DEFAULT_FLOOR);
     setPath(INITIAL_PATH);
     setStartNode(INITIAL_PATH[0].nodeID);
@@ -207,6 +208,7 @@ function Home() {
           setActiveFloor(selectedFloor);
         }}
         updateGlowSequence={updateGlowSequence}
+        onReset={handleReset}
       />
     );
 
@@ -229,6 +231,7 @@ function Home() {
   );
 
   const pathBreadcrumbElement = mapType == MapType.TwoDimensional &&
+    path.length != 0 &&
     path[0].nodeID != "" &&
     !areOnSameFloor(path) && (
       <div className="absolute top-[1%] left-[50%] translate-x-[-50%]">

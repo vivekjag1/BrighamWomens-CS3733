@@ -22,7 +22,7 @@ const MapEditImage = (props: {
   startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
-  //onEdgeClick: (edgeID: string) => void;
+  onEdgeClick: (edgeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
@@ -111,7 +111,10 @@ const MapEditImage = (props: {
     event: React.MouseEvent<SVGLineElement>,
     edgeID: string,
   ) {
-    console.log(event);
+    event.stopPropagation();
+    props.onEdgeClick(edgeID);
+    setSelectedEdgeID(edgeID);
+    //now need to "derender the edge"
     console.log("hello world");
     console.log(edgeID);
   }
@@ -226,6 +229,7 @@ const MapEditImage = (props: {
                   strokeWidth={MapStyling.edgeWidth}
                   onClick={(e) => handleEdgeClick(e, edge.edgeID)}
                   onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (
@@ -255,6 +259,7 @@ const MapEditImage = (props: {
                   y2={draggablePosition.y}
                   stroke="red"
                   strokeWidth="2"
+                  style={{ cursor: "pointer" }}
                 />
               )}
             </svg>
