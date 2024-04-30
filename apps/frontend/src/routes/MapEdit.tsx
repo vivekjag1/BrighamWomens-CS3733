@@ -11,12 +11,9 @@ import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
-import ButtonBlue from "../components/ButtonBlue.tsx";
-import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
-import UndoRedoButton from "../components/map-edit/UndoRedoButton.tsx";
-import ButtonRed from "../components/ButtonRed.tsx";
-import ClearIcon from "@mui/icons-material/Clear";
+import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
+import SaveRevertAllButtons from "../components/map-edit/SaveRevertAllButtons.tsx";
 const defaultFloor: number = 1;
 enum Action {
   SelectNode = "SelectNode",
@@ -162,11 +159,6 @@ function MapEdit() {
       updateNode({ ...node, [field]: value });
     }
   }
-
-  const saveButtonStyles = {
-    width: "10vw",
-    height: "5.5vh",
-  };
 
   function updateNode(node: Node) {
     const tempNodes = new Map(nodes);
@@ -486,7 +478,7 @@ function MapEdit() {
         <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
       <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[2%]">
-        <UndoRedoButton undo={handleUndo} redo={handleRedo} />
+        <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={handleSelectNodeSelected}
@@ -496,22 +488,10 @@ function MapEdit() {
             DeleteNode={handleDeleteNodeSelected}
           />
         </MapContext.Provider>
-        <ButtonBlue
-          onClick={handleSaveAll}
-          //disabled={!selectedNodeID}
-          endIcon={<CheckIcon />}
-          style={saveButtonStyles}
-        >
-          Save All
-        </ButtonBlue>
-        <ButtonRed
-          onClick={handleRevertAll}
-          //disabled={!selectedNodeID}
-          endIcon={<ClearIcon />}
-          style={saveButtonStyles}
-        >
-          Revert All
-        </ButtonRed>
+        <SaveRevertAllButtons
+          saveAll={handleSaveAll}
+          revertAll={handleRevertAll}
+        />
       </div>
     </div>
   );
