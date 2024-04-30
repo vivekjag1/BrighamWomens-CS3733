@@ -83,14 +83,8 @@ function MapEdit() {
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
   const { showToast } = useToast();
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
-  const [nodeSaved, setNodeSaved] = useState<boolean>(false);
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
-
-  /*useEffect(() =>{
-      console.log("in use effect", edges);
-  }, [edges]);*/
 
   useEffect(() => {
     const fetchData = async () => {
@@ -205,7 +199,6 @@ function MapEdit() {
       }
 
       setSelectedNodeID(nodeID);
-      setNodeSaved(false);
     }
   }
 
@@ -287,18 +280,10 @@ function MapEdit() {
   }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
-    console.log(selectedAction);
     if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
-      // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
-      }
-
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
     }
   }
 
@@ -358,8 +343,6 @@ function MapEdit() {
 
     const lastSaveNodes: Node[] = (await axios.get(nodeURL.toString())).data;
     const lastSavedEdges: Edge[] = (await axios.get(edgeURL.toString())).data;
-    console.log(lastSaveNodes);
-    console.log(lastSavedEdges);
 
     const restoreNodes: Map<string, Node> = new Map();
 
