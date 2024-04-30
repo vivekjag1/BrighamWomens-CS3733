@@ -388,6 +388,15 @@ export function ServiceRequestGetter() {
       giftType: "Gift Type",
       senderNote: "Sender Note",
     },
+    ITRequest: {
+      problemType: "Problem Type",
+    },
+  };
+
+  const formatModalLabel = (type: string) => {
+    return type
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
   };
 
   return (
@@ -764,7 +773,7 @@ export function ServiceRequestGetter() {
                   <h1
                     className={`text-2xl font-semibold mb-4 text-secondary text-center`}
                   >
-                    {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
+                    {formatModalLabel(selectedRow.type)} Details
                   </h1>
                   <div className="grid grid-cols-6 gap-4">
                     <div className="col-span-2 flex flex-col w-full">
