@@ -7,11 +7,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-
-// import Fab from "@mui/material/Fab";
 import { Card, CardContent } from "@mui/material";
-// import PersonIcon from '@mui/icons-material/Person';
-// import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
@@ -19,26 +15,14 @@ import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import ButtonBlue from "./ButtonBlue.tsx";
-// import ButtonRed from "./ButtonRed.tsx";
-
-//
-// import {
-//   Collapse,
-//   Button,
-//   Card,
-//   Typography,
-//   CardBody,
-// } from "@material-tailwind/react";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
   const { user } = useAuth0();
-
   const [isCollapsed, setIsCollapsed] = useState(false);
-  //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
-
   const [remaining, setRemaining] = useState<number>(0);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const { showToast } = useToast();
   const handleLogout = () => {
@@ -95,14 +79,9 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
-  // const handleLogout = () => {
-  //   // logout({returnTo: window.location.origin} );
-  //   logout({
-  //     logoutParams: {
-  //       returnTo: window.location.origin,
-  //     },
-  //   });
-  // };
+  function toggleProfileView() {
+    setShowProfileMenu(!showProfileMenu);
+  }
 
   interface NavbarItemProps {
     to: string;
@@ -166,21 +145,14 @@ function NavBar() {
     );
   };
 
-  const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
-    const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
-    function toggleProfileView() {
-      setShowProfileMenu(!showProfileMenu);
-    }
-
+  function UserProfileItem(props: { collapsed: boolean }) {
     return (
       <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1.5rem]  items-center overflow-hidden">
         {showProfileMenu && (
           <>
-            <div
-            //className={`z-[10] transition-height ease-in-out duration-500 ${showProfileMenu ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}`}
-            >
-              <Card className="mb-4" style={{ color: "#F6BD39" }}>
-                <CardContent className="flex flex-col gap-4">
+            <div>
+              <Card className="" style={{ color: "#F6BD39" }}>
+                <CardContent className="flex flex-col">
                   <Link to={paths.PROFILE} className="w-full">
                     {" "}
                     <ButtonBlue className="flex text-center text-2xl w-full">
@@ -198,7 +170,6 @@ function NavBar() {
             </div>
           </>
         )}
-
         <div>
           <div
             className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
@@ -211,7 +182,7 @@ function NavBar() {
             />
             <h2
               style={{
-                opacity: collapsed ? 0 : 100,
+                opacity: props.collapsed ? 0 : 100,
                 fontWeight: 500,
               }}
               className="text-lg whitespace-nowrap z-[100] "
@@ -222,7 +193,7 @@ function NavBar() {
         </div>
       </div>
     );
-  };
+  }
 
   return (
     <div className="z-10 bg-offwhite">
