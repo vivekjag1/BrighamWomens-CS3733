@@ -147,20 +147,21 @@ export default function Profile() {
         >
           <CardContent>
             <h1
-              className={`text-md font-semibold mb-4 text-secondary text-center`}
+              className={`text-md font-semibold mb-1 text-secondary text-center`}
             >
               Set your new password:
             </h1>
             <div className="col-span-2 flex justify-center items-end px-5">
-              <div className=" mb-4   flex flex-col col-span-2j ustify-center items-center ">
-                <TextField
-                  label="password"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-
+              <div className="   flex flex-col col-span-2j ustify-center items-center ">
+                <div className=" mb-4   flex flex-col col-span-2 justify-center items-center  ">
+                  <TextField
+                    label="password"
+                    variant="outlined"
+                    sx={{ width: "17rem" }}
+                    margin="normal"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
                 <div className="col-span-2 flex justify-between items-end px-5">
                   <Button
                     variant="contained"
@@ -169,13 +170,13 @@ export default function Profile() {
                       color: "white",
                       width: "8rem",
                       fontFamily: "Poppins, sans-serif",
+                      marginRight: "1rem",
                     }}
                     endIcon={<ClearIcon />}
                     onClick={() => setPasswordModal(false)}
                   >
                     CANCEL
                   </Button>
-
                   <Button
                     variant="contained"
                     className="justify-end"
