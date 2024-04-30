@@ -171,32 +171,36 @@ function NavBar() {
 
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
-        <div
-          className={`z-[10] transition-height ease-in-out duration-500 ${showProfileMenu ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}`}
-        >
-          <Card className="mb-4" style={{ color: "#F6BD39" }}>
-            <CardContent className="flex flex-col gap-4">
-              <Link to={paths.PROFILE} className="w-full">
-                {" "}
-                <ButtonBlue className="flex text-center text-2xl w-full">
-                  View Profile
-                </ButtonBlue>
-              </Link>
-              <ButtonBlue
-                onClick={handleLogout}
-                className="flex text-center text-2xl w-full"
-              >
-                Log Out
-              </ButtonBlue>
-            </CardContent>
-          </Card>
-        </div>
+        {showProfileMenu && (
+          <>
+            <div
+            //className={`z-[10] transition-height ease-in-out duration-500 ${showProfileMenu ? "max-h-[60vh] p-2 mt-[1rem]" : "max-h-[0]"}`}
+            >
+              <Card className="mb-4" style={{ color: "#F6BD39" }}>
+                <CardContent className="flex flex-col gap-4">
+                  <Link to={paths.PROFILE} className="w-full">
+                    {" "}
+                    <ButtonBlue className="flex text-center text-2xl w-full">
+                      View Profile
+                    </ButtonBlue>
+                  </Link>
+                  <ButtonBlue
+                    onClick={handleLogout}
+                    className="flex text-center text-2xl w-full"
+                  >
+                    Log Out
+                  </ButtonBlue>
+                </CardContent>
+              </Card>
+            </div>
+          </>
+        )}
 
         <div>
           <div
             className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
             onClick={() => {
-              setShowProfileMenu(!showProfileMenu);
+              setShowProfileMenu(true);
             }}
           >
             <img
