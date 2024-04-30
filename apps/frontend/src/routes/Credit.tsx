@@ -260,7 +260,7 @@ function Credit() {
                   }}
                   className="custom-form-container"
                 >
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center justify-between w-full animate-tada">
                     <Link
                       to={paths.ABOUT}
                       onClick={() => paths.ABOUT}
