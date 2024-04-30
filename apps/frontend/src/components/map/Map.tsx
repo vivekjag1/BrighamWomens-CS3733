@@ -11,7 +11,6 @@ import LocationMarker from "./LocationMarker.tsx";
 import FloorMarkers from "./FloorMarkers.tsx";
 import { useToast } from "../useToast.tsx";
 // import {isFirstRun} from "vitest";
-
 interface mapProps {
   activeFloor: number;
   nodes: Node[];
@@ -19,6 +18,7 @@ interface mapProps {
   onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
   updateGlowSequence: (selectedFloor: number) => void;
+  onReset: () => void;
 }
 
 function Map(props: mapProps) {
@@ -40,8 +40,10 @@ function Map(props: mapProps) {
 
   const lastIndex = props.path.length - 1;
   const { showToast } = useToast();
+  console.log("calling map");
   if (props.path.length == 0) {
     showToast("There is no path between the two given locations", "warning");
+    props.onReset();
   } else {
     polylines = getPolylines(props.path, props.activeFloor);
 

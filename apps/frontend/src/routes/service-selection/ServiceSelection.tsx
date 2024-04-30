@@ -23,7 +23,6 @@ function ServiceSelection() {
           </h2>
           <hr className="pl-96 pr-96 " />
         </div>
-
         <div className="flex justify-center gap-8 ">
           <Link
             to={paths.MEDICINE_DELIVERY}

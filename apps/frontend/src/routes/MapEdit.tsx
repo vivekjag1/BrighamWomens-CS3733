@@ -175,6 +175,16 @@ function MapEdit() {
     setNodes(newNodes);
   }
 
+  function deleteEdge(edgeID: string) {
+    let newEdges: Edge[] = edges;
+    console.log("newEdges", newEdges);
+    newEdges = newEdges.filter((edge) => edge.edgeID != edgeID);
+    const removedEdge = edges.filter((edge) => edge.edgeID == edgeID);
+    console.log("removedEdge", removedEdge);
+    setEdges(newEdges);
+    console.log("edges", edges);
+  }
+
   // Update/create edge in edges useState
   function updateEdge(edge: Edge) {
     const newEdges: Edge[] = edges;
@@ -193,6 +203,14 @@ function MapEdit() {
     const node = nodes.get(selectedNodeID!);
     if (node) updateNode({ ...node, [field]: value });
     setHasChanged(true);
+  }
+
+  function handleEdgeClick(edgeID: string) {
+    console.log("calling handle edge click");
+    if (selectedAction == Action.DeleteNode) {
+      console.log("inside if statement");
+      removeEdge(edgeID);
+    }
   }
 
   function handleNodeClick(nodeID: string) {
@@ -222,7 +240,10 @@ function MapEdit() {
       setSelectedNodeID(nodeID);
     }
   }
-
+  function removeEdge(edgeID: string) {
+    console.log("calling remove edge");
+    deleteEdge(edgeID);
+  }
   function removeNode(nodeID: string) {
     const type = nodes.get(nodeID)?.nodeType;
     if ((type && type == "ELEV") || type == "STAI") {
@@ -394,6 +415,7 @@ function MapEdit() {
           activeFloor={activeFloor}
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
+          onEdgeClick={handleEdgeClick}
         />
       </MapContext.Provider>
       <div className="absolute left-[1%] top-[1%]">
