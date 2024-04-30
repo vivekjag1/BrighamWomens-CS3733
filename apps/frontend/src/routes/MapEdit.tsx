@@ -8,12 +8,9 @@ import MapData from "./MapData.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
-import ButtonBlue from "../components/ButtonBlue.tsx";
-import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
-import UndoRedoButton from "../components/map-edit/UndoRedoButton.tsx";
-import ButtonRed from "../components/ButtonRed.tsx";
-import ClearIcon from "@mui/icons-material/Clear";
+import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
+import SaveRevertAllButtons from "../components/map-edit/SaveRevertAllButtons.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 const defaultFloor: number = 1;
 enum Action {
@@ -30,9 +27,10 @@ type MapData = {
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   selectedNodeID: string | undefined;
   setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedEdgeID: string | undefined;
+  setSelectedEdgeID: React.Dispatch<React.SetStateAction<string | undefined>>;
   selectedAction: Action;
 };
-
 export const MapContext = createContext<MapData>({
   nodes: new Map(),
   // eslint-disable-next-line no-empty-function
@@ -41,8 +39,11 @@ export const MapContext = createContext<MapData>({
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
   selectedNodeID: undefined,
+  selectedEdgeID: undefined,
   // eslint-disable-next-line no-empty-function
   setSelectedNodeID: () => {},
+  // eslint-disable-next-line no-empty-function
+  setSelectedEdgeID: () => {},
   selectedAction: Action.SelectNode,
 });
 
@@ -68,6 +69,10 @@ function MapEdit() {
     Action.SelectNode,
   );
 
+  const [selectedEdgeID, setSelectedEdgeID] = useState<string | undefined>(
+    undefined,
+  );
+
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
@@ -83,6 +88,8 @@ function MapEdit() {
     selectedNodeID,
     setSelectedNodeID,
     selectedAction,
+    selectedEdgeID,
+    setSelectedEdgeID,
   };
 
   // Get map data on floor change
@@ -118,9 +125,9 @@ function MapEdit() {
         const nodes: Map<string, Node> = new Map();
         mapData.nodes.forEach((node: Node) => nodes.set(node.nodeID, node));
 
-        // Store original state so we can revert
+        // Store original state as copies so we can revert
         originalNodes.current = new Map(nodes);
-        originalEdges.current = edges;
+        originalEdges.current = [...edges];
 
         // Finally, update our useStates
         setNodes(nodes);
@@ -165,11 +172,6 @@ function MapEdit() {
     const node = nodes.get(selectedNodeID!);
     if (node) updateNode({ ...node, [field]: value });
   }
-
-  const saveButtonStyles = {
-    width: "10vw",
-    height: "5.5vh",
-  };
 
   function handleNodeClick(nodeID: string) {
     if (selectedAction == Action.CreateEdge) {
@@ -283,9 +285,9 @@ function MapEdit() {
 
     showToast("Map updated successfully!", "success");
 
-    // Revert all now reset to current state
-    originalNodes.current = nodes;
-    originalEdges.current = edges;
+    // Update reverted state
+    originalNodes.current = new Map(nodes);
+    originalEdges.current = [...edges];
   }
 
   async function handleRevertAll() {
@@ -371,11 +373,8 @@ function MapEdit() {
           <MapEditCard updateNode={updateNodeField} />
         </MapContext.Provider>
       </div>
-      <div className="absolute right-[1.5%] bottom-[2%]">
-        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
-      </div>
-      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[2%]">
-        <UndoRedoButton undo={handleUndo} redo={handleRedo} />
+      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[1%]">
+        <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={() => setSelectedAction(Action.SelectNode)}
@@ -388,20 +387,13 @@ function MapEdit() {
             DeleteNode={() => setSelectedAction(Action.DeleteNode)}
           />
         </MapContext.Provider>
-        <ButtonBlue
-          onClick={handleSaveAll}
-          endIcon={<CheckIcon />}
-          style={saveButtonStyles}
-        >
-          Save All
-        </ButtonBlue>
-        <ButtonRed
-          onClick={handleRevertAll}
-          endIcon={<ClearIcon />}
-          style={saveButtonStyles}
-        >
-          Revert All
-        </ButtonRed>
+        <SaveRevertAllButtons
+          saveAll={handleSaveAll}
+          revertAll={handleRevertAll}
+        />
+      </div>
+      <div className="absolute right-[1.5%] bottom-[2%]">
+        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
     </div>
   );

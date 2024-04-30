@@ -10,7 +10,7 @@ interface pathTrailProps {
   updateGlowSequence: (x: number) => void;
 }
 
-function PathTrail(props: pathTrailProps) {
+function PathBreadcrumb(props: pathTrailProps) {
   const floorSequenceElements = props.floorSequence.map((floor, index) => (
     <>
       <button
@@ -34,4 +34,4 @@ function PathTrail(props: pathTrailProps) {
 const iconStyles = {
   color: DesignSystem.primaryColor,
 } as const;
-export default PathTrail;
+export default PathBreadcrumb;

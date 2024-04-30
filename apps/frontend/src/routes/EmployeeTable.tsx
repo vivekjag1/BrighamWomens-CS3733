@@ -13,8 +13,10 @@ import ButtonBlue from "../components/ButtonBlue.tsx";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import { Card, CardContent, Chip, Modal } from "@mui/material";
+import { Card, CardContent, Chip } from "@mui/material";
 import EmployeeFilterDropdown from "../components/EmployeeFilterDropdown.tsx";
+import CustomModal from "../components/CustomModal.tsx";
+import CloseIcon from "@mui/icons-material/Close";
 
 const EmployeeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -247,12 +249,7 @@ const EmployeeTable = () => {
             </div>
           </div>
         </div>
-        <Modal
-          open={fileModal}
-          onClose={() => setFileModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+        <CustomModal isOpen={fileModal} onClose={() => setFileModal(false)}>
           <Card
             sx={{
               borderRadius: 2,
@@ -274,12 +271,7 @@ const EmployeeTable = () => {
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                 onClick={() => setFileModal(false)}
               >
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                    fill="currentColor"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
               <h1
                 className={`text-2xl font-semibold mb-6 text-secondary text-center`}
@@ -358,7 +350,7 @@ const EmployeeTable = () => {
               </div>
             </CardContent>
           </Card>
-        </Modal>
+        </CustomModal>
       </div>
     </div>
   );
