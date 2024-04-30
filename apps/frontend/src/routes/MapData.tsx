@@ -29,6 +29,7 @@ import NodeFilterDropdown from "../components/NodeFilterDropdown.tsx";
 import EdgeFilterDropdown from "../components/EdgeFilterDropdown.tsx";
 // import { AnimatePresence, motion } from "framer-motion";
 import CustomModal from "../components/CustomModal.tsx";
+import CloseIcon from "@mui/icons-material/Close";
 
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -375,7 +376,7 @@ const NodeTable = () => {
                     <input
                       type="text"
                       id="table-search"
-                      className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-[20rem] bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                      className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-[20rem] bg-gray-50 hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                       placeholder="Search for Map Data"
                       value={filterBySearch}
                       onChange={(e) => setFilterBySearch(e.target.value)}
@@ -683,12 +684,7 @@ const NodeTable = () => {
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                 onClick={() => setFileModal(false)}
               >
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                    fill="currentColor"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
               <h1
                 className={`text-2xl font-semibold mb-6 text-secondary text-center`}
