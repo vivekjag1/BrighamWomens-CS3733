@@ -9,6 +9,7 @@ import paths from "../../common/paths.tsx";
 import giftIcon from "../../../assets/gift_delivery.svg";
 import "./ServiceSelection.css";
 import ITIcon from "../../../assets/ITIcon.svg";
+import FoodDelverySvg from "../../../assets/FoodDeliverySVG.svg";
 
 function ServiceSelection() {
   return (
@@ -79,10 +80,14 @@ function ServiceSelection() {
             />
           </Link>
           <Link
-            to={paths.GIFT_DELIVERY}
-            className="service-request adam-delivery animate-tada"
+            to={paths.FOOD_DELIVERY_REQUEST}
+            className="service-request food-delivery animate-tada"
           >
-            <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
+            <ServiceCard
+              imgPath={FoodDelverySvg}
+              alt="device icon"
+              label="Food"
+            />
           </Link>
           <Link
             to={paths.IT_REQUEST}
