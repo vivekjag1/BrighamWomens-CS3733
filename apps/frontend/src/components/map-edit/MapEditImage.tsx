@@ -15,6 +15,7 @@ export type EdgeCoordinates = {
   startY: number;
   endX: number;
   endY: number;
+  edgeID: string;
 };
 
 const MapEditImage = (props: {
@@ -29,6 +30,9 @@ const MapEditImage = (props: {
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+
+  // const selectedEdgeID = useContext(MapContext).selectedEdgeID;
+  const setSelectedEdgeID = useContext(MapContext).setSelectedEdgeID;
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
@@ -58,6 +62,7 @@ const MapEditImage = (props: {
           startY: startNode.ycoord,
           endX: endNode.xcoord,
           endY: endNode.ycoord,
+          edgeID: edges[i].edgeID,
         });
       }
     }
@@ -101,41 +106,43 @@ const MapEditImage = (props: {
       setFlickeringNode(nodeID);
     }
   }
-  // function handleMouseEnter(nodeID: string) {
-  //   setNodeRadii((prevRadii) =>
-  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
-  //   );
-  //   setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
-  // }
-  //
-  // function handleMouseLeave(nodeID: string) {
-  //   setNodeRadii((prevRadii) =>
-  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
-  //   );
-  //   setNodeColors((prevColors) =>
-  //     new Map(prevColors).set(nodeID, MapStyling.nodeColor),
-  //   ); // Reset color on mouse leave
-  // }
-  function handlePointerDown(
-    e: React.PointerEvent<SVGCircleElement>,
-    nodeID: string,
+
+  function handleEdgeClick(
+    event: React.MouseEvent<SVGLineElement>,
+    edgeID: string,
   ) {
-    setSelectedNodeID(nodeID);
+    console.log(event);
+    console.log("hello world");
+    console.log(edgeID);
+  }
+  function handlePointerDown(
+    e:
+      | React.PointerEvent<SVGCircleElement>
+      | React.PointerEvent<SVGLineElement>,
+    ID: string,
+  ) {
     const el = e.currentTarget;
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
+    if (ID.includes("_")) {
+      //handle edge logic in here
+      console.log("edge selected");
+      setSelectedEdgeID(ID);
+    } else {
+      setSelectedNodeID(ID);
+      setDraggablePosition({
+        ...draggablePosition,
+        x: nodes.get(ID)!.xcoord,
+        y: nodes.get(ID)!.ycoord,
+        active: true,
+        offset: {
+          x: xOffset,
+          y: yOffset,
+        },
+      });
+    }
 
-    setDraggablePosition({
-      ...draggablePosition,
-      x: nodes.get(nodeID)!.xcoord,
-      y: nodes.get(nodeID)!.ycoord,
-      active: true,
-      offset: {
-        x: xOffset,
-        y: yOffset,
-      },
-    });
     el.setPointerCapture(e.pointerId);
   }
 
@@ -217,6 +224,8 @@ const MapEditImage = (props: {
                   y2={edge.endY}
                   stroke={MapStyling.edgeColor}
                   strokeWidth={MapStyling.edgeWidth}
+                  onClick={(e) => handleEdgeClick(e, edge.edgeID)}
+                  onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (

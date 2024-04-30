@@ -32,9 +32,10 @@ type MapData = {
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   selectedNodeID: string | undefined;
   setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedEdgeID: string | undefined;
+  setSelectedEdgeID: React.Dispatch<React.SetStateAction<string | undefined>>;
   selectedAction: Action;
 };
-
 export const MapContext = createContext<MapData>({
   nodes: new Map(),
   // eslint-disable-next-line no-empty-function
@@ -43,13 +44,14 @@ export const MapContext = createContext<MapData>({
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
   selectedNodeID: undefined,
+  selectedEdgeID: undefined,
   // eslint-disable-next-line no-empty-function
   setSelectedNodeID: () => {},
+  // eslint-disable-next-line no-empty-function
+  setSelectedEdgeID: () => {},
   selectedAction: Action.SelectNode,
 });
-
 const userNodePrefix = "userNode";
-
 function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
@@ -59,8 +61,6 @@ function MapEdit() {
     new Map(),
   );
   const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
-  /*const [deletedNodes] = useState<Map<string, Node>>(new Map());*/
-
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
   );
@@ -70,6 +70,10 @@ function MapEdit() {
   const [selectedAction, setSelectedAction] = useState<Action>(
     Action.SelectNode,
   );
+
+  const [selectedEdgeID, setSelectedEdgeID] = useState<string | undefined>(
+    undefined,
+  );
   const contextValue = {
     nodes,
     setNodes,
@@ -78,6 +82,8 @@ function MapEdit() {
     selectedNodeID,
     setSelectedNodeID,
     selectedAction,
+    selectedEdgeID,
+    setSelectedEdgeID,
   };
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
@@ -413,14 +419,15 @@ function MapEdit() {
     if (newNode.building == "") {
       newNode.building = "default building";
     }
-    if (newNode.nodeType) {
-      newNode.nodeType = "created node";
-    }
+
     if (newNode.longName == "") {
       newNode.longName = newNode.nodeID;
     }
     if (newNode.shortName == "") {
       newNode.shortName = newNode.nodeID;
+    }
+    if (newNode.nodeType == "") {
+      newNode.nodeType = "UserNode";
     }
 
     tempNodes.set(newNode.nodeID, newNode);
