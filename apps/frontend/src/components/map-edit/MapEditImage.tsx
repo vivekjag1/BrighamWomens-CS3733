@@ -123,6 +123,7 @@ const MapEditImage = (props: {
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
   ) {
+    setSelectedNodeID(nodeID);
     const el = e.currentTarget;
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;

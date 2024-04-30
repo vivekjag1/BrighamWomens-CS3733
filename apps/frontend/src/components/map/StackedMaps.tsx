@@ -6,6 +6,7 @@ import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { Node } from "database";
 import DashedPolyline from "./DashedPolyline.tsx";
 import ElevatorPolyline from "./ElevatorPolyline.tsx";
+import StartEndMarker from "./StartEndMarker.tsx";
 
 interface StackedMapsProps {
   path: Node[];
@@ -33,13 +34,13 @@ function StackedMaps(props: StackedMapsProps) {
   const startMarkerElement = (() => {
     const startNode: Point = getStartNodeCoords(props.path);
     return (
-      <circle cx={startNode.xcoord} cy={startNode.ycoord} fill="green" r="30" />
+      <StartEndMarker x={startNode.xcoord} y={startNode.ycoord} color="green" />
     );
   })();
 
   const endMarkerElement = (() => {
     const endNode: Point = getEndNodeCoords(props.path);
-    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r="30" />;
+    return <StartEndMarker x={endNode.xcoord} y={endNode.ycoord} color="red" />;
   })();
 
   return (
