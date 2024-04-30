@@ -1,5 +1,5 @@
 .hover-grow-press-shrink {
-  transition: transform 2ms ease-in-out;
+  transition: transform 2ms linear;
 }
 
 .hover-grow-press-shrink:hover {

@@ -5,6 +5,11 @@ export type PathType = {
 
 export type PathAlgorithm = "A-Star" | "BFS" | "DFS" | "Dijkstra";
 
+export enum MapType {
+  TwoDimensional = "2D",
+  ThreeDimensional = "3D",
+}
+
 export enum DirectionType {
   Start,
   End,
