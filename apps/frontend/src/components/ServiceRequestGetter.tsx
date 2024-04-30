@@ -26,8 +26,12 @@ import {
 import EmployeeDropdown from "./EmployeeDropdown.tsx";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export function ServiceRequestGetter() {
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
@@ -111,7 +115,6 @@ export function ServiceRequestGetter() {
     serviceID: number,
   ) {
     const newStatus = event.target.value;
-
     const updatedRequests = requestData.map((request) => {
       if (request.serviceID === serviceID) {
         const updatedRequest = {
@@ -261,7 +264,7 @@ export function ServiceRequestGetter() {
   ]);
 
   function truncateString(str: string, num: number) {
-    if (str.length <= num) {
+    if (str.length <= num + 3) {
       return str;
     }
     return str.slice(0, num) + "...";
@@ -310,6 +313,72 @@ export function ServiceRequestGetter() {
       setSortOrder("asc");
       setPriorityOrder("");
     }
+  };
+
+  function convertToEasternTime(
+    utcTime: Date | string | number | null,
+    format = "MMM DD, YYYY hh:mm A [EST]",
+  ): string {
+    if (!utcTime) return "";
+    return dayjs.utc(utcTime).tz("America/New_York").format(format);
+  }
+  interface DeliveryDetailsProps {
+    delivery: Record<string, string | number | null>;
+    fieldMappings: Record<string, string>;
+  }
+
+  const DeliveryDetails: React.FC<DeliveryDetailsProps> = ({
+    delivery,
+    fieldMappings,
+  }) => {
+    return (
+      <div className="grid grid-cols-6 gap-4 col-span-6 mb-6">
+        {Object.entries(fieldMappings).map(([key, label]) => (
+          <div key={key} className="col-span-2 flex flex-col w-full">
+            <label className="font-medium mb-2">{label}:</label>
+            {key.includes("Time") ? (
+              <CustomTextField
+                value={convertToEasternTime(delivery[key])}
+                sx={{ width: "100%" }}
+              />
+            ) : (
+              <CustomTextField
+                value={delivery[key] || ""}
+                sx={{ width: "100%" }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const fieldConfig = {
+    medicineDelivery: {
+      patientName: "Patient Name",
+      medicineName: "Medicine Name",
+      dosage: "Dosage",
+    },
+    SecurityService: {
+      securityType: "Security Type",
+      numberPeople: "Number of People",
+    },
+    SanitationService: {
+      sanitationType: "Sanitation Type",
+      requiredEquipment: "Required Equipment",
+    },
+    RoomScheduling: {
+      reservationReason: "Reservation Reason",
+      endTime: "End Time",
+    },
+    DeviceDelivery: {
+      deviceType: "Device Type",
+      quantity: "Quantity",
+    },
+    GiftDelivery: {
+      giftType: "Gift Type",
+      senderNote: "Sender Note",
+    },
   };
 
   return (
@@ -672,7 +741,7 @@ export function ServiceRequestGetter() {
           <div className="relative">
             <Card
               sx={{ borderRadius: 2 }}
-              className="drop-shadow-2xl w-full max-w-lg ml-[9%] px-4 pb-2"
+              className="drop-shadow-2xl w-[47rem] ml-[5%] px-4 pb-2"
               onClick={(e) => e.stopPropagation()}
             >
               <CardContent>
@@ -692,37 +761,98 @@ export function ServiceRequestGetter() {
                 >
                   {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
                 </h1>
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  {Object.entries(selectedRow).map(
-                    ([key, value]) =>
-                      key !== "type" && (
-                        <div key={key} className="flex flex-col">
-                          <label className="font-medium mb-2">{key}:</label>
-                          <CustomTextField
-                            value={
-                              key.toLowerCase().includes("time") && value
-                                ? (() => {
-                                    const estTime = dayjs
-                                      .utc(value)
-                                      .tz("America/New_York")
-                                      .format(
-                                        "ddd, DD MMM YYYY HH:mm:ss [GMT]",
-                                      );
-                                    return estTime;
-                                  })()
-                                : key === "description" &&
-                                    (!value || String(value).trim() === "")
-                                  ? "N/A"
-                                  : key === "status" && value === "InProgress"
-                                    ? "In Progress"
-                                    : value
-                            }
-                            sx={{ width: "12rem" }}
-                            inputProps={{ readOnly: true }}
+                <div className="grid grid-cols-6 gap-4">
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">Location:</label>
+                    <CustomTextField
+                      value={selectedRow.location}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">
+                      Requesting Person:
+                    </label>
+                    <CustomTextField
+                      value={selectedRow.requestingUsername}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">Assigned To:</label>
+                    <CustomTextField
+                      value={selectedRow.assignedTo}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-3 flex flex-col w-full">
+                    <label className="font-medium mb-2">Priority:</label>
+                    <CustomTextField
+                      value={selectedRow.priority}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-3 flex flex-col w-full">
+                    <label className="font-medium mb-2">Status:</label>
+                    <CustomTextField
+                      value={selectedRow.status}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">Entered Time:</label>
+                    <CustomTextField
+                      value={convertToEasternTime(selectedRow.enteredTime)}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">
+                      Last Updated Time:
+                    </label>
+                    <CustomTextField
+                      value={convertToEasternTime(selectedRow.updatedTime)}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col w-full">
+                    <label className="font-medium mb-2">Requested Time:</label>
+                    <CustomTextField
+                      value={convertToEasternTime(selectedRow.requestedTime)}
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-span-6 flex flex-col w-full">
+                    <label className="font-medium mb-2">Description:</label>
+                    <CustomTextField
+                      value={selectedRow.description}
+                      multiline
+                      rows={4}
+                      size="small"
+                      sx={{ width: "100%" }}
+                    />
+                  </div>
+                  <hr className="px-80 ml-5 h-px mt-3 mb-1 bg-gray-300 border-0" />
+                  <div className="grid grid-cols-6 gap-4 col-span-6 mb-6">
+                    {Object.keys(fieldConfig).map((deliveryType) => {
+                      //@ts-expect-error needs types
+                      const deliveryData = selectedRow[deliveryType];
+                      //@ts-expect-error needs types
+                      const fieldMapping = fieldConfig[deliveryType];
+                      return (
+                        deliveryData && (
+                          <DeliveryDetails
+                            key={deliveryType}
+                            delivery={deliveryData}
+                            fieldMappings={fieldMapping}
                           />
-                        </div>
-                      ),
-                  )}
+                        )
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                   <div className="col-span-2 flex justify-between items-end px-0">
                     <Button
                       variant="contained"
