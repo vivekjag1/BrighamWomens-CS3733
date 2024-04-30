@@ -21,6 +21,7 @@ const MapEditImage = (props: {
   startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
+  //onEdgeClick: (edgeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
@@ -31,10 +32,6 @@ const MapEditImage = (props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  //console.log(tempNodes);
-  // const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
-  // const [nodeRadii, setNodeRadii] = useState(new Map());
   // eslint-disable-next-line prefer-const
   let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
   const edges = useContext(MapContext).edges;

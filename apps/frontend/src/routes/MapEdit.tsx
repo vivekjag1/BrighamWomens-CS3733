@@ -59,7 +59,6 @@ function MapEdit() {
     new Map(),
   );
   const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
-  /*const [deletedNodes] = useState<Map<string, Node>>(new Map());*/
 
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
@@ -83,8 +82,6 @@ function MapEdit() {
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
   const { showToast } = useToast();
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
-  const [nodeSaved, setNodeSaved] = useState<boolean>(false);
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -205,7 +202,6 @@ function MapEdit() {
       }
 
       setSelectedNodeID(nodeID);
-      setNodeSaved(false);
     }
   }
 
@@ -292,13 +288,8 @@ function MapEdit() {
       handleCreateNode(event);
     } else {
       // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
-      }
 
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
     }
   }
 
@@ -309,9 +300,9 @@ function MapEdit() {
       Array.from(addedNodes.values()),
       token,
     );
+
     const sendUpdatedNodes = {
       nodes: Array.from(updatedNodes.values()),
-      //nodes: Array.from(updatedNodes.values()),
     };
 
     if (Array.from(updatedNodes.values()).length != 0) {
@@ -342,7 +333,10 @@ function MapEdit() {
         token,
       );
     }
-
+    addedNodes.clear();
+    updatedNodes.clear();
+    setNodesForDeletion([]);
+    setAddedEdges([]);
     showToast("Changes Saved!", "success");
   }
 
