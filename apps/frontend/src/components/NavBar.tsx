@@ -168,9 +168,12 @@ function NavBar() {
 
   const UserProfileItem: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
+    function toggleProfileView() {
+      setShowProfileMenu(!showProfileMenu);
+    }
 
     return (
-      <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative items-center overflow-hidden">
+      <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1.5rem]  items-center overflow-hidden">
         {showProfileMenu && (
           <>
             <div
@@ -199,13 +202,11 @@ function NavBar() {
         <div>
           <div
             className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
-            onClick={() => {
-              setShowProfileMenu(true);
-            }}
+            onClick={toggleProfileView}
           >
             <img
               className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
-              src={user?.image}
+              src={user?.picture}
               alt="user profile picture"
             />
             <h2
@@ -233,7 +234,7 @@ function NavBar() {
         }}
       >
         {/* Header image */}
-        <div className="flex flex-col justify-center overflow-hidden">
+        <div className="flex flex-col justify-center ">
           <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
