@@ -23,7 +23,6 @@ function NavBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
   const [remaining, setRemaining] = useState<number>(0);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const { showToast } = useToast();
   const handleLogout = () => {
@@ -79,10 +78,6 @@ function NavBar() {
   const { logout } = useAuth0();
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
-
-  function toggleProfileView() {
-    setShowProfileMenu(!showProfileMenu);
-  }
 
   interface NavbarItemProps {
     to: string;
@@ -147,13 +142,18 @@ function NavBar() {
   };
 
   function UserProfileItem(props: { collapsed: boolean }) {
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+    function toggleProfileView() {
+      setShowProfileMenu(!showProfileMenu);
+    }
+
     return (
       <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1rem]  items-center overflow-hidden">
         {showProfileMenu && (
           <>
             <div>
               {!isHidingNavBarInfo && (
-                <Card className=" mb-[1rem]" style={{ color: "#F6BD39" }}>
+                <Card className={`mb-[1rem]`} style={{ color: "#F6BD39" }}>
                   <CardContent className="flex flex-col gap-2">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
@@ -183,11 +183,11 @@ function NavBar() {
         )}
         <div>
           <div
-            className="flex flex-row text-white items-center  z-[100] bg-secondary "
+            className="flex flex-row text-white items-center   z-[100] bg-secondary  "
             onClick={toggleProfileView}
           >
             {isAuthenticated ? (
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center ">
                 <img
                   className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
                   src={user?.picture}
@@ -198,7 +198,7 @@ function NavBar() {
                     opacity: props.collapsed ? 0 : 100,
                     fontWeight: 500,
                   }}
-                  className="text-lg whitespace-nowrap z-[100] "
+                  className="text-lg whitespace-nowrap z-[100]  "
                 >
                   {user?.given_name}
                 </h2>
