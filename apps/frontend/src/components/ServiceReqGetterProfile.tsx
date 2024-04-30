@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { Employee, ServiceRequest } from "database";
+import { ServiceRequest } from "database";
 import dayjs from "dayjs";
 import { useAuth0 } from "@auth0/auth0-react";
-import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { useToast } from "./useToast.tsx";
 import { Card, CardContent } from "@mui/material";
 import CustomTextField from "./CustomTextField.tsx";
@@ -21,19 +20,22 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
 export function ServiceReqGetterProfile(props: {
-  employee: Employee | undefined;
+  requestData: ServiceRequest[];
+  setRequestData: (data: ServiceRequest[]) => void;
+  fetchData: () => void;
+  handleStatusChange: (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    serviceID: number,
+  ) => void;
+  SortOrder: () => void;
+  sortPriorityOrder: () => void;
+  filteredData: ServiceRequest[];
 }) {
-  const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [filterByEmployee, setFilterByEmployee] = useState<string[]>([]);
-  const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
-  const [priorityOrder, setPriorityOrder] = useState<"desc" | "asc" | "">("");
   const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
   const { getAccessTokenSilently } = useAuth0();
   const { showToast } = useToast();
@@ -53,32 +55,9 @@ export function ServiceReqGetterProfile(props: {
   };
 
   const emptyRows =
-    page > -1 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
-
-  const fetchData = useCallback(async () => {
-    const token = await getAccessTokenSilently();
-
-    try {
-      const res = await MakeProtectedGetRequest(
-        APIEndpoints.serviceGetRequests,
-        token,
-      );
-      const sortedData = res.data.sort(
-        (a: ServiceRequest, b: ServiceRequest) => {
-          return sortOrder === "asc"
-            ? a.serviceID - b.serviceID
-            : b.serviceID - a.serviceID;
-        },
-      );
-      setRequestData(sortedData);
-    } catch (error) {
-      console.error("Error fetching service requests:", error);
-    }
-  }, [getAccessTokenSilently, sortOrder]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    page > -1
+      ? Math.max(0, (1 + page) * rowsPerPage - props.filteredData.length)
+      : 0;
 
   async function deleteServiceRequest(serviceID: number) {
     const token = await getAccessTokenSilently();
@@ -92,7 +71,7 @@ export function ServiceReqGetterProfile(props: {
 
       setSelectedRow(null);
       showToast("Service Request deleted!", "error");
-      fetchData();
+      props.fetchData();
     } catch (error) {
       console.error(
         `Error deleting service request with ID ${serviceID}:`,
@@ -101,108 +80,8 @@ export function ServiceReqGetterProfile(props: {
     }
   }
 
-  async function handleStatusChange(
-    event: React.ChangeEvent<HTMLSelectElement>,
-    serviceID: number,
-  ) {
-    const newStatus = event.target.value;
-
-    const updatedRequests = requestData.map((request) => {
-      if (request.serviceID === serviceID) {
-        const updatedRequest = {
-          ...request,
-          status: newStatus,
-          assignedTo:
-            newStatus === "Unassigned" ? "Unassigned" : request.assignedTo,
-        };
-        return updatedRequest;
-      }
-      return request;
-    });
-
-    setRequestData(updatedRequests);
-
-    const updateData = {
-      serviceID: serviceID,
-      status: newStatus,
-      ...(newStatus === "Unassigned" && { assignedTo: "Unassigned" }),
-    };
-
-    try {
-      const token = await getAccessTokenSilently();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await MakeProtectedPatchRequest(
-        APIEndpoints.servicePutRequests,
-        updateData,
-        token,
-      );
-      showToast("Status updated successfully!", "success");
-    } catch (error) {
-      console.error("Error updating status", error);
-      showToast("Status update failed!", "error");
-    }
-  }
-
-  useEffect(() => {
-    let data = requestData;
-
-    if (filterByEmployee.length) {
-      data = data.filter((item) => filterByEmployee.includes(item.assignedTo));
-    }
-
-    if (props.employee) {
-      setFilterByEmployee([props.employee!.name]);
-    }
-
-    let sortedData = data.sort((a, b) => {
-      return sortOrder === "asc"
-        ? a.serviceID - b.serviceID
-        : b.serviceID - a.serviceID;
-    });
-
-    if (priorityOrder !== "") {
-      sortedData = sortedData.sort((a: ServiceRequest, b: ServiceRequest) => {
-        const priorityOrderMap: Record<string, number> = {
-          Low: 0,
-          Medium: 1,
-          High: 2,
-          Emergency: 3,
-        };
-
-        const priorityA = priorityOrderMap[a.priority];
-        const priorityB = priorityOrderMap[b.priority];
-
-        if (priorityOrder === "asc") {
-          return priorityA - priorityB;
-        } else {
-          return priorityB - priorityA;
-        }
-      });
-    }
-
-    setFilteredData(sortedData);
-  }, [props.employee, requestData, filterByEmployee, sortOrder, priorityOrder]);
-
   const handleRowClick = (request: ServiceRequest) => {
     setSelectedRow(request);
-  };
-
-  const sortPriorityOrder = () => {
-    if (priorityOrder == "" || priorityOrder == "desc") {
-      setPriorityOrder("asc");
-    } else if (priorityOrder == "asc") {
-      setPriorityOrder("desc");
-    }
-  };
-
-  const SortOrder = () => {
-    if (sortOrder == "asc") {
-      setSortOrder("desc");
-      setPriorityOrder("");
-    } else if (sortOrder == "desc") {
-      setSortOrder("asc");
-      setPriorityOrder("");
-    }
   };
 
   return (
@@ -233,7 +112,7 @@ export function ServiceReqGetterProfile(props: {
                 >
                   ID
                   <button
-                    onClick={() => SortOrder()}
+                    onClick={() => props.SortOrder()}
                     className="hover:text-blue-700"
                   >
                     <svg
@@ -251,7 +130,7 @@ export function ServiceReqGetterProfile(props: {
                 <TableCell>
                   Priority
                   <button
-                    onClick={sortPriorityOrder}
+                    onClick={props.sortPriorityOrder}
                     className="hover:text-blue-700"
                   >
                     <svg
@@ -267,7 +146,7 @@ export function ServiceReqGetterProfile(props: {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData
+              {props.filteredData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((request) => (
                   <TableRow
@@ -295,7 +174,7 @@ export function ServiceReqGetterProfile(props: {
                       <select
                         value={request.status}
                         onChange={(e) =>
-                          handleStatusChange(e, request.serviceID)
+                          props.handleStatusChange(e, request.serviceID)
                         }
                         onClick={(e) => e.stopPropagation()}
                         className="border bg-gray-50 border-gray-300 rounded px-3 py-1 text-center"
@@ -374,7 +253,7 @@ export function ServiceReqGetterProfile(props: {
                 <TablePagination
                   rowsPerPageOptions={[4]}
                   colSpan={9}
-                  count={filteredData.length}
+                  count={props.filteredData.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
