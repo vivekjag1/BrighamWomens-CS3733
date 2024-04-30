@@ -1,21 +1,21 @@
 import { FormEvent, useState, useEffect } from "react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import axios from "axios";
 import { Node } from "database";
 import { Directions, TripStat } from "common/src/Path.ts";
+import { getFloorNumber, getSegments } from "../common/PathUtilities.ts";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
-import { getSegments } from "../common/PathUtilities.ts";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import Map from "../components/map/Map.tsx";
 import NavigationPane from "../components/map/NavigationPane.tsx";
 import ZoomControls from "../components/map/ZoomControls.tsx";
 import FloorSelector from "../components/map/FloorSelector.tsx";
 import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
-import { getFloorNumber } from "../common/PathUtilities.ts";
 import StackedMaps from "../components/map/StackedMaps.tsx";
-import "../components/map/styles/StackedMaps.css";
 import PathTrail from "../components/breadcrumb/PathTrail.tsx";
 import QRCodeInsert from "../components/QRCodeInsert.tsx";
 import QRCodeButton from "../components/map/QRCodeButton.tsx";
+import "../components/map/styles/StackedMaps.css";
+import "../animations/hover-grow-press-shrink.css";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -121,7 +121,7 @@ function Home() {
     }
   }
 
-  function handleMapChange() {
+  function handleMapSwitch() {
     if (mapType == "2D") setMapType("3D");
     else setMapType("2D");
   }
@@ -141,15 +141,55 @@ function Home() {
   const mapElement =
     mapType == "3D" ? (
       <div>
-        <div className="flexMap">
+        <div className="transform-3d">
           <StackedMaps path={path} />
         </div>
         <div className="h-screen flex flex-col justify-center text-center text-secondary font-extrabold text-[2vw] absolute bottom-0 right-[13%]">
-          <h2 className="relative top-[-27%]">3</h2>
-          <h2 className="relative top-[-13%]">2</h2>
-          <h2>1</h2>
-          <h2 className="relative top-[12%]">L1</h2>
-          <h2 className="relative top-[27%]">L2</h2>
+          <h2
+            className="relative top-[-27%] hover-grow-press-shrink cursor-pointer"
+            onClick={() => {
+              setMapType("2D");
+              setActiveFloor(3);
+            }}
+          >
+            3
+          </h2>
+          <h2
+            className="relative top-[-13%] hover-grow-press-shrink cursor-pointer"
+            onClick={() => {
+              setMapType("2D");
+              setActiveFloor(2);
+            }}
+          >
+            2
+          </h2>
+          <h2
+            className="hover-grow-press-shrink cursor-pointer"
+            onClick={() => {
+              setMapType("2D");
+              setActiveFloor(1);
+            }}
+          >
+            1
+          </h2>
+          <h2
+            className="relative top-[12%] hover-grow-press-shrink cursor-pointer"
+            onClick={() => {
+              setMapType("2D");
+              setActiveFloor(-1);
+            }}
+          >
+            L1
+          </h2>
+          <h2
+            className="relative top-[27%] hover-grow-press-shrink cursor-pointer"
+            onClick={() => {
+              setMapType("2D");
+              setActiveFloor(-2);
+            }}
+          >
+            L2
+          </h2>
         </div>
       </div>
     ) : (
@@ -273,7 +313,7 @@ function Home() {
           <></>
         )}
         <div className="absolute top-[2%] right-[1.5%]">
-          <MapTypeToggle mapType={mapType} setMapType={handleMapChange} />
+          <MapTypeToggle mapType={mapType} setMapType={handleMapSwitch} />
         </div>
       </TransformWrapper>
       {floorSelectorElement}
