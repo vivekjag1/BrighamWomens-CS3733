@@ -304,8 +304,6 @@ export function EmployeeGetter({
                 <TableRow
                   key={employee.employeeID}
                   onClick={() => handleRowClick(employee)}
-                  hover
-                  style={{ cursor: "pointer" }}
                   sx={{
                     "& > td": {
                       color: "#6B7280",
@@ -365,6 +363,7 @@ export function EmployeeGetter({
                             setEmployeeDelete(employee);
                           }}
                           className="text-red-500 mb-1 hover:text-red-700"
+                          style={{ cursor: "pointer" }}
                         />
                       </TableCell>
                     </>
