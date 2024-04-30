@@ -15,6 +15,7 @@ import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import ButtonBlue from "./ButtonBlue.tsx";
+import ButtonRed from "./ButtonRed.tsx";
 
 function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -151,20 +152,28 @@ function NavBar() {
         {showProfileMenu && (
           <>
             <div>
-              <Card className="" style={{ color: "#F6BD39" }}>
-                <CardContent className="flex flex-col">
-                  <Link to={paths.PROFILE} className="w-full">
+              <Card className=" mb-[1rem]" style={{ color: "#F6BD39" }}>
+                <CardContent className="flex flex-col gap-2">
+                  <Link to={paths.PROFILE} className="w-full ">
                     {" "}
-                    <ButtonBlue className="flex text-center text-2xl w-full">
+                    <ButtonBlue className="flex text-center text-2xl w-full ">
                       View Profile
                     </ButtonBlue>
                   </Link>
-                  <ButtonBlue
+                  <ButtonRed
                     onClick={handleLogout}
-                    className="flex text-center text-2xl w-full"
+                    sx={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontSize: "2xl",
+                      width: "full",
+                      padding: "0.5",
+                      backgroundColor: "red",
+                      fontFamily: "poppins, sans-serif",
+                    }}
                   >
                     Log Out
-                  </ButtonBlue>
+                  </ButtonRed>
                 </CardContent>
               </Card>
             </div>
@@ -172,9 +181,10 @@ function NavBar() {
         )}
         <div>
           <div
-            className="flex flex-row text-white items-center justify-center z-[100] bg-secondary"
+            className="flex flex-row text-white items-center justify-center z-[100] bg-secondary "
             onClick={toggleProfileView}
           >
+            {}
             <img
               className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
               src={user?.picture}
