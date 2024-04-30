@@ -41,13 +41,14 @@ const employees = [
     name: "Andy Troung ",
     role: "Assistant Lead",
     imageSrc: andyImage,
-    quote: "yeet",
+    quote: '"Yes Queen" - Andy',
   },
   {
     name: "Vivek Jagadeesh ",
     role: "Assistant Lead",
     imageSrc: vivekImage,
-    quote: "yeet",
+    quote:
+      '"Talent sets the floor, character sets the ceiling"\n - Bill Belichick',
   },
   {
     name: "Mohamed Adem Djadid ",
@@ -79,7 +80,7 @@ const employees = [
     name: "Griffin Brown",
     role: "Algorithm",
     imageSrc: griffinImage,
-    quote: "yeet",
+    quote: '"Μνάσεσθαί τινά φαμι καὶ ὔστερον ἀμμέων"',
   },
   {
     name: "Taeha Song",

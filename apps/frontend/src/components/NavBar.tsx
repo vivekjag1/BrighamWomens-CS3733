@@ -92,7 +92,7 @@ function NavBar() {
       setStatus(result!);
     };
     checkRole().then();
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, activePage]);
 
   interface NavbarItemProps {
     to: string;

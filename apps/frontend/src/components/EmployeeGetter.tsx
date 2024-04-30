@@ -17,7 +17,6 @@ import {
   TableFooter,
   Paper,
   TablePagination,
-  Modal,
   Card,
   CardContent,
 } from "@mui/material";
@@ -39,6 +38,7 @@ import wongImage from "../../assets/employees/wilsonwong.jpg";
 import mattImage from "../../assets/employees/matt-brown.jpeg";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+import CustomModal from "./CustomModal.tsx";
 
 interface EmployeeGetterProps {
   uploadTriggered: boolean;
@@ -406,19 +406,10 @@ export function EmployeeGetter({
           </TableFooter>
         </Table>
       </TableContainer>
-      <Modal
-        open={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <CustomModal isOpen={deleteModal} onClose={() => setDeleteModal(false)}>
         <Card
           sx={{
             borderRadius: 2,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
             "&:focus": {
               outline: "none",
               border: "none",
@@ -469,7 +460,7 @@ export function EmployeeGetter({
             </div>
           </CardContent>
         </Card>
-      </Modal>
+      </CustomModal>
     </Paper>
   );
 }

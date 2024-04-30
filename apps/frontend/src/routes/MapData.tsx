@@ -22,12 +22,13 @@ import {
   TablePagination,
   CardContent,
   Card,
-  Modal,
   Chip,
 } from "@mui/material";
 import axios from "axios";
 import NodeFilterDropdown from "../components/NodeFilterDropdown.tsx";
 import EdgeFilterDropdown from "../components/EdgeFilterDropdown.tsx";
+// import { AnimatePresence, motion } from "framer-motion";
+import CustomModal from "../components/CustomModal.tsx";
 
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -270,6 +271,23 @@ const NodeTable = () => {
       </span>
     );
   }
+
+  // const modalVariants = {
+  //     hidden: {
+  //         opacity: 0,
+  //         scale: 0.75
+  //     },
+  //     visible: {
+  //         opacity: 1,
+  //         scale: 1,
+  //         transition: {
+  //             duration: 0.5,
+  //             type: "spring",
+  //             damping: 25,
+  //             stiffness: 500
+  //         }
+  //     }
+  // };
 
   const getButtonClasses = (tabName: string): string => {
     return `inline-block w-full p-2 text-md hover:underline ${
@@ -648,22 +666,12 @@ const NodeTable = () => {
             </div>
           </div>
         </div>
-        <Modal
-          open={fileModal}
-          onClose={() => setFileModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+        <CustomModal isOpen={fileModal} onClose={() => setFileModal(false)}>
           <Card
             sx={{
               borderRadius: 2,
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
               "&:focus": {
                 outline: "none",
-                border: "none",
                 boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
               },
             }}
@@ -767,7 +775,7 @@ const NodeTable = () => {
               </div>
             </CardContent>
           </Card>
-        </Modal>
+        </CustomModal>
       </div>
     </div>
   );
