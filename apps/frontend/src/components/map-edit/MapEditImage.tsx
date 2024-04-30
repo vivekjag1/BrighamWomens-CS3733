@@ -35,7 +35,7 @@ const MapEditImage = (props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-   
+
   const nodes = useContext(MapContext).nodes;
   const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
@@ -176,7 +176,8 @@ const MapEditImage = (props: {
   return (
     //onClick={props.onMapClick}
     <div
-      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+      className={`z-0 relative ${selectedAction.toString() == "CreateEdge" ? "cursor-copy" : ""}${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}
+      `}
     >
       {/*  White Fade */}
       <div
