@@ -1,10 +1,14 @@
 @import "../../animations/tada.css";
 .medical-device-delivery {
-  animation-delay: 0.2s;
+  animation-delay: 0.15s;
 }
 
 .room-reservation {
-  animation-delay: 0.4s;
+  animation-delay: 0.3s;
+}
+
+.gift-delivery {
+  animation-delay: 0.45s;
 }
 
 .sanitation-request {
@@ -12,9 +16,13 @@
 }
 
 .security-request {
-  animation-delay: 0.8s;
+  animation-delay: 0.75s;
 }
 
-.gift-delivery {
-  animation-delay: 1s;
+.adam-delivery {
+  animation-delay: 0.9s;
+}
+
+.it_support {
+  animation-delay: 1.05s;
 }

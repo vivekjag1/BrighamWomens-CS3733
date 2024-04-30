@@ -3,11 +3,8 @@ import multer from "multer";
 import { FileAttributes } from "common/src/APICommon.ts";
 import { PrismaClient } from "database";
 const prisma = new PrismaClient();
-import {
-  readCSVFile,
-  populateNodeDB,
-  populateEdgeDB,
-} from "../../fileInput/file.ts";
+import { readMapDataFile } from "../../utils/fileParser.ts";
+import { createNodesInDB, createEdgesInDB } from "./common.ts";
 
 const router: Router = express.Router();
 
@@ -31,7 +28,7 @@ router.post(
       const nodeFile: Express.Multer.File[] = files[FileAttributes.nodeKey];
       const edgeFile: Express.Multer.File[] = files[FileAttributes.edgeKey];
       if (validateInput(nodeFile[0], 8) && validateInput(edgeFile[0], 3)) {
-        await checkDBStatus();
+        await deleteAllFromDB();
         await populateDatabases(nodeFile[0], edgeFile[0]);
         res.sendStatus(200);
       } else {
@@ -55,24 +52,13 @@ async function populateDatabases(
   nodeFile: Express.Multer.File,
   edgeFile: Express.Multer.File,
 ) {
-  await populateNodeDB(readCSVFile(nodeFile.buffer.toString()));
-  await populateEdgeDB(readCSVFile(edgeFile.buffer.toString()));
+  await createNodesInDB(readMapDataFile(nodeFile.buffer.toString()));
+  await createEdgesInDB(readMapDataFile(edgeFile.buffer.toString()));
 }
 
-export async function checkDBStatus() {
+export async function deleteAllFromDB() {
   await prisma.edge.deleteMany();
   await prisma.node.deleteMany();
-  // const nodes = await prisma.node.findMany();
-  //   console.log("nodes recieved");
-  //
-  //   const edges = await prisma.edge.findMany();
-  //   console.log("edges recieved");
-  // if (edges.length !== 0) {
-  //   await prisma.edge.deleteMany();
-  // }
-  // if (nodes.length !== 0) {
-  //   await prisma.node.deleteMany();
-  // }
 }
 
 export default router;

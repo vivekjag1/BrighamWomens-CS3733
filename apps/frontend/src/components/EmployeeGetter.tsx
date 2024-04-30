@@ -17,7 +17,6 @@ import {
   TableFooter,
   Paper,
   TablePagination,
-  Modal,
   Card,
   CardContent,
 } from "@mui/material";
@@ -26,7 +25,6 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "./useToast.tsx";
-
 import andyImage from "../../assets/employees/andy-truong.jpeg";
 import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
 import ademImage from "../../assets/employees/adem.jpeg";
@@ -39,6 +37,7 @@ import wongImage from "../../assets/employees/wilsonwong.jpg";
 import mattImage from "../../assets/employees/matt-brown.jpeg";
 import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
 import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+import CustomModal from "./CustomModal.tsx";
 
 interface EmployeeGetterProps {
   uploadTriggered: boolean;
@@ -121,7 +120,7 @@ export function EmployeeGetter({
 
   const makeDeleteRequest = (employee: Employee) => {
     handleDeleteEmployee(employee).then().catch(console.error);
-    showToast("Employee successfully deleted!", "success");
+    showToast("employee successfully deleted!", "success");
     setDeleteModal(false);
   };
 
@@ -304,8 +303,6 @@ export function EmployeeGetter({
                 <TableRow
                   key={employee.employeeID}
                   onClick={() => handleRowClick(employee)}
-                  hover
-                  style={{ cursor: "pointer" }}
                   sx={{
                     "& > td": {
                       color: "#6B7280",
@@ -365,6 +362,7 @@ export function EmployeeGetter({
                             setEmployeeDelete(employee);
                           }}
                           className="text-red-500 mb-1 hover:text-red-700"
+                          style={{ cursor: "pointer" }}
                         />
                       </TableCell>
                     </>
@@ -406,19 +404,10 @@ export function EmployeeGetter({
           </TableFooter>
         </Table>
       </TableContainer>
-      <Modal
-        open={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <CustomModal isOpen={deleteModal} onClose={() => setDeleteModal(false)}>
         <Card
           sx={{
             borderRadius: 2,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
             "&:focus": {
               outline: "none",
               border: "none",
@@ -469,7 +458,7 @@ export function EmployeeGetter({
             </div>
           </CardContent>
         </Card>
-      </Modal>
+      </CustomModal>
     </Paper>
   );
 }

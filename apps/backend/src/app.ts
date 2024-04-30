@@ -2,35 +2,33 @@ import createError, { HttpError } from "http-errors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import mapUpload from "./routes/map/mapUpload.ts";
-import mapDownload from "./routes/map/mapDownload.ts";
-import pathfindingAPI from "./routes/navigation/navigate.ts";
+import mapUpload from "./routes/map/fileUploadMap.ts";
+import mapDownload from "./routes/map/fileDownloadMap.ts";
+import handleNavigation from "./routes/navigation/navigate.ts";
 import deleteUser from "./routes/accounts/deleteUser.ts";
 import createUser from "./routes/accounts/createUser.ts";
 import changePassword from "./routes/accounts/changePassword.ts";
 
-import handleServiceRequests from "./routes/handleServiceRequest.ts";
-import handleSanitationRequests from "./routes/handleSanitationRequest.ts";
-import handleEdges from "./routes/handleEdges.ts";
+import handleServiceRequests from "./routes/services/handleServiceRequest.ts";
+import handleSanitationRequests from "./routes/services/handleSanitationRequest.ts";
+import handleEdges from "./routes/map/getEdges.ts";
 
 import { APIEndpoints } from "common/src/APICommon.ts";
-import handleNodes from "./routes/handleNodes.ts";
-import roomReservationAPI from "./routes/RoomReservationAPI.ts";
-import handleMedicalDeviceDelivery from "./routes/handleMedicalDeviceDelivery.ts";
-import securityRequest from "./routes/securityRequest.ts";
+import handleNodes from "./routes/map/getNodes.ts";
+import handleRoomRequest from "./routes/services/handleRoomReservation.ts";
+import handleDeviceRequest from "./routes/services/handleMedicalDeviceDelivery.ts";
+import handleSecurityRequest from "./routes/services/securityRequest.ts";
 import { auth } from "express-oauth2-jwt-bearer";
-import handleGiftDeliveryRequest from "./routes/handleGiftDeliveryRequest.ts";
-import updateNodes from "./routes/map/updateNodes.ts";
-import handleEmployees from "./routes/Employee/handleEmployees.ts";
-import employeeDownload from "./routes/Employee/employeeDownload.ts";
-import makeNodes from "./routes/map/makeNodes.ts";
-import deleteNodes from "./routes/map/deleteNodes.ts";
-import countNodes from "./routes/map/CountNodes.ts";
-import createEdges from "./routes/map/createEdges.ts";
-import findEmployee from "./routes/Employee/findEmployee.ts";
+import handleGiftRequest from "./routes/services/handleGiftDeliveryRequest.ts";
+import handleEmployees from "./routes/employee/handleEmployees.ts";
+import employeeDownload from "./routes/employee/employeeDownload.ts";
+import getNumberNodes from "./routes/map/getNumberNodes.ts";
+import findEmployee from "./routes/employee/findEmployee.ts";
+import getMapOnFloor from "./routes/map/getMapOnFloor.ts";
+import updateMapOnFloor from "./routes/map/updateMapOnFloor.ts";
+import handleITRequest from "./routes/services/handleITRequest.ts";
 
 const app: Express = express(); // Setup the backend
-import createMultipleNodes from "./routes/map/createMutlipleNodes.ts";
 
 // Setup generic middlewear
 app.use(
@@ -53,10 +51,8 @@ app.use("/healthcheck", (req, res) => {
 
 app.use(APIEndpoints.mapGetEdges, handleEdges);
 app.use(APIEndpoints.mapGetNodes, handleNodes);
-app.use(APIEndpoints.navigationRequest, pathfindingAPI);
-app.use(APIEndpoints.createNode, makeNodes);
-app.use(APIEndpoints.deleteNode, deleteNodes);
-app.use(APIEndpoints.serviceDeleteRequests, handleServiceRequests);
+app.use(APIEndpoints.navigation, handleNavigation);
+app.use(APIEndpoints.deleteServiceRequest, handleServiceRequests);
 
 app.use(
   auth({
@@ -67,25 +63,28 @@ app.use(
 );
 app.use(APIEndpoints.mapUpload, mapUpload);
 app.use(APIEndpoints.mapDownload, mapDownload);
-app.use(APIEndpoints.serviceGetRequests, handleServiceRequests);
-app.use(APIEndpoints.servicePostRequests, handleServiceRequests);
-app.use(APIEndpoints.servicePutRequests, handleServiceRequests);
-app.use(APIEndpoints.sanitationPostRequests, handleSanitationRequests);
-app.use(APIEndpoints.servicePostSecurityRequest, securityRequest);
-app.use(APIEndpoints.roomReservation, roomReservationAPI);
-app.use(APIEndpoints.medicalDeviceDelivery, handleMedicalDeviceDelivery);
-app.use(APIEndpoints.giftPostRequests, handleGiftDeliveryRequest);
-app.use(APIEndpoints.updateNodes, updateNodes);
+app.use(APIEndpoints.getMapOnFloor, getMapOnFloor);
+app.use(APIEndpoints.updateMapOnFloor, updateMapOnFloor);
+app.use(APIEndpoints.getNumberNodes, getNumberNodes);
+
+app.use(APIEndpoints.getServiceRequest, handleServiceRequests);
+app.use(APIEndpoints.postServiceRequest, handleServiceRequests);
+app.use(APIEndpoints.putServiceRequest, handleServiceRequests);
+app.use(APIEndpoints.sanitationRequest, handleSanitationRequests);
+app.use(APIEndpoints.securityRequest, handleSecurityRequest);
+app.use(APIEndpoints.roomRequest, handleRoomRequest);
+app.use(APIEndpoints.deviceRequest, handleDeviceRequest);
+app.use(APIEndpoints.giftRequest, handleGiftRequest);
+
 app.use(APIEndpoints.employeePostRequest, handleEmployees);
 app.use(APIEndpoints.employeeGetRequest, handleEmployees);
 app.use(APIEndpoints.employeeDownload, employeeDownload);
 app.use(APIEndpoints.deleteEmployee, deleteUser);
 app.use(APIEndpoints.makeEmployee, createUser);
-app.use(APIEndpoints.countNodes, countNodes);
-app.use(APIEndpoints.createEdge, createEdges);
-app.use(APIEndpoints.createManyNodes, createMultipleNodes);
 app.use(APIEndpoints.fetchUser, findEmployee);
+
 app.use(APIEndpoints.changePassword, changePassword);
+app.use(APIEndpoints.ITPostRequests, handleITRequest);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

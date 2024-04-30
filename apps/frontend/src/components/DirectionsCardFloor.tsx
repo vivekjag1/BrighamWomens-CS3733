@@ -92,7 +92,6 @@ function DirectionsCardFloor(props: Directions) {
         />
       </div>
       <motion.div
-        id="container"
         animate={{
           height: collapsed ? 0 : "auto",
           transition: {

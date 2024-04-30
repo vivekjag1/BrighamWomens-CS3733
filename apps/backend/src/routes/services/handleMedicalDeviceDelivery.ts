@@ -1,4 +1,4 @@
-import client from "../bin/database-connection.ts";
+import client from "../../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
 import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
 

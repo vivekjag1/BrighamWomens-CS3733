@@ -8,8 +8,16 @@ const prisma = new PrismaClient();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
+    console.log("calling the delete method");
+
     const token = await getManagementToken();
+    const userName = req.body.userName;
     const sentEmail = req.body.email;
+    await prisma.employee.deleteMany({
+      where: {
+        name: userName,
+      },
+    });
     const user = await axios.get(
       "https://dev-7eoh0ojk0tkfhypo.us.auth0.com/api/v2/users-by-email",
       {

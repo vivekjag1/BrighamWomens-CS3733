@@ -1,23 +1,21 @@
-import client from "../bin/database-connection.ts";
+import { ITSupportObject } from "common/src/ITRequest.ts";
+import client from "../../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
-import { SanitationRequestObject } from "common/src/SanitationRequest.ts";
 
 const router: Router = express.Router();
-// const JoeArray = ["Joseph", "Bestest Joe", "Joe", "Joe Mama"];
 
 router.post("/", async function (req: Request, res: Response): Promise<void> {
-  const request: SanitationRequestObject = req.body;
+  const request: ITSupportObject = req.body;
 
   try {
-    const createdSanitationService = await client.sanitationService.create({
+    const createdITRequest = await client.iTRequest.create({
       data: {
-        //specific request
-        sanitationType: request.sanitationType,
-        requiredEquipment: request.requiredEquipment,
+        //Specific request
+        problemType: request.TypeofProblem,
+        //Generic request
         serviceRequest: {
-          //generic request
           create: {
-            type: "SanitationService",
+            type: "ITRequest",
             requestingUsername: request.serviceRequest.requestingUsername,
             location: request.serviceRequest.location,
             description: request.serviceRequest.description,
@@ -31,12 +29,12 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).json({
-      message: "Sanitation service created successfully",
-      data: createdSanitationService,
+      message: "IT request created successfully",
+      data: createdITRequest,
     });
   } catch (error) {
-    console.error("Error creating Sanitation service:", error);
-    res.status(400).json({ message: "Error creating sanitation delivery" });
+    console.error("Error creating IT Request:", error);
+    res.status(400).json({ message: "Error creating IT Request" });
   }
 });
 

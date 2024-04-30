@@ -4,6 +4,8 @@ import routes from "./common/routes.tsx";
 import Layout from "./components/Layout.tsx";
 import Hero from "./routes/hero/Hero.tsx";
 import MobileDirections from "./routes/MobileDirections.tsx";
+import AboutUs from "./routes/AboutUs.tsx";
+import Credit from "./routes/Credit.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +21,14 @@ function App() {
     {
       path: paths.MOBILE_DIRECTIONS,
       element: <MobileDirections />,
+    },
+    {
+      path: paths.ABOUT,
+      element: <AboutUs />,
+    },
+    {
+      path: paths.CREDITS,
+      element: <Credit />,
     },
   ]);
 

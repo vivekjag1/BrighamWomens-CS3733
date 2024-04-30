@@ -1,7 +1,7 @@
 /*
   Warnings:
 
-  - You are about to drop the column `password` on the `Employee` table. All the data in the column will be lost.
+  - You are about to drop the column `password` on the `employee` table. All the data in the column will be lost.
 
 */
 -- AlterTable
