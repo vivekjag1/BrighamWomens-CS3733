@@ -168,6 +168,8 @@ const NodeTable = () => {
           showToast("File(s) failed validation!", "error");
         } else {
           showToast("Map data uploaded!", "success");
+          setEdgeFile(null);
+          setNodeFile(null);
           setDataUpdated(true);
         }
       } else {

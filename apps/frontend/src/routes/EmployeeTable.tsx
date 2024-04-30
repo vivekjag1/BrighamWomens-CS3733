@@ -78,6 +78,7 @@ const EmployeeTable = () => {
           await makeUsers();
           showToast("Employee data uploaded!", "success");
           setUploadTriggered(true);
+          setEmployeesFile(null);
           setTimeout(() => setUploadTriggered(false), 500);
         }
       } else {
