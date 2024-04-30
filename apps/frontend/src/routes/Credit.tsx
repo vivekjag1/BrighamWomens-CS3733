@@ -5,7 +5,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "../components/ArrowbackIcon.tsx";
 // import taehaImage from '../../assets/people/Taeha.png';
-import background from "../../assets/bwh-exterior-default.png";
+import background from "../../assets/auth0-background.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
 // import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -232,11 +232,11 @@ const tools = [
   },
 ];
 
-export default function Credit() {
+function Credit() {
   return (
     <div className="relative">
       <div
-        className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center blur-sm"
+        className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${background})` }}
       ></div>
       <div className="h-screen overflow-auto">
@@ -271,7 +271,7 @@ export default function Credit() {
                     </Link>
                     <h1 className="text-4xl flex-grow text-center mr-6">
                       {" "}
-                      CREDITS
+                      Credits
                     </h1>
                   </div>
                   <p style={{ color: "olive" }}>
@@ -283,7 +283,7 @@ export default function Credit() {
                     CS3733-D24 (Software Engineering)
                   </p>
                   <br />
-                  <hr className="pl-96 pr-96" />
+                  <hr className="pl-96 pr-96 mb-11" />
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
                     {tools.map((tool, index) => (
                       <div key={index}>
@@ -317,3 +317,5 @@ export default function Credit() {
     </div>
   );
 }
+
+export default Credit;
