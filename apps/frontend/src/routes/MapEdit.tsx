@@ -159,13 +159,10 @@ function MapEdit() {
 
   // Update/create node in nodes useState
   function updateNode(node: Node) {
-    console.log(node);
-    const oldNode = nodes.get(node.nodeID);
-    console.log(oldNode);
-    console.log("triggered");
     const newNodes: Map<string, Node> = new Map(nodes);
     newNodes.set(node.nodeID, node);
     setNodes(newNodes);
+    if (selectedAction == Action.MoveNode) setHasChanged(true);
   }
 
   // Deletes node from nodes useState
