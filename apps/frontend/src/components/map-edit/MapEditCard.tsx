@@ -12,13 +12,11 @@ const nodeTypes = [
   "HALL",
   "DEPT",
   "CONF",
-  "ELEV",
   "EXIT",
   "INFO",
   "LABS",
   "REST",
   "RETL",
-  "STAI",
   "SERV",
   "BATH",
 ];
