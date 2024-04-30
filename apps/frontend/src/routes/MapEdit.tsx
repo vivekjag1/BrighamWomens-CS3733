@@ -76,6 +76,7 @@ function MapEdit() {
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
+  const [hasChanged, setHasChanged] = useState(false);
 
   const { showToast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
@@ -91,6 +92,22 @@ function MapEdit() {
     selectedEdgeID,
     setSelectedEdgeID,
   };
+
+  // Warn users changes will be lost when leaving page.
+  useEffect(() => {
+    if (!hasChanged) return;
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
+      e.preventDefault();
+      e.returnValue = "";
+      return "";
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasChanged]);
 
   // Get map data on floor change
   useEffect(() => {
@@ -142,6 +159,10 @@ function MapEdit() {
 
   // Update/create node in nodes useState
   function updateNode(node: Node) {
+    console.log(node);
+    const oldNode = nodes.get(node.nodeID);
+    console.log(oldNode);
+    console.log("triggered");
     const newNodes: Map<string, Node> = new Map(nodes);
     newNodes.set(node.nodeID, node);
     setNodes(newNodes);
@@ -171,6 +192,7 @@ function MapEdit() {
   function updateNodeField(field: keyof Node, value: string | number) {
     const node = nodes.get(selectedNodeID!);
     if (node) updateNode({ ...node, [field]: value });
+    setHasChanged(true);
   }
 
   function handleNodeClick(nodeID: string) {
@@ -197,7 +219,6 @@ function MapEdit() {
           updateNode(unsavedNode);
         }
       }
-
       setSelectedNodeID(nodeID);
     }
   }
@@ -210,6 +231,7 @@ function MapEdit() {
       deleteNode(nodeID);
       repairBrokenEdges(nodeID);
     }
+    setHasChanged(true);
   }
 
   function repairBrokenEdges(nodeID: string) {
@@ -288,11 +310,14 @@ function MapEdit() {
     // Update reverted state
     originalNodes.current = new Map(nodes);
     originalEdges.current = [...edges];
+
+    setHasChanged(false);
   }
 
   async function handleRevertAll() {
     setNodes(originalNodes.current);
     setEdges(originalEdges.current);
+    setHasChanged(false);
   }
 
   function handleUndo() {
@@ -345,6 +370,7 @@ function MapEdit() {
     setNumUserNodes(numUserNodes + 1);
     updateNode(newNode);
     setSelectedNodeID(nodeID);
+    setHasChanged(true);
   };
 
   function handleCreateEdge(startNodeID: string, endNodeID: string) {
@@ -357,7 +383,9 @@ function MapEdit() {
 
     setNumUserEdges(numUserEdges + 1);
     updateEdge(newEdge);
+    setHasChanged(true);
   }
+
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
