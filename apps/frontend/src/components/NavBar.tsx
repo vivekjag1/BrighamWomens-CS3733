@@ -98,7 +98,7 @@ function NavBar() {
       setStatus(result!);
     };
     checkRole().then();
-  }, [getAccessTokenSilently, activePage]);
+  }, [user, getAccessTokenSilently, activePage]);
 
   interface NavbarItemProps {
     to: string;
@@ -219,7 +219,7 @@ function NavBar() {
                   }}
                   className="text-lg whitespace-nowrap z-[100]  "
                 >
-                  {user?.given_name}
+                  {user?.given_name ? user?.given_name : user?.name}
                 </h2>
               </div>
             ) : (

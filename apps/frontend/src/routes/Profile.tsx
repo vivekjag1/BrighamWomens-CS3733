@@ -20,7 +20,6 @@ import { ServiceReqGetterProfile } from "../components/ServiceReqGetterProfile.t
 import ElementHighlights from "../components/ElementHighlights.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
-
 const CustomCardContent = styled(CardContent)({
   display: "flex",
   "&:last-child": {
@@ -28,7 +27,6 @@ const CustomCardContent = styled(CardContent)({
     paddingBottom: 0,
   },
 });
-
 export default function Profile() {
   const { showToast } = useToast();
 
