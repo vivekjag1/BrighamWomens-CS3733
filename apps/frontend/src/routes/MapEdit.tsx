@@ -11,12 +11,9 @@ import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
-import ButtonBlue from "../components/ButtonBlue.tsx";
-import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
-import UndoRedoButton from "../components/map-edit/UndoRedoButton.tsx";
-import ButtonRed from "../components/ButtonRed.tsx";
-import ClearIcon from "@mui/icons-material/Clear";
+import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
+import SaveRevertAllButtons from "../components/map-edit/SaveRevertAllButtons.tsx";
 const defaultFloor: number = 1;
 enum Action {
   SelectNode = "SelectNode",
@@ -32,9 +29,10 @@ type MapData = {
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   selectedNodeID: string | undefined;
   setSelectedNodeID: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedEdgeID: string | undefined;
+  setSelectedEdgeID: React.Dispatch<React.SetStateAction<string | undefined>>;
   selectedAction: Action;
 };
-
 export const MapContext = createContext<MapData>({
   nodes: new Map(),
   // eslint-disable-next-line no-empty-function
@@ -43,13 +41,14 @@ export const MapContext = createContext<MapData>({
   // eslint-disable-next-line no-empty-function
   setEdges: () => {},
   selectedNodeID: undefined,
+  selectedEdgeID: undefined,
   // eslint-disable-next-line no-empty-function
   setSelectedNodeID: () => {},
+  // eslint-disable-next-line no-empty-function
+  setSelectedEdgeID: () => {},
   selectedAction: Action.SelectNode,
 });
-
 const userNodePrefix = "userNode";
-
 function MapEdit() {
   // Hash maps for nodes and edges
   const [nodes, setNodes] = useState<Map<string, Node>>(new Map());
@@ -59,8 +58,6 @@ function MapEdit() {
     new Map(),
   );
   const [addedEdges, setAddedEdges] = useState<Edge[]>([]);
-  /*const [deletedNodes] = useState<Map<string, Node>>(new Map());*/
-
   const [startEdgeNodeID, setStartEdgeNodeID] = useState<string | undefined>(
     undefined,
   );
@@ -70,6 +67,10 @@ function MapEdit() {
   const [selectedAction, setSelectedAction] = useState<Action>(
     Action.SelectNode,
   );
+
+  const [selectedEdgeID, setSelectedEdgeID] = useState<string | undefined>(
+    undefined,
+  );
   const contextValue = {
     nodes,
     setNodes,
@@ -78,19 +79,15 @@ function MapEdit() {
     selectedNodeID,
     setSelectedNodeID,
     selectedAction,
+    selectedEdgeID,
+    setSelectedEdgeID,
   };
   const [activeFloor, setActiveFloor] = useState<number>(defaultFloor);
   const [numUserNodes, setNumUserNodes] = useState<number>(1);
   const [numUserEdges, setNumUserEdges] = useState<number>(1);
   const { showToast } = useToast();
-  const [cachedNode, setCachedNode] = useState<Node | undefined>(undefined);
-  const [nodeSaved, setNodeSaved] = useState<boolean>(false);
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
-
-  /*useEffect(() =>{
-      console.log("in use effect", edges);
-  }, [edges]);*/
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,11 +160,6 @@ function MapEdit() {
     }
   }
 
-  const saveButtonStyles = {
-    width: "10vw",
-    height: "5.5vh",
-  };
-
   function updateNode(node: Node) {
     const tempNodes = new Map(nodes);
     const tempUpdatedNodes = new Map(updatedNodes);
@@ -205,7 +197,6 @@ function MapEdit() {
       }
 
       setSelectedNodeID(nodeID);
-      setNodeSaved(false);
     }
   }
 
@@ -287,18 +278,10 @@ function MapEdit() {
   }
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
-    console.log(selectedAction);
     if (selectedAction === Action.CreateNode) {
       handleCreateNode(event);
     } else {
-      // if node wasn't saved, revert node to cached version
-      if (cachedNode && !nodeSaved) {
-        updateNode(cachedNode);
-      }
-
       setSelectedNodeID(undefined);
-      setCachedNode(undefined);
-      setNodeSaved(false);
     }
   }
 
@@ -358,8 +341,6 @@ function MapEdit() {
 
     const lastSaveNodes: Node[] = (await axios.get(nodeURL.toString())).data;
     const lastSavedEdges: Edge[] = (await axios.get(edgeURL.toString())).data;
-    console.log(lastSaveNodes);
-    console.log(lastSavedEdges);
 
     const restoreNodes: Map<string, Node> = new Map();
 
@@ -430,14 +411,15 @@ function MapEdit() {
     if (newNode.building == "") {
       newNode.building = "default building";
     }
-    if (newNode.nodeType) {
-      newNode.nodeType = "created node";
-    }
+
     if (newNode.longName == "") {
       newNode.longName = newNode.nodeID;
     }
     if (newNode.shortName == "") {
       newNode.shortName = newNode.nodeID;
+    }
+    if (newNode.nodeType == "") {
+      newNode.nodeType = "UserNode";
     }
 
     tempNodes.set(newNode.nodeID, newNode);
@@ -482,11 +464,8 @@ function MapEdit() {
           <MapEditCard updateNode={updateNodeField} />
         </MapContext.Provider>
       </div>
-      <div className="absolute right-[1.5%] bottom-[2%]">
-        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
-      </div>
-      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[2%]">
-        <UndoRedoButton undo={handleUndo} redo={handleRedo} />
+      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[1%]">
+        <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={handleSelectNodeSelected}
@@ -496,22 +475,13 @@ function MapEdit() {
             DeleteNode={handleDeleteNodeSelected}
           />
         </MapContext.Provider>
-        <ButtonBlue
-          onClick={handleSaveAll}
-          //disabled={!selectedNodeID}
-          endIcon={<CheckIcon />}
-          style={saveButtonStyles}
-        >
-          Save All
-        </ButtonBlue>
-        <ButtonRed
-          onClick={handleRevertAll}
-          //disabled={!selectedNodeID}
-          endIcon={<ClearIcon />}
-          style={saveButtonStyles}
-        >
-          Revert All
-        </ButtonRed>
+        <SaveRevertAllButtons
+          saveAll={handleSaveAll}
+          revertAll={handleRevertAll}
+        />
+      </div>
+      <div className="absolute right-[1.5%] bottom-[2%]">
+        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
     </div>
   );

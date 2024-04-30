@@ -1,9 +1,6 @@
 import express, { Router, Request, Response } from "express";
 const router: Router = express.Router();
 import axios from "axios";
-import { PrismaClient } from "database";
-
-const prisma = new PrismaClient();
 
 import { getManagementToken } from "./fetchManagementToken.ts";
 
@@ -12,19 +9,6 @@ router.post("/", async (req: Request, res: Response) => {
     const newPassword = req.body.newPass;
     const userID = req.body.userID;
     const token = await getManagementToken();
-    const userName = req.body.userName;
-    console.log(userName);
-
-    console.log(newPassword);
-    await prisma.employee.updateMany({
-      where: {
-        name: userName,
-      },
-      data: {
-        password: newPassword,
-      },
-    });
-
     await axios.patch(
       `https://dev-7eoh0ojk0tkfhypo.us.auth0.com/api/v2/users/${userID}`,
       { password: newPassword, connection: "Username-Password-Authentication" },

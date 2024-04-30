@@ -16,7 +16,7 @@ router.get("/", async (req: Request, res: Response) => {
         name: employees[i].name,
         connection: "Username-Password-Authentication",
         email: employees[i].email,
-        password: employees[i].password,
+        password: "Str0ngP@ssw0rd!",
       };
       makeUsers.push(thisUser);
     }

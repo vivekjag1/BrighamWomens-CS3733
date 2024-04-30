@@ -14,17 +14,24 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
+import { checkAuth } from "../checkAdminStatus.ts";
+
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
 // import { motion, AnimatePresence } from "framer-motion";
 
 function NavBar() {
-  const { isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+
   const { user } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
+
   const [remaining, setRemaining] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
 
   const { showToast } = useToast();
   const handleLogout = () => {
@@ -85,6 +92,15 @@ function NavBar() {
   function toggleProfileView() {
     setShowProfileMenu(!showProfileMenu);
   }
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const token = await getAccessTokenSilently();
+      const result = await checkAuth(token, "mapdata");
+      setStatus(result!);
+    };
+    checkRole().then();
+  }, [getAccessTokenSilently, activePage]);
 
   interface NavbarItemProps {
     to: string;
@@ -280,50 +296,63 @@ function NavBar() {
             label="Map"
             collapsed={isHidingNavBarInfo}
           />
-          <NavbarItem
-            to={paths.MAP_EDITOR}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={EditLocationAltIcon}
-            label="Map"
-            labelLight="Editor"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.MAP_DATA}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={AddLocationAltIcon}
-            label="Map"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.SERVICES}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={VolunteerActivismIcon}
-            label="Services"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.SERVICE_LOG}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={TocIcon}
-            label="Service"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.EMPLOYEE_LOG}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={AssignmentIndIcon}
-            label="Employee"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
+          {isAuthenticated && (
+            <>
+              <NavbarItem
+                to={paths.MAP_EDITOR}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={EditLocationAltIcon}
+                label="Map"
+                labelLight="Editor"
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.MAP_DATA}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={AddLocationAltIcon}
+                label="Map"
+                labelLight="Data"
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.SERVICES}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={VolunteerActivismIcon}
+                label="Services"
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.SERVICE_LOG}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={TocIcon}
+                label="Service"
+                labelLight="Data"
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.EMPLOYEE_LOG}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                Icon={AssignmentIndIcon}
+                label="Employee"
+                labelLight="Data"
+                collapsed={isHidingNavBarInfo}
+              />
+            </>
+          )}
+          {/*<NavbarItem*/}
+          {/*  to={paths.ABOUT_US}*/}
+          {/*  activePage={activePage}*/}
+          {/*  setActivePage={setActivePage}*/}
+          {/*  Icon={GroupsIcon}*/}
+          {/*  label="About"*/}
+          {/*  labelLight="Us"*/}
+          {/*  collapsed={isHidingNavBarInfo}*/}
+          {/*/>*/}
         </div>
 
         {/* Sign out */}
