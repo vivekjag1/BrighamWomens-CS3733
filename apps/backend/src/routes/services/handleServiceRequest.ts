@@ -47,6 +47,7 @@ router.get("/", async function (req: Request, res: Response): Promise<void> {
       RoomScheduling: true,
       DeviceDelivery: true,
       GiftDelivery: true,
+      ITRequest: true,
     },
   });
   res.json(requests);
