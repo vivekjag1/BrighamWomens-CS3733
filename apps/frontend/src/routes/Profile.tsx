@@ -3,10 +3,9 @@ import { Button, Card, CardContent, TextField, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
-// import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
-import { useEffect } from "react";
-import { Employee } from "database";
+import { useCallback, useEffect, useState } from "react";
+import { Employee, ServiceRequest } from "database";
 import ButtonRed from "../components/ButtonRed.tsx";
 import ButtonBlue from "../components/ButtonBlue.tsx";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -19,6 +18,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "../components/useToast.tsx";
 import { ServiceReqGetterProfile } from "../components/ServiceReqGetterProfile.tsx";
 import ElementHighlights from "../components/ElementHighlights.tsx";
+import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
+import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -121,6 +122,177 @@ export default function Profile() {
   // console.log(emp.position);
   console.log(employee);
   const [password, setPassword] = React.useState<string>("");
+
+  const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [priorityOrder, setPriorityOrder] = useState<"desc" | "asc" | "">("");
+  const [filterByEmployee, setFilterByEmployee] = useState<string[]>([]);
+  const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
+
+  const fetchData = useCallback(async () => {
+    const token = await getAccessTokenSilently();
+
+    try {
+      const res = await MakeProtectedGetRequest(
+        APIEndpoints.serviceGetRequests,
+        token,
+      );
+      const sortedData = res.data.sort(
+        (a: ServiceRequest, b: ServiceRequest) => {
+          return sortOrder === "asc"
+            ? a.serviceID - b.serviceID
+            : b.serviceID - a.serviceID;
+        },
+      );
+      setRequestData(sortedData);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+    }
+  }, [getAccessTokenSilently, sortOrder]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  async function handleStatusChange(
+    event: React.ChangeEvent<HTMLSelectElement>,
+    serviceID: number,
+  ) {
+    const newStatus = event.target.value;
+
+    const updatedRequests = requestData.map((request) => {
+      if (request.serviceID === serviceID) {
+        const updatedRequest = {
+          ...request,
+          status: newStatus,
+          assignedTo:
+            newStatus === "Unassigned" ? "Unassigned" : request.assignedTo,
+        };
+        return updatedRequest;
+      }
+      return request;
+    });
+
+    setRequestData(updatedRequests);
+
+    const updateData = {
+      serviceID: serviceID,
+      status: newStatus,
+      ...(newStatus === "Unassigned" && { assignedTo: "Unassigned" }),
+    };
+
+    try {
+      const token = await getAccessTokenSilently();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response = await MakeProtectedPatchRequest(
+        APIEndpoints.servicePutRequests,
+        updateData,
+        token,
+      );
+      showToast("Status updated successfully!", "success");
+    } catch (error) {
+      console.error("Error updating status", error);
+      showToast("Status update failed!", "error");
+    }
+  }
+
+  useEffect(() => {
+    let data = requestData;
+
+    if (filterByEmployee.length) {
+      data = data.filter((item) => filterByEmployee.includes(item.assignedTo));
+    }
+
+    if (employee) {
+      setFilterByEmployee([employee!.name]);
+    }
+
+    let sortedData = data.sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.serviceID - b.serviceID
+        : b.serviceID - a.serviceID;
+    });
+
+    if (priorityOrder !== "") {
+      sortedData = sortedData.sort((a: ServiceRequest, b: ServiceRequest) => {
+        const priorityOrderMap: Record<string, number> = {
+          Low: 0,
+          Medium: 1,
+          High: 2,
+          Emergency: 3,
+        };
+
+        const priorityA = priorityOrderMap[a.priority];
+        const priorityB = priorityOrderMap[b.priority];
+
+        if (priorityOrder === "asc") {
+          return priorityA - priorityB;
+        } else {
+          return priorityB - priorityA;
+        }
+      });
+    }
+
+    setFilteredData(sortedData);
+  }, [employee, requestData, filterByEmployee, sortOrder, priorityOrder]);
+  useEffect(() => {
+    let data = requestData;
+
+    if (filterByEmployee.length) {
+      data = data.filter((item) => filterByEmployee.includes(item.assignedTo));
+    }
+
+    if (employee) {
+      setFilterByEmployee([employee!.name]);
+    }
+
+    let sortedData = data.sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.serviceID - b.serviceID
+        : b.serviceID - a.serviceID;
+    });
+
+    if (priorityOrder !== "") {
+      sortedData = sortedData.sort((a: ServiceRequest, b: ServiceRequest) => {
+        const priorityOrderMap: Record<string, number> = {
+          Low: 0,
+          Medium: 1,
+          High: 2,
+          Emergency: 3,
+        };
+
+        const priorityA = priorityOrderMap[a.priority];
+        const priorityB = priorityOrderMap[b.priority];
+
+        if (priorityOrder === "asc") {
+          return priorityA - priorityB;
+        } else {
+          return priorityB - priorityA;
+        }
+      });
+    }
+
+    setFilteredData(sortedData);
+  }, [employee, requestData, filterByEmployee, sortOrder, priorityOrder]);
+
+  const SortOrder = () => {
+    if (sortOrder == "asc") {
+      setSortOrder("desc");
+      setPriorityOrder("");
+    } else if (sortOrder == "desc") {
+      setSortOrder("asc");
+      setPriorityOrder("");
+    }
+  };
+
+  const sortPriorityOrder = () => {
+    if (priorityOrder == "" || priorityOrder == "desc") {
+      setPriorityOrder("asc");
+    } else if (priorityOrder == "asc") {
+      setPriorityOrder("desc");
+    }
+  };
+
   return (
     <>
       <Modal
@@ -353,7 +525,10 @@ export default function Profile() {
                     <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent>
-                    <ElementHighlights />
+                    <ElementHighlights
+                      requestData={requestData}
+                      filteredData={filteredData}
+                    />
                   </CustomCardContent>
                 </div>
               </Card>
@@ -375,7 +550,15 @@ export default function Profile() {
                   </h1>
 
                   <CustomCardContent>
-                    <ServiceReqGetterProfile employee={employee} />
+                    <ServiceReqGetterProfile
+                      requestData={requestData}
+                      setRequestData={setRequestData}
+                      fetchData={fetchData}
+                      handleStatusChange={handleStatusChange}
+                      SortOrder={SortOrder}
+                      sortPriorityOrder={sortPriorityOrder}
+                      filteredData={filteredData}
+                    />
                   </CustomCardContent>
                 </div>
               </Card>
