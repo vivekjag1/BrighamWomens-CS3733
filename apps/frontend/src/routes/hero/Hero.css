@@ -7,24 +7,24 @@
       rgba(0, 41, 76, 0.75),
       rgba(0, 41, 76, 0.75)
     ),
-    url("../../../assets/hero/bwh-exterior-default.png");
+    url("../../../assets/bwh-exterior-default.png");
   background-size: cover;
 }
 
 .hero-map-image {
   background-image: linear-gradient(
       180deg,
-      rgba(38, 71, 107, 0.75),
-      rgba(38, 71, 107, 0.75)
+      rgba(38, 71, 107, 0.8),
+      rgba(38, 71, 107, 0.8)
     ),
-    url("../../../assets/hero/01_thefirstfloor.png");
+    url("../../../assets/maps/no_locations/02_thesecondfloor.png");
   background-size: cover;
   background-position: top 10% left 50%;
-  transition: width 2s;
+  transition: width 1.5s;
 }
 
 .hero-map-image:hover {
-  width: 170%;
+  width: 80%;
 }
 
 .hook {

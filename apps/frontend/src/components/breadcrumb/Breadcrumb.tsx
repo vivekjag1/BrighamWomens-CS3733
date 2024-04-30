@@ -13,7 +13,7 @@ function Breadcrumb(props: breadcrumbProps) {
       transition={{ duration: 1, ease: "easeInOut", delay: 0.5 }}
     >
       <motion.div
-        className="flex max-w-[31vw] flex-wrap gap-2 p-3"
+        className="flex justify-center max-w-[30vw] flex-wrap gap-2 p-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 1.5 } }}
         exit={{ opacity: 0, transition: { duration: 1 } }}

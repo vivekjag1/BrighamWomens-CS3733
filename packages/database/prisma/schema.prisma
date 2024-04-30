@@ -109,7 +109,6 @@ model Employee {
   employeeID     Int    @id
   name           String
   userName       String
-  password       String
   position       String
   role           String
   profilePicture String
