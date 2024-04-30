@@ -7,9 +7,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-// import GroupsIcon from "@mui/icons-material/Groups";
+import { Card, CardContent } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
@@ -18,9 +16,13 @@ import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
 
+import ButtonBlue from "./ButtonBlue.tsx";
+import ButtonRed from "./ButtonRed.tsx";
+import LoginIcon from "@mui/icons-material/Login";
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
+  const { user } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
@@ -30,6 +32,13 @@ function NavBar() {
   const [authorizedStatus, setStatus] = useState<boolean>(false);
 
   const { showToast } = useToast();
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   const onIdle = () => {
     logout({
@@ -77,14 +86,10 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
-  const handleLogout = () => {
-    // logout({returnTo: window.location.origin} );
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  function toggleProfileView() {
+    setShowProfileMenu(!showProfileMenu);
+  }
 
   useEffect(() => {
     const checkRole = async () => {
@@ -156,6 +161,75 @@ function NavBar() {
       </div>
     );
   };
+
+  function UserProfileItem(props: { collapsed: boolean }) {
+    return (
+      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
+        {showProfileMenu && (
+          <>
+            <div>
+              {!isHidingNavBarInfo && (
+                <Card
+                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem]`}
+                  style={{ color: "#F6BD39" }}
+                >
+                  <CardContent className="flex flex-col gap-2">
+                    <Link to={paths.PROFILE} className="w-full ">
+                      {" "}
+                      <ButtonBlue className="flex text-center text-2xl w-full ">
+                        View Profile
+                      </ButtonBlue>
+                    </Link>
+                    <ButtonRed
+                      onClick={handleLogout}
+                      sx={{
+                        display: "flex",
+                        textAlign: "center",
+                        fontSize: "2xl",
+                        width: "full",
+                        padding: "0.5",
+                        backgroundColor: "red",
+                        fontFamily: "poppins, sans-serif",
+                      }}
+                    >
+                      Log Out
+                    </ButtonRed>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </>
+        )}
+        <div>
+          <div
+            className="flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
+            onClick={toggleProfileView}
+          >
+            {isAuthenticated ? (
+              <div className="flex flex-row items-center ">
+                <img
+                  className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
+                  src={user?.picture}
+                  alt="user profile picture"
+                />
+                <h2
+                  style={{
+                    opacity: props.collapsed ? 0 : 100,
+                    fontWeight: 500,
+                  }}
+                  className="text-lg whitespace-nowrap z-[100]  "
+                >
+                  {user?.given_name}
+                </h2>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="z-10 bg-offwhite">
@@ -272,18 +346,17 @@ function NavBar() {
         {isAuthenticated ? (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.HERO}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LogoutIcon}
-                label={"Sign out"}
-                collapsed={isHidingNavBarInfo}
-                callback={handleLogout}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         ) : (
+          <div className="relative flex flex-col flex-grow justify-end">
+            <div className="flex flex-col">
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
+            </div>
+          </div>
+        )}
+        {!isAuthenticated ? (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
               <NavbarItem
@@ -296,6 +369,8 @@ function NavBar() {
               />
             </div>
           </div>
+        ) : (
+          <></>
         )}
 
         {/* Collapse Button */}
