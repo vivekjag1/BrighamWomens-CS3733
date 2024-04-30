@@ -8,7 +8,19 @@ import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
 import CustomDropdown from "../CustomDropdown.tsx";
 
-const nodeTypes = [
+export type nodeType =
+  | "HALL"
+  | "DEPT"
+  | "CONF"
+  | "EXIT"
+  | "INFO"
+  | "LABS"
+  | "REST"
+  | "RETL"
+  | "SERV"
+  | "BATH";
+
+const nodeTypes: nodeType[] = [
   "HALL",
   "DEPT",
   "CONF",
@@ -34,6 +46,11 @@ function MapEditCard(props: {
 }) {
   const nodes = useContext(MapContext).nodes;
   const selectedNodeID = useContext(MapContext).selectedNodeID;
+
+  function isEditableNode(): boolean {
+    const type = nodes?.get(selectedNodeID ?? "")?.nodeType;
+    return type != "ELEV" && type != "STAI";
+  }
 
   return (
     <div className="w-[23vw]">
@@ -97,7 +114,7 @@ function MapEditCard(props: {
               }}
               sx={textFieldStyles_small}
               label="X"
-              editable={true}
+              editable={isEditableNode()}
               props={{ type: "number" }}
             />
             <NodeParam
@@ -107,7 +124,7 @@ function MapEditCard(props: {
               }}
               sx={textFieldStyles_small}
               label="Y"
-              editable={true}
+              editable={isEditableNode()}
               props={{ type: "number" }}
             />
           </form>

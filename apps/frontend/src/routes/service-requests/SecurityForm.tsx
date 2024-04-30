@@ -67,7 +67,7 @@ export function SecurityForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.servicePostSecurityRequest,
+          APIEndpoints.securityRequest,
           securityRequestForm,
           token,
         );

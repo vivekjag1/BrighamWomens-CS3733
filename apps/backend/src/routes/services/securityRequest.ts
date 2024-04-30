@@ -1,21 +1,20 @@
-import prisma from "../bin/database-connection.ts";
+import { SecurityRequestType } from "common/src/SecurityRequestType.ts";
+import client from "../../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
-
-import { RoomReservationType } from "common/src/RoomReservationType.ts";
 
 const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response): Promise<void> {
-  const request: RoomReservationType = req.body;
+  const request: SecurityRequestType = req.body;
+
   try {
-    await prisma.roomScheduling.create({
+    const createdSecurityRequest = await client.securityService.create({
       data: {
-        reservationReason: request.reservationReason,
-        endTime: request.endTime,
-        //make the general service request entry
+        securityType: request.securityType,
+        numberPeople: parseInt(request.numberPeople),
         serviceRequest: {
           create: {
-            type: "RoomScheduling",
+            type: "SecurityService",
             requestingUsername: request.serviceRequest.requestingUsername,
             location: request.serviceRequest.location,
             description: request.serviceRequest.description,
@@ -27,10 +26,14 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
         },
       },
     });
-    res.status(200).json({ message: "success" });
+
+    res.status(200).json({
+      message: "Service request created successfully",
+      data: createdSecurityRequest,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(400).json({ message: "error" });
+    console.error("Error creating service request:", error);
+    res.status(400).json({ message: "Error creating service request" });
   }
 });
 

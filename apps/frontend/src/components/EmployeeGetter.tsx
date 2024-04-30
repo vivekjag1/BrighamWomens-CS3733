@@ -121,7 +121,7 @@ export function EmployeeGetter({
 
   const makeDeleteRequest = (employee: Employee) => {
     handleDeleteEmployee(employee).then().catch(console.error);
-    showToast("Employee successfully deleted!", "success");
+    showToast("employee successfully deleted!", "success");
     setDeleteModal(false);
   };
 

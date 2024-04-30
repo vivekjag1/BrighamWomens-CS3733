@@ -69,7 +69,7 @@ function Home() {
     };
 
     const params: URLSearchParams = new URLSearchParams(queryParams);
-    const url = new URL(APIEndpoints.navigationRequest, window.location.origin);
+    const url = new URL(APIEndpoints.navigation, window.location.origin);
 
     url.search = params.toString();
     await axios

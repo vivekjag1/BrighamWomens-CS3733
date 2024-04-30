@@ -72,7 +72,7 @@ export function RoomForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.roomReservation,
+          APIEndpoints.roomRequest,
           roomReservation,
           token,
         );

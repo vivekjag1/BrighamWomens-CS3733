@@ -67,7 +67,7 @@ export function SanitationForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.sanitationPostRequests,
+          APIEndpoints.sanitationRequest,
           sanitationRequest,
           token,
         );

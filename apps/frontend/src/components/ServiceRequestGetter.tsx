@@ -69,7 +69,7 @@ export function ServiceRequestGetter() {
 
     try {
       const res = await MakeProtectedGetRequest(
-        APIEndpoints.serviceGetRequests,
+        APIEndpoints.getServiceRequest,
         token,
       );
       const sortedData = res.data.sort(
@@ -95,7 +95,7 @@ export function ServiceRequestGetter() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await MakeProtectedDeleteRequest(
-        `${APIEndpoints.serviceGetRequests}/${serviceID}`,
+        `${APIEndpoints.getServiceRequest}/${serviceID}`,
         token,
       );
 
@@ -140,7 +140,7 @@ export function ServiceRequestGetter() {
       const token = await getAccessTokenSilently();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await MakeProtectedPatchRequest(
-        APIEndpoints.servicePutRequests,
+        APIEndpoints.putServiceRequest,
         updateData,
         token,
       );
@@ -178,7 +178,7 @@ export function ServiceRequestGetter() {
       const token = await getAccessTokenSilently();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.patch(
-        APIEndpoints.servicePutRequests,
+        APIEndpoints.putServiceRequest,
         updateData,
         {
           headers: {

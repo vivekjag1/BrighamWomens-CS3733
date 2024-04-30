@@ -65,7 +65,7 @@ export function GiftForm(): JSX.Element {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.giftPostRequests,
+          APIEndpoints.giftRequest,
           giftDeliveryRequest,
           token,
         );

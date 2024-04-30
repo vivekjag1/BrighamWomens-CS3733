@@ -66,7 +66,7 @@ export default function Profile() {
     };
     await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
   };
-  // const [employee, setEmployee] = useState<Employee>();
+  // const [employee, setEmployee] = useState<employee>();
   useEffect(() => {
     async function getUser() {
       try {

@@ -69,7 +69,7 @@ export function MedicineForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.servicePostRequests,
+          APIEndpoints.postServiceRequest,
           medicineDelivery,
           token,
         );

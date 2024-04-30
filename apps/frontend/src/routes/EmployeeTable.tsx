@@ -57,7 +57,7 @@ const EmployeeTable = () => {
     employeesLink.href = URL.createObjectURL(employeesBlob); //create links
     employeesLink.download = "Employees"; //name files
     employeesLink.click(); //open them;
-    showToast("Employee data downloaded!", "success");
+    showToast("employee data downloaded!", "success");
   }
 
   async function uploadFiles() {
@@ -76,13 +76,13 @@ const EmployeeTable = () => {
           showToast("File(s) failed validation!", "error");
         } else {
           await makeUsers();
-          showToast("Employee data uploaded!", "success");
+          showToast("employee data uploaded!", "success");
           setUploadTriggered(true);
           setEmployeesFile(null);
           setTimeout(() => setUploadTriggered(false), 500);
         }
       } else {
-        showToast("Employee file missing!", "error");
+        showToast("employee file missing!", "error");
       }
     } catch (error) {
       console.error("Upload failed:", error);

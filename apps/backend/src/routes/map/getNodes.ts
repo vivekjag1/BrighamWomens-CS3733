@@ -1,8 +1,7 @@
-import client from "../bin/database-connection.ts";
+import client from "../../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
 import { Node } from "database";
 import { NavigateAttributes } from "common/src/APICommon.ts";
-//import { APIEndpoints } from "common/src/APICommon.ts";
 
 const router: Router = express.Router();
 

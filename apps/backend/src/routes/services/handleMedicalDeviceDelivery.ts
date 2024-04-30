@@ -1,23 +1,20 @@
-import { GiftDeliveryObject } from "common/src/GiftDelivery.ts";
-// import { GiftDelivery } from "database";
-import client from "../bin/database-connection.ts";
+import client from "../../bin/database-connection.ts";
 import express, { Router, Request, Response } from "express";
+import { MedicalDeviceDelivery } from "common/src/MedicalDeviceDelivery.ts";
 
 const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response): Promise<void> {
-  const request: GiftDeliveryObject = req.body;
+  const request: MedicalDeviceDelivery = req.body;
 
   try {
-    const createdSecurityRequest = await client.giftDelivery.create({
+    const createdMedicalDeviceDelivery = await client.deviceDelivery.create({
       data: {
-        //Specific request
-        giftType: request.giftType,
-        senderNote: request.senderNote,
-        //Generic request
+        deviceType: request.deviceType,
+        quantity: request.quantity,
         serviceRequest: {
           create: {
-            type: "GiftDelivery",
+            type: "DeviceDelivery",
             requestingUsername: request.serviceRequest.requestingUsername,
             location: request.serviceRequest.location,
             description: request.serviceRequest.description,
@@ -31,12 +28,12 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).json({
-      message: "Gift delivery request created successfully",
-      data: createdSecurityRequest,
+      message: "Medical device delivery created successfully",
+      data: createdMedicalDeviceDelivery,
     });
   } catch (error) {
-    console.error("Error creating gift delivery:", error);
-    res.status(400).json({ message: "Error creating gift delivery" });
+    console.error("Error created medical device delivery:", error);
+    res.status(400).json({ message: "Error creating medicine delivery " });
   }
 });
 

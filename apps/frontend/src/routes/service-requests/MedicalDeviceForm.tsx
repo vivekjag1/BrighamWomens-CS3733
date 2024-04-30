@@ -71,7 +71,7 @@ export function MedicalDeviceForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.medicalDeviceDelivery,
+          APIEndpoints.deviceRequest,
           medicalDeviceDelivery,
           token,
         );
