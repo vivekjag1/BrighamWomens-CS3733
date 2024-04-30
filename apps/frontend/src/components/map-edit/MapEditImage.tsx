@@ -176,7 +176,8 @@ const MapEditImage = (props: {
   return (
     //onClick={props.onMapClick}
     <div
-      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+      className={`z-0 relative ${selectedAction.toString() == "CreateEdge" ? "cursor-copy" : ""}${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}
+      `}
     >
       {/*  White Fade */}
       <div
