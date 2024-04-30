@@ -99,6 +99,9 @@ export function GiftForm(): JSX.Element {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Gift Delivery"}>
         <div>
+          <p className="text-center text-sm text-secondary pb-4 pt-4">
+            Made by Matthew and Sulaiman
+          </p>
           <h1 className="text-center font-bold text-3xl text-secondary pb-4 pt-4">
             Gift Delivery Request
           </h1>
@@ -289,9 +292,7 @@ export function GiftForm(): JSX.Element {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Matthew and Sulaiman</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

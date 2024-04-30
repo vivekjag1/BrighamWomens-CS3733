@@ -6,6 +6,8 @@ import ServiceSelection from "../routes/service-selection/ServiceSelection.tsx";
 import MedicineForm from "../routes/service-requests/MedicineForm.tsx";
 import MedicalDeviceForm from "../routes/service-requests/MedicalDeviceForm.tsx";
 import GiftForm from "../routes/service-requests/GiftForm.tsx";
+import ITForm from "../routes/service-requests/ITForm.tsx";
+
 import SanitationForm from "../routes/service-requests/SanitationForm.tsx";
 import RoomForm from "../routes/service-requests/RoomForm.tsx";
 import SecurityForm from "../routes/service-requests/SecurityForm.tsx";
@@ -41,6 +43,10 @@ const routes = [
   },
   { path: paths.SERVICE_LOG, element: <AuthComp component={ServicesTable} /> },
   { path: paths.EMPLOYEE_LOG, element: <AuthComp component={EmployeeTable} /> },
+  {
+    path: paths.IT_REQUEST,
+    element: <AuthComp component={ITForm} />,
+  },
 ];
 
 export default routes;

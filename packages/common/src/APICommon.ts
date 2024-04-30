@@ -11,6 +11,7 @@ export class APIEndpoints {
 
   static readonly getServiceRequest: string = "/api/service/get";
   static readonly postServiceRequest: string = "/api/service/post";
+  static readonly ITPostRequests: string = "/api/service/ITPostRequests";
   static readonly putServiceRequest: string = "/api/service/put";
   static readonly deleteServiceRequest: string = "api/service/delete";
   static readonly securityRequest: string = "/api/service/post/security";

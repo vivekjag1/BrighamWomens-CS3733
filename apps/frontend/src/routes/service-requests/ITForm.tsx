@@ -1,28 +1,28 @@
 import React, { useState } from "react";
+import { FormControl } from "@mui/material";
 import { TextField } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
+import Autocomplete from "@mui/material/Autocomplete";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
 import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
+import CustomDatePicker from "../../components/CustomDatePicker.tsx";
+import FormContainer from "../../components/FormContainer.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
 import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
-import FormContainer from "../../components/FormContainer.tsx";
-import { RoomReservationType } from "common/src/RoomReservationType.ts";
+import { ITSupportObject } from "common/src/ITRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
 import { useToast } from "../../components/useToast.tsx";
 import { MakeProtectedPostRequest } from "../../MakeProtectedPostRequest.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import giftPlaceholder from "../../../assets/hospitalroom.jpg";
+import IT_icon from "../../../assets/IT_icon.jpg";
 import ButtonRed from "../../components/ButtonRed.tsx";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 
-const initialState: RoomReservationType = {
-  endTime: dayjs().toISOString(),
-  reservationReason: "",
+const initialState: ITSupportObject = {
+  TypeofProblem: "",
   serviceRequest: {
     requestingUsername: "",
     location: "",
@@ -33,81 +33,75 @@ const initialState: RoomReservationType = {
     assignedTo: "Unassigned",
   },
 };
-export function RoomForm() {
-  const { getAccessTokenSilently } = useAuth0();
 
-  const [roomReservation, setRoomReservation] =
-    useState<RoomReservationType>(initialState);
-  const [startDate, setStartDate] = useState<Dayjs>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+export function ITForm(): JSX.Element {
+  const { getAccessTokenSilently } = useAuth0();
+  const [ITRequest, setITRequest] = useState<ITSupportObject>(initialState);
+  const [date, setDate] = useState<Dayjs>(dayjs());
   const { showToast } = useToast();
   const isEmployeeDisabled = ["Unassigned"].includes(
-    roomReservation.serviceRequest.status,
+    ITRequest.serviceRequest.status,
   );
 
   const validateForm = () => {
-    const { status, assignedTo } = roomReservation.serviceRequest;
+    const { status, assignedTo } = ITRequest.serviceRequest;
     const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
       status,
     );
 
-    const isValid =
-      roomReservation.reservationReason &&
-      roomReservation.endTime &&
-      roomReservation.serviceRequest.location &&
-      roomReservation.serviceRequest.requestingUsername &&
-      roomReservation.serviceRequest.requestedTime &&
-      roomReservation.serviceRequest.priority &&
-      (!requiresEmployee || (requiresEmployee && assignedTo));
-
-    console.log("End Date: ", endDate);
-    console.log("End Date 2: ", roomReservation.endTime);
-
-    return isValid;
+    return (
+      ITRequest.TypeofProblem &&
+      ITRequest.serviceRequest.requestingUsername &&
+      ITRequest.serviceRequest.location &&
+      ITRequest.serviceRequest.priority &&
+      (!requiresEmployee || (requiresEmployee && assignedTo))
+    );
   };
 
   async function submit() {
     const token = await getAccessTokenSilently();
-
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.roomRequest,
-          roomReservation,
+          APIEndpoints.ITPostRequests,
+          ITRequest,
           token,
         );
+
         if (response.status === 200) {
-          //alert("Room Reservation sent!");
-          showToast("Room Reservation sent!", "success");
+          //alert("Sanitation Request sent!");
+          showToast("IT Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
-          //alert("Room Reservation failed!");
+          //alert("Sanitation Request failed!");
+          showToast("IT Request failed!", "error");
         }
       } catch (error) {
-        console.error("Error submitting the form!: ", error);
-        //alert("Room Reservation Failed!");
-        showToast("Room Reservation failed!", "error");
+        console.error("Error submitting the form:", error);
+        //alert("Sanitation Request failed!");
+        showToast("IT Request failed!", "error");
       }
     } else {
-      //alert("You must fill out all the required information");
+      //alert("You must fill out all the required information!");
       showToast("Fill out all the required information!", "warning");
     }
   }
+
   function clear() {
-    setStartDate(dayjs());
-    setEndDate(dayjs());
-    setRoomReservation(initialState);
+    setDate(dayjs());
+    setITRequest(initialState);
   }
+
   return (
     <div className="bg-offwhite">
-      <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
+      <FormContainer imgPath={IT_icon} alt={"IT support"}>
         <div>
-          <p className="text-center text-sm text-secondary pb-4 pt-4">
-            Made by Vivek, Taeha, and Mohamed
+          <p className="text-center text-sm text-secondary pt-4 pb-4">
+            Made by Sulaiman
           </p>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
-            Reserve a Room
+          <h1 className="text-center font-bold text-3xl text-secondary pb-4 pt-4">
+            IT Request
           </h1>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
@@ -116,14 +110,14 @@ export function RoomForm() {
               className="space-y-4 flex flex-col justify-center items-center"
             >
               <EmployeeDropdown
-                value={roomReservation.serviceRequest.requestingUsername}
+                value={ITRequest.serviceRequest.requestingUsername}
                 sx={{ width: "25rem", padding: 0 }}
                 label="Requesting Employee *"
                 onChange={(newValue) =>
-                  setRoomReservation({
-                    ...roomReservation,
+                  setITRequest({
+                    ...ITRequest,
                     serviceRequest: {
-                      ...roomReservation.serviceRequest,
+                      ...ITRequest.serviceRequest,
                       requestingUsername: newValue,
                     },
                   })
@@ -134,12 +128,12 @@ export function RoomForm() {
               <NodeDropdown
                 sx={{ width: "25rem", padding: 0 }}
                 label="Location *"
-                value={roomReservation.serviceRequest.location}
+                value={ITRequest.serviceRequest.location}
                 onChange={(newValue: string) =>
-                  setRoomReservation((roomReservation) => ({
-                    ...roomReservation,
+                  setITRequest(() => ({
+                    ...ITRequest,
                     serviceRequest: {
-                      ...roomReservation.serviceRequest,
+                      ...ITRequest.serviceRequest,
                       location: newValue,
                     },
                   }))
@@ -147,68 +141,63 @@ export function RoomForm() {
               />
 
               <CustomDatePicker
-                value={startDate}
+                value={date}
                 onChange={(newValue) => {
                   const isValid = newValue && dayjs(newValue).isValid();
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
+                  setITRequest((currentITRequest) => ({
+                    ...currentITRequest,
                     serviceRequest: {
-                      ...currentReservation.serviceRequest,
+                      ...currentITRequest.serviceRequest,
                       requestedTime: isValid ? newValue.toISOString() : "",
                     },
                   }));
                 }}
               />
 
-              <CustomDatePicker
-                value={endDate}
-                onChange={(newValue) => {
-                  const isValid = newValue && dayjs(newValue).isValid();
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
-                    endTime: isValid ? newValue.toISOString() : "",
-                  }));
-                }}
-              />
-
-              <TextField
-                value={roomReservation.reservationReason}
-                onChange={(e) =>
-                  setRoomReservation({
-                    ...roomReservation,
-                    reservationReason: e.target.value,
+              <Autocomplete
+                disablePortal
+                id="combo-box-service"
+                options={[
+                  { label: "Software" },
+                  { label: "Network" },
+                  { label: "Hardware" },
+                  { label: "Other" },
+                ]}
+                className="bg-gray-50"
+                size="small"
+                sx={{ width: "25rem" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="IT Problem Type *"
+                    InputLabelProps={{
+                      style: { color: "#a4aab5", fontSize: ".9rem" },
+                    }}
+                  />
+                )}
+                value={
+                  ITRequest.TypeofProblem
+                    ? { label: ITRequest.TypeofProblem }
+                    : null
+                }
+                onChange={(
+                  event: React.SyntheticEvent<Element, Event>,
+                  newValue: { label: string } | null,
+                ) =>
+                  setITRequest({
+                    ...ITRequest,
+                    TypeofProblem: newValue ? newValue.label : "",
                   })
                 }
-                id="outlined-basic"
-                label="Reservation Purpose"
-                multiline
-                maxRows={4}
-                variant="outlined"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-                className="bg-gray-50"
-                InputProps={{
-                  style: {
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    color: "#a4aab5",
-                    fontSize: ".9rem",
-                    fontFamily: "Poppins, sans-serif",
-                  },
-                }}
-                size="small"
               />
 
               <CustomTextField
-                value={roomReservation.serviceRequest.description}
+                value={ITRequest.serviceRequest.description}
                 onChange={(e) =>
-                  setRoomReservation({
-                    ...roomReservation,
+                  setITRequest({
+                    ...ITRequest,
                     serviceRequest: {
-                      ...roomReservation.serviceRequest,
+                      ...ITRequest.serviceRequest,
                       description: e.target.value,
                     },
                   })
@@ -221,13 +210,12 @@ export function RoomForm() {
 
               <FormControl sx={{ width: "25rem" }} size="small">
                 <CustomStatusDropdown
-                  value={roomReservation.serviceRequest.status}
+                  value={ITRequest.serviceRequest.status}
                   onChange={(e) => {
                     const newStatus = e.target.value
                       ? e.target.value.toString()
                       : "";
-                    let newAssignedTo =
-                      roomReservation.serviceRequest.assignedTo;
+                    let newAssignedTo = ITRequest.serviceRequest.assignedTo;
 
                     if (newStatus === "Unassigned") {
                       newAssignedTo = "Unassigned";
@@ -235,10 +223,10 @@ export function RoomForm() {
                       newAssignedTo = "";
                     }
 
-                    setRoomReservation({
-                      ...roomReservation,
+                    setITRequest({
+                      ...ITRequest,
                       serviceRequest: {
-                        ...roomReservation.serviceRequest,
+                        ...ITRequest.serviceRequest,
                         status: newStatus,
                         assignedTo: newAssignedTo,
                       },
@@ -248,21 +236,20 @@ export function RoomForm() {
               </FormControl>
 
               <EmployeeDropdown
-                value={roomReservation.serviceRequest.assignedTo}
+                value={ITRequest.serviceRequest.assignedTo}
                 sx={{ width: "25rem", padding: 0 }}
                 label="Assigned Employee *"
-                // employees={employees}
                 onChange={(newValue: string) => {
-                  let newStatus = roomReservation.serviceRequest.status;
+                  let newStatus = ITRequest.serviceRequest.status;
 
                   if (newValue && newStatus === "Unassigned") {
                     newStatus = "Assigned";
                   }
 
-                  setRoomReservation((currentReservation) => ({
-                    ...currentReservation,
+                  setITRequest((ITRequest) => ({
+                    ...ITRequest,
                     serviceRequest: {
-                      ...currentReservation.serviceRequest,
+                      ...ITRequest.serviceRequest,
                       assignedTo: newValue,
                       status: newStatus,
                     },
@@ -277,12 +264,12 @@ export function RoomForm() {
                 sx={{ width: "25rem" }}
               >
                 <CustomPrioritySelector
-                  value={roomReservation.serviceRequest.priority}
+                  value={ITRequest.serviceRequest.priority}
                   onChange={(e) =>
-                    setRoomReservation({
-                      ...roomReservation,
+                    setITRequest({
+                      ...ITRequest,
                       serviceRequest: {
-                        ...roomReservation.serviceRequest,
+                        ...ITRequest.serviceRequest,
                         priority: e.target.value,
                       },
                     })
@@ -306,7 +293,7 @@ export function RoomForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center"></div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>
@@ -315,4 +302,4 @@ export function RoomForm() {
   );
 }
 
-export default RoomForm;
+export default ITForm;
