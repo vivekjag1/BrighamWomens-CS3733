@@ -5,24 +5,18 @@ import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import NodeParam from "../NodeParam.tsx";
 import { MapContext } from "../../routes/MapEdit.tsx";
-import CustomSaveButton from "../ButtonBlue.tsx";
 import { Node } from "database";
-import CustomDeleteButton from "../CustomDeleteButton.tsx";
-import ClearIcon from "@mui/icons-material/Clear";
-import CheckIcon from "@mui/icons-material/Check";
 import CustomDropdown from "../CustomDropdown.tsx";
 
 const nodeTypes = [
   "HALL",
   "DEPT",
   "CONF",
-  "ELEV",
   "EXIT",
   "INFO",
   "LABS",
   "REST",
   "RETL",
-  "STAI",
   "SERV",
   "BATH",
 ];
@@ -35,14 +29,8 @@ const textFieldStyles_small = {
   width: "8vw",
 };
 
-const buttonStyles = {
-  width: "8vw",
-};
-
 function MapEditCard(props: {
-  onSave: () => void;
   updateNode: (field: keyof Node, value: string | number) => void;
-  deleteNode: () => void;
 }) {
   const nodes = useContext(MapContext).nodes;
   const selectedNodeID = useContext(MapContext).selectedNodeID;
@@ -123,24 +111,6 @@ function MapEditCard(props: {
               props={{ type: "number" }}
             />
           </form>
-          <div className="flex justify-between ml-[32px]">
-            <CustomDeleteButton
-              onClick={props.deleteNode}
-              disabled={!selectedNodeID}
-              endIcon={<ClearIcon />}
-              style={buttonStyles}
-            >
-              DELETE
-            </CustomDeleteButton>
-            <CustomSaveButton
-              onClick={props.onSave}
-              disabled={!selectedNodeID}
-              endIcon={<CheckIcon />}
-              style={buttonStyles}
-            >
-              SUBMIT
-            </CustomSaveButton>
-          </div>
         </div>
       </div>
     </div>

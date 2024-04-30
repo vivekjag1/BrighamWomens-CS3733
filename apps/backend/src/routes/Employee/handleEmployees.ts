@@ -29,7 +29,7 @@ router.post(
     const files = req.files as UploadedFiles | undefined;
     if (files) {
       const employeeFile: Express.Multer.File[] = files["Employees"];
-      if (validateInput(employeeFile[0], 7)) {
+      if (validateInput(employeeFile[0], 6)) {
         await checkDBStatus();
         await populateDatabases(employeeFile[0]);
         res.sendStatus(200);
@@ -68,11 +68,10 @@ export async function populateEmployeeDB(employeeData: string[][]) {
     employeeID: i++,
     name: data[0],
     userName: data[1],
-    password: data[2],
-    position: data[3],
-    role: data[4],
-    profilePicture: data[5] || "default-photo",
-    email: data[6],
+    position: data[2],
+    role: data[3],
+    profilePicture: data[4] || "default-photo",
+    email: data[5],
   }));
   employees.pop();
 
