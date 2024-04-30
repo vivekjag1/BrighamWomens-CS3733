@@ -79,6 +79,11 @@ function NavBar() {
 
   const [activePage, setActivePage] = useState(useLocation().pathname);
 
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  function toggleProfileView() {
+    setShowProfileMenu(!showProfileMenu);
+  }
+
   interface NavbarItemProps {
     to: string;
     activePage: string;
@@ -142,18 +147,16 @@ function NavBar() {
   };
 
   function UserProfileItem(props: { collapsed: boolean }) {
-    const [showProfileMenu, setShowProfileMenu] = useState(false);
-    function toggleProfileView() {
-      setShowProfileMenu(!showProfileMenu);
-    }
-
     return (
-      <div className=" relative mb-[1rem]  mr-[1.5rem] ml-[1rem]  items-center overflow-hidden">
+      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
         {showProfileMenu && (
           <>
             <div>
               {!isHidingNavBarInfo && (
-                <Card className={`mb-[1rem]`} style={{ color: "#F6BD39" }}>
+                <Card
+                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem]`}
+                  style={{ color: "#F6BD39" }}
+                >
                   <CardContent className="flex flex-col gap-2">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
@@ -183,7 +186,7 @@ function NavBar() {
         )}
         <div>
           <div
-            className="flex flex-row text-white items-center   z-[100] bg-secondary  "
+            className="flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
             onClick={toggleProfileView}
           >
             {isAuthenticated ? (
