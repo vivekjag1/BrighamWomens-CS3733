@@ -13,8 +13,9 @@ import ButtonBlue from "../components/ButtonBlue.tsx";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import { Card, CardContent, Chip, Modal } from "@mui/material";
+import { Card, CardContent, Chip } from "@mui/material";
 import EmployeeFilterDropdown from "../components/EmployeeFilterDropdown.tsx";
+import CustomModal from "../components/CustomModal.tsx";
 
 const EmployeeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -78,6 +79,7 @@ const EmployeeTable = () => {
           await makeUsers();
           showToast("Employee data uploaded!", "success");
           setUploadTriggered(true);
+          setEmployeesFile(null);
           setTimeout(() => setUploadTriggered(false), 500);
         }
       } else {
@@ -246,12 +248,7 @@ const EmployeeTable = () => {
             </div>
           </div>
         </div>
-        <Modal
-          open={fileModal}
-          onClose={() => setFileModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+        <CustomModal isOpen={fileModal} onClose={() => setFileModal(false)}>
           <Card
             sx={{
               borderRadius: 2,
@@ -357,7 +354,7 @@ const EmployeeTable = () => {
               </div>
             </CardContent>
           </Card>
-        </Modal>
+        </CustomModal>
       </div>
     </div>
   );

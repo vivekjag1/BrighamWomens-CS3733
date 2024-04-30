@@ -88,7 +88,13 @@ export default function ToggleButtons(props: {
             aria-label="left aligned"
             onClick={props.MoveNode}
             selected={selectedAction.toString() == "MoveNode"}
-            sx={ToggleButtonStyles}
+            sx={{
+              ...ToggleButtonStyles,
+              "&.MuiToggleButtonGroup-middleButton": {
+                borderLeft: "1px solid #1565c0",
+                borderRight: "1px solid #1565c0",
+              },
+            }}
           >
             <OpenWithRoundedIcon />
           </ToggleButton>
@@ -104,7 +110,13 @@ export default function ToggleButtons(props: {
             aria-label="centered"
             onClick={props.CreateNode}
             selected={selectedAction.toString() == "CreateNode"}
-            sx={ToggleButtonStyles}
+            sx={{
+              ...ToggleButtonStyles,
+              "&.MuiToggleButtonGroup-middleButton": {
+                borderLeft: "1px solid #1565c0",
+                borderRight: "1px solid #1565c0",
+              },
+            }}
           >
             <AddLocationRoundedIcon />
           </ToggleButton>
@@ -120,7 +132,13 @@ export default function ToggleButtons(props: {
             aria-label="right aligned"
             onClick={props.CreateEdge}
             selected={selectedAction.toString() == "CreateEdge"}
-            sx={ToggleButtonStyles}
+            sx={{
+              ...ToggleButtonStyles,
+              "&.MuiToggleButtonGroup-middleButton": {
+                borderLeft: "1px solid #1565c0",
+                borderRight: "1px solid #1565c0",
+              },
+            }}
           >
             <TimelineIcon />
           </ToggleButton>
