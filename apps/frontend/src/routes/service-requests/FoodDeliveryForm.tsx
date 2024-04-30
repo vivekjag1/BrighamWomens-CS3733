@@ -18,6 +18,8 @@ import ButtonRed from "../../components/ButtonRed.tsx";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import FormContainer from "../../components/FormContainer.tsx";
+import FoodDeliveryIMG from "../../../assets/FoodDeliveryIMG.jpg";
 
 const initialState: foodDeliveryService = {
   order: "",
@@ -94,241 +96,245 @@ export function FoodDeliveryserviceForm() {
 
   return (
     <div className="bg-offwhite">
-      <div>
-        <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
-          fooddeliveryservice Request
-        </h1>
-        <div className="h-auto flex justify-center items-center w-[30rem]">
-          <form
-            noValidate
-            autoComplete="off"
-            className="space-y-4 flex flex-col justify-center items-center"
-          >
-            <EmployeeDropdown
-              value={
-                foodDeliveryserviceRequest.serviceRequest.requestingUsername
-              }
-              sx={{ width: "25rem", padding: 0 }}
-              label="Requesting Employee *"
-              onChange={(newValue) =>
-                setfoodDeliveryserviceRequest({
-                  ...foodDeliveryserviceRequest,
-                  serviceRequest: {
-                    ...foodDeliveryserviceRequest.serviceRequest,
-                    requestingUsername: newValue,
-                  },
-                })
-              }
-              disabled={false}
-            />
-
-            <NodeDropdown
-              sx={{ width: "25rem", padding: 0 }}
-              label="Location *"
-              value={foodDeliveryserviceRequest.serviceRequest.location}
-              onChange={(newValue: string) =>
-                setfoodDeliveryserviceRequest(() => ({
-                  ...foodDeliveryserviceRequest,
-                  serviceRequest: {
-                    ...foodDeliveryserviceRequest.serviceRequest,
-                    location: newValue,
-                  },
-                }))
-              }
-            />
-
-            <CustomDatePicker
-              value={date}
-              sx={{ fontFamily: "Poppins, sans-serif" }}
-              onChange={(newValue) => {
-                const isValid = newValue && dayjs(newValue).isValid();
-                setfoodDeliveryserviceRequest((currentfoodDelveryRequest) => ({
-                  ...currentfoodDelveryRequest,
-                  serviceRequest: {
-                    ...currentfoodDelveryRequest.serviceRequest,
-                    requestedTime: isValid ? newValue.toISOString() : "",
-                  },
-                }));
-              }}
-            />
-
-            <Autocomplete
-              disablePortal
-              id="combo-box-service"
-              options={[
-                { label: "Clean" },
-                { label: "Deep Clean" },
-                { label: "Hazardous" },
-                { label: "Toxic" },
-              ]}
-              className="bg-gray-50"
-              size="small"
-              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Service Type *"
-                  InputLabelProps={{
-                    style: {
-                      color: "#a4aab5",
-                      fontSize: ".9rem",
-                      fontFamily: "Poppins, sans-serif",
-                    },
-                  }}
-                />
-              )}
-              value={
-                foodDeliveryserviceRequest.order
-                  ? { label: foodDeliveryserviceRequest.order }
-                  : null
-              }
-              onChange={(
-                event: React.SyntheticEvent<Element, Event>,
-                newValue: { label: string } | null,
-              ) =>
-                setfoodDeliveryserviceRequest({
-                  ...foodDeliveryserviceRequest,
-                  order: newValue ? newValue.label : "",
-                })
-              }
-            />
-
-            <Autocomplete
-              disablePortal
-              id="combo-box-equipment"
-              options={[
-                { label: "Mop" },
-                { label: "Broom" },
-                { label: "Dust Pan" },
-              ]}
-              className="bg-gray-50"
-              size="small"
-              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Necessary Equipment *"
-                  InputLabelProps={{
-                    style: {
-                      color: "#a4aab5",
-                      fontSize: ".9rem",
-                      fontFamily: "Poppins, sans-serif",
-                    },
-                  }}
-                />
-              )}
-            />
-
-            <CustomTextField
-              label="Description (optional)"
-              multiline
-              rows={3}
-              value={foodDeliveryserviceRequest.serviceRequest.description}
-              onChange={(e) =>
-                setfoodDeliveryserviceRequest({
-                  ...foodDeliveryserviceRequest,
-                  serviceRequest: {
-                    ...foodDeliveryserviceRequest.serviceRequest,
-                    description: e.target.value,
-                  },
-                })
-              }
-              size="small"
-            />
-
-            <FormControl sx={{ width: "25rem" }} size="small">
-              <CustomStatusDropdown
-                value={foodDeliveryserviceRequest.serviceRequest.status}
-                onChange={(e) => {
-                  const newStatus = e.target.value
-                    ? e.target.value.toString()
-                    : "";
-                  let newAssignedTo =
-                    foodDeliveryserviceRequest.serviceRequest.assignedTo;
-
-                  if (newStatus === "Unassigned") {
-                    newAssignedTo = "Unassigned";
-                  } else {
-                    newAssignedTo = "";
-                  }
-
+      <FormContainer imgPath={FoodDeliveryIMG} alt={"Food Delivery"}>
+        <div>
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+            Food Delivery
+          </h1>
+          <div className="h-auto flex justify-center items-center w-[30rem]">
+            <form
+              noValidate
+              autoComplete="off"
+              className="space-y-4 flex flex-col justify-center items-center"
+            >
+              <EmployeeDropdown
+                value={
+                  foodDeliveryserviceRequest.serviceRequest.requestingUsername
+                }
+                sx={{ width: "25rem", padding: 0 }}
+                label="Requesting Employee *"
+                onChange={(newValue) =>
                   setfoodDeliveryserviceRequest({
                     ...foodDeliveryserviceRequest,
                     serviceRequest: {
                       ...foodDeliveryserviceRequest.serviceRequest,
-                      status: newStatus,
-                      assignedTo: newAssignedTo,
+                      requestingUsername: newValue,
                     },
-                  });
+                  })
+                }
+                disabled={false}
+              />
+
+              <NodeDropdown
+                sx={{ width: "25rem", padding: 0 }}
+                label="Location *"
+                value={foodDeliveryserviceRequest.serviceRequest.location}
+                onChange={(newValue: string) =>
+                  setfoodDeliveryserviceRequest(() => ({
+                    ...foodDeliveryserviceRequest,
+                    serviceRequest: {
+                      ...foodDeliveryserviceRequest.serviceRequest,
+                      location: newValue,
+                    },
+                  }))
+                }
+              />
+
+              <CustomDatePicker
+                value={date}
+                sx={{ fontFamily: "Poppins, sans-serif" }}
+                onChange={(newValue) => {
+                  const isValid = newValue && dayjs(newValue).isValid();
+                  setfoodDeliveryserviceRequest(
+                    (currentfoodDelveryRequest) => ({
+                      ...currentfoodDelveryRequest,
+                      serviceRequest: {
+                        ...currentfoodDelveryRequest.serviceRequest,
+                        requestedTime: isValid ? newValue.toISOString() : "",
+                      },
+                    }),
+                  );
                 }}
               />
-            </FormControl>
 
-            <EmployeeDropdown
-              value={foodDeliveryserviceRequest.serviceRequest.assignedTo}
-              sx={{ width: "25rem", padding: 0 }}
-              label="Assigned Employee *"
-              onChange={(newValue: string) => {
-                let newStatus =
-                  foodDeliveryserviceRequest.serviceRequest.status;
-
-                if (newValue && newStatus === "Unassigned") {
-                  newStatus = "Assigned";
+              <Autocomplete
+                disablePortal
+                id="combo-box-service"
+                options={[
+                  { label: "Clean" },
+                  { label: "Deep Clean" },
+                  { label: "Hazardous" },
+                  { label: "Toxic" },
+                ]}
+                className="bg-gray-50"
+                size="small"
+                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Service Type *"
+                    InputLabelProps={{
+                      style: {
+                        color: "#a4aab5",
+                        fontSize: ".9rem",
+                        fontFamily: "Poppins, sans-serif",
+                      },
+                    }}
+                  />
+                )}
+                value={
+                  foodDeliveryserviceRequest.order
+                    ? { label: foodDeliveryserviceRequest.order }
+                    : null
                 }
+                onChange={(
+                  event: React.SyntheticEvent<Element, Event>,
+                  newValue: { label: string } | null,
+                ) =>
+                  setfoodDeliveryserviceRequest({
+                    ...foodDeliveryserviceRequest,
+                    order: newValue ? newValue.label : "",
+                  })
+                }
+              />
 
-                setfoodDeliveryserviceRequest(() => ({
-                  ...foodDeliveryserviceRequest,
-                  serviceRequest: {
-                    ...foodDeliveryserviceRequest.serviceRequest,
-                    assignedTo: newValue,
-                    status: newStatus,
-                  },
-                }));
-              }}
-              disabled={isEmployeeDisabled}
-            />
+              <Autocomplete
+                disablePortal
+                id="combo-box-equipment"
+                options={[
+                  { label: "Mop" },
+                  { label: "Broom" },
+                  { label: "Dust Pan" },
+                ]}
+                className="bg-gray-50"
+                size="small"
+                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Necessary Equipment *"
+                    InputLabelProps={{
+                      style: {
+                        color: "#a4aab5",
+                        fontSize: ".9rem",
+                        fontFamily: "Poppins, sans-serif",
+                      },
+                    }}
+                  />
+                )}
+              />
 
-            <FormControl
-              component="fieldset"
-              margin="normal"
-              sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-            >
-              <CustomPrioritySelector
-                value={foodDeliveryserviceRequest.serviceRequest.priority}
+              <CustomTextField
+                label="Description (optional)"
+                multiline
+                rows={3}
+                value={foodDeliveryserviceRequest.serviceRequest.description}
                 onChange={(e) =>
                   setfoodDeliveryserviceRequest({
                     ...foodDeliveryserviceRequest,
                     serviceRequest: {
                       ...foodDeliveryserviceRequest.serviceRequest,
-                      priority: e.target.value,
+                      description: e.target.value,
                     },
                   })
                 }
+                size="small"
               />
-            </FormControl>
 
-            <div className="flex justify-around w-full mt-4">
-              <ButtonRed
-                onClick={clear}
-                endIcon={<ClearIcon />}
-                style={{ width: "8rem" }}
+              <FormControl sx={{ width: "25rem" }} size="small">
+                <CustomStatusDropdown
+                  value={foodDeliveryserviceRequest.serviceRequest.status}
+                  onChange={(e) => {
+                    const newStatus = e.target.value
+                      ? e.target.value.toString()
+                      : "";
+                    let newAssignedTo =
+                      foodDeliveryserviceRequest.serviceRequest.assignedTo;
+
+                    if (newStatus === "Unassigned") {
+                      newAssignedTo = "Unassigned";
+                    } else {
+                      newAssignedTo = "";
+                    }
+
+                    setfoodDeliveryserviceRequest({
+                      ...foodDeliveryserviceRequest,
+                      serviceRequest: {
+                        ...foodDeliveryserviceRequest.serviceRequest,
+                        status: newStatus,
+                        assignedTo: newAssignedTo,
+                      },
+                    });
+                  }}
+                />
+              </FormControl>
+
+              <EmployeeDropdown
+                value={foodDeliveryserviceRequest.serviceRequest.assignedTo}
+                sx={{ width: "25rem", padding: 0 }}
+                label="Assigned Employee *"
+                onChange={(newValue: string) => {
+                  let newStatus =
+                    foodDeliveryserviceRequest.serviceRequest.status;
+
+                  if (newValue && newStatus === "Unassigned") {
+                    newStatus = "Assigned";
+                  }
+
+                  setfoodDeliveryserviceRequest(() => ({
+                    ...foodDeliveryserviceRequest,
+                    serviceRequest: {
+                      ...foodDeliveryserviceRequest.serviceRequest,
+                      assignedTo: newValue,
+                      status: newStatus,
+                    },
+                  }));
+                }}
+                disabled={isEmployeeDisabled}
+              />
+
+              <FormControl
+                component="fieldset"
+                margin="normal"
+                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
               >
-                Clear
-              </ButtonRed>
-              <ButtonBlue
-                onClick={submit}
-                endIcon={<CheckIcon />}
-                style={{ width: "8rem" }}
-              >
-                Submit
-              </ButtonBlue>
-            </div>
-            <div className="text-center mt-4">
-              <p>Made by Adem</p>
-            </div>
-          </form>
+                <CustomPrioritySelector
+                  value={foodDeliveryserviceRequest.serviceRequest.priority}
+                  onChange={(e) =>
+                    setfoodDeliveryserviceRequest({
+                      ...foodDeliveryserviceRequest,
+                      serviceRequest: {
+                        ...foodDeliveryserviceRequest.serviceRequest,
+                        priority: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </FormControl>
+
+              <div className="flex justify-around w-full mt-4">
+                <ButtonRed
+                  onClick={clear}
+                  endIcon={<ClearIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Clear
+                </ButtonRed>
+                <ButtonBlue
+                  onClick={submit}
+                  endIcon={<CheckIcon />}
+                  style={{ width: "8rem" }}
+                >
+                  Submit
+                </ButtonBlue>
+              </div>
+              <div className="text-center mt-4">
+                <p>Made by Adem</p>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </FormContainer>
     </div>
   );
 }
