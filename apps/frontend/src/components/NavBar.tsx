@@ -156,7 +156,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
+          <Link to={paths.HERO} onClick={() => setActivePage(paths.HERO)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
