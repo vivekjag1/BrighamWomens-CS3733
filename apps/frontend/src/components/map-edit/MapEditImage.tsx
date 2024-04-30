@@ -114,6 +114,7 @@ const MapEditImage = (props: {
     console.log("hello world");
     console.log(edgeID);
   }
+
   function handlePointerDown(
     e:
       | React.PointerEvent<SVGCircleElement>
