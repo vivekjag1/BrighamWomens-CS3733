@@ -28,6 +28,7 @@ import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import CustomModal from "./CustomModal.tsx";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 dayjs.extend(utc);
@@ -44,6 +45,7 @@ export function ServiceRequestGetter() {
   const [filteredData, setFilteredData] = useState<ServiceRequest[]>([]);
   const [priorityOrder, setPriorityOrder] = useState<"desc" | "asc" | "">("");
   const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
+  const [serviceModal, setServiceModal] = React.useState(false);
   const { getAccessTokenSilently } = useAuth0();
   const { showToast } = useToast();
 
@@ -295,6 +297,7 @@ export function ServiceRequestGetter() {
 
   const handleRowClick = (request: ServiceRequest) => {
     setSelectedRow(request);
+    setServiceModal(true);
   };
 
   const sortPriorityOrder = () => {
@@ -325,6 +328,11 @@ export function ServiceRequestGetter() {
   interface DeliveryDetailsProps {
     delivery: Record<string, string | number | null>;
     fieldMappings: Record<string, string>;
+  }
+
+  function closeModal() {
+    setServiceModal(false);
+    setSelectedRow(null);
   }
 
   const DeliveryDetails: React.FC<DeliveryDetailsProps> = ({
@@ -733,163 +741,167 @@ export function ServiceRequestGetter() {
           </Table>
         </TableContainer>
       </Paper>
-      {selectedRow && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-[1px]"
-          onClick={() => setSelectedRow(null)}
-        >
-          <div className="relative">
-            <Card
-              sx={{ borderRadius: 2 }}
-              className="drop-shadow-2xl w-[47rem] ml-[5%] px-4 pb-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <CardContent>
-                <button
-                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                  onClick={() => setSelectedRow(null)}
-                >
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
-                <h1
-                  className={`text-2xl font-semibold mb-4 text-secondary text-center`}
-                >
-                  {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
-                </h1>
-                <div className="grid grid-cols-6 gap-4">
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">Location:</label>
-                    <CustomTextField
-                      value={selectedRow.location}
-                      sx={{ width: "100%" }}
-                    />
+      <CustomModal isOpen={serviceModal} onClose={() => setServiceModal(false)}>
+        {selectedRow && (
+          <div
+            className="fixed inset-0 flex items-center justify-center"
+            onClick={() => closeModal()}
+          >
+            <div className="relative">
+              <Card
+                sx={{ borderRadius: 2 }}
+                className="drop-shadow-2xl w-[47rem] ml-[5%] px-4 pb-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <CardContent>
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                    onClick={() => closeModal()}
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                  <h1
+                    className={`text-2xl font-semibold mb-4 text-secondary text-center`}
+                  >
+                    {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
+                  </h1>
+                  <div className="grid grid-cols-6 gap-4">
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">Location:</label>
+                      <CustomTextField
+                        value={selectedRow.location}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">
+                        Requesting Person:
+                      </label>
+                      <CustomTextField
+                        value={selectedRow.requestingUsername}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">Assigned To:</label>
+                      <CustomTextField
+                        value={selectedRow.assignedTo}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-3 flex flex-col w-full">
+                      <label className="font-medium mb-2">Priority:</label>
+                      <CustomTextField
+                        value={selectedRow.priority}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-3 flex flex-col w-full">
+                      <label className="font-medium mb-2">Status:</label>
+                      <CustomTextField
+                        value={selectedRow.status}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">Entered Time:</label>
+                      <CustomTextField
+                        value={convertToEasternTime(selectedRow.enteredTime)}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">
+                        Last Updated Time:
+                      </label>
+                      <CustomTextField
+                        value={convertToEasternTime(selectedRow.updatedTime)}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col w-full">
+                      <label className="font-medium mb-2">
+                        Requested Time:
+                      </label>
+                      <CustomTextField
+                        value={convertToEasternTime(selectedRow.requestedTime)}
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <div className="col-span-6 flex flex-col w-full">
+                      <label className="font-medium mb-2">Description:</label>
+                      <CustomTextField
+                        value={selectedRow.description}
+                        multiline
+                        rows={4}
+                        size="small"
+                        sx={{ width: "100%" }}
+                      />
+                    </div>
+                    <hr className="px-80 ml-5 h-px mt-3 mb-1 bg-gray-300 border-0" />
+                    <div className="grid grid-cols-6 gap-4 col-span-6 mb-6">
+                      {Object.keys(fieldConfig).map((deliveryType) => {
+                        //@ts-expect-error needs types
+                        const deliveryData = selectedRow[deliveryType];
+                        //@ts-expect-error needs types
+                        const fieldMapping = fieldConfig[deliveryType];
+                        return (
+                          deliveryData && (
+                            <DeliveryDetails
+                              key={deliveryType}
+                              delivery={deliveryData}
+                              fieldMappings={fieldMapping}
+                            />
+                          )
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">
-                      Requesting Person:
-                    </label>
-                    <CustomTextField
-                      value={selectedRow.requestingUsername}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">Assigned To:</label>
-                    <CustomTextField
-                      value={selectedRow.assignedTo}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-3 flex flex-col w-full">
-                    <label className="font-medium mb-2">Priority:</label>
-                    <CustomTextField
-                      value={selectedRow.priority}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-3 flex flex-col w-full">
-                    <label className="font-medium mb-2">Status:</label>
-                    <CustomTextField
-                      value={selectedRow.status}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">Entered Time:</label>
-                    <CustomTextField
-                      value={convertToEasternTime(selectedRow.enteredTime)}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">
-                      Last Updated Time:
-                    </label>
-                    <CustomTextField
-                      value={convertToEasternTime(selectedRow.updatedTime)}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-2 flex flex-col w-full">
-                    <label className="font-medium mb-2">Requested Time:</label>
-                    <CustomTextField
-                      value={convertToEasternTime(selectedRow.requestedTime)}
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <div className="col-span-6 flex flex-col w-full">
-                    <label className="font-medium mb-2">Description:</label>
-                    <CustomTextField
-                      value={selectedRow.description}
-                      multiline
-                      rows={4}
-                      size="small"
-                      sx={{ width: "100%" }}
-                    />
-                  </div>
-                  <hr className="px-80 ml-5 h-px mt-3 mb-1 bg-gray-300 border-0" />
-                  <div className="grid grid-cols-6 gap-4 col-span-6 mb-6">
-                    {Object.keys(fieldConfig).map((deliveryType) => {
-                      //@ts-expect-error needs types
-                      const deliveryData = selectedRow[deliveryType];
-                      //@ts-expect-error needs types
-                      const fieldMapping = fieldConfig[deliveryType];
-                      return (
-                        deliveryData && (
-                          <DeliveryDetails
-                            key={deliveryType}
-                            delivery={deliveryData}
-                            fieldMappings={fieldMapping}
-                          />
-                        )
-                      );
-                    })}
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  <div className="col-span-2 flex justify-between items-end px-0">
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#EA422D",
-                        color: "white",
-                        width: "100%",
-                        maxWidth: "8rem",
-                        fontFamily: "Poppins, sans-serif",
-                      }}
-                      endIcon={<DeleteIcon />}
-                      onClick={() =>
-                        deleteServiceRequest(selectedRow?.serviceID)
-                      }
-                    >
-                      DELETE
-                    </Button>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#012D5A",
-                        color: "white",
-                        width: "100%",
-                        maxWidth: "8rem",
-                        fontFamily: "Poppins, sans-serif",
-                      }}
-                      endIcon={<SaveIcon />}
-                    >
-                      SAVE
-                    </Button>
+                  <div className="grid grid-cols-2 gap-y-4 gap-x-6">
+                    <div className="col-span-2 flex justify-between items-end px-0">
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#EA422D",
+                          color: "white",
+                          width: "100%",
+                          maxWidth: "8rem",
+                          fontFamily: "Poppins, sans-serif",
+                        }}
+                        endIcon={<DeleteIcon />}
+                        onClick={() =>
+                          deleteServiceRequest(selectedRow?.serviceID)
+                        }
+                      >
+                        DELETE
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#012D5A",
+                          color: "white",
+                          width: "100%",
+                          maxWidth: "8rem",
+                          fontFamily: "Poppins, sans-serif",
+                        }}
+                        endIcon={<SaveIcon />}
+                      >
+                        SAVE
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </CustomModal>
     </div>
   );
 }
