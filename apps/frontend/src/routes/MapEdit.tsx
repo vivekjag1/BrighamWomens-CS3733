@@ -17,6 +17,9 @@ import { useToast } from "../components/useToast.tsx";
 import UndoRedoButton from "../components/map-edit/UndoRedoButton.tsx";
 import ButtonRed from "../components/ButtonRed.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
+import { Modal, Card, CardContent } from "@mui/material";
+import Button from "@mui/material/Button";
+
 const defaultFloor: number = 1;
 enum Action {
   SelectNode = "SelectNode",
@@ -91,6 +94,7 @@ function MapEdit() {
   const { showToast } = useToast();
   const [nodesForDeletion, setNodesForDeletion] = useState<string[]>([]);
   const { getAccessTokenSilently } = useAuth0();
+  const [deleteModal, setDeleteModal] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -457,6 +461,20 @@ function MapEdit() {
     tempAddedEdges = tempAddedEdges.concat(addedEdges);
     setAddedEdges(tempAddedEdges);
   }
+
+  useEffect(() => {
+    // call before leaving
+    console.log();
+  }, []);
+
+  const confirmNavigation = () => {
+    setDeleteModal(false);
+  };
+
+  const cancelNavigation = () => {
+    setDeleteModal(false);
+  };
+
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
@@ -502,6 +520,69 @@ function MapEdit() {
         >
           Revert All
         </ButtonRed>
+      </div>
+      <div>
+        <Modal
+          open={deleteModal}
+          onClose={cancelNavigation}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Card
+            sx={{
+              borderRadius: 2,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              "&:focus": {
+                outline: "none",
+                border: "none",
+                boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
+              },
+            }}
+            className="drop-shadow-2xl px-5 pb-2 w-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CardContent>
+              <h1
+                className={`text-md font-semibold mb-4 text-secondary text-center`}
+              >
+                You have unsaved changes. Are you sure you want to leave this
+                page?
+              </h1>
+              <div className="col-span-2 flex justify-between items-end px-5">
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#EA422D",
+                    color: "white",
+                    width: "8rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                  endIcon={<ClearIcon />}
+                  onClick={cancelNavigation}
+                >
+                  STAY
+                </Button>
+
+                <Button
+                  variant="contained"
+                  className="justify-end"
+                  style={{
+                    backgroundColor: "#012D5A",
+                    width: "8rem",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                  endIcon={<CheckIcon />}
+                  onClick={confirmNavigation}
+                >
+                  LEAVE
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Modal>
       </div>
     </div>
   );
