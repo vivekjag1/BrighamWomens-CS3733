@@ -474,10 +474,7 @@ function MapEdit() {
           <MapEditCard updateNode={updateNodeField} />
         </MapContext.Provider>
       </div>
-      <div className="absolute right-[1.5%] bottom-[2%]">
-        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
-      </div>
-      <div className="flex gap-6 absolute bottom-[2%] left-[50%] translate-x-[-50%]">
+      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[1%]">
         <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
@@ -492,6 +489,9 @@ function MapEdit() {
           saveAll={handleSaveAll}
           revertAll={handleRevertAll}
         />
+      </div>
+      <div className="absolute right-[1.5%] bottom-[2%]">
+        <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
     </div>
   );
