@@ -17,6 +17,8 @@ import "../animations/yellow-underline.css";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
+// import { motion, AnimatePresence } from "framer-motion";
+
 function NavBar() {
   const { isAuthenticated } = useAuth0();
   const { user } = useAuth0();
@@ -148,16 +150,25 @@ function NavBar() {
 
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
-      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
+      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem] items-center ">
+        {/*<AnimatePresence>*/}
         {showProfileMenu && (
           <>
-            <div>
+            {/*<motion.div*/}
+            {/*  initial={{scale: 0}} // Initial scale set to 0*/}
+            {/*  animate={{scale: 1}} // Final scale set to 1*/}
+            {/*  exit={{scale: 1}} // Exit state (if needed)*/}
+            {/*  transition={{duration: 0.9}} // Animation duration*/}
+            {/*>*/}
+            <div
+              className={` cursor-pointer  ${showProfileMenu ? " scale-1" : "scale-0"}`}
+            >
               {!isHidingNavBarInfo && (
                 <Card
-                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem]`}
+                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
                   style={{ color: "#F6BD39" }}
                 >
-                  <CardContent className="flex flex-col gap-2">
+                  <CardContent className="flex flex-col gap-2 ">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
                       <ButtonBlue className="flex text-center text-2xl w-full ">
@@ -182,8 +193,10 @@ function NavBar() {
                 </Card>
               )}
             </div>
+            {/*</motion.div>*/}
           </>
         )}
+        {/*</AnimatePresence>*/}
         <div>
           <div
             className="flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
