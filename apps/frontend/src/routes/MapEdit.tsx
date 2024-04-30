@@ -477,7 +477,7 @@ function MapEdit() {
       <div className="absolute right-[1.5%] bottom-[2%]">
         <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
-      <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[2%]">
+      <div className="flex gap-6 absolute bottom-[2%] left-[50%] translate-x-[-50%]">
         <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar

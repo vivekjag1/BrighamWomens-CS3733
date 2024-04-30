@@ -28,6 +28,8 @@ function SaveRevertAllButtons(props: saveRevertAllButtonsProps) {
 const buttonStyles = {
   backgroundColor: DesignSystem.primaryColor,
   border: "none",
+  height: "5.5vh",
+  width: "5.5vh",
   "&:hover": {
     backgroundColor: ButtonStyling.blueButtonHover,
   },
