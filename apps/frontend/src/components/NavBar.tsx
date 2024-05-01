@@ -199,7 +199,7 @@ function NavBar() {
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: 1, transformOrigin: "bottom" }}
                 exit={{ scaleY: 0 }}
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.1, delay: 0.3 }}
               >
                 <Link to={paths.PROFILE}>
                   <Button
