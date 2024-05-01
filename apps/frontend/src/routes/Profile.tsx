@@ -78,8 +78,17 @@ export default function Profile() {
       userID: user!.sub,
       userName: user!.name,
     };
-    await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
-    showToast("Password Changed!", "success");
+
+    if (password == confirmPassword) {
+      await MakeProtectedPostRequest(
+        APIEndpoints.changePassword,
+        tempPW,
+        token,
+      );
+      showToast("Password Changed!", "success");
+    } else {
+      showToast("Passwords Don't Match!", "error");
+    }
   };
 
   // const getAllServiceReqs = async () => {
@@ -126,6 +135,7 @@ export default function Profile() {
   // console.log(emp.position);
   console.log(employee);
   const [password, setPassword] = React.useState<string>("");
+  const [confirmPassword, setConfirmPassword] = React.useState<string>("");
 
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -331,13 +341,22 @@ export default function Profile() {
               <div className="   flex flex-col col-span-2j ustify-center items-center ">
                 <div className=" mb-4   flex flex-col col-span-2 justify-center items-center  ">
                   <CustomTextField
-                    label="password"
+                    label="Password"
                     variant="outlined"
                     sx={{
                       width: "17rem",
                     }}
                     margin="normal"
                     onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <CustomTextField
+                    label="Confirm Password"
+                    variant="outlined"
+                    sx={{
+                      width: "17rem",
+                    }}
+                    margin="normal"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
                 <div className="col-span-2 flex justify-between items-end px-5">
