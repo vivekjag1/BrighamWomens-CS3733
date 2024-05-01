@@ -7,10 +7,22 @@ import NodeParam from "../NodeParam.tsx";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
 import CustomDropdown from "../CustomDropdown.tsx";
-/*import UndoRedoButtons from "./UndoRedoButtons.tsx";
-import SaveRevertAllButtons from "./SaveRevertAllButtons.tsx";*/
 
-const nodeTypes = [
+export type nodeType =
+  | "HALL"
+  | "DEPT"
+  | "CONF"
+  | "EXIT"
+  | "INFO"
+  | "LABS"
+  | "REST"
+  | "RETL"
+  | "SERV"
+  | "BATH"
+  | "STAI"
+  | "ELEV";
+
+const nodeTypes: nodeType[] = [
   "HALL",
   "DEPT",
   "CONF",
@@ -21,6 +33,8 @@ const nodeTypes = [
   "RETL",
   "SERV",
   "BATH",
+  "STAI",
+  "ELEV",
 ];
 
 const textFieldStyles_large = {
@@ -37,9 +51,10 @@ function MapEditCard(props: {
   const nodes = useContext(MapContext).nodes;
   const selectedNodeID = useContext(MapContext).selectedNodeID;
 
-  /*function handleDummyFunction() {
-    console.log("Dummy function");
-  }*/
+  function isEditableNode(): boolean {
+    const type = nodes?.get(selectedNodeID ?? "")?.nodeType;
+    return type != "ELEV" && type != "STAI";
+  }
 
   return (
     <div className="w-[21vw] flex p-4 bg-white rounded-2xl shadow-xl">
@@ -84,7 +99,9 @@ function MapEditCard(props: {
             sx={textFieldStyles_small}
             label="Type"
             className=""
-            disabled={nodes.get(selectedNodeID!) == undefined}
+            disabled={
+              nodes.get(selectedNodeID!) == undefined || !isEditableNode()
+            }
           />
           <NodeParam
             value={nodes?.get(selectedNodeID ?? "")?.floor}
@@ -102,7 +119,7 @@ function MapEditCard(props: {
             }}
             sx={textFieldStyles_small}
             label="X"
-            editable={true}
+            editable={isEditableNode()}
             props={{ type: "number" }}
           />
           <NodeParam
@@ -112,7 +129,7 @@ function MapEditCard(props: {
             }}
             sx={textFieldStyles_small}
             label="Y"
-            editable={true}
+            editable={isEditableNode()}
             props={{ type: "number" }}
           />
         </form>

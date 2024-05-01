@@ -12,6 +12,7 @@ import CustomTextField from "./CustomTextField.tsx";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Table,
   TableBody,
@@ -71,7 +72,7 @@ export function ServiceRequestGetter() {
 
     try {
       const res = await MakeProtectedGetRequest(
-        APIEndpoints.serviceGetRequests,
+        APIEndpoints.getServiceRequest,
         token,
       );
       const sortedData = res.data.sort(
@@ -97,7 +98,7 @@ export function ServiceRequestGetter() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const res = await MakeProtectedDeleteRequest(
-        `${APIEndpoints.serviceGetRequests}/${serviceID}`,
+        `${APIEndpoints.getServiceRequest}/${serviceID}`,
         token,
       );
 
@@ -142,7 +143,7 @@ export function ServiceRequestGetter() {
       const token = await getAccessTokenSilently();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await MakeProtectedPatchRequest(
-        APIEndpoints.servicePutRequests,
+        APIEndpoints.putServiceRequest,
         updateData,
         token,
       );
@@ -180,7 +181,7 @@ export function ServiceRequestGetter() {
       const token = await getAccessTokenSilently();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.patch(
-        APIEndpoints.servicePutRequests,
+        APIEndpoints.putServiceRequest,
         updateData,
         {
           headers: {
@@ -387,6 +388,15 @@ export function ServiceRequestGetter() {
       giftType: "Gift Type",
       senderNote: "Sender Note",
     },
+    ITRequest: {
+      problemType: "Problem Type",
+    },
+  };
+
+  const formatModalLabel = (type: string) => {
+    return type
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
   };
 
   return (
@@ -758,17 +768,12 @@ export function ServiceRequestGetter() {
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                     onClick={() => closeModal()}
                   >
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                        fill="currentColor"
-                      />
-                    </svg>
+                    <CloseIcon />
                   </button>
                   <h1
                     className={`text-2xl font-semibold mb-4 text-secondary text-center`}
                   >
-                    {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
+                    {formatModalLabel(selectedRow.type)} Details
                   </h1>
                   <div className="grid grid-cols-6 gap-4">
                     <div className="col-span-2 flex flex-col w-full">
@@ -891,8 +896,9 @@ export function ServiceRequestGetter() {
                           fontFamily: "Poppins, sans-serif",
                         }}
                         endIcon={<SaveIcon />}
+                        onClick={() => closeModal()}
                       >
-                        SAVE
+                        CLOSE
                       </Button>
                     </div>
                   </div>

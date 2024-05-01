@@ -71,7 +71,7 @@ export function MedicalDeviceForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.medicalDeviceDelivery,
+          APIEndpoints.deviceRequest,
           medicalDeviceDelivery,
           token,
         );
@@ -96,6 +96,9 @@ export function MedicalDeviceForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
         <div>
+          <p className="text-center text-sm text-secondary pb-4 pt-4">
+            Made by Andy and Francesco
+          </p>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Medical Device Request
           </h1>
@@ -365,9 +368,7 @@ export function MedicalDeviceForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Andy and Francesco</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

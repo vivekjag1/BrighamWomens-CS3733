@@ -29,7 +29,6 @@ const CustomCardContent = styled(CardContent)({
     paddingBottom: 0,
   },
 });
-
 export default function Profile() {
   const { showToast } = useToast();
 
@@ -148,7 +147,7 @@ export default function Profile() {
 
     try {
       const res = await MakeProtectedGetRequest(
-        APIEndpoints.serviceGetRequests,
+        APIEndpoints.getServiceRequest,
         token,
       );
       const sortedData = res.data.sort(
@@ -199,7 +198,7 @@ export default function Profile() {
       const token = await getAccessTokenSilently();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await MakeProtectedPatchRequest(
-        APIEndpoints.servicePutRequests,
+        APIEndpoints.putServiceRequest,
         updateData,
         token,
       );

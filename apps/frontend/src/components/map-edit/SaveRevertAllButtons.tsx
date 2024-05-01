@@ -1,7 +1,7 @@
 import { ButtonGroup, Button, Tooltip } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
-import { ButtonStyling, DesignSystem } from "../../common/StylingCommon.ts";
+import { ButtonStyling } from "../../common/StylingCommon.ts";
 
 interface saveRevertAllButtonsProps {
   saveAll: () => void;
@@ -11,13 +11,13 @@ interface saveRevertAllButtonsProps {
 function SaveRevertAllButtons(props: saveRevertAllButtonsProps) {
   return (
     <ButtonGroup variant="contained">
-      <Tooltip title="Apply all" placement="top" arrow>
-        <Button sx={buttonStyles} onClick={props.saveAll}>
+      <Tooltip title="Save All" placement="top" arrow>
+        <Button sx={saveStyle} onClick={props.saveAll}>
           <SaveIcon />
         </Button>
       </Tooltip>
-      <Tooltip title="Undo all" placement="top" arrow>
-        <Button sx={buttonStyles} onClick={props.revertAll}>
+      <Tooltip title="Revert All" placement="top" arrow>
+        <Button sx={revertStyle} onClick={props.revertAll}>
           <SettingsBackupRestoreIcon />
         </Button>
       </Tooltip>
@@ -25,13 +25,25 @@ function SaveRevertAllButtons(props: saveRevertAllButtonsProps) {
   );
 }
 
-const buttonStyles = {
-  backgroundColor: DesignSystem.primaryColor,
+const saveStyle = {
+  backgroundColor: ButtonStyling.blueButton,
+  borderRadius: "6px",
   border: "none",
   height: "5.5vh",
   width: "5.5vh",
   "&:hover": {
     backgroundColor: ButtonStyling.blueButtonHover,
+  },
+} as const;
+
+const revertStyle = {
+  backgroundColor: ButtonStyling.blueButton,
+  borderRadius: "6px",
+  border: "none",
+  height: "5.5vh",
+  width: "5.5vh",
+  "&:hover": {
+    backgroundColor: ButtonStyling.redButton,
   },
 } as const;
 

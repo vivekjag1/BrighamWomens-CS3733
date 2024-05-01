@@ -145,7 +145,7 @@ export default function ToggleButtons(props: {
         </Tooltip>
         <Tooltip
           TransitionComponent={Zoom}
-          title="Delete"
+          title="Delete Node or Edge"
           placement="bottom"
           arrow
         >

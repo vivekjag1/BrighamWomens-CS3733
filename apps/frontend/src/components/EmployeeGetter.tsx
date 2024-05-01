@@ -120,7 +120,7 @@ export function EmployeeGetter({
 
   const makeDeleteRequest = (employee: Employee) => {
     handleDeleteEmployee(employee).then().catch(console.error);
-    showToast("Employee successfully deleted!", "success");
+    showToast("employee successfully deleted!", "success");
     setDeleteModal(false);
   };
 
@@ -303,8 +303,6 @@ export function EmployeeGetter({
                 <TableRow
                   key={employee.employeeID}
                   onClick={() => handleRowClick(employee)}
-                  hover
-                  style={{ cursor: "pointer" }}
                   sx={{
                     "& > td": {
                       color: "#6B7280",
@@ -364,6 +362,7 @@ export function EmployeeGetter({
                             setEmployeeDelete(employee);
                           }}
                           className="text-red-500 mb-1 hover:text-red-700"
+                          style={{ cursor: "pointer" }}
                         />
                       </TableCell>
                     </>
@@ -415,16 +414,14 @@ export function EmployeeGetter({
               boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
             },
           }}
-          className="drop-shadow-2xl px-5 pb-2 w-auto"
+          className="drop-shadow-2xl p-3"
           onClick={(e) => e.stopPropagation()}
         >
-          <CardContent>
-            <h1
-              className={`text-md font-semibold mb-4 text-secondary text-center`}
-            >
+          <CardContent className="flex flex-col gap-2">
+            <h1 className={`text-md font-semibold text-secondary text-center`}>
               Are you sure you want to delete this user?
             </h1>
-            <div className="col-span-2 flex justify-between items-end px-5">
+            <div className="col-span-2 flex justify-center gap-8">
               <Button
                 variant="contained"
                 style={{

@@ -72,7 +72,7 @@ export function RoomForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.roomReservation,
+          APIEndpoints.roomRequest,
           roomReservation,
           token,
         );
@@ -103,6 +103,9 @@ export function RoomForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
         <div>
+          <p className="text-center text-sm text-secondary pb-4 pt-4">
+            Made by Vivek, Taeha, and Mohamed
+          </p>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Reserve a Room
           </h1>
@@ -303,9 +306,7 @@ export function RoomForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center">
-                <p>Made by Vivek, Taeha, and Mohamed</p>
-              </div>
+              <div className="text-center"></div>
             </form>
           </div>
         </div>

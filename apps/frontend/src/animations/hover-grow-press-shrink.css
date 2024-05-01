@@ -1,0 +1,11 @@
+.hover-grow-press-shrink {
+  transition: transform 2ms linear;
+}
+
+.hover-grow-press-shrink:hover {
+  transform: scale(1.25);
+}
+
+.hover-grow-press-shrink:active {
+  transform: scale(0.75);
+}

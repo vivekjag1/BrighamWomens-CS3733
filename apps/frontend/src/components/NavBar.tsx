@@ -19,8 +19,6 @@ import { checkAuth } from "../checkAdminStatus.ts";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
-// import { motion, AnimatePresence } from "framer-motion";
-
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
@@ -86,8 +84,9 @@ function NavBar() {
   };
 
   const { logout } = useAuth0();
-
-  const [activePage, setActivePage] = useState(useLocation().pathname);
+  const location = useLocation();
+  const [activePage, setActivePage] = useState(location.pathname);
+  console.log("active page", activePage);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
@@ -126,6 +125,7 @@ function NavBar() {
     collapsed,
     callback,
   }) => {
+    console.log(activePage);
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animate-underline-yellow items-center overflow-hidden">
         <Link
@@ -159,7 +159,7 @@ function NavBar() {
             </h2>
           </div>
           <span
-            className={`flex child absolute bottom-[0.5rem] right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage === to ? "scale-x-1" : "scale-x-0"}`}
+            className={`flex child absolute bottom-[0.5rem] right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${location.pathname == to ? "scale-x-1" : "scale-x-0"}`}
             style={{ transformOrigin: "center" }}
           ></span>
         </Link>
@@ -169,8 +169,7 @@ function NavBar() {
 
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
-      <div className="relative mb-[1rem] mr-[1.5rem] ml-[1rem] items-center ">
-        {/*<AnimatePresence>*/}
+      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
         {showProfileMenu && (
           <>
             {/*<motion.div*/}
@@ -187,7 +186,7 @@ function NavBar() {
                   className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
                   style={{ color: "#F6BD39" }}
                 >
-                  <CardContent className="flex flex-col gap-2 ">
+                  <CardContent className="flex flex-col gap-2">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
                       <ButtonBlue className="flex text-center text-2xl w-full ">
@@ -212,10 +211,8 @@ function NavBar() {
                 </Card>
               )}
             </div>
-            {/*</motion.div>*/}
           </>
         )}
-        {/*</AnimatePresence>*/}
         <div>
           <div
             className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
@@ -246,7 +243,6 @@ function NavBar() {
       </div>
     );
   }
-
   return (
     <div className="z-10 bg-offwhite">
       <div

@@ -67,7 +67,7 @@ export function SanitationForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.sanitationPostRequests,
+          APIEndpoints.sanitationRequest,
           sanitationRequest,
           token,
         );
@@ -100,6 +100,9 @@ export function SanitationForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Sanitation Request"}>
         <div>
+          <p className="text-center text-sm text-secondary  pb-4">
+            Made by Matthew and Sulaiman
+          </p>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Sanitation Request
           </h1>
@@ -340,9 +343,7 @@ export function SanitationForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Matthew and Sulaiman</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

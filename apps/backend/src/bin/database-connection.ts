@@ -3,7 +3,7 @@ import { PrismaClient } from "database";
 //   populateEdgeDB,
 //   populateNodeDB,
 //   readCSVFile,
-// } from "../fileInput/file.ts";
+// } from "../utils/fileParser.ts";
 
 // Create the prisma client, this automatically connects to the database
 const client = new PrismaClient();
