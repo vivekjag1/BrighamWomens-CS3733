@@ -179,7 +179,11 @@ export function ITForm(): JSX.Element {
                     {...params}
                     label="IT Problem Type *"
                     InputLabelProps={{
-                      style: { color: "#a4aab5", fontSize: ".9rem" },
+                      style: {
+                        color: "#a4aab5",
+                        fontSize: ".9rem",
+                        fontFamily: "Poppins,sans-serif",
+                      },
                     }}
                   />
                 )}
