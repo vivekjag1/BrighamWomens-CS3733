@@ -7,7 +7,6 @@ class Stack<T> {
 
   push(item: T): void {
     if (this.size() === this.capacity) {
-      console.log("Stack has reached max capacity!");
       return;
     }
 

@@ -1,11 +1,7 @@
 import * as React from "react";
 import josephImage from "../../assets/employees/jcardarelli.jpeg";
 import danielImage from "../../assets/employees/dgorbunov.jpeg";
-// import FormContainer from "../components/FormContainer.tsx";
 import mattImage from "../../assets/employees/mbrown.jpeg";
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-// import Button from '@mui/material/Button';
-// import Tooltip from '@mui/material/Tooltip';
 import andyImage from "../../assets/employees/atruong.jpeg";
 import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
 import ademImage from "../../assets/employees/mdjadid.jpeg";
@@ -15,7 +11,6 @@ import colinImage from "../../assets/employees/cmasucci.jpeg";
 import griffinImage from "../../assets/employees/gbrown.jpeg";
 import taehaImage from "../../assets/employees/tsong.jpeg";
 import wongImage from "../../assets/employees/wwong.jpg";
-// import FormContainer from "../components/FormContainer.tsx";
 import background from "../../assets/auth0-background.png";
 import { Card, CardContent, styled } from "@mui/material";
 import ArrowIosForwardComponent from "../components/ArrowComponent.tsx";
@@ -117,7 +112,7 @@ function AboutUs() {
         className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${background})` }}
       ></div>
-      <div className="h-screen overflow-auto">
+      <div className="h-screen overflow-auto backdrop-blur-sm">
         <div className="flex justify-center w-full">
           <div className="flex flex-col items-center gap-2 mx-5 my-8">
             <Card
@@ -161,11 +156,11 @@ function AboutUs() {
                       <ArrowIosForwardComponent />
                     </Link>
                   </div>
-                  <p style={{ color: "olive" }}>
+                  <p style={{ color: "#012D5A" }}>
                     {" "}
                     WPI Computer Science Department
                   </p>
-                  <p style={{ color: "grey" }}>
+                  <p style={{ color: "darkgray" }}>
                     {" "}
                     CS3733-D24 (Software Engineering)
                   </p>
@@ -187,16 +182,16 @@ function AboutUs() {
                       </div>
                     ))}
                   </div>
-                  <div>
+                  <div className={"mt-[1rem]"}>
                     <br />
-                    <p style={{ color: "#012D5A", textAlign: "center" }}>
-                      Thanks to Brigham and Womens Hospital and their
-                      represenative, Andrew Shin
+                    <p style={{ color: "offwhite", textAlign: "center" }}>
+                      Thanks to Brigham and Women's Hospital and their
+                      representative, Andrew Shin
                     </p>
-                    <label>
+                    <p style={{ color: "darkgray" }}>
                       The B&WH maps and data used in this app are copyrighted
                       and for educational use only
-                    </label>
+                    </p>
                   </div>
                 </div>
               </CustomCardContent>

@@ -60,9 +60,6 @@ export function RoomForm() {
       roomReservation.serviceRequest.priority &&
       (!requiresEmployee || (requiresEmployee && assignedTo));
 
-    console.log("End Date: ", endDate);
-    console.log("End Date 2: ", roomReservation.endTime);
-
     return isValid;
   };
 

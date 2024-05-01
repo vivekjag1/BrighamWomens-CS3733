@@ -391,6 +391,10 @@ export function ServiceRequestGetter() {
     ITRequest: {
       problemType: "Problem Type",
     },
+    FoodDeliveryService: {
+      protein: "Protein",
+      side: "Side",
+    },
   };
 
   const formatModalLabel = (type: string) => {

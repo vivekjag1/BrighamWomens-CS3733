@@ -19,9 +19,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import FormContainer from "../../components/FormContainer.tsx";
 import FoodDeliveryIMG from "../../../assets/FoodDeliveryIMG.jpg";
+import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
 
 const initialState: foodDeliveryService = {
-  order: "",
+  protein: "",
+  side: "",
   serviceRequest: {
     requestingUsername: "",
     location: "",
@@ -49,9 +51,16 @@ export function FoodDeliveryserviceForm() {
     const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
       status,
     );
-
+    console.log(
+      foodDeliveryserviceRequest.protein,
+      foodDeliveryserviceRequest.side,
+      foodDeliveryserviceRequest.serviceRequest.requestingUsername,
+      foodDeliveryserviceRequest.serviceRequest.location,
+      foodDeliveryserviceRequest.serviceRequest.priority,
+    );
     return (
-      foodDeliveryserviceRequest.order &&
+      foodDeliveryserviceRequest.protein &&
+      foodDeliveryserviceRequest.side &&
       foodDeliveryserviceRequest.serviceRequest.requestingUsername &&
       foodDeliveryserviceRequest.serviceRequest.location &&
       foodDeliveryserviceRequest.serviceRequest.priority &&
@@ -70,17 +79,17 @@ export function FoodDeliveryserviceForm() {
         );
         if (response.status === 200) {
           //alert("fooddeliveryservice Request sent!");
-          showToast("fooddeliveryservice Request sent!", "success");
+          showToast("Food Delivery Service Request sent!", "success");
           clear();
         } else {
           console.error("Submission failed with status:", response.status);
           //alert("fooddeliveryservice Request failed!");
-          showToast("fooddeliveryservice Request failed!", "error");
+          showToast("Food Delivery Service Request failed!", "error");
         }
       } catch (error) {
         console.error("Error submitting the form:", error);
         //alert("fooddeliveryservice Request failed!");
-        showToast("fooddeliveryservice Request failed!", "error");
+        showToast("Food Delivery Service Request failed!", "error");
       }
     } else {
       //alert("You must fill out all the required information!");
@@ -168,10 +177,19 @@ export function FoodDeliveryserviceForm() {
                   { label: "Lamb" },
                   { label: "Chicken" },
                   { label: "Fish" },
+                  { label: "Pork" },
                 ]}
                 className="bg-gray-50"
                 size="small"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    fontSize: ".8rem",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "Poppins, sans-serif",
+                  },
+                  width: "25rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -186,8 +204,8 @@ export function FoodDeliveryserviceForm() {
                   />
                 )}
                 value={
-                  foodDeliveryserviceRequest.order
-                    ? { label: foodDeliveryserviceRequest.order }
+                  foodDeliveryserviceRequest.protein
+                    ? { label: foodDeliveryserviceRequest.protein }
                     : null
                 }
                 onChange={(
@@ -196,7 +214,7 @@ export function FoodDeliveryserviceForm() {
                 ) =>
                   setfoodDeliveryserviceRequest({
                     ...foodDeliveryserviceRequest,
-                    order: newValue ? newValue.label : "",
+                    protein: newValue ? newValue.label : "",
                   })
                 }
               />
@@ -211,7 +229,15 @@ export function FoodDeliveryserviceForm() {
                 ]}
                 className="bg-gray-50"
                 size="small"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    fontSize: ".8rem",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "Poppins, sans-serif",
+                  },
+                  width: "25rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -225,10 +251,24 @@ export function FoodDeliveryserviceForm() {
                     }}
                   />
                 )}
+                value={
+                  foodDeliveryserviceRequest.side
+                    ? { label: foodDeliveryserviceRequest.side }
+                    : null
+                }
+                onChange={(
+                  event: React.SyntheticEvent<Element, Event>,
+                  newValue: { label: string } | null,
+                ) =>
+                  setfoodDeliveryserviceRequest({
+                    ...foodDeliveryserviceRequest,
+                    side: newValue ? newValue.label : "",
+                  })
+                }
               />
 
               <CustomTextField
-                label="Food Allergies (optional)"
+                label="Additional Notes (optional)"
                 multiline
                 rows={3}
                 value={foodDeliveryserviceRequest.serviceRequest.description}
@@ -299,8 +339,21 @@ export function FoodDeliveryserviceForm() {
               <FormControl
                 component="fieldset"
                 margin="normal"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-              ></FormControl>
+                sx={{ width: "25rem" }}
+              >
+                <CustomPrioritySelector
+                  value={foodDeliveryserviceRequest.serviceRequest.priority}
+                  onChange={(e) =>
+                    setfoodDeliveryserviceRequest({
+                      ...foodDeliveryserviceRequest,
+                      serviceRequest: {
+                        ...foodDeliveryserviceRequest.serviceRequest,
+                        priority: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </FormControl>
 
               <div className="flex justify-around w-full mt-4">
                 <ButtonRed

@@ -19,7 +19,6 @@ function QRCodeInsert(props: {
     mobileURL.searchParams.append("start", props.startNodeID);
     mobileURL.searchParams.append("end", props.endNodeID);
     mobileURL.searchParams.append("algo", props.algorithm);
-    console.log(mobileURL.href);
   }
 
   useEffect(() => {

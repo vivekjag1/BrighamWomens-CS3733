@@ -1,14 +1,9 @@
 import * as React from "react";
-
-// import FormContainer from "../components/FormContainer.tsx";
-
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "../components/ArrowbackIcon.tsx";
-// import taehaImage from '../../assets/people/Taeha.png';
 import background from "../../assets/auth0-background.png";
 import { Card, CardContent, styled } from "@mui/material";
 import paths from "../common/paths.tsx";
-// import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CreditCard from "../components/CreditCard.tsx";
 import webstormImage from "../../assets/creditpics/webstormpics.png";
 import githubImage from "../../assets/creditpics/githubpics.png";
@@ -18,6 +13,7 @@ import cloudfareImage from "../../assets/creditpics/cloudfarepics.png";
 import dockerImage from "../../assets/creditpics/dockerpics.png";
 import typescriptImage from "../../assets/creditpics/typescriptpics.png";
 import reactImage from "../../assets/creditpics/reactpics.png";
+import reactRouterImage from "../../assets/creditpics/reactrouterpics.png";
 import yarnImage from "../../assets/creditpics/yarn.png";
 import nodeImage from "../../assets/creditpics/nodejspics.png";
 import turboImage from "../../assets/creditpics/turbopics.svg";
@@ -39,7 +35,6 @@ import axiosImage from "../../assets/creditpics/axiospics.png";
 import bootstrapImage from "../../assets/creditpics/bootstrappics.png";
 import framerMotionImage from "../../assets/creditpics/framermotionpics.png";
 import flowbiteImage from "../../assets/creditpics/flowbitepics.png";
-import tanstakeImage from "../../assets/creditpics/tanstakepics.png";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -51,19 +46,19 @@ const CustomCardContent = styled(CardContent)({
 
 const tools = [
   {
-    name: "Webstorm ",
+    name: "WebStorm",
     imageSrc: webstormImage,
     url: "https://www.jetbrains.com/webstorm/",
     urlName: "Webstorm Link",
   },
   {
-    name: "GitHub ",
+    name: "GitHub",
     imageSrc: githubImage,
     url: "https://github.com",
     urlName: "Git Hub Link",
   },
   {
-    name: "Taiga ",
+    name: "Taiga",
     imageSrc: taigaImage,
     url: "https://taiga.io",
     urlName: "Taiga Link",
@@ -75,115 +70,121 @@ const tools = [
     urlName: "AWS Link",
   },
   {
-    name: "Cloud Flare ",
+    name: "CloudFlare",
     imageSrc: cloudfareImage,
     url: "https://www.cloudflare.com/en-gb/",
     urlName: "Cloud Flare Link",
   },
   {
-    name: "Docker ",
+    name: "Docker",
     imageSrc: dockerImage,
     url: "https://www.docker.com",
     urlName: "Docker Link",
   },
   {
-    name: "Typescript ",
+    name: "TypeScript",
     imageSrc: typescriptImage,
     url: "https://www.typescriptlang.org",
     urlName: "Typescript Link",
   },
   {
-    name: "React ",
+    name: "React",
     imageSrc: reactImage,
     url: "https://react.dev",
     urlName: "React Link",
   },
   {
-    name: "Yarn ",
+    name: "React Router",
+    imageSrc: reactRouterImage,
+    url: "https://reactrouter.com/",
+    urlName: "React Router Link",
+  },
+  {
+    name: "Yarn",
     imageSrc: yarnImage,
     url: "https://yarnpkg.com",
     urlName: "Yarn Link",
   },
   {
-    name: "Nodejs ",
+    name: "Node.js",
     imageSrc: nodeImage,
     url: "https://nodejs.org/en",
     urlName: "Nodejs Link",
   },
   {
-    name: "Turbo ",
+    name: "Turbo",
     imageSrc: turboImage,
     url: "https://turbo.build",
     urlName: "Turbo Link",
   },
   {
-    name: "Vite ",
+    name: "Vite",
     imageSrc: viteImage,
     url: "https://vitest.dev",
     urlName: "Vite Link",
   },
   {
-    name: "Prettier ",
+    name: "Prettier",
     imageSrc: prettierImage,
     url: "https://prettier.io",
     urlName: "Prettier Link",
   },
   {
-    name: "ESlint ",
+    name: "ESLint",
     imageSrc: eslintImage,
     url: "https://eslint.org",
     urlName: "ESlint Link",
   },
   {
-    name: "Husky ",
+    name: "Husky",
     imageSrc: huskyImage,
     url: "https://typicode.github.io/husky/",
     urlName: "Husky Link",
   },
   {
-    name: "Ts-Node ",
+    name: "TS-Node",
     imageSrc: tsnodeImage,
     url: "https://typestrong.org/ts-node/docs/",
     urlName: "Ts-Node Link",
   },
   {
-    name: "Nodemon ",
+    name: "Nodemon",
     imageSrc: nodemonImage,
     url: "https://www.npmjs.com/package/nodemon",
     urlName: "Nodemon Link",
   },
   {
-    name: "postgreSQL ",
+    name: "PostgreSQL",
     imageSrc: postgresqlImage,
     url: " https://www.postgresql.org",
     urlName: "PostgreSQL Link",
   },
   {
-    name: "prismaORM ",
+    name: "PrismaORM",
     imageSrc: prismaImage,
     url: "https://www.prisma.io",
     urlName: "PrismaORM Link",
   },
   {
-    name: "expressjs ",
+    name: "Express.js",
     imageSrc: expressjsImage,
     url: "https://expressjs.com",
     urlName: "Expressjs Link",
   },
   {
-    name: "traefik ",
+    name: "Traefik",
     imageSrc: traefikImage,
     url: "https://doc.traefik.io/traefik/",
     urlName: "Traefik Link",
   },
   {
-    name: "Multer ",
+    name: "Multer",
     imageSrc: multerImage,
     url: " https://www.npmjs.com/package/multer",
     urlName: "Multer Link",
   },
   {
-    name: "Auth0 ",
+    name: "Auth0",
     imageSrc: auth0Image,
     url: "https://auth0.com/",
     urlName: "Auth0 Link",
@@ -195,40 +196,34 @@ const tools = [
     urlName: "Material UI Link",
   },
   {
-    name: "Tailwind ",
+    name: "Tailwind",
     imageSrc: tailwindImage,
     url: "https://tailwindcss.com",
     urlName: "Tailwind Link",
   },
   {
-    name: "Axios ",
+    name: "Axios",
     imageSrc: axiosImage,
     url: "https://www.npmjs.com/package/axios",
     urlName: "Axios Link",
   },
   {
-    name: "Bootstrap ",
+    name: "Bootstrap",
     imageSrc: bootstrapImage,
     url: "https://getbootstrap.com",
     urlName: "Bootstrap Link",
   },
   {
-    name: "Framer Motion ",
+    name: "Framer Motion",
     imageSrc: framerMotionImage,
     url: "https://www.framer.com/motion/",
     urlName: "Framer Motion Link",
   },
   {
-    name: "Flowbite ",
+    name: "Flowbite",
     imageSrc: flowbiteImage,
     url: "https://flowbite.com",
     urlName: "Flowbite Link",
-  },
-  {
-    name: "Tan stake table ",
-    imageSrc: tanstakeImage,
-    url: "https://tanstack.com/table/v8",
-    urlName: "Tan Stake Link",
   },
 ];
 
@@ -239,7 +234,7 @@ function Credit() {
         className="absolute inset-0 overflow-hidden bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${background})` }}
       ></div>
-      <div className="h-screen overflow-auto">
+      <div className="h-screen overflow-auto backdrop-blur-sm">
         <div className="flex justify-center w-full">
           <div className="flex flex-col items-center gap-2 mx-5 my-8">
             <Card
@@ -274,11 +269,11 @@ function Credit() {
                       Credits
                     </h1>
                   </div>
-                  <p style={{ color: "olive" }}>
+                  <p style={{ color: "#012D5A" }}>
                     {" "}
                     WPI Computer Science Department
                   </p>
-                  <p style={{ color: "grey" }}>
+                  <p style={{ color: "darkgray" }}>
                     {" "}
                     CS3733-D24 (Software Engineering)
                   </p>
@@ -296,20 +291,19 @@ function Credit() {
                       </div>
                     ))}
                   </div>
-                  <div>
+                  <div className={"mt-[1rem]"}>
                     <br />
-                    <p style={{ color: "#012D5A", textAlign: "center" }}>
-                      Thanks to Brigham and Womens Hospital and their
-                      represenative, Andrew Shin
+                    <p style={{ color: "offwhite", textAlign: "center" }}>
+                      Thanks to Brigham and Women's Hospital and their
+                      representative, Andrew Shin
                     </p>
-                    <label>
+                    <p style={{ color: "darkgray" }}>
                       The B&WH maps and data used in this app are copyrighted
                       and for educational use only
-                    </label>
+                    </p>
                   </div>
                 </div>
               </CustomCardContent>
-              {/*</div>*/}
             </Card>
           </div>
         </div>

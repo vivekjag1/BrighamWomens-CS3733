@@ -114,8 +114,6 @@ const MapEditImage = (props: {
     props.onEdgeClick(edgeID);
     setSelectedEdgeID(edgeID);
     //now need to "derender the edge"
-    console.log("hello world");
-    console.log(edgeID);
   }
 
   function handlePointerDown(
@@ -130,7 +128,6 @@ const MapEditImage = (props: {
     const yOffset = e.clientY - bbox.top;
     if (ID.includes("_")) {
       //handle edge logic in here
-      console.log("edge selected");
       setSelectedEdgeID(ID);
     } else {
       setSelectedNodeID(ID);

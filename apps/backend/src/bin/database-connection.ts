@@ -18,7 +18,6 @@ export default client;
 //     await readCSVFile("../backend/data/L1Nodes.csv")
 //         .then(populateNodeDB)
 //         .catch(console.error);
-//     // console.log("nodes populated");
 //     await readCSVFile("../backend/data/L1Edges.csv")
 //         .then(populateEdgeDB)
 //         .catch(console.error);
