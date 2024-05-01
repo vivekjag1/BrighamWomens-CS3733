@@ -10,9 +10,9 @@ const theme = createTheme({
     primary: {
       main: "#012D5A",
     },
-      action: {
-          selected: '#ffab40', // Change this to your desired selected color
-      },
+    action: {
+      selected: "#ffab40", // Change this to your desired selected color
+    },
   },
 });
 
