@@ -78,6 +78,7 @@ function NavBar() {
       setIsHidingNavBarInfo(false);
     } else {
       setIsCollapsed(true);
+      setShowProfileMenu(false);
       setTimeout(() => {
         setIsHidingNavBarInfo(true);
       }, 350);
@@ -166,7 +167,7 @@ function NavBar() {
 
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
-      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem] items-center ">
+      <div className="relative mb-[1rem] mr-[1.5rem] ml-[1rem] items-center ">
         {/*<AnimatePresence>*/}
         {showProfileMenu && (
           <>
@@ -179,7 +180,7 @@ function NavBar() {
             <div
               className={` cursor-pointer  ${showProfileMenu ? " scale-1" : "scale-0"}`}
             >
-              {!isHidingNavBarInfo && (
+              {!isCollapsed && (
                 <Card
                   className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
                   style={{ color: "#F6BD39" }}
@@ -198,7 +199,7 @@ function NavBar() {
                         textAlign: "center",
                         fontSize: "2xl",
                         width: "full",
-                        padding: "0.5",
+                        //padding: "0.5",
                         backgroundColor: "red",
                         fontFamily: "poppins, sans-serif",
                       }}
@@ -215,7 +216,7 @@ function NavBar() {
         {/*</AnimatePresence>*/}
         <div>
           <div
-            className="flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
+            className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
             onClick={toggleProfileView}
           >
             {isAuthenticated ? (
