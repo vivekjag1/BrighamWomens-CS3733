@@ -572,13 +572,13 @@ export default function Profile() {
                   </div>
 
                   <div className="flex justify-center w-full mt-6">
-                    <ButtonRed
+                    <ButtonBlue
                       onClick={handleLogout}
                       endIcon={<LogoutIcon />}
                       style={{ width: "13rem" }}
                     >
                       Log Out
-                    </ButtonRed>
+                    </ButtonBlue>
                   </div>
                   <div className="flex justify-center w-full mt-6">
                     <ButtonRed

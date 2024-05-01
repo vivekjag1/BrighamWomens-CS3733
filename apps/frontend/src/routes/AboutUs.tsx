@@ -36,26 +36,25 @@ const employees = [
     name: "Andy Troung ",
     role: "Assistant Lead",
     imageSrc: andyImage,
-    quote: '"Yes Queen" - Andy',
+    quote: '"Yes Queen"',
   },
   {
     name: "Vivek Jagadeesh ",
     role: "Assistant Lead",
     imageSrc: vivekImage,
-    quote:
-      '"Talent sets the floor, character sets the ceiling"\n - Bill Belichick',
+    quote: '"Talent sets the floor, character sets the ceiling"',
   },
   {
     name: "Mohamed Adem Djadid ",
     role: "Scrum Master",
     imageSrc: ademImage,
-    quote: "Bob the builder can we fix it?",
+    quote: '"Bob the builder can we fix it?"',
   },
   {
     name: "Sulaiman Moukheiber  ",
     role: "Product Owner",
     imageSrc: suliImage,
-    quote: "Hello! It's me!",
+    quote: '"Love"',
   },
   {
     name: "Francesco Di Mise ",
@@ -63,13 +62,13 @@ const employees = [
     imageSrc: frankyImage,
     quote:
       "\"It is said that your life flashes before your eyes just before you die. That is true, it's called Life.”\n" +
-      "― Terry Pratchett, The Last Continent",
+      "",
   },
   {
     name: "Colin Mascucci ",
     role: "Frontend",
     imageSrc: colinImage,
-    quote: "yeet",
+    quote: '"I didn\'t fail the test. I just found 100 ways to do it wrong."',
   },
   {
     name: "Griffin Brown",
@@ -87,13 +86,13 @@ const employees = [
     name: "Joseph Cardarelli",
     role: "Team Coach",
     imageSrc: josephImage,
-    quote: "yeet",
+    quote: "The Bestest",
   },
   {
     name: "Wilson Wong",
     role: "Professor",
     imageSrc: wongImage,
-    quote: "yeet",
+    quote: "Prof. Wong",
   },
 ];
 
