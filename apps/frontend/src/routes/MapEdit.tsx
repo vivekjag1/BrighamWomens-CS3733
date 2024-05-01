@@ -166,6 +166,7 @@ function MapEdit() {
 
   // Update/create node in nodes useState
   function updateNode(node: Node) {
+    console.log("I am being updated");
     const newNodes: Map<string, Node> = new Map(nodes);
     newNodes.set(node.nodeID, node);
     setNodes(newNodes);
@@ -413,6 +414,7 @@ function MapEdit() {
           onNodeClick={handleNodeClick}
           onMapClick={handleMapClick}
           onEdgeClick={handleEdgeClick}
+          updateNode={updateNodeField}
         />
       </MapContext.Provider>
       <div className="absolute left-[1%] top-[1%]">

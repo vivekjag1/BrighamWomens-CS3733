@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Card, CardContent, TextField, styled } from "@mui/material";
+import { Button, Card, CardContent, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
@@ -20,6 +20,8 @@ import { ServiceReqGetterProfile } from "../components/ServiceReqGetterProfile.t
 import ElementHighlights from "../components/ElementHighlights.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+import CustomTextField from "../components/CustomTextField.tsx";
+
 const CustomCardContent = styled(CardContent)({
   display: "flex",
   "&:last-child": {
@@ -42,7 +44,10 @@ export default function Profile() {
   const [passwordModal, setPasswordModal] = React.useState(false);
   const [deleteAccountModal, setDeleteAccountModal] = React.useState(false);
   // const setOpen = () => setModelOpen(true);
-  const setClosed = () => setPasswordModal(false);
+  const setClosed = async () => {
+    setPasswordModal(false);
+    setDeleteAccountModal(false);
+  };
   const { getAccessTokenSilently, user } = useAuth0();
   const [employee, setEmployee] = React.useState<Employee>();
   const handleChangePassword = async () => {
@@ -72,8 +77,17 @@ export default function Profile() {
       userID: user!.sub,
       userName: user!.name,
     };
-    await MakeProtectedPostRequest(APIEndpoints.changePassword, tempPW, token);
-    showToast("Password Changed!", "success");
+
+    if (password == confirmPassword) {
+      await MakeProtectedPostRequest(
+        APIEndpoints.changePassword,
+        tempPW,
+        token,
+      );
+      showToast("Password Changed!", "success");
+    } else {
+      showToast("Passwords Don't Match!", "error");
+    }
   };
 
   // const getAllServiceReqs = async () => {
@@ -120,6 +134,7 @@ export default function Profile() {
   // console.log(emp.position);
   console.log(employee);
   const [password, setPassword] = React.useState<string>("");
+  const [confirmPassword, setConfirmPassword] = React.useState<string>("");
 
   const [requestData, setRequestData] = useState<ServiceRequest[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -324,12 +339,23 @@ export default function Profile() {
             <div className="col-span-2 flex justify-center items-end px-5">
               <div className="   flex flex-col col-span-2j ustify-center items-center ">
                 <div className=" mb-4   flex flex-col col-span-2 justify-center items-center  ">
-                  <TextField
-                    label="password"
+                  <CustomTextField
+                    label="Password"
                     variant="outlined"
-                    sx={{ width: "17rem" }}
+                    sx={{
+                      width: "17rem",
+                    }}
                     margin="normal"
                     onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <CustomTextField
+                    label="Confirm Password"
+                    variant="outlined"
+                    sx={{
+                      width: "17rem",
+                    }}
+                    margin="normal"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
                 <div className="col-span-2 flex justify-between items-end px-5">
@@ -458,22 +484,24 @@ export default function Profile() {
                   </p>
                   {employee && (
                     <>
-                      <label className="text-l text-center">
-                        {" "}
-                        Account type: {employee.role}
+                      <label className=" text-l text-center">
+                        {user!.email}
                       </label>
+                      <br />
+                      <div className={"px-12 flex flex-col"}>
+                        <label className="text-l " style={{ color: "#012D54" }}>
+                          <b>Position : </b> {employee.position}
+                        </label>
 
-                      <label className="text-l text-center">
-                        Position: {employee.position}
-                      </label>
-                      <label className="text-l text-center">
-                        Last Update: {user!.updated_at}
-                      </label>
+                        <label className="text-l " style={{ color: "#012D54" }}>
+                          <b>Role : </b>
+                          {employee.role}
+                          <br />
+                        </label>
+                      </div>
                     </>
                   )}
-                  <label className=" text-l text-center">
-                    Email: {user!.email}
-                  </label>
+
                   <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
                   </div>
@@ -517,11 +545,11 @@ export default function Profile() {
                 className="shadow-xl drop-shadow m-4"
                 sx={{ borderRadius: "20px" }}
               >
-                <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
+                <div className="w-[50vw] h-[44.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
                     Charts and Graphs
-                    <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px mb-[0rem] mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent>
                     <ElementHighlights
