@@ -6,6 +6,7 @@ import Hero from "./routes/hero/Hero.tsx";
 import MobileDirections from "./routes/MobileDirections.tsx";
 import AboutUs from "./routes/AboutUs.tsx";
 import Credit from "./routes/Credit.tsx";
+import NotFound from "./routes/NotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -13,6 +14,11 @@ function App() {
       path: paths.HERO,
       element: <Hero />,
     },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
+
     {
       path: paths.HOME,
       element: <Layout />,
