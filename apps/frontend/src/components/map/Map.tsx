@@ -85,6 +85,7 @@ function Map(props: mapProps) {
       <ClickableCircle
         x={node.xcoord}
         y={node.ycoord}
+        name={node.shortName}
         id={node.nodeID}
         onClick={() => props.onNodeClick(node.nodeID)}
       />
