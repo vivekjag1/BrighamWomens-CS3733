@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DirectionsCardFloor from "./DirectionsCardFloor";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -26,6 +26,7 @@ function DirectionsCard(props: {
   const [currentFloor, setCurrentFloor] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
   const speechSynth = useRef(window.speechSynthesis);
+
   function TripStats(props: { stats: TripStat[] }) {
     const minsStat = props.stats.find((stat) => stat.unit == StatUnit.Mins);
     const arrivalTime = minsStat ? getArrivalTime(minsStat.value) : "";
@@ -65,6 +66,13 @@ function DirectionsCard(props: {
 
     return `${hours.toString()}:${minutes}`;
   }
+
+  useEffect(() => {
+    speechSynth.current.cancel();
+    setCurrentStep(0);
+    setCurrentFloor(0);
+    setIsPaused(true);
+  }, [directions]);
 
   const handlePauseResume = (event: React.BaseSyntheticEvent) => {
     if (!isCollapsed) {
@@ -159,7 +167,7 @@ function DirectionsCard(props: {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            gap: "10px",
+            gap: "6px",
           }}
         >
           <span onClick={handlePreviousStep} style={{ cursor: "pointer" }}>
@@ -226,6 +234,9 @@ function DirectionsCard(props: {
               key={index}
               floor={directions.floor}
               directions={directions.directions}
+              floorIndex={index}
+              currentFloor={currentFloor}
+              currentStep={currentStep}
             />
           ))}
         </div>
