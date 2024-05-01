@@ -16,10 +16,11 @@ router.get("/", async (req: Request, res: Response) => {
         name: employees[i].name,
         connection: "Username-Password-Authentication",
         email: employees[i].email,
-        password: employees[i].password,
+        password: "Str0ngP@ssw0rd!",
       };
       makeUsers.push(thisUser);
     }
+
     const token = await getManagementToken();
     for (let i = 0; i < makeUsers.length; i++) {
       await axios.post(

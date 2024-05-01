@@ -10,8 +10,8 @@ import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import LocationMarker from "./LocationMarker.tsx";
 import FloorMarkers from "./FloorMarkers.tsx";
 import { useToast } from "../useToast.tsx";
+import { MapStyles } from "../../common/StylingCommon.ts";
 // import {isFirstRun} from "vitest";
-
 interface mapProps {
   activeFloor: number;
   nodes: Node[];
@@ -19,6 +19,7 @@ interface mapProps {
   onNodeClick: (nodeID: string) => void;
   onClick: (x: number) => void;
   updateGlowSequence: (selectedFloor: number) => void;
+  onReset: () => void;
 }
 
 function Map(props: mapProps) {
@@ -42,6 +43,7 @@ function Map(props: mapProps) {
   const { showToast } = useToast();
   if (props.path.length == 0) {
     showToast("There is no path between the two given locations", "warning");
+    props.onReset();
   } else {
     polylines = getPolylines(props.path, props.activeFloor);
 
@@ -73,7 +75,7 @@ function Map(props: mapProps) {
   }
 
   const polylineElements = polylines.map((polyline) => (
-    <DashedPolyline points={polyline} width={8} />
+    <DashedPolyline points={polyline} width={MapStyles.edgeWidth} />
   ));
 
   const nodeElements = nodes.map((node) =>
@@ -83,6 +85,7 @@ function Map(props: mapProps) {
       <ClickableCircle
         x={node.xcoord}
         y={node.ycoord}
+        name={node.shortName}
         id={node.nodeID}
         onClick={() => props.onNodeClick(node.nodeID)}
       />

@@ -1,7 +1,6 @@
 import { Node } from "database";
 
 // Holds functions that may be necessary in the manipulation of Node[]
-
 // Gets the floor number corresponding to the string representation of the floor
 export function getFloorNumber(floor: string): number {
   switch (floor) {
@@ -37,6 +36,7 @@ export function getFloorString(floor: number): string {
       return "N/A";
   }
 }
+
 // Groups nodes along the same segment
 export function getSegments(path: Node[]): Node[][] {
   // Split the array into sub-arrays, where each sub-array holds nodes of the same floor

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import FormControl from "@mui/material/FormControl";
 import NodeDropdown from "../../components/NodeDropdown.tsx";
 import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
@@ -21,6 +18,7 @@ import ButtonRed from "../../components/ButtonRed.tsx";
 import ButtonBlue from "../../components/ButtonBlue.tsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 
 const initialState: RoomReservationType = {
   endTime: dayjs().toISOString(),
@@ -71,7 +69,7 @@ export function RoomForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.roomReservation,
+          APIEndpoints.roomRequest,
           roomReservation,
           token,
         );
@@ -102,9 +100,12 @@ export function RoomForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
         <div>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Reserve a Room
           </h1>
+          <p className="text-center text-sm text-gray-500 pb-5">
+            Made by Vivek, Taeha, and Mohamed
+          </p>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate
@@ -142,58 +143,31 @@ export function RoomForm() {
                 }
               />
 
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
-                  value={startDate}
-                  onChange={(newValue) => {
-                    const isValid = newValue && dayjs(newValue).isValid();
-                    setRoomReservation((currentReservation) => ({
-                      ...currentReservation,
-                      serviceRequest: {
-                        ...currentReservation.serviceRequest,
-                        requestedTime: isValid ? newValue.toISOString() : "",
-                      },
-                    }));
-                  }}
-                  label="Reservation Start Time"
-                  className="bg-gray-50"
-                  sx={{
-                    width: "25rem",
-                    padding: 0,
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      fontFamily: "Poppins, sans-serif",
+              <CustomDatePicker
+                value={startDate}
+                onChange={(newValue) => {
+                  const isValid = newValue && dayjs(newValue).isValid();
+                  setRoomReservation((currentReservation) => ({
+                    ...currentReservation,
+                    serviceRequest: {
+                      ...currentReservation.serviceRequest,
+                      requestedTime: isValid ? newValue.toISOString() : "",
                     },
-                    "& .MuiOutlinedInput-root": {
-                      fontFamily: "Poppins, sans-serif",
-                    },
-                  }}
-                />
-                <DateTimePicker
-                  value={endDate}
-                  onChange={(newValue) => {
-                    const isValid = newValue && dayjs(newValue).isValid();
-                    setRoomReservation((currentReservation) => ({
-                      ...currentReservation,
-                      serviceRequest: {
-                        ...currentReservation.serviceRequest,
-                        endTime: isValid ? newValue.toISOString() : "",
-                      },
-                    }));
-                  }}
-                  label="Reservation End Time"
-                  className="bg-gray-50"
-                  sx={{
-                    width: "25rem",
-                    padding: 0,
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      fontFamily: "Poppins, sans-serif",
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      fontFamily: "Poppins, sans-serif",
-                    },
-                  }}
-                />
-              </LocalizationProvider>
+                  }));
+                }}
+              />
+
+              <CustomDatePicker
+                value={endDate}
+                onChange={(newValue) => {
+                  const isValid = newValue && dayjs(newValue).isValid();
+                  setRoomReservation((currentReservation) => ({
+                    ...currentReservation,
+                    endTime: isValid ? newValue.toISOString() : "",
+                  }));
+                }}
+              />
+
               <TextField
                 value={roomReservation.reservationReason}
                 onChange={(e) =>
@@ -329,9 +303,7 @@ export function RoomForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center">
-                <p>Made by Vivek, Taeha, and Mohamed</p>
-              </div>
+              <div className="text-center"></div>
             </form>
           </div>
         </div>

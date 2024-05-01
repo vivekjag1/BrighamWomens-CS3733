@@ -15,5 +15,4 @@ const syncCommands = [
 
 // Execute the sync commands using the command runner
 executeCommands(syncCommands, () => {
-  console.log('Sync process completed.');
 });

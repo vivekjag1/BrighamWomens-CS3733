@@ -7,56 +7,92 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-// import GroupsIcon from "@mui/icons-material/Groups";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
-import { useIdleTimer } from "react-idle-timer";
-import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
+import { checkAuth } from "../checkAdminStatus.ts";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
+import Button from "@mui/material/Button";
+import LoginIcon from "@mui/icons-material/Login";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+import { ButtonStyling } from "../common/StylingCommon.ts";
+import { AnimatePresence, motion } from "framer-motion";
+
+const definedEmployees = [
+  { name: "dgorbunov", imageSrc: danielImage },
+  { name: "mbrown", imageSrc: mattImage },
+  { name: "atruong", imageSrc: andyImage },
+  { name: "vjagadeesh", imageSrc: vivekImage },
+  { name: "mdjadid", imageSrc: ademImage },
+  { name: "smoukheiber", imageSrc: suliImage },
+  { name: "fmise", imageSrc: frankyImage },
+  { name: "cmasucci", imageSrc: colinImage },
+  { name: "gbrown", imageSrc: griffinImage },
+  { name: "tsong", imageSrc: taehaImage },
+  { name: "default", imageSrc: defaultPhoto },
+];
 
 function NavBar() {
-  const { isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
+  const { user } = useAuth0();
   const [isCollapsed, setIsCollapsed] = useState(false);
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
 
-  const [remaining, setRemaining] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [pictureURL, setPictureURL] = React.useState<string>("");
 
-  const { showToast } = useToast();
-
-  const onIdle = () => {
+  const handleLogout = () => {
     logout({
       logoutParams: {
         returnTo: window.location.origin,
       },
     });
   };
-
-  const { getRemainingTime } = useIdleTimer({
-    onIdle,
-    timeout: 600_000,
-    throttle: 500,
-  });
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRemaining(Math.ceil(getRemainingTime() / 1000));
-    }, 500);
-    if (remaining <= 30 && remaining != 0) {
-      showToast(
-        "You will be logged out in " + remaining + " seconds due to inactivity",
-        "warning",
-      );
-    }
+    const fetchProfilePicture = async () => {
+      try {
+        if (user?.name?.split(" ")[0] == "Admin") {
+          setPictureURL(defaultPhoto);
+          return;
+        }
+        const token = await getAccessTokenSilently();
+        const userData = {
+          userName: user!.name,
+        };
+        const fetchUser = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
 
-    return () => {
-      clearInterval(interval);
+        const empName = definedEmployees.find(
+          (employee) => employee.name.trim() === fetchUser.data.userName,
+        );
+
+        setPictureURL(empName!.imageSrc);
+      } catch (error) {
+        // console.log(error);
+      }
     };
-  });
+    fetchProfilePicture();
+  }, [getAccessTokenSilently, user]);
 
   const handleSetIsCollapsed = () => {
     if (isCollapsed) {
@@ -64,6 +100,7 @@ function NavBar() {
       setIsHidingNavBarInfo(false);
     } else {
       setIsCollapsed(true);
+      setShowProfileMenu(false);
       setTimeout(() => {
         setIsHidingNavBarInfo(true);
       }, 350);
@@ -71,21 +108,27 @@ function NavBar() {
   };
 
   const { logout } = useAuth0();
+  const location = useLocation();
+  const [activePage, setActivePage] = useState(location.pathname);
 
-  const [activePage, setActivePage] = useState(useLocation().pathname);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  function toggleProfileView() {
+    if (!isCollapsed) {
+      setShowProfileMenu(!showProfileMenu);
+    }
+  }
 
-  const handleLogout = () => {
-    // logout({returnTo: window.location.origin} );
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
+  useEffect(() => {
+    const checkRole = async () => {
+      const token = await getAccessTokenSilently();
+      const result = await checkAuth(token, "mapdata");
+      setStatus(result!);
+    };
+    checkRole().then();
+  }, [getAccessTokenSilently, activePage]);
 
   interface NavbarItemProps {
     to: string;
-    activePage: string;
     setActivePage: (page: string) => void;
     Icon: React.ElementType;
     label: string;
@@ -96,7 +139,6 @@ function NavBar() {
 
   const NavbarItem: React.FC<NavbarItemProps> = ({
     to,
-    activePage,
     setActivePage,
     Icon,
     label,
@@ -137,13 +179,78 @@ function NavBar() {
             </h2>
           </div>
           <span
-            className={`flex child absolute bottom-[0.5rem] right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${activePage === to ? "scale-x-1" : "scale-x-0"}`}
+            className={`flex child absolute bottom-[0.5rem] right-0 w-full h-0.5 bg-highlight transform hover:scale-x-1 transition-transform duration-300 ${location.pathname == to ? "scale-x-1" : "scale-x-0"}`}
             style={{ transformOrigin: "center" }}
           ></span>
         </Link>
       </div>
     );
   };
+
+  function UserProfileItem(props: { collapsed: boolean }) {
+    return (
+      <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
+        <AnimatePresence>
+          {showProfileMenu && !isCollapsed && (
+            <motion.div className="absolute bottom-[3rem] left-[50%] translate-x-[-50%] mb-[1rem]">
+              <motion.div
+                className="flex flex-col gap-2 bg-[#eaeaea] p-3 rounded-xl"
+                key="profileOption"
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1, transformOrigin: "bottom" }}
+                exit={{ scaleY: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                <Link to={paths.PROFILE}>
+                  <Button
+                    sx={profileButtonStyles}
+                    onClick={toggleProfileView}
+                    startIcon={<PersonIcon />}
+                  >
+                    Profile
+                  </Button>
+                </Link>
+                <Button
+                  sx={logoutButtonStyles}
+                  onClick={handleLogout}
+                  startIcon={<LogoutIcon />}
+                >
+                  Log Out
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div>
+          <div
+            className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
+            onClick={toggleProfileView}
+          >
+            {isAuthenticated ? (
+              <div className="flex flex-row items-center ">
+                <img
+                  className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
+                  src={pictureURL}
+                  alt="user profile picture"
+                />
+                <h2
+                  style={{
+                    opacity: props.collapsed ? 0 : 100,
+                    fontWeight: 500,
+                  }}
+                  className="text-lg whitespace-nowrap z-[100]  "
+                >
+                  {user?.name?.split(" ")[0]}
+                </h2>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="z-10 bg-offwhite">
@@ -156,7 +263,7 @@ function NavBar() {
       >
         {/* Header image */}
         <div className="flex flex-col justify-center overflow-hidden">
-          <Link to={paths.HOME} onClick={() => setActivePage(paths.HOME)}>
+          <Link to={paths.HERO} onClick={() => setActivePage(paths.HERO)}>
             <div className="flex mt-[2.5rem] ml-[0.93rem] text-white">
               <img className="h-[57px] pr-[0.7rem]" src={logo} alt="Logo" />
               <h2
@@ -169,7 +276,7 @@ function NavBar() {
                     : "text-2xl whitespace-nowrap self-center"
                 }
               >
-                Kiosk
+                Kiosk Menu
               </h2>
               <span>&nbsp;</span> {/* Add space */}
               <h2
@@ -181,9 +288,7 @@ function NavBar() {
                     ? "hidden"
                     : "text-2xl whitespace-nowrap self-center"
                 }
-              >
-                Menu
-              </h2>
+              ></h2>
             </div>
           </Link>
         </div>
@@ -191,88 +296,75 @@ function NavBar() {
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
             to={paths.HOME}
-            activePage={activePage}
             setActivePage={setActivePage}
             Icon={MapIcon}
             label="Map"
             collapsed={isHidingNavBarInfo}
           />
-          <NavbarItem
-            to={paths.MAP_EDITOR}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={EditLocationAltIcon}
-            label="Map"
-            labelLight="Editor"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.MAP_DATA}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={AddLocationAltIcon}
-            label="Map"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.SERVICES}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={VolunteerActivismIcon}
-            label="Services"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.SERVICE_LOG}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={TocIcon}
-            label="Service"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
-          <NavbarItem
-            to={paths.EMPLOYEE_LOG}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            Icon={AssignmentIndIcon}
-            label="Employee"
-            labelLight="Data"
-            collapsed={isHidingNavBarInfo}
-          />
-          {/*<NavbarItem*/}
-          {/*  to={paths.ABOUT_US}*/}
-          {/*  activePage={activePage}*/}
-          {/*  setActivePage={setActivePage}*/}
-          {/*  Icon={GroupsIcon}*/}
-          {/*  label="About"*/}
-          {/*  labelLight="Us"*/}
-          {/*  collapsed={isHidingNavBarInfo}*/}
-          {/*/>*/}
+          {isAuthenticated && (
+            <>
+              <NavbarItem
+                to={paths.MAP_EDITOR}
+                setActivePage={setActivePage}
+                Icon={EditLocationAltIcon}
+                label="Map Editor"
+                labelLight=""
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.MAP_DATA}
+                setActivePage={setActivePage}
+                Icon={AddLocationAltIcon}
+                label="Map Data"
+                labelLight=""
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.SERVICES}
+                setActivePage={setActivePage}
+                Icon={VolunteerActivismIcon}
+                label="Services"
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.SERVICE_LOG}
+                setActivePage={setActivePage}
+                Icon={TocIcon}
+                label="Service Log"
+                labelLight=""
+                collapsed={isHidingNavBarInfo}
+              />
+              <NavbarItem
+                to={paths.EMPLOYEE_LOG}
+                setActivePage={setActivePage}
+                Icon={AssignmentIndIcon}
+                label="Employee Log"
+                labelLight=""
+                collapsed={isHidingNavBarInfo}
+              />
+            </>
+          )}
         </div>
 
         {/* Sign out */}
         {isAuthenticated ? (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
-              <NavbarItem
-                to={paths.HERO}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                Icon={LogoutIcon}
-                label={"Sign out"}
-                collapsed={isHidingNavBarInfo}
-                callback={handleLogout}
-              />
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
             </div>
           </div>
         ) : (
           <div className="relative flex flex-col flex-grow justify-end">
             <div className="flex flex-col">
+              <UserProfileItem collapsed={isHidingNavBarInfo} />
+            </div>
+          </div>
+        )}
+        {!isAuthenticated ? (
+          <div className="relative flex flex-col flex-grow justify-end">
+            <div className="flex flex-col">
               <NavbarItem
                 to={paths.MAP_DATA}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={LoginIcon}
                 label={"Sign in"}
@@ -280,6 +372,8 @@ function NavBar() {
               />
             </div>
           </div>
+        ) : (
+          <></>
         )}
 
         {/* Collapse Button */}
@@ -294,5 +388,27 @@ function NavBar() {
     </div>
   );
 }
+
+const profileButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.blueButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.blueButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
+
+const logoutButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.redButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.redButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
 
 export default NavBar;

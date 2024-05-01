@@ -65,7 +65,7 @@ export function GiftForm(): JSX.Element {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.giftPostRequests,
+          APIEndpoints.giftRequest,
           giftDeliveryRequest,
           token,
         );
@@ -99,9 +99,12 @@ export function GiftForm(): JSX.Element {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Gift Delivery"}>
         <div>
-          <h1 className="text-center font-bold text-3xl text-secondary pb-4 pt-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Gift Delivery Request
           </h1>
+          <p className="text-center text-sm text-gray-500 pb-5">
+            Made by Matthew and Sulaiman
+          </p>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate
@@ -289,9 +292,7 @@ export function GiftForm(): JSX.Element {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Matthew and Sulaiman</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

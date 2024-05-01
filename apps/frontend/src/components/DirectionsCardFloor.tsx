@@ -1,5 +1,5 @@
 import CollapseImg from "../../assets/collapse-white.svg";
-import { useState } from "react";
+// import { useState } from "react";
 
 import StraightRoundedIcon from "@mui/icons-material/StraightRounded";
 import TurnLeftRoundedIcon from "@mui/icons-material/TurnLeftRounded";
@@ -19,13 +19,36 @@ import {
   Directions,
   DirectionType,
 } from "common/src/Path.ts";
+import { useEffect, useState } from "react";
 
-function DirectionsCardFloor(props: Directions) {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+type DirectionsCardFloorProps = Directions & {
+  floorIndex: number;
+  currentFloor: number;
+  currentStep: number;
+};
 
-  function DirectionStep(props: DirectionMessage) {
+function DirectionsCardFloor({
+  floor,
+  directions,
+  floorIndex,
+  currentFloor,
+  currentStep,
+}: DirectionsCardFloorProps) {
+  const [collapsed, setCollapsed] = useState<boolean>(
+    currentFloor !== floorIndex,
+  );
+
+  function toggleCollapse() {
+    setCollapsed(!collapsed);
+  }
+
+  useEffect(() => {
+    setCollapsed(currentFloor !== floorIndex);
+  }, [currentStep, currentFloor, floorIndex]);
+
+  function DirectionStep(direction: DirectionMessage, index: number) {
     let icon;
-    switch (props.type) {
+    switch (direction.type) {
       case DirectionType.Start:
         icon = <MyLocationIcon />;
         break;
@@ -62,17 +85,26 @@ function DirectionsCardFloor(props: Directions) {
       default:
         return null;
     }
+
+    const stepClass =
+      index === currentStep && floorIndex === currentFloor
+        ? "bg-yellow-100"
+        : "";
+
     return (
-      <div className="flex flex-row bg-white p-2 gap-2 items-center text-wrap">
+      <div
+        className={`flex flex-row bg-white p-2 gap-2 items-center text-wrap`}
+      >
         {icon}
         <h2
           className={
-            props.type == DirectionType.Start || props.type == DirectionType.End
-              ? "font-medium text-sm"
-              : "font-light text-sm"
+            direction.type === DirectionType.Start ||
+            direction.type === DirectionType.End
+              ? `font-medium text-sm ${stepClass}`
+              : `font-light text-sm ${stepClass}`
           }
         >
-          {props.msg}
+          {direction.msg}
         </h2>
       </div>
     );
@@ -82,17 +114,16 @@ function DirectionsCardFloor(props: Directions) {
     <div className={`shadow-md rounded-2xl w-[98%] overflow-hidden`}>
       <div
         className={`relative bg-white rounded-t-2xl flex flex-row p-3 w-full`}
-        onClick={() => setCollapsed(!collapsed)}
         style={{ cursor: "pointer" }}
+        onClick={toggleCollapse}
       >
-        <h2 className={"font-normal"}>Floor {props.floor} </h2>
+        <h2 className={"font-normal"}>Floor {floor}</h2>
         <img
           src={CollapseImg}
           className={`absolute right-5 cursor-pointer w-7 duration-[700ms] ${collapsed ? "rotate-90" : "-rotate-90"}`}
         />
       </div>
       <motion.div
-        id="container"
         animate={{
           height: collapsed ? 0 : "auto",
           transition: {
@@ -104,7 +135,7 @@ function DirectionsCardFloor(props: Directions) {
         }}
         style={{ overflow: "hidden" }}
       >
-        {props.directions.map(DirectionStep)}
+        {directions.map((dir, index) => DirectionStep(dir, index))}
       </motion.div>
     </div>
   );

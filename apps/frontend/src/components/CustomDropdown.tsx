@@ -11,6 +11,7 @@ interface CustomDropdownProps {
   sx?: SxProps<Theme>;
   className?: string;
   disabled?: boolean;
+  freeSolo?: boolean;
 }
 
 const CustomDropdown = ({

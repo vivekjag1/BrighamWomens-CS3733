@@ -23,10 +23,7 @@ function MobileDirections() {
         queryParams[pair[0]] = pair[1];
       }
 
-      const url = new URL(
-        APIEndpoints.navigationRequest,
-        window.location.origin,
-      ); // url to send request to
+      const url = new URL(APIEndpoints.navigation, window.location.origin); // url to send request to
       url.search = new URLSearchParams(queryParams).toString();
 
       // Send request to backend

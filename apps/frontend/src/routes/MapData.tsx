@@ -22,12 +22,14 @@ import {
   TablePagination,
   CardContent,
   Card,
-  Modal,
   Chip,
 } from "@mui/material";
 import axios from "axios";
 import NodeFilterDropdown from "../components/NodeFilterDropdown.tsx";
 import EdgeFilterDropdown from "../components/EdgeFilterDropdown.tsx";
+// import { AnimatePresence, motion } from "framer-motion";
+import CustomModal from "../components/CustomModal.tsx";
+import CloseIcon from "@mui/icons-material/Close";
 
 const NodeTable = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -132,6 +134,34 @@ const NodeTable = () => {
     showToast("Map data downloaded!", "success");
   }
 
+  const handleDrop = (event: React.DragEvent) => {
+    // console.log(event);
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+
+      const fileName = file.name.toLowerCase();
+      if (fileName.toLowerCase().includes("node")) {
+        setNodeFile(file);
+      } else if (fileName.toLowerCase().includes("edge")) {
+        setEdgeFile(file);
+      } else {
+        setFileModal(false);
+        showToast(
+          "File does not match 'node' or 'edge' naming conventions",
+          "error",
+        );
+      }
+    }
+  };
+
+  const handleDragOver = (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   const fileChange = (event: React.BaseSyntheticEvent) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -168,6 +198,8 @@ const NodeTable = () => {
           showToast("File(s) failed validation!", "error");
         } else {
           showToast("Map data uploaded!", "success");
+          setEdgeFile(null);
+          setNodeFile(null);
           setDataUpdated(true);
         }
       } else {
@@ -225,7 +257,7 @@ const NodeTable = () => {
         );
       }
       if (filterByEdgeType.length) {
-        console.log(filterByEdgeType);
+        // console.log(filterByEdgeType);
         data = data.filter((item) =>
           filterByEdgeType.some((filterType) =>
             item.edgeID.includes(filterType),
@@ -269,11 +301,28 @@ const NodeTable = () => {
     );
   }
 
+  // const modalVariants = {
+  //     hidden: {
+  //         opacity: 0,
+  //         scale: 0.75
+  //     },
+  //     visible: {
+  //         opacity: 1,
+  //         scale: 1,
+  //         transition: {
+  //             duration: 0.5,
+  //             type: "spring",
+  //             damping: 25,
+  //             stiffness: 500
+  //         }
+  //     }
+  // };
+
   const getButtonClasses = (tabName: string): string => {
     return `inline-block w-full p-2 text-md hover:underline ${
       activeTab === tabName
-        ? "text-white border-[#012D5A] border-2 bg-secondary"
-        : "border-white border-2"
+        ? "text-secondary border-[#012D5A] border-b-[.15rem]"
+        : "border-white border-b-2"
     } focus:outline-none`;
   };
 
@@ -355,7 +404,7 @@ const NodeTable = () => {
                     <input
                       type="text"
                       id="table-search"
-                      className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-[20rem] bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                      className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-[20rem] bg-gray-50 hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                       placeholder="Search for Map Data"
                       value={filterBySearch}
                       onChange={(e) => setFilterBySearch(e.target.value)}
@@ -646,22 +695,12 @@ const NodeTable = () => {
             </div>
           </div>
         </div>
-        <Modal
-          open={fileModal}
-          onClose={() => setFileModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+        <CustomModal isOpen={fileModal} onClose={() => setFileModal(false)}>
           <Card
             sx={{
               borderRadius: 2,
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
               "&:focus": {
                 outline: "none",
-                border: "none",
                 boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
               },
             }}
@@ -673,12 +712,7 @@ const NodeTable = () => {
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                 onClick={() => setFileModal(false)}
               >
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                    fill="currentColor"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
               <h1
                 className={`text-2xl font-semibold mb-6 text-secondary text-center`}
@@ -690,6 +724,8 @@ const NodeTable = () => {
                   <label
                     className="flex flex-col items-center justify-center w-72 h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
                     htmlFor="importFile"
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
                   >
                     <div className="flex flex-col items-center justify-center mt-5">
                       <svg
@@ -720,6 +756,10 @@ const NodeTable = () => {
                             label={nodeFile.name}
                             onDelete={() => setNodeFile(null)}
                             className="self-center mb-2"
+                            style={{
+                              backgroundColor: "#d1d5db",
+                              color: "black",
+                            }}
                           />
                         ) : (
                           <div className="h-8"></div>
@@ -729,6 +769,10 @@ const NodeTable = () => {
                             label={edgeFile.name}
                             onDelete={() => setEdgeFile(null)}
                             className="self-center"
+                            style={{
+                              backgroundColor: "#d1d5db",
+                              color: "black",
+                            }}
                           />
                         ) : (
                           <div className="h-8"></div>
@@ -765,7 +809,7 @@ const NodeTable = () => {
               </div>
             </CardContent>
           </Card>
-        </Modal>
+        </CustomModal>
       </div>
     </div>
   );

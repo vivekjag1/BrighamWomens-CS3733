@@ -4,39 +4,44 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { MapStyling } from "../../common/StylingCommon.ts";
+import { MapEditStyles } from "../../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
 import ZoomControls from "../map/ZoomControls.tsx";
+import Tooltip from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
+import { useToast } from "../useToast.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
   startY: number;
   endX: number;
   endY: number;
+  edgeID: string;
 };
 
 const MapEditImage = (props: {
   startEdgeNodeID: string | undefined;
   activeFloor: number;
   onNodeClick: (nodeID: string) => void;
+  onEdgeClick: (edgeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
+  updateNode: (field: keyof Node, value: string | number) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
-  const tempNodes = useContext(MapContext).nodes;
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
+
+  // const selectedEdgeID = useContext(MapContext).selectedEdgeID;
+  const setSelectedEdgeID = useContext(MapContext).setSelectedEdgeID;
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  //const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  //console.log(tempNodes);
-  // const [nodeColors, setNodeColors] = useState<Map<string, string>>(new Map());
-  // const [nodeRadii, setNodeRadii] = useState(new Map());
-  // eslint-disable-next-line prefer-const
-  let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
+
+  const nodes = useContext(MapContext).nodes;
+  // const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
   const [draggablePosition, setDraggablePosition] = useState({
     x: 0,
@@ -45,15 +50,14 @@ const MapEditImage = (props: {
     offset: { x: 0, y: 0 },
   });
 
-  useEffect(() => {
-    setNodes(tempNodes);
-  }, [tempNodes]);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const tempCoords: EdgeCoordinates[] = [];
-    for (let i = 0; i < edges.length; i++) {
-      const startNode = nodes.get(edges[i].startNodeID);
-      const endNode = nodes.get(edges[i].endNodeID);
+
+    for (const edge of edges.values()) {
+      const startNode = nodes.get(edge.startNodeID);
+      const endNode = nodes.get(edge.endNodeID);
 
       if (startNode && endNode) {
         tempCoords.push({
@@ -61,6 +65,7 @@ const MapEditImage = (props: {
           startY: startNode.ycoord,
           endX: endNode.xcoord,
           endY: endNode.ycoord,
+          edgeID: edge.edgeID,
         });
       }
     }
@@ -104,66 +109,85 @@ const MapEditImage = (props: {
       setFlickeringNode(nodeID);
     }
   }
-  // function handleMouseEnter(nodeID: string) {
-  //   setNodeRadii((prevRadii) =>
-  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius * 1.8),
-  //   );
-  //   setNodeColors((prevColors) => new Map(prevColors).set(nodeID, "red"));
-  // }
-  //
-  // function handleMouseLeave(nodeID: string) {
-  //   setNodeRadii((prevRadii) =>
-  //     new Map(prevRadii).set(nodeID, MapStyling.nodeRadius),
-  //   );
-  //   setNodeColors((prevColors) =>
-  //     new Map(prevColors).set(nodeID, MapStyling.nodeColor),
-  //   ); // Reset color on mouse leave
-  // }
+
+  function handleEdgeClick(
+    event: React.MouseEvent<SVGLineElement>,
+    edgeID: string,
+  ) {
+    event.stopPropagation();
+    props.onEdgeClick(edgeID);
+    setSelectedEdgeID(edgeID);
+    //now need to "derender the edge"
+  }
+
   function handlePointerDown(
-    e: React.PointerEvent<SVGCircleElement>,
-    nodeID: string,
+    e:
+      | React.PointerEvent<SVGCircleElement>
+      | React.PointerEvent<SVGLineElement>,
+    ID: string,
   ) {
     const el = e.currentTarget;
     const bbox = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - bbox.left;
     const yOffset = e.clientY - bbox.top;
+    if (ID.includes("_")) {
+      //handle edge logic in here
+      setSelectedEdgeID(ID);
+    } else {
+      setSelectedNodeID(ID);
+      setDraggablePosition({
+        ...draggablePosition,
+        x: nodes.get(ID)!.xcoord,
+        y: nodes.get(ID)!.ycoord,
+        active: true,
+        offset: {
+          x: xOffset,
+          y: yOffset,
+        },
+      });
+    }
 
-    setDraggablePosition({
-      ...draggablePosition,
-      x: nodes.get(nodeID)!.xcoord,
-      y: nodes.get(nodeID)!.ycoord,
-      active: true,
-      offset: {
-        x: xOffset,
-        y: yOffset,
-      },
-    });
     el.setPointerCapture(e.pointerId);
   }
+
+  // Update/create node in nodes useState
+  // function updateNode(nodeID: string, node: Node) {
+  //   const newNodes: Map<string, Node> = new Map(nodes);
+  //   newNodes.set(node.nodeID, node);
+  //   setNodes(newNodes);
+  // }
 
   function handlePointerMove(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
   ) {
     const bbox = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - bbox.left;
-    const y = e.clientY - bbox.top;
+    const mouseX = e.clientX - bbox.left;
+    const mouseY = e.clientY - bbox.top;
+
     if (draggablePosition.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
+      if (updatedNode.nodeType == "ELEV" || updatedNode.nodeType == "STAI") {
+        showToast("This node cannot be modified!", "warning");
+        return;
+      }
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - draggablePosition.offset.x),
+        updatedNode.xcoord + (mouseX - draggablePosition.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - draggablePosition.offset.y),
+        updatedNode.ycoord + (mouseY - draggablePosition.offset.y),
       );
-      setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
+
+      props.updateNode("xcoord", updatedNode.xcoord);
+      props.updateNode("ycoord", updatedNode.ycoord);
     }
   }
 
   return (
     //onClick={props.onMapClick}
     <div
-      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+      className={`z-0 relative ${selectedAction.toString() == "CreateEdge" ? "cursor-copy" : ""}${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}
+      `}
     >
       {/*  White Fade */}
       <div
@@ -217,27 +241,45 @@ const MapEditImage = (props: {
                   x2={edge.endX}
                   y1={edge.startY}
                   y2={edge.endY}
-                  stroke={MapStyling.edgeColor}
-                  strokeWidth={MapStyling.edgeWidth}
+                  stroke={MapEditStyles.edgeColor}
+                  strokeWidth={MapEditStyles.edgeWidth}
+                  onClick={(e) => handleEdgeClick(e, edge.edgeID)}
+                  onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
+                  style={{
+                    cursor: `${selectedAction.toString() == "DeleteNode" ? "pointer" : ""}`,
+                  }}
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (
-                <circle
-                  key={node.nodeID}
-                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                  r={MapStyling.nodeRadius}
-                  cx={node.xcoord}
-                  cy={node.ycoord}
-                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                  fill={
-                    selectedNodeID == node.nodeID
-                      ? MapStyling.edgeColor
-                      : MapStyling.nodeColor
-                  }
-                  onClick={(e) => nodeClicked(e, node.nodeID)}
-                  style={{ cursor: "pointer" }}
-                />
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={node.shortName}
+                  placement="bottom"
+                  arrow
+                >
+                  <circle
+                    key={node.nodeID}
+                    className={`node ${selectedNodeID === node.nodeID ? "animate-pulse" : ""}`}
+                    r={
+                      node.nodeType == "HALL"
+                        ? MapEditStyles.hallRadius
+                        : MapEditStyles.nodeRadius
+                    }
+                    cx={node.xcoord}
+                    cy={node.ycoord}
+                    onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                    onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                    fill={
+                      selectedNodeID == node.nodeID
+                        ? MapEditStyles.nodeSelectedColor
+                        : node.nodeType == "HALL"
+                          ? MapEditStyles.hallColor
+                          : MapEditStyles.nodeColor
+                    }
+                    onClick={(e) => nodeClicked(e, node.nodeID)}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
               ))}
               //This is rendering the line between the cursor and startNode
               {props.startEdgeNodeID && (
@@ -248,6 +290,7 @@ const MapEditImage = (props: {
                   y2={draggablePosition.y}
                   stroke="red"
                   strokeWidth="2"
+                  style={{ cursor: "pointer" }}
                 />
               )}
             </svg>

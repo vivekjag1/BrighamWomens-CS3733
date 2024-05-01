@@ -8,6 +8,8 @@ import ServiceCard from "../../components/service-card/ServiceCard.tsx";
 import paths from "../../common/paths.tsx";
 import giftIcon from "../../../assets/gift_delivery.svg";
 import "./ServiceSelection.css";
+import ITIcon from "../../../assets/ITIcon.svg";
+import FoodDelverySvg from "../../../assets/FoodDeliverySVG.svg";
 
 function ServiceSelection() {
   return (
@@ -22,7 +24,6 @@ function ServiceSelection() {
           </h2>
           <hr className="pl-96 pr-96 " />
         </div>
-
         <div className="flex justify-center gap-8 ">
           <Link
             to={paths.MEDICINE_DELIVERY}
@@ -50,6 +51,12 @@ function ServiceSelection() {
           >
             <ServiceCard imgPath={roomIcon} alt="room icon" label="Rooms" />
           </Link>
+          <Link
+            to={paths.GIFT_DELIVERY}
+            className="animate-tada service-request gift-delivery"
+          >
+            <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
+          </Link>
         </div>
         <div className="flex justify-center gap-8">
           <Link
@@ -73,10 +80,20 @@ function ServiceSelection() {
             />
           </Link>
           <Link
-            to={paths.GIFT_DELIVERY}
-            className="animate-tada service-request gift-delivery"
+            to={paths.FOOD_DELIVERY_REQUEST}
+            className="service-request food-delivery animate-tada"
           >
-            <ServiceCard imgPath={giftIcon} alt="device icon" label="Gifts" />
+            <ServiceCard
+              imgPath={FoodDelverySvg}
+              alt="device icon"
+              label="Food"
+            />
+          </Link>
+          <Link
+            to={paths.IT_REQUEST}
+            className="service-request it_support animate-tada"
+          >
+            <ServiceCard imgPath={ITIcon} alt="IT icon" label="IT Support" />
           </Link>
         </div>
       </div>

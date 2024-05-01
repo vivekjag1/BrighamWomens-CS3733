@@ -62,9 +62,6 @@ export class AStarPath extends ComplexPath implements Path {
               currentNode = currentNode.parentNode;
             }
           }
-
-          // console.log("A* Path (" + startNodeID + " -> " + endNodeID + "):");
-          // console.log(path);
         } else {
           //get G, H, and F values of the child node
           const g: number =

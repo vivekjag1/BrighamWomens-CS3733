@@ -67,7 +67,7 @@ export function SecurityForm() {
     if (validateForm()) {
       try {
         const response = await MakeProtectedPostRequest(
-          APIEndpoints.servicePostSecurityRequest,
+          APIEndpoints.securityRequest,
           securityRequestForm,
           token,
         );
@@ -96,9 +96,12 @@ export function SecurityForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Security Form"}>
         <div>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Security Request
           </h1>
+          <p className="text-center text-sm text-gray-500 pb-5">
+            Made by Daniel and Colin
+          </p>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate
@@ -314,9 +317,7 @@ export function SecurityForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Daniel and Colin</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

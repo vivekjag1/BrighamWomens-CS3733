@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -16,4 +15,5 @@ export default defineConfig({
       host: "0.0.0.0",
     },
   },
+
 });

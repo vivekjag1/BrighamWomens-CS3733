@@ -17,7 +17,6 @@ import {
   TableFooter,
   Paper,
   TablePagination,
-  Modal,
   Card,
   CardContent,
 } from "@mui/material";
@@ -26,19 +25,19 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { useToast } from "./useToast.tsx";
-
-import andyImage from "../../assets/employees/andy-truong.jpeg";
-import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
-import ademImage from "../../assets/employees/adem.jpeg";
-import suliImage from "../../assets/employees/sulaiman.jpeg";
-import frankyImage from "../../assets/employees/franky.jpeg";
-import colinImage from "../../assets/employees/colin.jpeg";
-import griffinImage from "../../assets/employees/griffin-brown.jpeg";
-import taehaImage from "../../assets/employees/taeha-song.jpeg";
-import wongImage from "../../assets/employees/wilsonwong.jpg";
-import mattImage from "../../assets/employees/matt-brown.jpeg";
-import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
-import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import wongImage from "../../assets/employees/wwong.jpg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import josephImage from "../../assets/employees/jcardarelli.jpeg";
+import CustomModal from "./CustomModal.tsx";
 
 interface EmployeeGetterProps {
   uploadTriggered: boolean;
@@ -121,7 +120,7 @@ export function EmployeeGetter({
 
   const makeDeleteRequest = (employee: Employee) => {
     handleDeleteEmployee(employee).then().catch(console.error);
-    showToast("Employee successfully deleted!", "success");
+    showToast("employee successfully deleted!", "success");
     setDeleteModal(false);
   };
 
@@ -304,8 +303,6 @@ export function EmployeeGetter({
                 <TableRow
                   key={employee.employeeID}
                   onClick={() => handleRowClick(employee)}
-                  hover
-                  style={{ cursor: "pointer" }}
                   sx={{
                     "& > td": {
                       color: "#6B7280",
@@ -365,6 +362,7 @@ export function EmployeeGetter({
                             setEmployeeDelete(employee);
                           }}
                           className="text-red-500 mb-1 hover:text-red-700"
+                          style={{ cursor: "pointer" }}
                         />
                       </TableCell>
                     </>
@@ -406,35 +404,24 @@ export function EmployeeGetter({
           </TableFooter>
         </Table>
       </TableContainer>
-      <Modal
-        open={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <CustomModal isOpen={deleteModal} onClose={() => setDeleteModal(false)}>
         <Card
           sx={{
             borderRadius: 2,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
             "&:focus": {
               outline: "none",
               border: "none",
               boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
             },
           }}
-          className="drop-shadow-2xl px-5 pb-2 w-auto"
+          className="drop-shadow-2xl p-3"
           onClick={(e) => e.stopPropagation()}
         >
-          <CardContent>
-            <h1
-              className={`text-md font-semibold mb-4 text-secondary text-center`}
-            >
+          <CardContent className="flex flex-col gap-2">
+            <h1 className={`text-md font-semibold text-secondary text-center`}>
               Are you sure you want to delete this user?
             </h1>
-            <div className="col-span-2 flex justify-between items-end px-5">
+            <div className="col-span-2 flex justify-center gap-8">
               <Button
                 variant="contained"
                 style={{
@@ -469,7 +456,7 @@ export function EmployeeGetter({
             </div>
           </CardContent>
         </Card>
-      </Modal>
+      </CustomModal>
     </Paper>
   );
 }

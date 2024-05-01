@@ -16,7 +16,9 @@ const FT_PER_SEC: number = 4.4; // 3 mph
 export function getDirections(nodes: Node[]): Directions[] {
   // Default starting instructions
   const outputDirections: Directions[] = [];
-
+  if (nodes.length === 0) {
+    return [];
+  }
   // Initial angle from start to second node
   let lastAngle = absoluteAngleBetweenNodes(nodes[0], nodes[1]);
 
@@ -71,15 +73,6 @@ export function getDirections(nodes: Node[]): Directions[] {
 
   return outputDirections;
 }
-
-/*export function printDirections(directionList: Directions[]) {
-  directionList.forEach((dir) => {
-    console.log("FLOOR: " + dir.floor);
-    dir.directions.forEach((d, i) => {
-      console.log("\t" + i + ". " + d.msg);
-    });
-  });
-}*/
 
 // Return relevant trip stats for a path
 export function getTripStats(nodes: Node[]): TripStat[] {
