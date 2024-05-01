@@ -96,12 +96,12 @@ export function SecurityForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Security Form"}>
         <div>
-          <p className="text-center text-sm text-secondary pb-4 pt-4">
-            Made by Daniel and Colin
-          </p>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Security Request
           </h1>
+          <p className="text-center text-sm text-secondary pb-5">
+            Made by Daniel and Colin
+          </p>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate

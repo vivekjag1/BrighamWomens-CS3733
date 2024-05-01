@@ -106,12 +106,12 @@ export function FoodDeliveryserviceForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={FoodDeliveryIMG} alt={"Food Delivery"}>
         <div>
-          <p className="text-center font-bold text-secondary pt-4 pb-4">
-            Made by Adem
-          </p>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Food Delivery
           </h1>
+          <p className="text-center text-sm text-secondary pb-5">
+            Made by Adem
+          </p>
 
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
