@@ -17,6 +17,8 @@ import QRCodeInsert from "../components/QRCodeInsert.tsx";
 import QRCodeButton from "../components/map/QRCodeButton.tsx";
 import "../components/map/styles/StackedMaps.css";
 import "../animations/hover-grow-press-shrink.css";
+import Tooltip from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
 
 function Home() {
   const [activeFloor, setActiveFloor] = useState(DEFAULT_FLOOR);
@@ -100,8 +102,10 @@ function Home() {
 
   // Switches between 2D and 3D maps
   function handleMapSwitch() {
-    if (mapType == MapType.TwoDimensional) setMapType(MapType.ThreeDimensional);
-    else setMapType(MapType.TwoDimensional);
+    if (mapType == MapType.TwoDimensional) {
+      setMapType(MapType.ThreeDimensional);
+      setDisplayQRCode(false);
+    } else setMapType(MapType.TwoDimensional);
   }
 
   function handleReset() {
@@ -247,12 +251,19 @@ function Home() {
     );
 
   const QRCodeToggleElement = mapType == MapType.TwoDimensional && hasPath && (
-    <div className="absolute top-[10%] right-[1.5%] z-40">
-      <QRCodeButton
-        displayQrCode={displayQRCode}
-        setDisplayQRCode={setDisplayQRCode}
-      />
-    </div>
+    <Tooltip
+      TransitionComponent={Zoom}
+      title="Display QR Code"
+      placement="bottom"
+      arrow
+    >
+      <div className="absolute top-[10%] right-[1.5%] z-40">
+        <QRCodeButton
+          displayQrCode={displayQRCode}
+          setDisplayQRCode={setDisplayQRCode}
+        />
+      </div>
+    </Tooltip>
   );
 
   const QRCodeElement = displayQRCode && (
@@ -300,9 +311,16 @@ function Home() {
         </div>
         {QRCodeToggleElement}
         {QRCodeElement}
-        <div className="absolute top-[2%] right-[1.5%]">
-          <MapTypeToggle mapType={mapType} setMapType={handleMapSwitch} />
-        </div>
+        <Tooltip
+          TransitionComponent={Zoom}
+          title="Map View Toggle"
+          placement="bottom"
+          arrow
+        >
+          <div className="absolute top-[2%] right-[1.5%]">
+            <MapTypeToggle mapType={mapType} setMapType={handleMapSwitch} />
+          </div>
+        </Tooltip>
       </TransformWrapper>
       {floorSelectorElement}
       {pathBreadcrumbElement}

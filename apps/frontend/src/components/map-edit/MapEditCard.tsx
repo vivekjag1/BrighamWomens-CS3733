@@ -43,6 +43,13 @@ const textFieldStyles_small = {
   width: "8vw",
 };
 
+const textFieldStyles_floor = {
+  width: "5vw",
+};
+const textFieldStyles_type = {
+  width: "11vw",
+};
+
 function MapEditCard(props: {
   updateNode: (field: keyof Node, value: string | number) => void;
 }) {
@@ -94,7 +101,7 @@ function MapEditCard(props: {
               props.updateNode("nodeType", value);
             }}
             options={dropdownNodeTypes}
-            sx={textFieldStyles_small}
+            sx={textFieldStyles_type}
             label={
               isEditableNode()
                 ? "Type"
@@ -107,7 +114,7 @@ function MapEditCard(props: {
           />
           <NodeParam
             value={nodes?.get(selectedNodeID ?? "")?.floor}
-            sx={textFieldStyles_small}
+            sx={textFieldStyles_floor}
             label="Floor"
             editable={false}
           />

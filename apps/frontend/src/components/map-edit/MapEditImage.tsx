@@ -9,6 +9,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
 import ZoomControls from "../map/ZoomControls.tsx";
+import Tooltip from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -243,28 +245,35 @@ const MapEditImage = (props: {
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (
-                <circle
-                  key={node.nodeID}
-                  className={`node ${selectedNodeID === node.nodeID ? "animate-pulse" : ""}`}
-                  r={
-                    node.nodeType == "HALL"
-                      ? MapEditStyles.hallRadius
-                      : MapEditStyles.nodeRadius
-                  }
-                  cx={node.xcoord}
-                  cy={node.ycoord}
-                  onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
-                  onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
-                  fill={
-                    selectedNodeID == node.nodeID
-                      ? MapEditStyles.nodeSelectedColor
-                      : node.nodeType == "HALL"
-                        ? MapEditStyles.hallColor
-                        : MapEditStyles.nodeColor
-                  }
-                  onClick={(e) => nodeClicked(e, node.nodeID)}
-                  style={{ cursor: "pointer" }}
-                />
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={node.shortName}
+                  placement="bottom"
+                  arrow
+                >
+                  <circle
+                    key={node.nodeID}
+                    className={`node ${selectedNodeID === node.nodeID ? "animate-pulse" : ""}`}
+                    r={
+                      node.nodeType == "HALL"
+                        ? MapEditStyles.hallRadius
+                        : MapEditStyles.nodeRadius
+                    }
+                    cx={node.xcoord}
+                    cy={node.ycoord}
+                    onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
+                    onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
+                    fill={
+                      selectedNodeID == node.nodeID
+                        ? MapEditStyles.nodeSelectedColor
+                        : node.nodeType == "HALL"
+                          ? MapEditStyles.hallColor
+                          : MapEditStyles.nodeColor
+                    }
+                    onClick={(e) => nodeClicked(e, node.nodeID)}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
               ))}
               //This is rendering the line between the cursor and startNode
               {props.startEdgeNodeID && (

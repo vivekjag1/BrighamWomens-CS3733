@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import DirectionsCardFloor from "./DirectionsCardFloor";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import Tooltip from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
 import {
   //DirectionMessage,
   Directions,
@@ -161,29 +163,57 @@ function DirectionsCard(props: {
           }}
         >
           <span onClick={handlePreviousStep} style={{ cursor: "pointer" }}>
-            <NavigateBeforeIcon
-              className="text-secondary hover:text-blue-600"
-              style={{ fontSize: "2rem" }}
-            />
+            <Tooltip
+              TransitionComponent={Zoom}
+              title="Previous Direction"
+              placement="bottom"
+              arrow
+            >
+              <NavigateBeforeIcon
+                className="text-secondary hover:text-blue-600"
+                style={{ fontSize: "2rem" }}
+              />
+            </Tooltip>
           </span>
           <span onClick={handlePauseResume} style={{ cursor: "pointer" }}>
             {isPaused ? (
-              <PlayArrowIcon
-                className="text-secondary hover:text-blue-600"
-                style={{ fontSize: "2rem" }}
-              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Play Audio Directions"
+                placement="bottom"
+                arrow
+              >
+                <PlayArrowIcon
+                  className="text-secondary hover:text-blue-600"
+                  style={{ fontSize: "2rem" }}
+                />
+              </Tooltip>
             ) : (
-              <PauseIcon
-                className="text-secondary hover:text-blue-600"
-                style={{ fontSize: "2rem" }}
-              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Pause Audio Directions"
+                placement="bottom"
+                arrow
+              >
+                <PauseIcon
+                  className="text-secondary hover:text-blue-600"
+                  style={{ fontSize: "2rem" }}
+                />
+              </Tooltip>
             )}
           </span>
           <span onClick={handleNextStep} style={{ cursor: "pointer" }}>
-            <NavigateNextIcon
-              className="text-secondary hover:text-blue-600"
-              style={{ fontSize: "2rem" }}
-            />
+            <Tooltip
+              TransitionComponent={Zoom}
+              title="Next Direction"
+              placement="bottom"
+              arrow
+            >
+              <NavigateNextIcon
+                className="text-secondary hover:text-blue-600"
+                style={{ fontSize: "2rem" }}
+              />
+            </Tooltip>
           </span>
         </div>
       </div>
