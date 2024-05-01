@@ -192,7 +192,7 @@ export default function ElementHighlights(props: {
 
         <div className="m-0 p-0 g-0">
           {chartType === "bar" && (
-            <div className="flex flex-row h-[70%]">
+            <div className="flex items-center h-[100%] mt-6">
               <BarChart
                 {...barChartsParams}
                 xAxis={[
