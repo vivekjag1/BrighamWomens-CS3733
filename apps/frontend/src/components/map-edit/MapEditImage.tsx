@@ -4,7 +4,7 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { MapStyling } from "../../common/StylingCommon.ts";
+import { MapEditStyles } from "../../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
@@ -231,8 +231,8 @@ const MapEditImage = (props: {
                   x2={edge.endX}
                   y1={edge.startY}
                   y2={edge.endY}
-                  stroke={MapStyling.edgeColor}
-                  strokeWidth={MapStyling.edgeWidth}
+                  stroke={MapEditStyles.edgeColor}
+                  strokeWidth={MapEditStyles.edgeWidth}
                   onClick={(e) => handleEdgeClick(e, edge.edgeID)}
                   onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
                   style={{ cursor: "pointer" }}
@@ -241,16 +241,22 @@ const MapEditImage = (props: {
               {Array.from(nodes.values()).map((node) => (
                 <circle
                   key={node.nodeID}
-                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                  r={MapStyling.nodeRadius}
+                  className={`node ${selectedNodeID === node.nodeID ? "animate-pulse" : ""}`}
+                  r={
+                    node.nodeType == "HALL"
+                      ? MapEditStyles.hallRadius
+                      : MapEditStyles.nodeRadius
+                  }
                   cx={node.xcoord}
                   cy={node.ycoord}
                   onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
                   onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
                   fill={
                     selectedNodeID == node.nodeID
-                      ? MapStyling.edgeColor
-                      : MapStyling.nodeColor
+                      ? MapEditStyles.nodeSelectedColor
+                      : node.nodeType == "HALL"
+                        ? MapEditStyles.hallColor
+                        : MapEditStyles.nodeColor
                   }
                   onClick={(e) => nodeClicked(e, node.nodeID)}
                   style={{ cursor: "pointer" }}

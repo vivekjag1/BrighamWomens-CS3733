@@ -38,10 +38,12 @@ function Home() {
     async function getNodesFromDb() {
       const rawNodes = await axios.get(APIEndpoints.mapGetNodes);
       let graphNodes: Node[] = rawNodes.data;
+
       graphNodes = graphNodes.filter((node) => node.nodeType != "HALL");
       graphNodes = graphNodes.sort((a, b) =>
         a.longName.localeCompare(b.longName),
       );
+
       setNodes(graphNodes);
       return graphNodes;
     }
@@ -318,6 +320,7 @@ function areOnSameFloor(path: Node[]): boolean {
       return onSameFloor;
     }
   }
+
   return onSameFloor;
 }
 
@@ -328,6 +331,7 @@ function getFloorSequence(path: Node[]) {
   for (let i = 0, length = segments.length; i < length; i++) {
     floorSequence.push(getFloorNumber(segments[i][0].floor));
   }
+
   return floorSequence;
 }
 
