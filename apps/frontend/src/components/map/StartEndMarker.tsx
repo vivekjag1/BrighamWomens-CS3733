@@ -10,14 +10,14 @@ function StartEndMarker(props: startEndMarkerProps) {
   return (
     <g>
       <motion.circle
-        animate={{ scale: [1.5, 1] }}
+        animate={{ scale: [1, 1.5, 1] }}
         transition={{ duration: 1, repeat: Infinity }}
         cx={props.x}
         cy={props.y}
         r={15}
         fill="white"
-        strokeWidth={3}
-        stroke="black"
+        strokeWidth={5}
+        stroke={props.color}
       />
       <svg viewBox="0 0 1250 1425" x={props.x + xOffset} y={props.y + yOffset}>
         <motion.g
