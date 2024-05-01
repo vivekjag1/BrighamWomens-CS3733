@@ -34,6 +34,7 @@ export default function Profile() {
 
   const { logout } = useAuth0();
   const handleLogout = () => {
+    alert(user!.email);
     logout({
       logoutParams: {
         returnTo: window.location.origin,
@@ -50,12 +51,35 @@ export default function Profile() {
   };
   const { getAccessTokenSilently, user } = useAuth0();
   const [employee, setEmployee] = React.useState<Employee>();
+  const [pictureURL, setPictureURL] = React.useState<string>("");
   const handleChangePassword = async () => {
     setPasswordModal(true);
   };
   const handleDeleteAccountRequest = async () => {
     setDeleteAccountModal(true);
   };
+
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userData = {
+          userName: user!.name,
+        };
+        const fetchUser = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
+        setPictureURL(
+          `./../../assets/employees/${fetchUser.data.userName}.jpeg`,
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfilePicture();
+  }, [getAccessTokenSilently, user]);
 
   const handleSubmitDeleteAccount = async () => {
     setDeleteAccountModal(false);
@@ -469,7 +493,7 @@ export default function Profile() {
                     <div className="w-full h-full flex flex-col justify-center items-center">
                       <img
                         className="w-60 h-60 object-cover rounded-full mt-6"
-                        src={user!.picture}
+                        src={pictureURL}
                         alt="user profile picture"
                       />
                     </div>

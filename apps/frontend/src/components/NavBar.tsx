@@ -19,6 +19,8 @@ import { checkAuth } from "../checkAdminStatus.ts";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
@@ -30,6 +32,7 @@ function NavBar() {
   const [remaining, setRemaining] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [pictureURL, setPictureURL] = React.useState<string>("");
 
   const { showToast } = useToast();
   const handleLogout = () => {
@@ -39,6 +42,25 @@ function NavBar() {
       },
     });
   };
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const userData = {
+          userName: user!.name,
+        };
+        const fetchUser = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
+        setPictureURL(`../../assets/employees/${fetchUser.data.userName}.jpeg`);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfilePicture();
+  }, [getAccessTokenSilently, user]);
 
   const onIdle = () => {
     logout({
@@ -222,7 +244,7 @@ function NavBar() {
               <div className="flex flex-row items-center ">
                 <img
                   className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
-                  src={user?.picture}
+                  src={pictureURL}
                   alt="user profile picture"
                 />
                 <h2
