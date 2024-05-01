@@ -468,13 +468,17 @@ export default function Profile() {
                       </label>
                       <br />
 
-                      <div className="flex justify-center items-center">
-                        <label className="text-l text-center">
-                          {employee.position}
-                        </label>
-                        <div className="w-6" />
+                      <div
+                        className="flex justify-center items-center"
+                        style={{ color: "#012D5A" }}
+                      >
                         <label className="text-l text-center">
                           {employee.role}
+                        </label>
+                        <div className="w-9" />
+
+                        <label className="text-l text-center">
+                          {employee.position}
                         </label>
                       </div>
                     </>
