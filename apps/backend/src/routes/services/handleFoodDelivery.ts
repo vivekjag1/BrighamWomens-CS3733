@@ -11,7 +11,8 @@ router.post("/", async function (req: Request, res: Response): Promise<void> {
     const createdFoodDeliveryService = await client.foodDeliveryService.create({
       data: {
         //specific request
-        order: request.order,
+        protein: request.protein,
+        side: request.side,
         serviceRequest: {
           //generic request
           create: {

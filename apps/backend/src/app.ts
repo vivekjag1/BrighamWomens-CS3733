@@ -27,6 +27,7 @@ import findEmployee from "./routes/employee/findEmployee.ts";
 import getMapOnFloor from "./routes/map/getMapOnFloor.ts";
 import updateMapOnFloor from "./routes/map/updateMapOnFloor.ts";
 import handleITRequest from "./routes/services/handleITRequest.ts";
+import handleFoodDelivery from "./routes/services/handleFoodDelivery.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -85,6 +86,7 @@ app.use(APIEndpoints.fetchUser, findEmployee);
 
 app.use(APIEndpoints.changePassword, changePassword);
 app.use(APIEndpoints.ITPostRequests, handleITRequest);
+app.use(APIEndpoints.foodDeliveryservicePostRequests, handleFoodDelivery);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

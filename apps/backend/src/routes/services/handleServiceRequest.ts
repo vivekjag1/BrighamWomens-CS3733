@@ -48,6 +48,7 @@ router.get("/", async function (req: Request, res: Response): Promise<void> {
       DeviceDelivery: true,
       GiftDelivery: true,
       ITRequest: true,
+      FoodDeliveryService: true,
     },
   });
   res.json(requests);
