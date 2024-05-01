@@ -14,12 +14,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     authorizationParams={{
       redirect_uri: `${window.location.origin}/home`,
     }}
-
-    //scope: "openid profile email offline_access",
-
-    // onRedirectCallback={(appState) => {
-    //   navigate(appState?.returnTo || window.location.pathname);
-    // }}
   >
     <ToastProvider>
       <App />

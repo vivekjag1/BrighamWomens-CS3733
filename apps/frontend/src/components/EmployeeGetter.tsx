@@ -414,16 +414,14 @@ export function EmployeeGetter({
               boxShadow: "0 0 0 2px rgba(0, 123, 255, 0.5)",
             },
           }}
-          className="drop-shadow-2xl px-5 pb-2 w-auto"
+          className="drop-shadow-2xl p-3"
           onClick={(e) => e.stopPropagation()}
         >
-          <CardContent>
-            <h1
-              className={`text-md font-semibold mb-4 text-secondary text-center`}
-            >
+          <CardContent className="flex flex-col gap-2">
+            <h1 className={`text-md font-semibold text-secondary text-center`}>
               Are you sure you want to delete this user?
             </h1>
-            <div className="col-span-2 flex justify-between items-end px-5">
+            <div className="col-span-2 flex justify-center gap-8">
               <Button
                 variant="contained"
                 style={{
