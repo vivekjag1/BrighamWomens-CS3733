@@ -177,10 +177,19 @@ export function FoodDeliveryserviceForm() {
                   { label: "Lamb" },
                   { label: "Chicken" },
                   { label: "Fish" },
+                  { label: "Pork" },
                 ]}
                 className="bg-gray-50"
                 size="small"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    fontSize: ".8rem",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "Poppins, sans-serif",
+                  },
+                  width: "25rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -220,7 +229,15 @@ export function FoodDeliveryserviceForm() {
                 ]}
                 className="bg-gray-50"
                 size="small"
-                sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    fontSize: ".8rem",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "Poppins, sans-serif",
+                  },
+                  width: "25rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}

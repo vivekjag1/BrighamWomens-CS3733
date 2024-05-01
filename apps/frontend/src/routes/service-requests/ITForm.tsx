@@ -165,7 +165,15 @@ export function ITForm(): JSX.Element {
                 ]}
                 className="bg-gray-50"
                 size="small"
-                sx={{ width: "25rem" }}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    fontSize: ".8rem",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "Poppins, sans-serif",
+                  },
+                  width: "25rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}

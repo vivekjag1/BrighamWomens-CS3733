@@ -543,9 +543,10 @@ export default function Profile() {
                         {user!.email}
                       </label>
                       <br />
-                      <div className={"px-12 flex flex-col"}>
+                      <div className={"px-12 text-center"}>
                         <label className="text-l " style={{ color: "#012D54" }}>
                           <b>Position : </b> {employee.position}
+                          <br />
                         </label>
 
                         <label className="text-l " style={{ color: "#012D54" }}>
@@ -628,8 +629,8 @@ export default function Profile() {
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
                     Personal Service Requests
-                    <hr className="h-px mb-1 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
+                  <hr className="h-px mb-1 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
 
                   <CustomCardContent>
                     <ServiceReqGetterProfile
