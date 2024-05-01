@@ -9,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import MapEditToolBar from "../components/map-edit/MapEditToolBar.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { useToast } from "../components/useToast.tsx";
-import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
+// import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
 import SaveRevertAllButtons from "../components/map-edit/SaveRevertAllButtons.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { useBlocker } from "react-router-dom";
@@ -297,13 +297,13 @@ function MapEdit() {
     setHasChanged(false);
   }
 
-  function handleUndo() {
-    console;
-  }
-
-  function handleRedo() {
-    console;
-  }
+  // function handleUndo() {
+  //   console;
+  // }
+  //
+  // function handleRedo() {
+  //   console;
+  // }
 
   const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {
     const token = await getAccessTokenSilently();
@@ -391,7 +391,7 @@ function MapEdit() {
         </MapContext.Provider>
       </div>
       <div className="flex flex-row w-[55vw] justify-between absolute left-[30%] top-[1%]">
-        <UndoRedoButtons undo={handleUndo} redo={handleRedo} />
+        {/*<UndoRedoButtons undo={handleUndo} redo={handleRedo} />*/}
         <MapContext.Provider value={contextValue}>
           <MapEditToolBar
             SelectNode={() => setSelectedAction(Action.SelectNode)}
