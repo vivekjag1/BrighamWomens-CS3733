@@ -467,18 +467,15 @@ export default function Profile() {
                         {user!.email}
                       </label>
                       <br />
-
-                      <div
-                        className="flex justify-center items-center"
-                        style={{ color: "#012D5A" }}
-                      >
-                        <label className="text-l text-center">
-                          {employee.role}
+                      <div className={"px-12 flex flex-col"}>
+                        <label className="text-l " style={{ color: "#012D54" }}>
+                          <b>Position : </b> {employee.position}
                         </label>
-                        <div className="w-9" />
 
-                        <label className="text-l text-center">
-                          {employee.position}
+                        <label className="text-l " style={{ color: "#012D54" }}>
+                          <b>Role : </b>
+                          {employee.role}
+                          <br />
                         </label>
                       </div>
                     </>
