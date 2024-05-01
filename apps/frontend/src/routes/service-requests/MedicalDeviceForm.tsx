@@ -96,12 +96,12 @@ export function MedicalDeviceForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Medical Device Delivery"}>
         <div>
-          <p className="text-center text-sm text-secondary pb-4 pt-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
+            Medicine Device Request
+          </h1>
+          <p className="text-center text-sm text-secondary pb-5">
             Made by Andy and Francesco
           </p>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
-            Medical Device Request
-          </h1>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate

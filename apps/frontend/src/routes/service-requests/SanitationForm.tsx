@@ -100,12 +100,12 @@ export function SanitationForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={giftPlaceholder} alt={"Sanitation Request"}>
         <div>
-          <p className="text-center text-sm text-secondary  pb-4">
-            Made by Matthew and Sulaiman
-          </p>
-          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
+          <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-2">
             Sanitation Request
           </h1>
+          <p className="text-center text-sm text-secondary pb-5">
+            Made by Matthew and Sulaiman
+          </p>
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate
