@@ -59,6 +59,21 @@ export default function ElementHighlights(props: {
     (request) => request.type.toString() === "SecurityService",
   );
 
+  const allFoodServices = props.requestData.filter(
+    (request) => request.type.toString() === "FoodService",
+  );
+
+  const myFoodServices = props.filteredData.filter(
+    (request) => request.type.toString() === "FoodService",
+  );
+
+  const allITSupportServices = props.filteredData.filter(
+    (request) => request.type.toString() === "ITSupport",
+  );
+
+  const myITSupportServices = props.filteredData.filter(
+    (request) => request.type.toString() === "ITSupport",
+  );
   // const allITServices = props.requestData.filter(
   //     (request) => request.type.toString() === "IT",
   // );
@@ -99,6 +114,14 @@ export default function ElementHighlights(props: {
         data: [mySecurityServices.length, allSecurityServices.length],
         label: "Security",
       },
+      {
+        data: [myFoodServices.length, allFoodServices.length],
+        label: "Food",
+      },
+      {
+        data: [myITSupportServices.length, allITSupportServices.length],
+        label: "IT",
+      },
     ],
     height: 250,
   };
@@ -113,6 +136,8 @@ export default function ElementHighlights(props: {
           { value: myRoomSchedulings.length, label: "Rooms" },
           { value: mySanitationServices.length, label: "Sanitation" },
           { value: mySecurityServices.length, label: "Security" },
+          { value: myFoodServices.length, label: "Food" },
+          { value: myITSupportServices.length, label: "IT" },
         ],
         label: "My Services",
         outerRadius: 100,
@@ -135,6 +160,8 @@ export default function ElementHighlights(props: {
           { value: allRoomSchedulings.length, label: "Rooms" },
           { value: allSanitationServices.length, label: "Sanitation" },
           { value: allSecurityServices.length, label: "Security" },
+          { value: allFoodServices.length, label: "Food" },
+          { value: allITSupportServices.length, label: "IT" },
         ],
         label: "My Services",
         outerRadius: 100,
