@@ -44,7 +44,10 @@ export default function Profile() {
   const [passwordModal, setPasswordModal] = React.useState(false);
   const [deleteAccountModal, setDeleteAccountModal] = React.useState(false);
   // const setOpen = () => setModelOpen(true);
-  const setClosed = () => setPasswordModal(false);
+  const setClosed = async () => {
+    setPasswordModal(false);
+    setDeleteAccountModal(false);
+  };
   const { getAccessTokenSilently, user } = useAuth0();
   const [employee, setEmployee] = React.useState<Employee>();
   const handleChangePassword = async () => {
@@ -523,7 +526,7 @@ export default function Profile() {
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
                     Charts and Graphs
-                    <hr className="h-px mb-4 mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px mb-[0rem] mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent>
                     <ElementHighlights
