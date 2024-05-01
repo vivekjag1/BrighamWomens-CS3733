@@ -3,7 +3,7 @@ import DirectionsCardFloor from "./DirectionsCardFloor";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Tooltip from "@mui/material/Tooltip";
-import { Zoom } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Zoom } from "@mui/material";
 import {
   //DirectionMessage,
   Directions,
@@ -13,6 +13,8 @@ import {
 } from "common/src/Path.ts";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import Select from "@mui/material/Select";
+// import CustomDropdown from "./CustomDropdown.tsx";
 
 function DirectionsCard(props: {
   directions: Directions[];
@@ -25,6 +27,8 @@ function DirectionsCard(props: {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentFloor, setCurrentFloor] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   const speechSynth = useRef(window.speechSynthesis);
 
   function TripStats(props: { stats: TripStat[] }) {
@@ -73,6 +77,27 @@ function DirectionsCard(props: {
     setCurrentFloor(0);
     setIsPaused(true);
   }, [directions]);
+
+  useEffect(() => {
+    function loadVoices() {
+      // @ts-expect-error missing type
+      setVoices(speechSynth.current.getVoices());
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+
+    setSelectedVoice("Google US English");
+    return () => {
+      speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
+
+  const handleVoiceChange = (event: React.BaseSyntheticEvent) => {
+    setSelectedVoice(event.target.value);
+  };
 
   const handlePauseResume = (event: React.BaseSyntheticEvent) => {
     if (!isCollapsed) {
@@ -132,20 +157,18 @@ function DirectionsCard(props: {
     speakCurrentDirection(prevFloor, prevStep);
   };
 
-  function speakCurrentDirection(floor: number, step: number) {
+  const speakCurrentDirection = (floor: number, step: number) => {
     if (directions[floor] && directions[floor].directions[step]) {
-      const currentDirection = directions[floor].directions[step].msg;
-      const utterance = new SpeechSynthesisUtterance(currentDirection);
+      const msg = directions[floor].directions[step].msg;
+      const utterance = new SpeechSynthesisUtterance(msg);
+      // @ts-expect-error missing type
+      utterance.voice = voices.find((voice) => voice.name === selectedVoice);
       speechSynth.current.cancel();
-
-      utterance.onend = () => {
-        setIsPaused(true);
-      };
-
+      utterance.onend = () => setIsPaused(true);
       speechSynth.current.speak(utterance);
       setIsPaused(false);
     }
-  }
+  };
 
   return (
     <div
@@ -162,7 +185,7 @@ function DirectionsCard(props: {
       >
         <TripStats stats={props.stats} />
         <div
-          className="icon-container mt-3"
+          className="icon-container mt-4 ml-2"
           style={{
             display: "flex",
             justifyContent: "center",
@@ -170,6 +193,60 @@ function DirectionsCard(props: {
             gap: "6px",
           }}
         >
+          <FormControl
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              height: "2rem",
+              marginRight: ".5rem",
+            }}
+          >
+            <InputLabel id="voice-select-label">Voice</InputLabel>
+            <Select
+              labelId="voice-select-label"
+              value={selectedVoice || ""}
+              label="Voice"
+              // @ts-expect-error missing type
+              onChange={handleVoiceChange}
+              style={{ width: "7rem", height: "2rem", fontSize: ".9rem" }}
+              size="small"
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 250,
+                    maxWidth: 160,
+                    overflow: "auto",
+                  },
+                },
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "center",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "center",
+                },
+              }}
+            >
+              {voices.map((voice) => (
+                <MenuItem
+                  sx={{ fontSize: ".8rem", margin: 0, paddingLeft: "10px" }}
+                  // @ts-expect-error missing type
+                  key={voice.name}
+                  // @ts-expect-error missing type
+                  value={voice.name}
+                >
+                  {
+                    // @ts-expect-error missing type
+                    `${voice.name} (${voice.lang})`
+                  }
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <span onClick={handlePreviousStep} style={{ cursor: "pointer" }}>
             <Tooltip
               TransitionComponent={Zoom}

@@ -110,7 +110,6 @@ function NavBar() {
   const { logout } = useAuth0();
   const location = useLocation();
   const [activePage, setActivePage] = useState(location.pathname);
-  // console.log("active page", activePage);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
