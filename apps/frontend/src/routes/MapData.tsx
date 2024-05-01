@@ -134,6 +134,34 @@ const NodeTable = () => {
     showToast("Map data downloaded!", "success");
   }
 
+  const handleDrop = (event: React.DragEvent) => {
+    console.log(event);
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+
+      const fileName = file.name.toLowerCase();
+      if (fileName.toLowerCase().includes("node")) {
+        setNodeFile(file);
+      } else if (fileName.toLowerCase().includes("edge")) {
+        setEdgeFile(file);
+      } else {
+        setFileModal(false);
+        showToast(
+          "File does not match 'node' or 'edge' naming conventions",
+          "error",
+        );
+      }
+    }
+  };
+
+  const handleDragOver = (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   const fileChange = (event: React.BaseSyntheticEvent) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -696,6 +724,8 @@ const NodeTable = () => {
                   <label
                     className="flex flex-col items-center justify-center w-72 h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
                     htmlFor="importFile"
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
                   >
                     <div className="flex flex-col items-center justify-center mt-5">
                       <svg
@@ -726,6 +756,10 @@ const NodeTable = () => {
                             label={nodeFile.name}
                             onDelete={() => setNodeFile(null)}
                             className="self-center mb-2"
+                            style={{
+                              backgroundColor: "#d1d5db",
+                              color: "black",
+                            }}
                           />
                         ) : (
                           <div className="h-8"></div>
@@ -735,6 +769,10 @@ const NodeTable = () => {
                             label={edgeFile.name}
                             onDelete={() => setEdgeFile(null)}
                             className="self-center"
+                            style={{
+                              backgroundColor: "#d1d5db",
+                              color: "black",
+                            }}
                           />
                         ) : (
                           <div className="h-8"></div>

@@ -10,7 +10,6 @@ import ServiceFilterDropdown from "./ServiceFilterDropdown.tsx";
 import { Card, CardContent } from "@mui/material";
 import CustomTextField from "./CustomTextField.tsx";
 import Button from "@mui/material/Button";
-import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -93,6 +92,7 @@ export function ServiceRequestGetter() {
   }, [fetchData]);
 
   async function deleteServiceRequest(serviceID: number) {
+    closeModal();
     const token = await getAccessTokenSilently();
 
     try {
@@ -390,6 +390,10 @@ export function ServiceRequestGetter() {
     },
     ITRequest: {
       problemType: "Problem Type",
+    },
+    FoodDeliveryService: {
+      protein: "Protein",
+      side: "Side",
     },
   };
 
@@ -895,7 +899,7 @@ export function ServiceRequestGetter() {
                           maxWidth: "8rem",
                           fontFamily: "Poppins, sans-serif",
                         }}
-                        endIcon={<SaveIcon />}
+                        endIcon={<CloseIcon />}
                         onClick={() => closeModal()}
                       >
                         CLOSE

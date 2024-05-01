@@ -20,6 +20,33 @@ import PersonIcon from "@mui/icons-material/Person";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
+import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { APIEndpoints } from "common/src/APICommon.ts";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+
+const definedEmployees = [
+  { name: "dgorbunov", imageSrc: danielImage },
+  { name: "mbrown", imageSrc: mattImage },
+  { name: "atruong", imageSrc: andyImage },
+  { name: "vjagadeesh", imageSrc: vivekImage },
+  { name: "mdjadid", imageSrc: ademImage },
+  { name: "smoukheiber", imageSrc: suliImage },
+  { name: "fmise", imageSrc: frankyImage },
+  { name: "cmasucci", imageSrc: colinImage },
+  { name: "gbrown", imageSrc: griffinImage },
+  { name: "tsong", imageSrc: taehaImage },
+  { name: "default", imageSrc: defaultPhoto },
+];
 
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -32,6 +59,7 @@ function NavBar() {
   const [remaining, setRemaining] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authorizedStatus, setStatus] = useState<boolean>(false);
+  const [pictureURL, setPictureURL] = React.useState<string>("");
 
   const { showToast } = useToast();
   const handleLogout = () => {
@@ -41,6 +69,34 @@ function NavBar() {
       },
     });
   };
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        if (user?.name?.split(" ")[0] == "Admin") {
+          setPictureURL(defaultPhoto);
+          return;
+        }
+        const token = await getAccessTokenSilently();
+        const userData = {
+          userName: user!.name,
+        };
+        const fetchUser = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
+
+        const empName = definedEmployees.find(
+          (employee) => employee.name.trim() === fetchUser.data.userName,
+        );
+
+        setPictureURL(empName!.imageSrc);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfilePicture();
+  }, [getAccessTokenSilently, user]);
 
   const onIdle = () => {
     logout({
@@ -216,7 +272,7 @@ function NavBar() {
               <div className="flex flex-row items-center ">
                 <img
                   className="w-[2.5rem] h-[2.5rem] object-cover rounded-full mr-4 z-[100]"
-                  src={user?.picture}
+                  src={pictureURL}
                   alt="user profile picture"
                 />
                 <h2
@@ -226,7 +282,7 @@ function NavBar() {
                   }}
                   className="text-lg whitespace-nowrap z-[100]  "
                 >
-                  {user?.given_name ? user?.given_name : user?.name}
+                  {user?.name?.split(" ")[0]}
                 </h2>
               </div>
             ) : (
@@ -337,15 +393,6 @@ function NavBar() {
               />
             </>
           )}
-          {/*<NavbarItem*/}
-          {/*  to={paths.ABOUT_US}*/}
-          {/*  activePage={activePage}*/}
-          {/*  setActivePage={setActivePage}*/}
-          {/*  Icon={GroupsIcon}*/}
-          {/*  label="About"*/}
-          {/*  labelLight="Us"*/}
-          {/*  collapsed={isHidingNavBarInfo}*/}
-          {/*/>*/}
         </div>
 
         {/* Sign out */}

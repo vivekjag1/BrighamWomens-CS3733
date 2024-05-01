@@ -22,6 +22,32 @@ import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
 import CustomTextField from "../components/CustomTextField.tsx";
 
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+
+const definedEmployees = [
+  { name: "dgorbunov", imageSrc: danielImage },
+  { name: "mbrown", imageSrc: mattImage },
+  { name: "atruong", imageSrc: andyImage },
+  { name: "vjagadeesh", imageSrc: vivekImage },
+  { name: "mdjadid", imageSrc: ademImage },
+  { name: "smoukheiber", imageSrc: suliImage },
+  { name: "fmise", imageSrc: frankyImage },
+  { name: "cmasucci", imageSrc: colinImage },
+  { name: "gbrown", imageSrc: griffinImage },
+  { name: "tsong", imageSrc: taehaImage },
+  { name: "default", imageSrc: defaultPhoto },
+];
+
 const CustomCardContent = styled(CardContent)({
   display: "flex",
   "&:last-child": {
@@ -50,12 +76,41 @@ export default function Profile() {
   };
   const { getAccessTokenSilently, user } = useAuth0();
   const [employee, setEmployee] = React.useState<Employee>();
+  const [pictureURL, setPictureURL] = React.useState<string>("");
   const handleChangePassword = async () => {
     setPasswordModal(true);
   };
   const handleDeleteAccountRequest = async () => {
     setDeleteAccountModal(true);
   };
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        if (user?.name?.split(" ")[0] == "Admin") {
+          setPictureURL(defaultPhoto);
+          return;
+        }
+        const token = await getAccessTokenSilently();
+        const userData = {
+          userName: user!.name,
+        };
+        const fetchUser = await MakeProtectedPostRequest(
+          APIEndpoints.fetchUser,
+          userData,
+          token,
+        );
+
+        const empName = definedEmployees.find(
+          (employee) => employee.name.trim() === fetchUser.data.userName,
+        );
+
+        setPictureURL(empName!.imageSrc);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProfilePicture();
+  }, [getAccessTokenSilently, user]);
 
   const handleSubmitDeleteAccount = async () => {
     setDeleteAccountModal(false);
@@ -469,7 +524,7 @@ export default function Profile() {
                     <div className="w-full h-full flex flex-col justify-center items-center">
                       <img
                         className="w-60 h-60 object-cover rounded-full mt-6"
-                        src={user!.picture}
+                        src={pictureURL}
                         alt="user profile picture"
                       />
                     </div>

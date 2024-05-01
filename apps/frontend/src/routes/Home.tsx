@@ -5,9 +5,9 @@ import { Node } from "database";
 import { MapType, Directions, TripStat } from "common/src/Path.ts";
 import { getFloorNumber, getSegments } from "../common/PathUtilities.ts";
 import { APIEndpoints, NavigateAttributes } from "common/src/APICommon.ts";
+import NavigationPane from "../components/map/NavigationPane.tsx";
 import Map from "../components/map/Map.tsx";
 import MapBlur from "../components/map/MapBlur.tsx";
-import NavigationPane from "../components/map/NavigationPane.tsx";
 import ZoomControls from "../components/map/ZoomControls.tsx";
 import FloorSelector from "../components/map/FloorSelector.tsx";
 import MapTypeToggle from "../components/map/MapTypeToggle.tsx";
@@ -253,8 +253,8 @@ function Home() {
   const QRCodeToggleElement = mapType == MapType.TwoDimensional && hasPath && (
     <Tooltip
       TransitionComponent={Zoom}
-      title="Display QR Code"
-      placement="bottom"
+      title="Mobile Directions"
+      placement="left"
       arrow
     >
       <div className="absolute top-[10%] right-[1.5%] z-40">
@@ -313,8 +313,8 @@ function Home() {
         {QRCodeElement}
         <Tooltip
           TransitionComponent={Zoom}
-          title="Map View Toggle"
-          placement="bottom"
+          title="Map View"
+          placement="left"
           arrow
         >
           <div className="absolute top-[2%] right-[1.5%]">
