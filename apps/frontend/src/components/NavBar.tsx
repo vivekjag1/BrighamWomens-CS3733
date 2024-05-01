@@ -7,7 +7,6 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import { Card, CardContent } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
@@ -15,8 +14,7 @@ import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import ButtonBlue from "./ButtonBlue.tsx";
-import ButtonRed from "./ButtonRed.tsx";
+import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
@@ -31,6 +29,8 @@ import taehaImage from "../../assets/employees/tsong.jpeg";
 import mattImage from "../../assets/employees/mbrown.jpeg";
 import danielImage from "../../assets/employees/dgorbunov.jpeg";
 import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+import { ButtonStyling } from "../common/StylingCommon.ts";
+import { AnimatePresence, motion } from "framer-motion";
 
 const definedEmployees = [
   { name: "dgorbunov", imageSrc: danielImage },
@@ -191,41 +191,33 @@ function NavBar() {
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
       <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
-        {showProfileMenu && (
-          <>
-            {/*<motion.div*/}
-            {/*  initial={{scale: 0}} // Initial scale set to 0*/}
-            {/*  animate={{scale: 1}} // Final scale set to 1*/}
-            {/*  exit={{scale: 1}} // Exit state (if needed)*/}
-            {/*  transition={{duration: 0.9}} // Animation duration*/}
-            {/*>*/}
-            <div
-              className={` cursor-pointer  ${showProfileMenu ? " scale-1" : "scale-0"}`}
-            >
-              {!isCollapsed && (
-                <Card
-                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
-                  style={{ color: "#F6BD39" }}
+        <AnimatePresence>
+          {showProfileMenu && !isCollapsed && (
+            <motion.div className="absolute bottom-[3rem] left-[50%] translate-x-[-50%] mb-[1rem]">
+              <motion.div
+                className="flex flex-col gap-2 bg-[#eaeaea] p-3 rounded-xl"
+                key="profileOption"
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1, transformOrigin: "bottom" }}
+                exit={{ scaleY: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                <Link to={paths.PROFILE}>
+                  <Button sx={profileButtonStyles} startIcon={<PersonIcon />}>
+                    Profile
+                  </Button>
+                </Link>
+                <Button
+                  sx={logoutButtonStyles}
+                  onClick={handleLogout}
+                  startIcon={<LogoutIcon />}
                 >
-                  <CardContent className="flex flex-col gap-2">
-                    <Link to={paths.PROFILE} className="w-full ">
-                      {" "}
-                      <ButtonBlue
-                        className="flex text-center text-2xl w-full"
-                        endIcon={<PersonIcon />}
-                      >
-                        Profile
-                      </ButtonBlue>
-                    </Link>
-                    <ButtonRed onClick={handleLogout} endIcon={<LogoutIcon />}>
-                      Log Out
-                    </ButtonRed>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </>
-        )}
+                  Log Out
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div>
           <div
             className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
@@ -256,6 +248,7 @@ function NavBar() {
       </div>
     );
   }
+
   return (
     <div className="z-10 bg-offwhite">
       <div
@@ -392,5 +385,27 @@ function NavBar() {
     </div>
   );
 }
+
+const profileButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.blueButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.blueButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
+
+const logoutButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.redButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.redButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
 
 export default NavBar;
