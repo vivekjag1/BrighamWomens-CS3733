@@ -52,6 +52,56 @@ function Home() {
     getNodesFromDb().then();
   }, []);
 
+  // @ts-expect-error missing type
+  function combineDirections(floors) {
+    console.log(typeof floors);
+    const processedFloors = [];
+
+    for (let i = 0; i < floors.length; i++) {
+      const floor = floors[i];
+      const newDirections = [];
+      let sum = 0;
+      let accumulating = false;
+
+      for (let j = 0; j < floor.directions.length; j++) {
+        const currentDirection = floor.directions[j];
+
+        if (currentDirection.type === 2) {
+          const feet = parseInt(currentDirection.msg.match(/(\d+)ft/)[1]);
+          sum += feet;
+          accumulating = true;
+          console.log(sum);
+
+          if (
+            j === floor.directions.length - 1 ||
+            (floor.directions[j + 1] && floor.directions[j + 1].type !== 2)
+          ) {
+            newDirections.push({
+              type: 2,
+              msg: `Continue and proceed for ${sum}ft`,
+            });
+            sum = 0;
+            accumulating = false;
+          }
+        } else {
+          if (accumulating) {
+            sum = 0;
+            accumulating = false;
+          }
+
+          newDirections.push(currentDirection);
+        }
+      }
+
+      processedFloors.push({
+        ...floor,
+        directions: newDirections,
+      });
+    }
+
+    return processedFloors;
+  }
+
   // Submits start and end to backend and gets an iterable of nodes representing path
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); // prevent page refresh
@@ -82,7 +132,14 @@ function Home() {
         setPath(response.data.path);
 
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
-        setDirections(response.data.directions);
+        for (const innerArray of response.data.directions) {
+          for (const item of innerArray.directions) {
+            console.log(item);
+          }
+        }
+
+        // console.log(combinedDirections);
+        setDirections(combineDirections(response.data.directions));
         setTripStats(response.data.tripStats);
         setGlowSequence(getFloorSequence(response.data.path).slice(1));
         setFloorSequence(getFloorSequence(response.data.path));
