@@ -54,13 +54,13 @@ const employees = [
     name: "Mohamed Adem Djadid ",
     role: "Scrum Master",
     imageSrc: ademImage,
-    quote: "yeet",
+    quote: "Bob the builder can we fix it?",
   },
   {
     name: "Sulaiman Moukheiber  ",
     role: "Product Owner",
     imageSrc: suliImage,
-    quote: "yeet",
+    quote: "Hello! It's me!",
   },
   {
     name: "Francesco Di Mise ",
