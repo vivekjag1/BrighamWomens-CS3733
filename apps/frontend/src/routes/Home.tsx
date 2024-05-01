@@ -149,8 +149,6 @@ function Home() {
     setAlgorithm(algorithm);
   }
 
-  throw new Error("kate is the prettiest");
-
   const mapElement =
     mapType == MapType.ThreeDimensional ? (
       <div>
