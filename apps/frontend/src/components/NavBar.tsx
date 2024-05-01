@@ -235,7 +235,7 @@ function NavBar() {
                   }}
                   className="text-lg whitespace-nowrap z-[100]  "
                 >
-                  {user?.given_name}
+                  {user?.given_name ? user?.given_name : user?.name}
                 </h2>
               </div>
             ) : (
