@@ -106,7 +106,7 @@ export default function Profile() {
 
         setPictureURL(empName!.imageSrc);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchProfilePicture();
@@ -176,7 +176,7 @@ export default function Profile() {
           token,
         );
         setEmployee(res.data);
-        console.log("i am inside the use effect!");
+        // console.log("i am inside the use effect!");
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -187,7 +187,7 @@ export default function Profile() {
   // console.log(emp);
 
   // console.log(emp.position);
-  console.log(employee);
+  // console.log(employee);
   const [password, setPassword] = React.useState<string>("");
   const [confirmPassword, setConfirmPassword] = React.useState<string>("");
 

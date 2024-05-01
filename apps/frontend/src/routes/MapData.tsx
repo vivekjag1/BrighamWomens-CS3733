@@ -135,7 +135,7 @@ const NodeTable = () => {
   }
 
   const handleDrop = (event: React.DragEvent) => {
-    console.log(event);
+    // console.log(event);
     event.preventDefault();
     event.stopPropagation();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
@@ -257,7 +257,7 @@ const NodeTable = () => {
         );
       }
       if (filterByEdgeType.length) {
-        console.log(filterByEdgeType);
+        // console.log(filterByEdgeType);
         data = data.filter((item) =>
           filterByEdgeType.some((filterType) =>
             item.edgeID.includes(filterType),

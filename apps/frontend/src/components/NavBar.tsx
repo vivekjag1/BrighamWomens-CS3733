@@ -88,7 +88,7 @@ function NavBar() {
 
         setPictureURL(empName!.imageSrc);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchProfilePicture();
@@ -110,7 +110,7 @@ function NavBar() {
   const { logout } = useAuth0();
   const location = useLocation();
   const [activePage, setActivePage] = useState(location.pathname);
-  console.log("active page", activePage);
+  // console.log("active page", activePage);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
@@ -130,7 +130,6 @@ function NavBar() {
 
   interface NavbarItemProps {
     to: string;
-    activePage: string;
     setActivePage: (page: string) => void;
     Icon: React.ElementType;
     label: string;
@@ -141,7 +140,6 @@ function NavBar() {
 
   const NavbarItem: React.FC<NavbarItemProps> = ({
     to,
-    activePage,
     setActivePage,
     Icon,
     label,
@@ -149,7 +147,6 @@ function NavBar() {
     collapsed,
     callback,
   }) => {
-    console.log(activePage);
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animate-underline-yellow items-center overflow-hidden">
         <Link
@@ -303,7 +300,6 @@ function NavBar() {
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
             to={paths.HOME}
-            activePage={activePage}
             setActivePage={setActivePage}
             Icon={MapIcon}
             label="Map"
@@ -313,7 +309,6 @@ function NavBar() {
             <>
               <NavbarItem
                 to={paths.MAP_EDITOR}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={EditLocationAltIcon}
                 label="Map Editor"
@@ -322,7 +317,6 @@ function NavBar() {
               />
               <NavbarItem
                 to={paths.MAP_DATA}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AddLocationAltIcon}
                 label="Map Data"
@@ -331,7 +325,6 @@ function NavBar() {
               />
               <NavbarItem
                 to={paths.SERVICES}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={VolunteerActivismIcon}
                 label="Services"
@@ -339,7 +332,6 @@ function NavBar() {
               />
               <NavbarItem
                 to={paths.SERVICE_LOG}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={TocIcon}
                 label="Service Log"
@@ -348,7 +340,6 @@ function NavBar() {
               />
               <NavbarItem
                 to={paths.EMPLOYEE_LOG}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AssignmentIndIcon}
                 label="Employee Log"
@@ -378,7 +369,6 @@ function NavBar() {
             <div className="flex flex-col">
               <NavbarItem
                 to={paths.MAP_DATA}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={LoginIcon}
                 label={"Sign in"}
