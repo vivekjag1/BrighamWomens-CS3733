@@ -50,7 +50,7 @@ export function ServiceReqGetterProfile(props: {
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer className="shadow-md">
           <Table className="text-center text-gray-50e">
-            <TableHead className="text-xs text-gray-50 uppercase bg-secondary">
+            <TableHead className="text-xs text-gray-50 uppercase bg-secondary ">
               <TableRow
                 sx={{
                   "& > th": {
