@@ -8,7 +8,7 @@ interface startEndMarkerProps {
 
 function StartEndMarker(props: startEndMarkerProps) {
   return (
-    <g>
+    <g key={`${props.x}-${props.y}`}>
       <motion.circle
         animate={{ scale: [1, 1.5, 1] }}
         transition={{ duration: 1, repeat: Infinity }}
