@@ -11,8 +11,6 @@ import { Card, CardContent } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
-import { useIdleTimer } from "react-idle-timer";
-import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -56,12 +54,10 @@ function NavBar() {
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
 
-  const [remaining, setRemaining] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [pictureURL, setPictureURL] = React.useState<string>("");
 
-  const { showToast } = useToast();
   const handleLogout = () => {
     logout({
       logoutParams: {
@@ -97,36 +93,6 @@ function NavBar() {
     };
     fetchProfilePicture();
   }, [getAccessTokenSilently, user]);
-
-  const onIdle = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
-  const { getRemainingTime } = useIdleTimer({
-    onIdle,
-    timeout: 600_000,
-    throttle: 500,
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRemaining(Math.ceil(getRemainingTime() / 1000));
-    }, 500);
-    if (remaining <= 30 && remaining != 0) {
-      showToast(
-        "You will be logged out in " + remaining + " seconds due to inactivity",
-        "warning",
-      );
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
 
   const handleSetIsCollapsed = () => {
     if (isCollapsed) {
@@ -317,7 +283,7 @@ function NavBar() {
                     : "text-2xl whitespace-nowrap self-center"
                 }
               >
-                Kiosk
+                Kiosk Menu
               </h2>
               <span>&nbsp;</span> {/* Add space */}
               <h2
@@ -329,9 +295,7 @@ function NavBar() {
                     ? "hidden"
                     : "text-2xl whitespace-nowrap self-center"
                 }
-              >
-                Menu
-              </h2>
+              ></h2>
             </div>
           </Link>
         </div>
@@ -352,8 +316,8 @@ function NavBar() {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={EditLocationAltIcon}
-                label="Map"
-                labelLight="Editor"
+                label="Map Editor"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
@@ -361,8 +325,8 @@ function NavBar() {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AddLocationAltIcon}
-                label="Map"
-                labelLight="Data"
+                label="Map Data"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
@@ -378,8 +342,8 @@ function NavBar() {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={TocIcon}
-                label="Service"
-                labelLight="Data"
+                label="Service Log"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
@@ -387,8 +351,8 @@ function NavBar() {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AssignmentIndIcon}
-                label="Employee"
-                labelLight="Data"
+                label="Employee Log"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
             </>
