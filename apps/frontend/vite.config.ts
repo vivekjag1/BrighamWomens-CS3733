@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import eslint from "vite-plugin-eslint";
 import * as process from "process";
-console.log(process.env.FRONTEND_PORT);
 // https://vitejs.dev/config/
+
 export default defineConfig({
   resolve: {
     preserveSymlinks: true,

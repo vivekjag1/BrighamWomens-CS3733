@@ -1,15 +1,16 @@
+import Tooltip from "@mui/material/Tooltip";
 import { MapStyles } from "../../common/StylingCommon";
 
 interface ClickableCircleProps {
   x: number;
   y: number;
+  name: string;
   id: string;
   onClick: (nodeID: string) => void;
-  title: string;
 }
 function ClickableCircle(props: ClickableCircleProps) {
   return (
-    <>
+    <Tooltip title={props.name} placement="top" arrow>
       <circle
         r={MapStyles.nodeRadius}
         cx={props.x}
@@ -18,7 +19,7 @@ function ClickableCircle(props: ClickableCircleProps) {
         onClick={() => props.onClick(props.id)}
         className="cursor-pointer"
       />
-    </>
+    </Tooltip>
   );
 }
 
