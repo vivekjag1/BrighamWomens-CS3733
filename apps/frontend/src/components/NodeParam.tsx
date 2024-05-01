@@ -60,6 +60,9 @@ const NodeParam = ({
       sx={sx}
       className={`bg-gray-50 ${className}`}
       size="small"
+      InputProps={{
+        style: { fontFamily: "Poppins, sans-serif" },
+      }}
       InputLabelProps={{
         style: {
           color: "#a4aab5",
