@@ -22,7 +22,7 @@ export type nodeType =
   | "STAI"
   | "ELEV";
 
-const nodeTypes: nodeType[] = [
+const dropdownNodeTypes: nodeType[] = [
   "HALL",
   "DEPT",
   "CONF",
@@ -33,8 +33,6 @@ const nodeTypes: nodeType[] = [
   "RETL",
   "SERV",
   "BATH",
-  "STAI",
-  "ELEV",
 ];
 
 const textFieldStyles_large = {
@@ -95,9 +93,13 @@ function MapEditCard(props: {
             onChange={(value) => {
               props.updateNode("nodeType", value);
             }}
-            options={nodeTypes}
+            options={dropdownNodeTypes}
             sx={textFieldStyles_small}
-            label="Type"
+            label={
+              isEditableNode()
+                ? "Type"
+                : nodes.get(selectedNodeID ?? "")?.nodeType
+            }
             className=""
             disabled={
               nodes.get(selectedNodeID!) == undefined || !isEditableNode()
