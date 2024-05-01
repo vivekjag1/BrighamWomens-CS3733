@@ -3,18 +3,18 @@ import Autocomplete /*, { createFilterOptions }*/ from "@mui/material/Autocomple
 import { Avatar, Box, SxProps, Theme } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useEmployees } from "./useEmployees.ts";
-import mattImage from "../../assets/employees/matt-brown.jpeg";
-import andyImage from "../../assets/employees/andy-truong.jpeg";
-import vivekImage from "../../assets/employees/vivek-jagadeesh.jpeg";
-import ademImage from "../../assets/employees/adem.jpeg";
-import suliImage from "../../assets/employees/sulaiman.jpeg";
-import frankyImage from "../../assets/employees/franky.jpeg";
-import colinImage from "../../assets/employees/colin.jpeg";
-import griffinImage from "../../assets/employees/griffin-brown.jpeg";
-import taehaImage from "../../assets/employees/taeha-song.jpeg";
-import danielImage from "../../assets/employees/dan-gorbunov.jpeg";
-import josephImage from "../../assets/employees/joe-cardarelli.jpeg";
-import wongImage from "../../assets/employees/wilsonwong.jpg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import josephImage from "../../assets/employees/jcardarelli.jpeg";
+import wongImage from "../../assets/employees/wwong.jpg";
 // import {EmployeeType} from "common/src/EmployeeType.ts";
 
 interface EmployeeDropdownProps {
