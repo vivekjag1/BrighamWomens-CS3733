@@ -11,6 +11,7 @@ import { Node } from "database";
 import ZoomControls from "../map/ZoomControls.tsx";
 import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
+import { useToast } from "../useToast.tsx";
 
 export type EdgeCoordinates = {
   startX: number;
@@ -49,11 +50,14 @@ const MapEditImage = (props: {
     offset: { x: 0, y: 0 },
   });
 
+  const { showToast } = useToast();
+
   useEffect(() => {
     const tempCoords: EdgeCoordinates[] = [];
-    for (let i = 0; i < edges.length; i++) {
-      const startNode = nodes.get(edges[i].startNodeID);
-      const endNode = nodes.get(edges[i].endNodeID);
+
+    for (const edge of edges.values()) {
+      const startNode = nodes.get(edge.startNodeID);
+      const endNode = nodes.get(edge.endNodeID);
 
       if (startNode && endNode) {
         tempCoords.push({
@@ -61,7 +65,7 @@ const MapEditImage = (props: {
           startY: startNode.ycoord,
           endX: endNode.xcoord,
           endY: endNode.ycoord,
-          edgeID: edges[i].edgeID,
+          edgeID: edge.edgeID,
         });
       }
     }
@@ -160,8 +164,13 @@ const MapEditImage = (props: {
     const bbox = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX - bbox.left;
     const mouseY = e.clientY - bbox.top;
+
     if (draggablePosition.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
+      if (updatedNode.nodeType == "ELEV" || updatedNode.nodeType == "STAI") {
+        showToast("This node cannot be modified!", "warning");
+        return;
+      }
       updatedNode.xcoord = Math.round(
         updatedNode.xcoord + (mouseX - draggablePosition.offset.x),
       );

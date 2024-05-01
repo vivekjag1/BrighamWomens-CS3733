@@ -46,7 +46,7 @@ export async function createNodes(nodes: Node[]) {
 }
 
 export async function createEdges(edges: Edge[]) {
-  await prisma.edge.createMany({ data: edges, skipDuplicates: false });
+  await prisma.edge.createMany({ data: edges, skipDuplicates: true });
 }
 
 export default router;
