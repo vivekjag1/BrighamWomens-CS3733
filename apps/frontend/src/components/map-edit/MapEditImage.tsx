@@ -24,6 +24,7 @@ const MapEditImage = (props: {
   onNodeClick: (nodeID: string) => void;
   onEdgeClick: (edgeID: string) => void;
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
+  updateNode: (field: keyof Node, value: string | number) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
 
@@ -37,7 +38,7 @@ const MapEditImage = (props: {
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
 
   const nodes = useContext(MapContext).nodes;
-  const setNodes = useContext(MapContext).setNodes;
+  // const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
   const [draggablePosition, setDraggablePosition] = useState({
     x: 0,
@@ -147,11 +148,11 @@ const MapEditImage = (props: {
   }
 
   // Update/create node in nodes useState
-  function updateNode(nodeID: string, node: Node) {
-    const newNodes: Map<string, Node> = new Map(nodes);
-    newNodes.set(node.nodeID, node);
-    setNodes(newNodes);
-  }
+  // function updateNode(nodeID: string, node: Node) {
+  //   const newNodes: Map<string, Node> = new Map(nodes);
+  //   newNodes.set(node.nodeID, node);
+  //   setNodes(newNodes);
+  // }
 
   function handlePointerMove(
     e: React.PointerEvent<SVGCircleElement>,
@@ -169,7 +170,8 @@ const MapEditImage = (props: {
         updatedNode.ycoord + (mouseY - draggablePosition.offset.y),
       );
 
-      updateNode(nodeID, updatedNode);
+      props.updateNode("xcoord", updatedNode.xcoord);
+      props.updateNode("ycoord", updatedNode.ycoord);
     }
   }
 
