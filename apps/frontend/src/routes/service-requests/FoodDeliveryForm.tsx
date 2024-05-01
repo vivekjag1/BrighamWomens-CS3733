@@ -7,7 +7,6 @@ import EmployeeDropdown from "../../components/EmployeeDropdown.tsx";
 import CustomTextField from "../../components/CustomTextField.tsx";
 import CustomDatePicker from "../../components/CustomDatePicker.tsx";
 import CustomStatusDropdown from "../../components/CustomStatusDropdown.tsx";
-import CustomPrioritySelector from "../../components/CustomPrioritySelector.tsx";
 import { foodDeliveryService } from "common/src/foodDelivery.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
 import dayjs, { Dayjs } from "dayjs";
@@ -98,9 +97,13 @@ export function FoodDeliveryserviceForm() {
     <div className="bg-offwhite">
       <FormContainer imgPath={FoodDeliveryIMG} alt={"Food Delivery"}>
         <div>
+          <p className="text-center font-bold text-secondary pt-4 pb-4">
+            Made by Adem
+          </p>
           <h1 className="text-center font-bold text-3xl text-secondary pt-4 pb-4">
             Food Delivery
           </h1>
+
           <div className="h-auto flex justify-center items-center w-[30rem]">
             <form
               noValidate
@@ -161,10 +164,10 @@ export function FoodDeliveryserviceForm() {
                 disablePortal
                 id="combo-box-service"
                 options={[
-                  { label: "Clean" },
-                  { label: "Deep Clean" },
-                  { label: "Hazardous" },
-                  { label: "Toxic" },
+                  { label: "Beef" },
+                  { label: "Lamb" },
+                  { label: "Chicken" },
+                  { label: "Fish" },
                 ]}
                 className="bg-gray-50"
                 size="small"
@@ -172,7 +175,7 @@ export function FoodDeliveryserviceForm() {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Service Type *"
+                    label="Protein *"
                     InputLabelProps={{
                       style: {
                         color: "#a4aab5",
@@ -202,9 +205,9 @@ export function FoodDeliveryserviceForm() {
                 disablePortal
                 id="combo-box-equipment"
                 options={[
-                  { label: "Mop" },
-                  { label: "Broom" },
-                  { label: "Dust Pan" },
+                  { label: "Vegetables" },
+                  { label: "Rice" },
+                  { label: "Pasta" },
                 ]}
                 className="bg-gray-50"
                 size="small"
@@ -212,7 +215,7 @@ export function FoodDeliveryserviceForm() {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Necessary Equipment *"
+                    label="Side *"
                     InputLabelProps={{
                       style: {
                         color: "#a4aab5",
@@ -225,7 +228,7 @@ export function FoodDeliveryserviceForm() {
               />
 
               <CustomTextField
-                label="Description (optional)"
+                label="Food Allergies (optional)"
                 multiline
                 rows={3}
                 value={foodDeliveryserviceRequest.serviceRequest.description}
@@ -297,20 +300,7 @@ export function FoodDeliveryserviceForm() {
                 component="fieldset"
                 margin="normal"
                 sx={{ width: "25rem", fontFamily: "Poppins, sans-serif" }}
-              >
-                <CustomPrioritySelector
-                  value={foodDeliveryserviceRequest.serviceRequest.priority}
-                  onChange={(e) =>
-                    setfoodDeliveryserviceRequest({
-                      ...foodDeliveryserviceRequest,
-                      serviceRequest: {
-                        ...foodDeliveryserviceRequest.serviceRequest,
-                        priority: e.target.value,
-                      },
-                    })
-                  }
-                />
-              </FormControl>
+              ></FormControl>
 
               <div className="flex justify-around w-full mt-4">
                 <ButtonRed
@@ -328,9 +318,7 @@ export function FoodDeliveryserviceForm() {
                   Submit
                 </ButtonBlue>
               </div>
-              <div className="text-center mt-4">
-                <p>Made by Adem</p>
-              </div>
+              <div className="text-center mt-4"></div>
             </form>
           </div>
         </div>

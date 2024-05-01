@@ -36,7 +36,7 @@ export function FormContainer({ imgPath, alt, children }: FormContainerProps) {
                       "linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.75) 25%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0) 100%)",
                     position: "absolute",
                     width: "20%",
-                    height: "79.2%",
+                    height: "100%",
                   }}
                 ></div>
                 <img
