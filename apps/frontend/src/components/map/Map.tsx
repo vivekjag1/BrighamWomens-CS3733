@@ -87,6 +87,7 @@ function Map(props: mapProps) {
         y={node.ycoord}
         id={node.nodeID}
         onClick={() => props.onNodeClick(node.nodeID)}
+        title={node.shortName}
       />
     ) : (
       <></>
