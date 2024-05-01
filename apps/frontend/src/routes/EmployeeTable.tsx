@@ -44,6 +44,20 @@ const EmployeeTable = () => {
     }
   };
 
+  const handleDrop = (event: React.DragEvent) => {
+    console.log(event);
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      setEmployeesFile(event.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   async function downloadFiles() {
     setFileModal(false);
     const token = await getAccessTokenSilently();
@@ -283,6 +297,8 @@ const EmployeeTable = () => {
                   <label
                     htmlFor="importNodeFile"
                     className="flex flex-col items-center justify-center w-72 h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
                   >
                     <div className="flex flex-col items-center justify-center mt-5">
                       <svg
@@ -313,6 +329,10 @@ const EmployeeTable = () => {
                             label={employeesFile.name}
                             onDelete={() => setEmployeesFile(null)}
                             className="self-center"
+                            style={{
+                              backgroundColor: "#d1d5db",
+                              color: "black",
+                            }}
                           />
                         ) : (
                           <div className="h-8"></div>
