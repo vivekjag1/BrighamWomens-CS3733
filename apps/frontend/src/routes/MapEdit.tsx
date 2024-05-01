@@ -89,6 +89,7 @@ function MapEdit() {
   const { getAccessTokenSilently } = useAuth0();
 
   const [revertModal, setRevertModal] = React.useState(false);
+  const [saveModal, setSaveModal] = React.useState(false);
 
   const contextValue = {
     nodes,
@@ -439,7 +440,7 @@ function MapEdit() {
           />
         </MapContext.Provider>
         <SaveRevertAllButtons
-          saveAll={handleSaveAll}
+          saveAll={() => setSaveModal(true)}
           revertAll={() => setRevertModal(true)}
         />
       </div>
@@ -476,6 +477,43 @@ function MapEdit() {
               onClick={() => {
                 handleRevertAll();
                 setRevertModal(false);
+              }}
+            >
+              CONFIRM
+            </Button>
+          </div>
+        </div>
+      </CustomModal>
+      <CustomModal isOpen={saveModal} onClose={() => setSaveModal(false)}>
+        <div className="flex flex-col gap-2 text-secondary text-md font-semibold p-5 rounded-lg drop-shadow-2xl bg-white">
+          Your changes will be saved. Are you sure you want to proceed?
+          <div className="flex justify-center gap-8">
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#EA422D",
+                color: "white",
+                width: "8rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+              endIcon={<ClearIcon />}
+              onClick={() => setSaveModal(false)}
+            >
+              CANCEL
+            </Button>
+
+            <Button
+              variant="contained"
+              className="justify-end"
+              style={{
+                backgroundColor: "#012D5A",
+                width: "8rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+              endIcon={<CheckIcon />}
+              onClick={() => {
+                handleSaveAll();
+                setSaveModal(false);
               }}
             >
               CONFIRM
