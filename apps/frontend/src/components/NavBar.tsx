@@ -202,7 +202,11 @@ function NavBar() {
                 transition={{ duration: 0.1 }}
               >
                 <Link to={paths.PROFILE}>
-                  <Button sx={profileButtonStyles} startIcon={<PersonIcon />}>
+                  <Button
+                    sx={profileButtonStyles}
+                    onClick={toggleProfileView}
+                    startIcon={<PersonIcon />}
+                  >
                     Profile
                   </Button>
                 </Link>
