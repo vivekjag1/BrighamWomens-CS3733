@@ -4,7 +4,15 @@ const NotFound: React.FC = () => {
   return (
     <div
       className="flex items-center justify-center h-screen"
-      style={{ backgroundColor: "#012d5a" }}
+      style={{
+        background: `linear-gradient(
+                     180deg,
+                     rgba(0, 41, 76, 0.75),
+                     rgba(0, 41, 76, 0.75)
+                 ), url('../../../assets/bwh-exterior-default.png')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <div className="text-center p-10">
         <h1 className="text-8xl font-extrabold text-white mb-4">404</h1>
