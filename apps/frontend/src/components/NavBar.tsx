@@ -144,7 +144,6 @@ function NavBar() {
   const { logout } = useAuth0();
   const location = useLocation();
   const [activePage, setActivePage] = useState(location.pathname);
-  console.log("active page", activePage);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
@@ -175,7 +174,6 @@ function NavBar() {
 
   const NavbarItem: React.FC<NavbarItemProps> = ({
     to,
-    activePage,
     setActivePage,
     Icon,
     label,
@@ -183,7 +181,6 @@ function NavBar() {
     collapsed,
     callback,
   }) => {
-    console.log(activePage);
     return (
       <div className="pt-[0.8rem] pb-[0.8rem] ml-[1.5rem] mr-[1.5rem] relative animate-underline-yellow items-center overflow-hidden">
         <Link

@@ -54,7 +54,6 @@ function Home() {
 
   // @ts-expect-error missing type
   function combineDirections(floors) {
-    console.log(typeof floors);
     const processedFloors = [];
 
     for (let i = 0; i < floors.length; i++) {
@@ -70,7 +69,6 @@ function Home() {
           const feet = parseInt(currentDirection.msg.match(/(\d+)ft/)[1]);
           sum += feet;
           accumulating = true;
-          console.log(sum);
 
           if (
             j === floor.directions.length - 1 ||
@@ -132,13 +130,6 @@ function Home() {
         setPath(response.data.path);
 
         setActiveFloor(getFloorNumber(response.data.path[0].floor));
-        for (const innerArray of response.data.directions) {
-          for (const item of innerArray.directions) {
-            console.log(item);
-          }
-        }
-
-        // console.log(combinedDirections);
         setDirections(combineDirections(response.data.directions));
         setTripStats(response.data.tripStats);
         setGlowSequence(getFloorSequence(response.data.path).slice(1));
