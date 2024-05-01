@@ -16,28 +16,6 @@ interface floorSelectorProps {
 function FloorSelector(props: floorSelectorProps) {
   const relevantFloors = getFloorsInPath(props.path);
   const [activeMap, setActiveMap] = useState(0);
-  const ToggleButtonGroupStyles = {
-    backgroundColor: DesignSystem.primaryColor,
-    borderRadius: "6px",
-    width: "5.5vh",
-  } as const;
-
-  const ToggleButtonStyles = {
-    color: DesignSystem.white,
-    fontFamily: DesignSystem.fontFamily,
-    fontSize: "1.25rem",
-    fontWeight: "light",
-    height: "5.5vh",
-    borderRadius: "6px",
-    "&:hover": {
-      backgroundColor: ButtonStyling.blueButtonHover,
-    },
-    "&.Mui-selected, &.Mui-selected:hover": {
-      backgroundColor: ButtonStyling.blueButtonClicked,
-      color: "white",
-      fontWeight: "medium",
-    },
-  } as const;
 
   return (
     <div>
@@ -51,7 +29,12 @@ function FloorSelector(props: floorSelectorProps) {
         }
       >
         <ToggleButton
-          sx={ToggleButtonStyles}
+          sx={{
+            ...ToggleButtonStyles,
+            "&.MuiToggleButtonGroup-firstButton": {
+              borderBottom: "1px solid #1565c0",
+            },
+          }}
           value="3"
           disabled={!relevantFloors.includes(3)}
           selected={props.activeFloor == 3}
@@ -125,7 +108,6 @@ function FloorSelector(props: floorSelectorProps) {
             ...ToggleButtonStyles,
             "&.MuiToggleButtonGroup-lastButton": {
               borderTop: "1px solid #1565c0",
-              borderBottom: "1px solid #1565c0",
             },
           }}
           value="-2"
@@ -143,6 +125,29 @@ function FloorSelector(props: floorSelectorProps) {
     </div>
   );
 }
+
+const ToggleButtonGroupStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  borderRadius: "6px",
+  width: "5.5vh",
+} as const;
+
+const ToggleButtonStyles = {
+  color: DesignSystem.white,
+  fontFamily: DesignSystem.fontFamily,
+  fontSize: "1.25rem",
+  fontWeight: "light",
+  height: "5.5vh",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.blueButtonHover,
+  },
+  "&.Mui-selected, &.Mui-selected:hover": {
+    backgroundColor: ButtonStyling.blueButtonClicked,
+    color: "white",
+    fontWeight: "medium",
+  },
+} as const;
 
 // Gets the floors involved in a path
 function getFloorsInPath(path: Node[]): number[] {

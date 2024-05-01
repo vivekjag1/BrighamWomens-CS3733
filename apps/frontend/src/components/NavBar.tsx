@@ -15,12 +15,39 @@ import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
-
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
+import andyImage from "../../assets/employees/atruong.jpeg";
+import vivekImage from "../../assets/employees/vjagadeesh.jpeg";
+import ademImage from "../../assets/employees/mdjadid.jpeg";
+import suliImage from "../../assets/employees/smoukheiber.jpeg";
+import frankyImage from "../../assets/employees/fmise.jpeg";
+import colinImage from "../../assets/employees/cmasucci.jpeg";
+import griffinImage from "../../assets/employees/gbrown.jpeg";
+import taehaImage from "../../assets/employees/tsong.jpeg";
+import mattImage from "../../assets/employees/mbrown.jpeg";
+import danielImage from "../../assets/employees/dgorbunov.jpeg";
+import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+
+const definedEmployees = [
+  { name: "dgorbunov", imageSrc: danielImage },
+  { name: "mbrown", imageSrc: mattImage },
+  { name: "atruong", imageSrc: andyImage },
+  { name: "vjagadeesh", imageSrc: vivekImage },
+  { name: "mdjadid", imageSrc: ademImage },
+  { name: "smoukheiber", imageSrc: suliImage },
+  { name: "fmise", imageSrc: frankyImage },
+  { name: "cmasucci", imageSrc: colinImage },
+  { name: "gbrown", imageSrc: griffinImage },
+  { name: "tsong", imageSrc: taehaImage },
+  { name: "default", imageSrc: defaultPhoto },
+];
+
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
@@ -46,7 +73,7 @@ function NavBar() {
     const fetchProfilePicture = async () => {
       try {
         if (user?.name?.split(" ")[0] == "Admin") {
-          setPictureURL(`../../assets/employees/default-photo.jpeg`);
+          setPictureURL(defaultPhoto);
           return;
         }
         const token = await getAccessTokenSilently();
@@ -58,7 +85,12 @@ function NavBar() {
           userData,
           token,
         );
-        setPictureURL(`../../assets/employees/${fetchUser.data.userName}.jpeg`);
+
+        const empName = definedEmployees.find(
+          (employee) => employee.name.trim() === fetchUser.data.userName,
+        );
+
+        setPictureURL(empName!.imageSrc);
       } catch (error) {
         console.log(error);
       }
@@ -215,22 +247,14 @@ function NavBar() {
                   <CardContent className="flex flex-col gap-2">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
-                      <ButtonBlue className="flex text-center text-2xl w-full ">
-                        View Profile
+                      <ButtonBlue
+                        className="flex text-center text-2xl w-full"
+                        endIcon={<PersonIcon />}
+                      >
+                        Profile
                       </ButtonBlue>
                     </Link>
-                    <ButtonRed
-                      onClick={handleLogout}
-                      sx={{
-                        display: "flex",
-                        textAlign: "center",
-                        fontSize: "2xl",
-                        width: "full",
-                        //padding: "0.5",
-                        backgroundColor: "red",
-                        fontFamily: "poppins, sans-serif",
-                      }}
-                    >
+                    <ButtonRed onClick={handleLogout} endIcon={<LogoutIcon />}>
                       Log Out
                     </ButtonRed>
                   </CardContent>

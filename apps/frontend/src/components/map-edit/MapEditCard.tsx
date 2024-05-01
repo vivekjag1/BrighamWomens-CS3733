@@ -37,17 +37,21 @@ const dropdownNodeTypes: nodeType[] = [
 
 const textFieldStyles_large = {
   width: "16vw",
+  fontFamily: "poppins, sans-serif",
 };
 
 const textFieldStyles_small = {
   width: "8vw",
+  fontFamily: "poppins, sans-serif",
 };
 
 const textFieldStyles_floor = {
   width: "5vw",
+  fontFamily: "poppins, sans-serif",
 };
 const textFieldStyles_type = {
   width: "11vw",
+  fontFamily: "poppins, sans-serif",
 };
 
 function MapEditCard(props: {
@@ -112,6 +116,7 @@ function MapEditCard(props: {
               nodes.get(selectedNodeID!) == undefined || !isEditableNode()
             }
           />
+
           <NodeParam
             value={nodes?.get(selectedNodeID ?? "")?.floor}
             sx={textFieldStyles_floor}

@@ -1,6 +1,6 @@
 import { ButtonGroup, Button, Tooltip } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { ButtonStyling } from "../../common/StylingCommon.ts";
 
 interface saveRevertAllButtonsProps {
@@ -18,7 +18,7 @@ function SaveRevertAllButtons(props: saveRevertAllButtonsProps) {
       </Tooltip>
       <Tooltip title="Revert All" placement="top" arrow>
         <Button sx={revertStyle} onClick={props.revertAll}>
-          <SettingsBackupRestoreIcon />
+          <DeleteForeverIcon />
         </Button>
       </Tooltip>
     </ButtonGroup>
@@ -37,13 +37,13 @@ const saveStyle = {
 } as const;
 
 const revertStyle = {
-  backgroundColor: ButtonStyling.blueButton,
+  backgroundColor: ButtonStyling.redButton,
   borderRadius: "6px",
   border: "none",
   height: "5.5vh",
   width: "5.5vh",
   "&:hover": {
-    backgroundColor: ButtonStyling.redButton,
+    backgroundColor: ButtonStyling.redButtonHover,
   },
 } as const;
 
