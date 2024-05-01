@@ -463,22 +463,23 @@ export default function Profile() {
                   </p>
                   {employee && (
                     <>
-                      <label className="text-l text-center">
-                        {" "}
-                        Account type: {employee.role}
+                      <label className=" text-l text-center">
+                        {user!.email}
                       </label>
+                      <br />
 
-                      <label className="text-l text-center">
-                        Position: {employee.position}
-                      </label>
-                      <label className="text-l text-center">
-                        Last Update: {user!.updated_at}
-                      </label>
+                      <div className="flex justify-center items-center">
+                        <label className="text-l text-center">
+                          {employee.position}
+                        </label>
+                        <div className="w-6" />
+                        <label className="text-l text-center">
+                          {employee.role}
+                        </label>
+                      </div>
                     </>
                   )}
-                  <label className=" text-l text-center">
-                    Email: {user!.email}
-                  </label>
+
                   <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700 " />
                   </div>
