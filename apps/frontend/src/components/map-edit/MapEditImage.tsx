@@ -158,15 +158,15 @@ const MapEditImage = (props: {
     nodeID: string,
   ) {
     const bbox = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - bbox.left;
-    const y = e.clientY - bbox.top;
+    const mouseX = e.clientX - bbox.left;
+    const mouseY = e.clientY - bbox.top;
     if (draggablePosition.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - draggablePosition.offset.x),
+        updatedNode.xcoord + (mouseX - draggablePosition.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - draggablePosition.offset.y),
+        updatedNode.ycoord + (mouseY - draggablePosition.offset.y),
       );
 
       updateNode(nodeID, updatedNode);
@@ -235,7 +235,9 @@ const MapEditImage = (props: {
                   strokeWidth={MapStyling.edgeWidth}
                   onClick={(e) => handleEdgeClick(e, edge.edgeID)}
                   onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
-                  style={{ cursor: "pointer" }}
+                  style={{
+                    cursor: `${selectedAction.toString() == "DeleteNode" ? "pointer" : ""}`,
+                  }}
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (
