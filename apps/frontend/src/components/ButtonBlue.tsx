@@ -7,7 +7,6 @@ const styles = {
   color: "white",
   backgroundColor: ButtonStyling.blueButton,
   borderRadius: "6px",
-  // padding: ".5rem 3rem",
   "&:hover": {
     backgroundColor: ButtonStyling.blueButtonHover,
   },
