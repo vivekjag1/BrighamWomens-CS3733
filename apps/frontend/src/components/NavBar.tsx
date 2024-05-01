@@ -91,7 +91,9 @@ function NavBar() {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
-    setShowProfileMenu(!showProfileMenu);
+    if (!isCollapsed) {
+      setShowProfileMenu(!showProfileMenu);
+    }
   }
 
   useEffect(() => {
