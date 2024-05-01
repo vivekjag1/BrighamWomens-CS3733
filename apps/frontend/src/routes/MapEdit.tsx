@@ -88,6 +88,8 @@ function MapEdit() {
   const { showToast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
 
+  const [revertModal, setRevertModal] = React.useState(false);
+
   const contextValue = {
     nodes,
     setNodes,
@@ -438,12 +440,49 @@ function MapEdit() {
         </MapContext.Provider>
         <SaveRevertAllButtons
           saveAll={handleSaveAll}
-          revertAll={handleRevertAll}
+          revertAll={() => setRevertModal(true)}
         />
       </div>
       <div className="absolute right-[1.5%] bottom-[2%]">
         <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
+      <CustomModal isOpen={revertModal} onClose={() => setRevertModal(false)}>
+        <div className="flex flex-col gap-2 text-secondary text-md font-semibold p-5 rounded-lg drop-shadow-2xl bg-white">
+          Your changes will be lost. Are you sure you want to proceed?
+          <div className="flex justify-center gap-8">
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#EA422D",
+                color: "white",
+                width: "8rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+              endIcon={<ClearIcon />}
+              onClick={() => setRevertModal(false)}
+            >
+              CANCEL
+            </Button>
+
+            <Button
+              variant="contained"
+              className="justify-end"
+              style={{
+                backgroundColor: "#012D5A",
+                width: "8rem",
+                fontFamily: "Poppins, sans-serif",
+              }}
+              endIcon={<CheckIcon />}
+              onClick={() => {
+                handleRevertAll();
+                setRevertModal(false);
+              }}
+            >
+              CONFIRM
+            </Button>
+          </div>
+        </div>
+      </CustomModal>
       {blocker.state === "blocked" ? (
         <CustomModal
           isOpen={blocker.state === "blocked"}
