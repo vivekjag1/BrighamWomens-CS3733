@@ -46,7 +46,27 @@ export async function createNodes(nodes: Node[]) {
 }
 
 export async function createEdges(edges: Edge[]) {
-  await prisma.edge.createMany({ data: edges, skipDuplicates: true });
+  for (let i = 0; i < edges.length; i++) {
+    const startNode = await prisma.node.findMany({
+      where: {
+        nodeID: edges[i].startNodeID,
+      },
+    });
+    const endNode = await prisma.node.findMany({
+      where: {
+        nodeID: edges[i].endNodeID,
+      },
+    });
+    if (startNode.length != 0 && endNode.length != 0) {
+      await prisma.edge.create({
+        data: {
+          edgeID: edges[i].edgeID,
+          startNodeID: edges[i].startNodeID,
+          endNodeID: edges[i].endNodeID,
+        },
+      });
+    }
+  }
 }
 
 export default router;
