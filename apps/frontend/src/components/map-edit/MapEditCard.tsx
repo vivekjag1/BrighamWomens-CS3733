@@ -18,7 +18,9 @@ export type nodeType =
   | "REST"
   | "RETL"
   | "SERV"
-  | "BATH";
+  | "BATH"
+  | "STAI"
+  | "ELEV";
 
 const nodeTypes: nodeType[] = [
   "HALL",
@@ -31,6 +33,8 @@ const nodeTypes: nodeType[] = [
   "RETL",
   "SERV",
   "BATH",
+  "STAI",
+  "ELEV",
 ];
 
 const textFieldStyles_large = {
@@ -95,7 +99,9 @@ function MapEditCard(props: {
             sx={textFieldStyles_small}
             label="Type"
             className=""
-            disabled={nodes.get(selectedNodeID!) == undefined}
+            disabled={
+              nodes.get(selectedNodeID!) == undefined || !isEditableNode()
+            }
           />
           <NodeParam
             value={nodes?.get(selectedNodeID ?? "")?.floor}
