@@ -2,7 +2,19 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 /*import NavBar from "../archive/NavBar.tsx";*/
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#012D5A",
+    },
+      action: {
+          selected: '#ffab40', // Change this to your desired selected color
+      },
+  },
+});
 
 function Layout() {
   return (
@@ -17,12 +29,14 @@ function Layout() {
         scope: "openid profile email offline_access",
       }}
     >
-      <div className="w-screen h-screen flex">
-        <NavBar />
-        <main className="grow">
-          <Outlet />
-        </main>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="w-screen h-screen flex">
+          <NavBar />
+          <main className="grow">
+            <Outlet />
+          </main>
+        </div>
+      </ThemeProvider>
     </Auth0Provider>
   );
 }
