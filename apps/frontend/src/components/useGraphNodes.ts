@@ -14,7 +14,6 @@ export const useGraphNodes = () => {
       graphNodes.sort((a, b) => a.longName.localeCompare(b.longName));
       setNodes(graphNodes);
     }
-    // console.log("nodes called");
     fetchNodes();
   }, []);
 

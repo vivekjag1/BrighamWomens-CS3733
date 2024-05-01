@@ -13,7 +13,6 @@ router.post("/", async (req, res) => {
         name: userName,
       },
     });
-    console.log(fetchUser);
     res.status(200).json(fetchUser);
   } catch (error) {
     console.error(error);

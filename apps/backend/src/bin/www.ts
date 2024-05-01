@@ -8,7 +8,6 @@ console.info("Connecting to database...");
 try {
   // This intrinsically connects to the database
   require("./database-connection.ts");
-  console.log("Successfully connected to the database");
 } catch (error) {
   // Log any errors
   console.error(`Unable to establish database connection:
@@ -62,7 +61,6 @@ export default server;
     await httpTerminator.terminate();
 
     // Log the exit
-    console.log("Server shutdown complete");
     process.exit(0); // Exit normally
   });
 });
@@ -116,5 +114,4 @@ function onListening(): void {
   const bind: string =
     typeof addr === "string" ? "pipe " + addr : "port " + addr?.port; // Otherwise get the port
   console.info("Server listening on " + bind); // Debug output that we're listening
-  console.log("Startup complete");
 }

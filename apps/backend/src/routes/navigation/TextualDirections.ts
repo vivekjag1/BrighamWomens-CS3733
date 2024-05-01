@@ -74,15 +74,6 @@ export function getDirections(nodes: Node[]): Directions[] {
   return outputDirections;
 }
 
-/*export function printDirections(directionList: Directions[]) {
-  directionList.forEach((dir) => {
-    console.log("FLOOR: " + dir.floor);
-    dir.directions.forEach((d, i) => {
-      console.log("\t" + i + ". " + d.msg);
-    });
-  });
-}*/
-
 // Return relevant trip stats for a path
 export function getTripStats(nodes: Node[]): TripStat[] {
   let tripDistance = 0;

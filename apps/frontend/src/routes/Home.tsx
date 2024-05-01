@@ -109,7 +109,6 @@ function Home() {
   }
 
   function handleReset() {
-    console.log("inside handleReset");
     setActiveFloor(DEFAULT_FLOOR);
     setPath(INITIAL_PATH);
     setStartNode(INITIAL_PATH[0].nodeID);

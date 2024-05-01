@@ -166,7 +166,6 @@ function MapEdit() {
 
   // Update/create node in nodes useState
   function updateNode(node: Node) {
-    console.log("I am being updated");
     const newNodes: Map<string, Node> = new Map(nodes);
     newNodes.set(node.nodeID, node);
     setNodes(newNodes);
@@ -182,12 +181,9 @@ function MapEdit() {
 
   function deleteEdge(edgeID: string) {
     let newEdges: Edge[] = edges;
-    console.log("newEdges", newEdges);
     newEdges = newEdges.filter((edge) => edge.edgeID != edgeID);
-    const removedEdge = edges.filter((edge) => edge.edgeID == edgeID);
-    console.log("removedEdge", removedEdge);
+    // const removedEdge = edges.filter((edge) => edge.edgeID == edgeID);
     setEdges(newEdges);
-    console.log("edges", edges);
   }
 
   // Update/create edge in edges useState
@@ -211,9 +207,7 @@ function MapEdit() {
   }
 
   function handleEdgeClick(edgeID: string) {
-    console.log("calling handle edge click");
     if (selectedAction == Action.DeleteNode) {
-      console.log("inside if statement");
       removeEdge(edgeID);
     }
   }
@@ -246,7 +240,6 @@ function MapEdit() {
     }
   }
   function removeEdge(edgeID: string) {
-    console.log("calling remove edge");
     deleteEdge(edgeID);
   }
   function removeNode(nodeID: string) {
@@ -261,7 +254,6 @@ function MapEdit() {
   }
 
   /*function repairBrokenEdges(nodeID: string) {
-    console.log(nodeID);
     const selectedNodeEdges: Edge[] = edges.filter(
       (value) =>
         (value.startNodeID == nodeID) ||
@@ -292,7 +284,6 @@ function MapEdit() {
                 startNodeID: tempNeighborNodesIDs[i],
                 endNodeID: tempNeighborNodesIDs[j],
             };
-            console.log(newEdge);
             setNumUserEdges(numUserEdges + 1);
             updateEdge(newEdge);
         }
@@ -311,8 +302,6 @@ function MapEdit() {
   async function handleSaveAll() {
     const token = await getAccessTokenSilently();
     const nodesList: Node[] = Array.from(nodes.values());
-    console.log(edges);
-
     await MakeProtectedPostRequest(
       APIEndpoints.updateMapOnFloor,
       { floor: activeFloor, nodes: nodesList, edges: edges },
@@ -335,11 +324,11 @@ function MapEdit() {
   }
 
   function handleUndo() {
-    console.log();
+    console;
   }
 
   function handleRedo() {
-    console.log();
+    console;
   }
 
   const handleCreateNode = async (event: React.MouseEvent<SVGSVGElement>) => {

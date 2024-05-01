@@ -8,8 +8,6 @@ const prisma = new PrismaClient();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    console.log("calling the delete method");
-
     const token = await getManagementToken();
     const userName = req.body.userName;
     const sentEmail = req.body.email;

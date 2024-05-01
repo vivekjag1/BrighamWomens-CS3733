@@ -11,7 +11,6 @@ function executeFixes() {
   ];
 
   executeCommands(commands, () => {
-    console.log('Fixes applied.');
     console.warn(
       '\x1b[33m%s\x1b[0m',
       `Notice: ESLint path errors may arise after clearing cache and node_modules. 
