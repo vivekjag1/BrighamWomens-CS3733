@@ -117,7 +117,8 @@ model ITRequest {
 
 model FoodDeliveryService {
   foodRequestID  Int            @id
-  order          String
+  protein        String
+  side           String
   serviceRequest ServiceRequest @relation(fields: [foodRequestID], references: [serviceID], onDelete: Cascade)
 }
 

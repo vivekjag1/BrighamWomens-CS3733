@@ -252,8 +252,8 @@ function Home() {
   const QRCodeToggleElement = mapType == MapType.TwoDimensional && hasPath && (
     <Tooltip
       TransitionComponent={Zoom}
-      title="Display QR Code"
-      placement="bottom"
+      title="Mobile Directions"
+      placement="left"
       arrow
     >
       <div className="absolute top-[10%] right-[1.5%] z-40">
@@ -312,8 +312,8 @@ function Home() {
         {QRCodeElement}
         <Tooltip
           TransitionComponent={Zoom}
-          title="Map View Toggle"
-          placement="bottom"
+          title="Map View"
+          placement="left"
           arrow
         >
           <div className="absolute top-[2%] right-[1.5%]">
