@@ -14,13 +14,11 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
-
 import { checkAuth } from "../checkAdminStatus.ts";
 
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
-
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
@@ -78,6 +76,7 @@ function NavBar() {
       setIsHidingNavBarInfo(false);
     } else {
       setIsCollapsed(true);
+      setShowProfileMenu(false);
       setTimeout(() => {
         setIsHidingNavBarInfo(true);
       }, 350);
@@ -91,7 +90,9 @@ function NavBar() {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   function toggleProfileView() {
-    setShowProfileMenu(!showProfileMenu);
+    if (!isCollapsed) {
+      setShowProfileMenu(!showProfileMenu);
+    }
   }
 
   useEffect(() => {
@@ -101,7 +102,7 @@ function NavBar() {
       setStatus(result!);
     };
     checkRole().then();
-  }, [user, getAccessTokenSilently, activePage]);
+  }, [getAccessTokenSilently, activePage]);
 
   interface NavbarItemProps {
     to: string;
@@ -171,10 +172,18 @@ function NavBar() {
       <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
         {showProfileMenu && (
           <>
-            <div>
-              {!isHidingNavBarInfo && (
+            {/*<motion.div*/}
+            {/*  initial={{scale: 0}} // Initial scale set to 0*/}
+            {/*  animate={{scale: 1}} // Final scale set to 1*/}
+            {/*  exit={{scale: 1}} // Exit state (if needed)*/}
+            {/*  transition={{duration: 0.9}} // Animation duration*/}
+            {/*>*/}
+            <div
+              className={` cursor-pointer  ${showProfileMenu ? " scale-1" : "scale-0"}`}
+            >
+              {!isCollapsed && (
                 <Card
-                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem]`}
+                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
                   style={{ color: "#F6BD39" }}
                 >
                   <CardContent className="flex flex-col gap-2">
@@ -191,7 +200,7 @@ function NavBar() {
                         textAlign: "center",
                         fontSize: "2xl",
                         width: "full",
-                        padding: "0.5",
+                        //padding: "0.5",
                         backgroundColor: "red",
                         fontFamily: "poppins, sans-serif",
                       }}
@@ -206,7 +215,7 @@ function NavBar() {
         )}
         <div>
           <div
-            className="flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
+            className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
             onClick={toggleProfileView}
           >
             {isAuthenticated ? (

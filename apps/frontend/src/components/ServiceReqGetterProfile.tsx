@@ -1,14 +1,4 @@
-import React, { useState } from "react";
-import { APIEndpoints } from "common/src/APICommon.ts";
 import { ServiceRequest } from "database";
-import dayjs from "dayjs";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useToast } from "./useToast.tsx";
-import { Card, CardContent } from "@mui/material";
-import CustomTextField from "./CustomTextField.tsx";
-import Button from "@mui/material/Button";
-import SaveIcon from "@mui/icons-material/Save";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
   TableBody,
@@ -20,7 +10,7 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { MakeProtectedDeleteRequest } from "../MakeProtectedDeleteRequest.ts";
+import React from "react";
 
 const statusOptions = ["Unassigned", "Assigned", "InProgress", "Closed"];
 
@@ -36,10 +26,6 @@ export function ServiceReqGetterProfile(props: {
   sortPriorityOrder: () => void;
   filteredData: ServiceRequest[];
 }) {
-  const [selectedRow, setSelectedRow] = useState<ServiceRequest | null>(null);
-  const { getAccessTokenSilently } = useAuth0();
-  const { showToast } = useToast();
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(4);
 
@@ -58,31 +44,6 @@ export function ServiceReqGetterProfile(props: {
     page > -1
       ? Math.max(0, (1 + page) * rowsPerPage - props.filteredData.length)
       : 0;
-
-  async function deleteServiceRequest(serviceID: number) {
-    const token = await getAccessTokenSilently();
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const res = await MakeProtectedDeleteRequest(
-        `${APIEndpoints.getServiceRequest}/${serviceID}`,
-        token,
-      );
-
-      setSelectedRow(null);
-      showToast("Service Request deleted!", "error");
-      props.fetchData();
-    } catch (error) {
-      console.error(
-        `Error deleting service request with ID ${serviceID}:`,
-        error,
-      );
-    }
-  }
-
-  const handleRowClick = (request: ServiceRequest) => {
-    setSelectedRow(request);
-  };
 
   return (
     <div className="relative">
@@ -151,7 +112,7 @@ export function ServiceReqGetterProfile(props: {
                 .map((request) => (
                   <TableRow
                     key={request.serviceID}
-                    onClick={() => handleRowClick(request)}
+                    //onClick={() => handleRowClick(request)}
                     hover
                     style={{ cursor: "pointer" }}
                     sx={{
@@ -278,102 +239,6 @@ export function ServiceReqGetterProfile(props: {
           </Table>
         </TableContainer>
       </Paper>
-      {selectedRow && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-[1px]"
-          onClick={() => setSelectedRow(null)}
-        >
-          <div className="relative">
-            <Card
-              sx={{ borderRadius: 2 }}
-              className="drop-shadow-2xl w-full max-w-lg ml-[9%] px-4 pb-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <CardContent>
-                <button
-                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                  onClick={() => setSelectedRow(null)}
-                >
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M6.707 6.293a1 1 0 011.414 0L12 10.586l4.879-4.88a1 1 0 111.414 1.414L13.414 12l4.88 4.879a1 1 0 01-1.414 1.414L12 13.414l-4.879 4.88a1 1 0 01-1.414-1.414L10.586 12 5.707 7.121a1 1 0 010-1.414z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
-                <h1
-                  className={`text-2xl font-semibold mb-4 text-secondary text-center`}
-                >
-                  {selectedRow.type.replace(/([A-Z])/g, " $1").trim()} Details
-                </h1>
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  {Object.entries(selectedRow).map(
-                    ([key, value]) =>
-                      key !== "type" && (
-                        <div key={key} className="flex flex-col">
-                          <label className="font-medium mb-2">{key}:</label>
-                          <CustomTextField
-                            value={
-                              key.toLowerCase().includes("time") && value
-                                ? (() => {
-                                    const estTime = dayjs
-                                      .utc(value)
-                                      .tz("America/New_York")
-                                      .format(
-                                        "ddd, DD MMM YYYY HH:mm:ss [GMT]",
-                                      );
-                                    return estTime;
-                                  })()
-                                : key === "description" &&
-                                    (!value || String(value).trim() === "")
-                                  ? "N/A"
-                                  : key === "status" && value === "InProgress"
-                                    ? "In Progress"
-                                    : value
-                            }
-                            sx={{ width: "12rem" }}
-                            inputProps={{ readOnly: true }}
-                          />
-                        </div>
-                      ),
-                  )}
-                  <div className="col-span-2 flex justify-between items-end px-0">
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#EA422D",
-                        color: "white",
-                        width: "100%",
-                        maxWidth: "8rem",
-                        fontFamily: "Poppins, sans-serif",
-                      }}
-                      endIcon={<DeleteIcon />}
-                      onClick={() =>
-                        deleteServiceRequest(selectedRow?.serviceID)
-                      }
-                    >
-                      DELETE
-                    </Button>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#012D5A",
-                        color: "white",
-                        width: "100%",
-                        maxWidth: "8rem",
-                        fontFamily: "Poppins, sans-serif",
-                      }}
-                      endIcon={<SaveIcon />}
-                    >
-                      SAVE
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
