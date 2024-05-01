@@ -527,7 +527,7 @@ export default function Profile() {
                 className="shadow-xl drop-shadow m-4"
                 sx={{ borderRadius: "20px" }}
               >
-                <div className="w-[50vw] h-[43.5vh] bg-white rounded-[30px] ">
+                <div className="w-[50vw] h-[44.5vh] bg-white rounded-[30px] ">
                   <h1 className="w-full text-2xl font-bold text-center mt-3 ">
                     {" "}
                     Charts and Graphs
