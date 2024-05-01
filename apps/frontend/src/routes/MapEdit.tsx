@@ -12,6 +12,13 @@ import { useToast } from "../components/useToast.tsx";
 import UndoRedoButtons from "../components/map-edit/UndoRedoButtons.tsx";
 import SaveRevertAllButtons from "../components/map-edit/SaveRevertAllButtons.tsx";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
+import { useBlocker } from "react-router-dom";
+import CustomModal from "../components/CustomModal.tsx";
+import Button from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import { DesignSystem } from "../common/StylingCommon.ts";
+
 const defaultFloor: number = 1;
 enum Action {
   SelectNode = "SelectNode",
@@ -404,6 +411,11 @@ function MapEdit() {
     setHasChanged(true);
   }
 
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      hasChanged && currentLocation.pathname !== nextLocation.pathname,
+  );
+
   return (
     <div className="relative bg-offwhite">
       <MapContext.Provider value={contextValue}>
@@ -442,8 +454,51 @@ function MapEdit() {
       <div className="absolute right-[1.5%] bottom-[2%]">
         <FloorSelector activeFloor={activeFloor} onClick={setActiveFloor} />
       </div>
+      {blocker.state === "blocked" ? (
+        <CustomModal
+          isOpen={blocker.state === "blocked"}
+          onClose={() => blocker.reset()}
+        >
+          <div className="flex flex-col gap-2 text-secondary text-md font-semibold p-5 rounded-lg drop-shadow-2xl bg-white">
+            Your changes will be lost. Are you sure you want to proceed?
+            <div className="flex justify-center gap-8">
+              <Button
+                variant="contained"
+                style={cancelButtonStyles}
+                endIcon={<ClearIcon />}
+                onClick={() => {
+                  blocker.reset();
+                }}
+              >
+                CANCEL
+              </Button>
+              <Button
+                variant="contained"
+                style={confirmButtonStyles}
+                endIcon={<CheckIcon />}
+                onClick={() => blocker.proceed()}
+              >
+                CONFIRM
+              </Button>
+            </div>
+          </div>
+        </CustomModal>
+      ) : null}
     </div>
   );
 }
+
+const confirmButtonStyles = {
+  backgroundColor: DesignSystem.primaryColor,
+  width: "8rem",
+  fontFamily: DesignSystem.fontFamily,
+} as const;
+
+const cancelButtonStyles = {
+  backgroundColor: "#EA422D",
+  color: DesignSystem.white,
+  width: "8rem",
+  fontFamily: DesignSystem.fontFamily,
+} as const;
 
 export default MapEdit;
