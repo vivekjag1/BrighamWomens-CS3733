@@ -218,9 +218,9 @@ function DirectionsCard(props: {
         </div>
       </div>
       <div
-        className={`overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[60vh]"}`}
+        className={`shadow-inner mt-[.5rem] rounded-lg overflow-y-auto transition-height ease-in-out duration-700 w-full ${props.isCollapsed ? "max-h-[0vh]" : "max-h-[60vh]"}`}
       >
-        <div className={`flex flex-col items-start gap-2 mt-2 mb-[0.5rem]`}>
+        <div className={`flex flex-col items-start gap-2 mt-0 mb-[0.5rem]`}>
           {props.directions.map((directions, index) => (
             <DirectionsCardFloor
               key={index}

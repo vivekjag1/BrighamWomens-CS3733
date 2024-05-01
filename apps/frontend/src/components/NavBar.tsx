@@ -15,10 +15,12 @@ import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
-
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import ButtonBlue from "./ButtonBlue.tsx";
 import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
+
 function NavBar() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
@@ -189,22 +191,14 @@ function NavBar() {
                   <CardContent className="flex flex-col gap-2">
                     <Link to={paths.PROFILE} className="w-full ">
                       {" "}
-                      <ButtonBlue className="flex text-center text-2xl w-full ">
-                        View Profile
+                      <ButtonBlue
+                        className="flex text-center text-2xl w-full"
+                        endIcon={<PersonIcon />}
+                      >
+                        Profile
                       </ButtonBlue>
                     </Link>
-                    <ButtonRed
-                      onClick={handleLogout}
-                      sx={{
-                        display: "flex",
-                        textAlign: "center",
-                        fontSize: "2xl",
-                        width: "full",
-                        //padding: "0.5",
-                        backgroundColor: "red",
-                        fontFamily: "poppins, sans-serif",
-                      }}
-                    >
+                    <ButtonRed onClick={handleLogout} endIcon={<LogoutIcon />}>
                       Log Out
                     </ButtonRed>
                   </CardContent>
