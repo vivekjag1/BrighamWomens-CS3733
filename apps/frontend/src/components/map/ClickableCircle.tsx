@@ -5,17 +5,20 @@ interface ClickableCircleProps {
   y: number;
   id: string;
   onClick: (nodeID: string) => void;
+  title: string;
 }
 function ClickableCircle(props: ClickableCircleProps) {
   return (
-    <circle
-      r={MapStyles.nodeRadius}
-      cx={props.x}
-      cy={props.y}
-      fill={MapStyles.nodeColor}
-      onClick={() => props.onClick(props.id)}
-      className="cursor-pointer"
-    />
+    <>
+      <circle
+        r={MapStyles.nodeRadius}
+        cx={props.x}
+        cy={props.y}
+        fill={MapStyles.nodeColor}
+        onClick={() => props.onClick(props.id)}
+        className="cursor-pointer"
+      />
+    </>
   );
 }
 
