@@ -93,6 +93,7 @@ export function ServiceRequestGetter() {
   }, [fetchData]);
 
   async function deleteServiceRequest(serviceID: number) {
+    closeModal();
     const token = await getAccessTokenSilently();
 
     try {
