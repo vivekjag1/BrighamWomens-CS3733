@@ -106,7 +106,7 @@ export default function Profile() {
 
         setPictureURL(empName!.imageSrc);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchProfilePicture();
@@ -176,7 +176,7 @@ export default function Profile() {
           token,
         );
         setEmployee(res.data);
-        console.log("i am inside the use effect!");
+        // console.log("i am inside the use effect!");
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -187,7 +187,7 @@ export default function Profile() {
   // console.log(emp);
 
   // console.log(emp.position);
-  console.log(employee);
+  // console.log(employee);
   const [password, setPassword] = React.useState<string>("");
   const [confirmPassword, setConfirmPassword] = React.useState<string>("");
 
@@ -602,10 +602,9 @@ export default function Profile() {
                 sx={{ borderRadius: "20px" }}
               >
                 <div className="w-[50vw] h-[44.5vh] bg-white rounded-[30px] ">
-                  <h1 className="w-full text-2xl font-bold text-center mt-3 ">
+                  <h1 className="w-full text-2xl font-bold text-center mt-9 mb-9">
                     {" "}
                     Charts and Graphs
-                    <hr className="h-px mb-[0rem] mt-3 bg-gray-200 border-0 dark:bg-gray-700" />
                   </h1>
                   <CustomCardContent>
                     <ElementHighlights
@@ -626,7 +625,7 @@ export default function Profile() {
                 }}
               >
                 <div className="flex flex-col justify-center items-center w-[50vw] h-[43.5vh] bg-white rounded-[30px]">
-                  <h1 className="w-full text-2xl font-bold text-center mt-3 ">
+                  <h1 className="w-full text-2xl font-bold text-center mt-3 mb-9">
                     {" "}
                     Personal Service Requests
                   </h1>

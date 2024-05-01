@@ -51,13 +51,13 @@ export function FoodDeliveryserviceForm() {
     const requiresEmployee = ["Assigned", "InProgress", "Closed"].includes(
       status,
     );
-    console.log(
-      foodDeliveryserviceRequest.protein,
-      foodDeliveryserviceRequest.side,
-      foodDeliveryserviceRequest.serviceRequest.requestingUsername,
-      foodDeliveryserviceRequest.serviceRequest.location,
-      foodDeliveryserviceRequest.serviceRequest.priority,
-    );
+    // console.log(
+    //   foodDeliveryserviceRequest.protein,
+    //   foodDeliveryserviceRequest.side,
+    //   foodDeliveryserviceRequest.serviceRequest.requestingUsername,
+    //   foodDeliveryserviceRequest.serviceRequest.location,
+    //   foodDeliveryserviceRequest.serviceRequest.priority,
+    // );
     return (
       foodDeliveryserviceRequest.protein &&
       foodDeliveryserviceRequest.side &&

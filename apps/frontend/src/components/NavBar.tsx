@@ -7,18 +7,14 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import TocIcon from "@mui/icons-material/Toc";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import { Card, CardContent } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import paths from "../common/paths.tsx";
 import CollapseImg from "../../assets/collapse.svg";
-import { useIdleTimer } from "react-idle-timer";
-import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
 import { checkAuth } from "../checkAdminStatus.ts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import ButtonBlue from "./ButtonBlue.tsx";
-import ButtonRed from "./ButtonRed.tsx";
+import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
 import { APIEndpoints } from "common/src/APICommon.ts";
@@ -33,6 +29,8 @@ import taehaImage from "../../assets/employees/tsong.jpeg";
 import mattImage from "../../assets/employees/mbrown.jpeg";
 import danielImage from "../../assets/employees/dgorbunov.jpeg";
 import defaultPhoto from "../../assets/employees/default-photo.jpeg";
+import { ButtonStyling } from "../common/StylingCommon.ts";
+import { AnimatePresence, motion } from "framer-motion";
 
 const definedEmployees = [
   { name: "dgorbunov", imageSrc: danielImage },
@@ -56,12 +54,10 @@ function NavBar() {
   //used for delaying the hide of the navBar links
   const [isHidingNavBarInfo, setIsHidingNavBarInfo] = useState(false);
 
-  const [remaining, setRemaining] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [authorizedStatus, setStatus] = useState<boolean>(false);
   const [pictureURL, setPictureURL] = React.useState<string>("");
 
-  const { showToast } = useToast();
   const handleLogout = () => {
     logout({
       logoutParams: {
@@ -92,41 +88,11 @@ function NavBar() {
 
         setPictureURL(empName!.imageSrc);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchProfilePicture();
   }, [getAccessTokenSilently, user]);
-
-  const onIdle = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
-  const { getRemainingTime } = useIdleTimer({
-    onIdle,
-    timeout: 600_000,
-    throttle: 500,
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRemaining(Math.ceil(getRemainingTime() / 1000));
-    }, 500);
-    if (remaining <= 30 && remaining != 0) {
-      showToast(
-        "You will be logged out in " + remaining + " seconds due to inactivity",
-        "warning",
-      );
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
 
   const handleSetIsCollapsed = () => {
     if (isCollapsed) {
@@ -163,7 +129,6 @@ function NavBar() {
 
   interface NavbarItemProps {
     to: string;
-    activePage: string;
     setActivePage: (page: string) => void;
     Icon: React.ElementType;
     label: string;
@@ -225,41 +190,33 @@ function NavBar() {
   function UserProfileItem(props: { collapsed: boolean }) {
     return (
       <div className=" relative mb-[1rem] mr-[1.5rem] ml-[1rem]  items-center ">
-        {showProfileMenu && (
-          <>
-            {/*<motion.div*/}
-            {/*  initial={{scale: 0}} // Initial scale set to 0*/}
-            {/*  animate={{scale: 1}} // Final scale set to 1*/}
-            {/*  exit={{scale: 1}} // Exit state (if needed)*/}
-            {/*  transition={{duration: 0.9}} // Animation duration*/}
-            {/*>*/}
-            <div
-              className={` cursor-pointer  ${showProfileMenu ? " scale-1" : "scale-0"}`}
-            >
-              {!isCollapsed && (
-                <Card
-                  className={`absolute bottom-[2rem] left-[1rem] mb-[1rem] `}
-                  style={{ color: "#F6BD39" }}
+        <AnimatePresence>
+          {showProfileMenu && !isCollapsed && (
+            <motion.div className="absolute bottom-[3rem] left-[50%] translate-x-[-50%] mb-[1rem]">
+              <motion.div
+                className="flex flex-col gap-2 bg-[#eaeaea] p-3 rounded-xl"
+                key="profileOption"
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1, transformOrigin: "bottom" }}
+                exit={{ scaleY: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                <Link to={paths.PROFILE}>
+                  <Button sx={profileButtonStyles} startIcon={<PersonIcon />}>
+                    Profile
+                  </Button>
+                </Link>
+                <Button
+                  sx={logoutButtonStyles}
+                  onClick={handleLogout}
+                  startIcon={<LogoutIcon />}
                 >
-                  <CardContent className="flex flex-col gap-2">
-                    <Link to={paths.PROFILE} className="w-full ">
-                      {" "}
-                      <ButtonBlue
-                        className="flex text-center text-2xl w-full"
-                        endIcon={<PersonIcon />}
-                      >
-                        Profile
-                      </ButtonBlue>
-                    </Link>
-                    <ButtonRed onClick={handleLogout} endIcon={<LogoutIcon />}>
-                      Log Out
-                    </ButtonRed>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </>
-        )}
+                  Log Out
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div>
           <div
             className="overflow-hidden flex flex-row text-white items-center z-[100] bg-secondary cursor-pointer "
@@ -290,6 +247,7 @@ function NavBar() {
       </div>
     );
   }
+
   return (
     <div className="z-10 bg-offwhite">
       <div
@@ -314,7 +272,7 @@ function NavBar() {
                     : "text-2xl whitespace-nowrap self-center"
                 }
               >
-                Kiosk
+                Kiosk Menu
               </h2>
               <span>&nbsp;</span> {/* Add space */}
               <h2
@@ -326,9 +284,7 @@ function NavBar() {
                     ? "hidden"
                     : "text-2xl whitespace-nowrap self-center"
                 }
-              >
-                Menu
-              </h2>
+              ></h2>
             </div>
           </Link>
         </div>
@@ -336,7 +292,6 @@ function NavBar() {
         <div className="flex flex-col gap-[0.7rem]">
           <NavbarItem
             to={paths.HOME}
-            activePage={activePage}
             setActivePage={setActivePage}
             Icon={MapIcon}
             label="Map"
@@ -346,25 +301,22 @@ function NavBar() {
             <>
               <NavbarItem
                 to={paths.MAP_EDITOR}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={EditLocationAltIcon}
-                label="Map"
-                labelLight="Editor"
+                label="Map Editor"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
                 to={paths.MAP_DATA}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AddLocationAltIcon}
-                label="Map"
-                labelLight="Data"
+                label="Map Data"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
                 to={paths.SERVICES}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={VolunteerActivismIcon}
                 label="Services"
@@ -372,20 +324,18 @@ function NavBar() {
               />
               <NavbarItem
                 to={paths.SERVICE_LOG}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={TocIcon}
-                label="Service"
-                labelLight="Data"
+                label="Service Log"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
               <NavbarItem
                 to={paths.EMPLOYEE_LOG}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={AssignmentIndIcon}
-                label="Employee"
-                labelLight="Data"
+                label="Employee Log"
+                labelLight=""
                 collapsed={isHidingNavBarInfo}
               />
             </>
@@ -411,7 +361,6 @@ function NavBar() {
             <div className="flex flex-col">
               <NavbarItem
                 to={paths.MAP_DATA}
-                activePage={activePage}
                 setActivePage={setActivePage}
                 Icon={LoginIcon}
                 label={"Sign in"}
@@ -435,5 +384,27 @@ function NavBar() {
     </div>
   );
 }
+
+const profileButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.blueButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.blueButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
+
+const logoutButtonStyles = {
+  color: "white",
+  backgroundColor: ButtonStyling.redButton,
+  width: "180px",
+  borderRadius: "6px",
+  "&:hover": {
+    backgroundColor: ButtonStyling.redButtonHover,
+  },
+  fontFamily: "Poppins, sans-serif",
+} as const;
 
 export default NavBar;

@@ -45,7 +45,7 @@ const EmployeeTable = () => {
   };
 
   const handleDrop = (event: React.DragEvent) => {
-    console.log(event);
+    // console.log(event);
     event.preventDefault();
     event.stopPropagation();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
