@@ -18,14 +18,16 @@ export class DesignSystem {
 
 export class MapStyles {
   static readonly nodeColor: string = "#012D5ACC";
-  static readonly nodeRadius: number = 15;
+  static readonly nodeRadius: number = 12;
+  static readonly edgeWidth: number = 8;
 }
 
-export class MapStyling {
+export class MapEditStyles {
   static readonly nodeColor: string = "#012D5A";
+  static readonly nodeSelectedColor: string = DesignSystem.tertiaryColor;
   static readonly edgeColor: string = "#0091FF";
-  static readonly pathColor: string = MapStyling.nodeColor;
+  static readonly hallColor: string = MapEditStyles.edgeColor;
   static readonly nodeRadius: number = 10;
+  static readonly hallRadius: number = 6;
   static readonly edgeWidth: number = 5;
-  static readonly pathWidth: number = 7;
 }

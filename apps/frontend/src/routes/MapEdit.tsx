@@ -191,8 +191,8 @@ function MapEdit() {
 
   // Update/create edge in edges useState
   function updateEdge(edge: Edge) {
-    const newEdges: Edge[] = edges;
-    newEdges.push(edge);
+    let newEdges: Edge[] = [edge];
+    newEdges = newEdges.concat(edges);
     setEdges(newEdges);
   }
 
@@ -254,63 +254,50 @@ function MapEdit() {
       showToast("This node cannot be deleted!", "warning");
     } else {
       deleteNode(nodeID);
-      repairBrokenEdges(nodeID);
+      //repairBrokenEdges(nodeID);
     }
     setHasChanged(true);
   }
 
-  function repairBrokenEdges(nodeID: string) {
+  /*function repairBrokenEdges(nodeID: string) {
     console.log(nodeID);
-    // const selectedNodeEdges: Edge[] = edges.filter(
-    //   (value) =>
-    //     (value.startNodeID == nodeID &&
-    //       nodesForDeletion.indexOf(value.endNodeID) == -1) ||
-    //     (value.endNodeID == nodeID &&
-    //       nodesForDeletion.indexOf(value.startNodeID) == -1),
-    // );
-    //
-    // const tempRepairedEdges: Edge[] = [];
-    // const tempNeighborNodesIDs: string[] = [];
-    // for (let i = 0; i < selectedNodeEdges.length; i++) {
-    //   if (selectedNodeEdges[i].startNodeID == nodeID) {
-    //     tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
-    //   } else {
-    //     tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
-    //   }
-    // }
-    //
-    // for (let i = 0; i < tempNeighborNodesIDs.length - 1; i++) {
-    //   for (let j = tempNeighborNodesIDs.length - 1; j > i; j--) {
-    //     const edgeID: string =
-    //       tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j];
-    //     const reversedEdgeID: string =
-    //       tempNeighborNodesIDs[j] + "_" + tempNeighborNodesIDs[i];
-    //     const edgesWithEdgeID = edges.filter(
-    //       (value) => value.edgeID == edgeID || value.edgeID == reversedEdgeID,
-    //     );
-    //     if (edgesWithEdgeID.length == 0) {
-    //       tempRepairedEdges.push({
-    //         edgeID: edgeID,
-    //         startNodeID: tempNeighborNodesIDs[i],
-    //         endNodeID: tempNeighborNodesIDs[j],
-    //       });
-    //     }
-    //   }
-    //
-    //   const updatedTempEdges = tempRepairedEdges.concat(edges);
-    //   let addedRepairedEdges = tempRepairedEdges.concat(addedEdges);
-    //   addedRepairedEdges = addedRepairedEdges.filter(
-    //     (value, index) => addedRepairedEdges.indexOf(value) == index,
-    //   );
-    //   setEdges(updatedTempEdges);
-    //   setAddedEdges(addedRepairedEdges);
-    // }
-    //
-    // //queue it for deletion upon save all
-    // const test = nodesForDeletion;
-    // test.push(nodeID!);
-    // setNodesForDeletion(test);
-  }
+    const selectedNodeEdges: Edge[] = edges.filter(
+      (value) =>
+        (value.startNodeID == nodeID) ||
+        (value.endNodeID == nodeID),
+    );
+
+    const tempNeighborNodesIDs: string[] = [];
+    for (let i = 0; i < selectedNodeEdges.length; i++) {
+      if (selectedNodeEdges[i].startNodeID == nodeID) {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].endNodeID);
+      } else {
+        tempNeighborNodesIDs.push(selectedNodeEdges[i].startNodeID);
+      }
+    }
+
+    for (let i = 0; i < tempNeighborNodesIDs.length - 1; i++) {
+      for (let j = i + 1; j < tempNeighborNodesIDs.length; j++) {
+        const edgeID: string =
+          tempNeighborNodesIDs[i] + "_" + tempNeighborNodesIDs[j];
+        const reversedEdgeID: string =
+          tempNeighborNodesIDs[j] + "_" + tempNeighborNodesIDs[i];
+        const edgesWithEdgeID = edges.filter(
+          (value) => value.edgeID == edgeID || value.edgeID == reversedEdgeID,
+        );
+        if (edgesWithEdgeID.length == 0) {
+            const newEdge = {
+                edgeID: edgeID,
+                startNodeID: tempNeighborNodesIDs[i],
+                endNodeID: tempNeighborNodesIDs[j],
+            };
+            console.log(newEdge);
+            setNumUserEdges(numUserEdges + 1);
+            updateEdge(newEdge);
+        }
+      }
+    }
+  }*/
 
   function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
     if (selectedAction == Action.CreateNode) {
@@ -323,6 +310,7 @@ function MapEdit() {
   async function handleSaveAll() {
     const token = await getAccessTokenSilently();
     const nodesList: Node[] = Array.from(nodes.values());
+    console.log(edges);
 
     await MakeProtectedPostRequest(
       APIEndpoints.updateMapOnFloor,

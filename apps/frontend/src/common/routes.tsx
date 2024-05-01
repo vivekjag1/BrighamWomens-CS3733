@@ -7,7 +7,7 @@ import MedicineForm from "../routes/service-requests/MedicineForm.tsx";
 import MedicalDeviceForm from "../routes/service-requests/MedicalDeviceForm.tsx";
 import GiftForm from "../routes/service-requests/GiftForm.tsx";
 import ITForm from "../routes/service-requests/ITForm.tsx";
-
+import FoodDeliveryserviceForm from "../routes/service-requests/FoodDeliveryForm.tsx";
 import SanitationForm from "../routes/service-requests/SanitationForm.tsx";
 import RoomForm from "../routes/service-requests/RoomForm.tsx";
 import SecurityForm from "../routes/service-requests/SecurityForm.tsx";
@@ -35,6 +35,10 @@ const routes = [
   {
     path: paths.SANITATION_REQUEST,
     element: <AuthComp component={SanitationForm} />,
+  },
+  {
+    path: paths.FOOD_DELIVERY_REQUEST,
+    element: <AuthComp component={FoodDeliveryserviceForm} />,
   },
   { path: paths.ROOM_RESERVATION, element: <AuthComp component={RoomForm} /> },
   {

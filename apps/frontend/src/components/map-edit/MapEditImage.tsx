@@ -4,7 +4,7 @@ import firstFloor from "../../../assets/maps/01_thefirstfloor.png";
 import secondFloor from "../../../assets/maps/02_thesecondfloor.png";
 import thirdFloor from "../../../assets/maps/03_thethirdfloor.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { MapStyling } from "../../common/StylingCommon.ts";
+import { MapEditStyles } from "../../common/StylingCommon.ts";
 import React, { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../routes/MapEdit.tsx";
 import { Node } from "database";
@@ -26,7 +26,6 @@ const MapEditImage = (props: {
   onMapClick: (event: React.MouseEvent<SVGSVGElement>) => void;
 }) => {
   const [edgeCoords, setEdgeCoords] = useState<EdgeCoordinates[]>([]);
-  const tempNodes = useContext(MapContext).nodes;
 
   const selectedNodeID = useContext(MapContext).selectedNodeID;
   const setSelectedNodeID = useContext(MapContext).setSelectedNodeID;
@@ -36,8 +35,9 @@ const MapEditImage = (props: {
   const selectedAction = useContext(MapContext).selectedAction;
 
   const [flickeringNode, setFlickeringNode] = useState<string | null>(null);
-  // eslint-disable-next-line prefer-const
-  let [nodes, setNodes] = useState<Map<string, Node>>(new Map<string, Node>());
+
+  const nodes = useContext(MapContext).nodes;
+  const setNodes = useContext(MapContext).setNodes;
   const edges = useContext(MapContext).edges;
   const [draggablePosition, setDraggablePosition] = useState({
     x: 0,
@@ -45,10 +45,6 @@ const MapEditImage = (props: {
     active: false,
     offset: { x: 0, y: 0 },
   });
-
-  useEffect(() => {
-    setNodes(tempNodes);
-  }, [tempNodes]);
 
   useEffect(() => {
     const tempCoords: EdgeCoordinates[] = [];
@@ -118,6 +114,7 @@ const MapEditImage = (props: {
     console.log("hello world");
     console.log(edgeID);
   }
+
   function handlePointerDown(
     e:
       | React.PointerEvent<SVGCircleElement>
@@ -149,29 +146,38 @@ const MapEditImage = (props: {
     el.setPointerCapture(e.pointerId);
   }
 
+  // Update/create node in nodes useState
+  function updateNode(nodeID: string, node: Node) {
+    const newNodes: Map<string, Node> = new Map(nodes);
+    newNodes.set(node.nodeID, node);
+    setNodes(newNodes);
+  }
+
   function handlePointerMove(
     e: React.PointerEvent<SVGCircleElement>,
     nodeID: string,
   ) {
     const bbox = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - bbox.left;
-    const y = e.clientY - bbox.top;
+    const mouseX = e.clientX - bbox.left;
+    const mouseY = e.clientY - bbox.top;
     if (draggablePosition.active && selectedAction.toString() == "MoveNode") {
       const updatedNode: Node = nodes.get(nodeID)!;
       updatedNode.xcoord = Math.round(
-        updatedNode.xcoord + (x - draggablePosition.offset.x),
+        updatedNode.xcoord + (mouseX - draggablePosition.offset.x),
       );
       updatedNode.ycoord = Math.round(
-        updatedNode.ycoord + (y - draggablePosition.offset.y),
+        updatedNode.ycoord + (mouseY - draggablePosition.offset.y),
       );
-      setNodes(() => (nodes = new Map(nodes.set(nodeID, updatedNode))));
+
+      updateNode(nodeID, updatedNode);
     }
   }
 
   return (
     //onClick={props.onMapClick}
     <div
-      className={`z-0 relative ${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}`}
+      className={`z-0 relative ${selectedAction.toString() == "CreateEdge" ? "cursor-copy" : ""}${selectedAction.toString() == "CreateNode" ? "cursor-copy" : ""} ${selectedAction.toString() == "MoveNode" ? "cursor-move" : ""}
+      `}
     >
       {/*  White Fade */}
       <div
@@ -225,26 +231,34 @@ const MapEditImage = (props: {
                   x2={edge.endX}
                   y1={edge.startY}
                   y2={edge.endY}
-                  stroke={MapStyling.edgeColor}
-                  strokeWidth={MapStyling.edgeWidth}
+                  stroke={MapEditStyles.edgeColor}
+                  strokeWidth={MapEditStyles.edgeWidth}
                   onClick={(e) => handleEdgeClick(e, edge.edgeID)}
                   onPointerDown={(e) => handlePointerDown(e, edge.edgeID)}
-                  style={{ cursor: "pointer" }}
+                  style={{
+                    cursor: `${selectedAction.toString() == "DeleteNode" ? "pointer" : ""}`,
+                  }}
                 />
               ))}
               {Array.from(nodes.values()).map((node) => (
                 <circle
                   key={node.nodeID}
-                  className={`node ${flickeringNode === node.nodeID ? "flickering" : ""}`}
-                  r={MapStyling.nodeRadius}
+                  className={`node ${selectedNodeID === node.nodeID ? "animate-pulse" : ""}`}
+                  r={
+                    node.nodeType == "HALL"
+                      ? MapEditStyles.hallRadius
+                      : MapEditStyles.nodeRadius
+                  }
                   cx={node.xcoord}
                   cy={node.ycoord}
                   onPointerDown={(e) => handlePointerDown(e, node.nodeID)}
                   onPointerMove={(e) => handlePointerMove(e, node.nodeID)}
                   fill={
                     selectedNodeID == node.nodeID
-                      ? MapStyling.edgeColor
-                      : MapStyling.nodeColor
+                      ? MapEditStyles.nodeSelectedColor
+                      : node.nodeType == "HALL"
+                        ? MapEditStyles.hallColor
+                        : MapEditStyles.nodeColor
                   }
                   onClick={(e) => nodeClicked(e, node.nodeID)}
                   style={{ cursor: "pointer" }}
