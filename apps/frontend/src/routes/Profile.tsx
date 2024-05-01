@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Card, CardContent, TextField, styled } from "@mui/material";
+import { Button, Card, CardContent, styled } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Collapse, CollapseProps } from "@mui/material";
 import { MakeProtectedPostRequest } from "../MakeProtectedPostRequest.ts";
@@ -20,6 +20,7 @@ import { ServiceReqGetterProfile } from "../components/ServiceReqGetterProfile.t
 import ElementHighlights from "../components/ElementHighlights.tsx";
 import { MakeProtectedGetRequest } from "../MakeProtectedGetRequest.ts";
 import { MakeProtectedPatchRequest } from "../MakeProtectedPatchRequest.ts";
+import CustomTextField from "../components/CustomTextField.tsx";
 
 const CustomCardContent = styled(CardContent)({
   display: "flex",
@@ -329,10 +330,12 @@ export default function Profile() {
             <div className="col-span-2 flex justify-center items-end px-5">
               <div className="   flex flex-col col-span-2j ustify-center items-center ">
                 <div className=" mb-4   flex flex-col col-span-2 justify-center items-center  ">
-                  <TextField
+                  <CustomTextField
                     label="password"
                     variant="outlined"
-                    sx={{ width: "17rem" }}
+                    sx={{
+                      width: "17rem",
+                    }}
                     margin="normal"
                     onChange={(e) => setPassword(e.target.value)}
                   />
