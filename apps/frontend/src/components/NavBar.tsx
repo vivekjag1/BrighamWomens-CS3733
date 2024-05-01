@@ -14,7 +14,7 @@ import CollapseImg from "../../assets/collapse.svg";
 import { useIdleTimer } from "react-idle-timer";
 import { useToast } from "./useToast.tsx";
 import "../animations/yellow-underline.css";
- 
+
 import { checkAuth } from "../checkAdminStatus.ts";
 
 import ButtonBlue from "./ButtonBlue.tsx";
@@ -22,7 +22,6 @@ import ButtonRed from "./ButtonRed.tsx";
 import LoginIcon from "@mui/icons-material/Login";
 
 function NavBar() {
-   
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   const { user } = useAuth0();

@@ -39,6 +39,11 @@ function StackedMaps(props: StackedMapsProps) {
     return <StartEndMarker x={endNode.xcoord} y={endNode.ycoord} color="red" />;
   })();
 
+  /*const endMarkerElement = (() => {
+    const endNode: Point = getEndNodeCoords(props.path);
+    return <circle cx={endNode.xcoord} cy={endNode.ycoord} fill="red" r={5} />;
+  })();*/
+
   return (
     <svg
       viewBox="0 0 10000 11400"
