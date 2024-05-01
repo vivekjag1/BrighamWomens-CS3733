@@ -34,7 +34,7 @@ export default function Profile() {
 
   const { logout } = useAuth0();
   const handleLogout = () => {
-    alert(user!.email);
+    alert(user!.given_name);
     logout({
       logoutParams: {
         returnTo: window.location.origin,
@@ -62,6 +62,10 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfilePicture = async () => {
       try {
+        if (user!.name === "Admin") {
+          setPictureURL("./../../assets/employees/default-photo.jpeg");
+          return;
+        }
         const token = await getAccessTokenSilently();
         const userData = {
           userName: user!.name,

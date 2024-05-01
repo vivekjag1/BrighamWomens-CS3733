@@ -20,6 +20,7 @@ router.get("/", async (req: Request, res: Response) => {
       };
       makeUsers.push(thisUser);
     }
+
     const token = await getManagementToken();
     for (let i = 0; i < makeUsers.length; i++) {
       await axios.post(

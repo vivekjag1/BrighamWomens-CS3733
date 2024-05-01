@@ -45,6 +45,10 @@ function NavBar() {
   useEffect(() => {
     const fetchProfilePicture = async () => {
       try {
+        if (user?.name?.split(" ")[0] == "Admin") {
+          setPictureURL(`../../assets/employees/default-photo.jpeg`);
+          return;
+        }
         const token = await getAccessTokenSilently();
         const userData = {
           userName: user!.name,
@@ -254,7 +258,7 @@ function NavBar() {
                   }}
                   className="text-lg whitespace-nowrap z-[100]  "
                 >
-                  {user?.given_name ? user?.given_name : user?.name}
+                  {user?.name?.split(" ")[0]}
                 </h2>
               </div>
             ) : (
@@ -365,15 +369,6 @@ function NavBar() {
               />
             </>
           )}
-          {/*<NavbarItem*/}
-          {/*  to={paths.ABOUT_US}*/}
-          {/*  activePage={activePage}*/}
-          {/*  setActivePage={setActivePage}*/}
-          {/*  Icon={GroupsIcon}*/}
-          {/*  label="About"*/}
-          {/*  labelLight="Us"*/}
-          {/*  collapsed={isHidingNavBarInfo}*/}
-          {/*/>*/}
         </div>
 
         {/* Sign out */}
