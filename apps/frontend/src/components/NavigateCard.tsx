@@ -26,6 +26,7 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 
 const textFieldStyles = {
   width: "17vw",
+  fontFamily: "poppins, sans-serif",
 };
 
 const defaultPathAlgorithm: PathAlgorithm = "A-Star";
@@ -119,12 +120,13 @@ function NavigateCard(props: {
               type="hidden"
               name={`${NavigateAttributes.endLocationKey}`}
               value={getNodeID(props.pathNodeObject.endNode)}
+              style={{ fontFamily: "poppins, sans-serif" }}
             />
           </div>
           <div className="ml-[2rem] flex flex-row mt-4 justify-between">
             <PathAlgorithmDropdown
               value={pathAlgorithm}
-              sx={{ width: "10vw" }}
+              sx={{ width: "10vw", fontFamily: "poppins, sans-serif" }}
               label="Algorithms"
               onChange={setPathAlgorithm}
             ></PathAlgorithmDropdown>
@@ -132,6 +134,7 @@ function NavigateCard(props: {
               type="hidden"
               name={`${NavigateAttributes.algorithmKey}`}
               value={pathAlgorithm}
+              style={{ fontFamily: "poppins, sans-serif" }}
             />
             <ButtonBlue
               type="submit"
